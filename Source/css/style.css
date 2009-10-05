@@ -1,0 +1,136 @@
+﻿/* ---------------------------------- =Base Styles ------------------------------*/
+
+* { margin: 0; padding: 0; }
+
+body, table, pre
+{
+	font-family: Arial, Verdana, Sans-Serif;
+	font-size: 11px;
+	line-height: 135%;
+	color: #000;
+}
+	
+
+
+/* ---------------------------------- =Forms -----------------------------------*/
+
+.form-buttons              { margin: 20px 0 0;}
+.form-buttons-top          { margin: 0 0 20px; }
+.form-buttons-top .title   { margin: 0 5px 0 0; }
+
+.form-side-labels .row     { margin: 0 0 7px; }
+.form-side-labels label    { float: left; display: block; padding: 1px 0 0 0; width: 150px; }
+.form-side-labels .field   { float: left; padding: 1px 0 0; }
+.form-side-labels input    { float: left; }
+.form-side-labels select   { float: left; }
+.form-side-labels textarea { float: left; }
+
+.form-top-labels .row      { margin: 0 0 7px; }
+.form-top-labels label     { display: block; margin: 0 0 7px; }
+
+.side-by-side              { float: left; margin: 0 10px 7px 0; }
+.side-by-side-last         { float: left; margin: 0 0 7px 0; }
+
+
+fieldset
+{
+	position: relative;
+	margin: 42px 0 10px;
+	padding: 10px;
+	border: none;
+}
+
+
+input.small, input.medium, input.large, input.title
+{
+	padding: 2px;
+	font-size: 13px;
+	border: 1px solid #7f9db9;
+}
+
+.ie6 input.small, .ie6 input.medium, .ie6 input.large, .ie6 input.title,
+	.ie7 input.small, .ie7 input.medium, .ie7 input.large, .ie7 input.title,
+		.ie8 input.small, .ie8 input.medium, .ie8 input.large, .ie8 input.title
+{ margin: -1px 0 0 0; }
+
+input.three  { width: 30px; }
+input.four   { width: 40px; }
+input.five   { width: 50px; }
+input.date   { width: 80px; }
+input.small  { width: 93px; }
+input.medium { width: 200px; }
+input.large  { width: 416px; }
+
+.validation-summary
+{
+	margin: 5px 0 10px 0;
+	padding: 10px;
+	font-size: 16px;
+	color: #000;
+	border: 4px solid #fed;
+}
+
+.validation-summary ul, .validation-summary ul li
+{
+	margin: 10px 0 0 0;
+	padding: 0;
+	font-size: 12px;
+	color: #e00;
+}
+
+.validation-summary ul li
+{
+	margin: 2px 0 7px 20px;
+	list-style-type: square;
+	background-image: none;	
+}
+
+.failed-validation { color: #f00; }
+label.required     { font-weight: bold; }
+
+
+
+input.error  { background: #fed; border: 1px solid #e00; }
+select.error { background: #fed; border: 1px solid #e00; }
+span.error, .form-side-labels span.error, .form-top-labels span.error
+{
+	float: left;
+	display: block;
+	margin: 0 0 0 5px;
+	padding: 3px;
+	width: auto;
+	font-weight: bold;
+	color: #fff;
+	background: red;
+}
+
+.form-top-labels span.error
+{
+	float: none;
+	margin: 3px 0 0;
+	width: 416px;
+}
+.form-top-labels .side-by-side span.error, .form-top-labels .side-by-side-last span.error { width: 200px; }
+
+
+
+
+/* ---------------------------------- =Clear --------------------------------- */
+
+html body .clear
+{
+	overflow: hidden;
+	float: none;
+	clear: both;
+	visibility: hidden;
+	margin: 0;
+	padding: 0;
+	font-size: 0;
+	height: 0;
+	line-height: 0;
+	border: 0;
+}
+
+
+
+

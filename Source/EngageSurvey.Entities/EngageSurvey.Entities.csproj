@@ -105,6 +105,12 @@
       <DependentUpon>SurveyModelDataContext.dbml</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="G:\Engage 3.0\Engage.Survey\Engage.Survey.csproj">
+      <Project>{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}</Project>
+      <Name>Engage.Survey</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

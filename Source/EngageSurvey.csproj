@@ -150,7 +150,7 @@
   <ItemGroup>
     <None Include="Providers\DataProviders\SqlDataProvider\01.00.00.SqlDataProvider" />
     <None Include="EngageSurvey.Build" />
-    <None Include="EngageSurvey.dnn" />
+    <None Include="EngageSurvey.4.dnn" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +185,10 @@
     <ProjectReference Include="EngageSurvey.Entities\EngageSurvey.Entities.csproj">
       <Project>{EA6F3122-F987-46F2-AFA1-3B35CD818161}</Project>
       <Name>EngageSurvey.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="G:\Engage 3.0\Engage.Survey\Engage.Survey.csproj">
+      <Project>{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}</Project>
+      <Name>Engage.Survey</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

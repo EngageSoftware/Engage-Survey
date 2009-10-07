@@ -40,7 +40,6 @@ namespace Engage.Dnn.Survey
                               where s.SurveyId == SurveyId
                               select s).SingleOrDefault();
                 SurveyControl1.CurrentSurvey = survey;
-                SurveyControl1.SurveyCompleted += this.SurveyControl1_SurveyCompleted;
             }
             catch (Exception exc)
             {
@@ -67,17 +66,6 @@ namespace Engage.Dnn.Survey
                 return null;
             }
         }
-
-        /// <summary>
-        /// Handles the SurveyCompleted event of the SurveyControl1 control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="Engage.Survey.UI.SavedEventArgs"/> instance containing the event data.</param>
-        private void SurveyControl1_SurveyCompleted(object sender, Engage.Survey.UI.SavedEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Do your stuff here");            
-        }
-
         #endregion
     }
 }

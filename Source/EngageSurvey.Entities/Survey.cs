@@ -11,6 +11,7 @@
 
 namespace Engage.Survey.Entities
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Web.UI.HtmlControls;
@@ -144,14 +145,71 @@ namespace Engage.Survey.Entities
             {
                 foreach (IQuestion question in section.GetQuestions())
                 {
-                    //foreach (string s in question.AnswerValue)
-                    //{
-                    Debug.WriteLine(question.Text + " : " + question.AnswerValue);
-                    //}
+                    foreach (IAnswer answer in question.GetAnswerChoices())
+                    {
+                        if (question.Responses.Count == 1)
+                        {
+                            foreach (UserResponse response in question.Responses)
+                            {
+                                string responseText = null;
+                                if (response.AnswerValue == answer.Text)
+                                {
+                                    responseText = answer.Text;
+                                }
+                                WriteResponseEntry(section, question, answer, responseText);
+                            }
+                        }
+                        else
+                        {
+                            UserResponse response = question.FindResponse(answer);
+                            WriteResponseEntry(section, question, answer, response.AnswerValue);
+                        }
+                    }
                 }
             }
 
             return 1;
+        }
+
+        /// <summary>
+        /// Writes the response entry.
+        /// </summary>
+        /// <param name="section">The section.</param>
+        /// <param name="question">The question.</param>
+        /// <param name="answer">The answer.</param>
+        /// <param name="responseText">The response text.</param>
+        private void WriteResponseEntry(ISection section, IQuestion question, IAnswer answer, string responseText)
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            EngageSurvey_Response r = new EngageSurvey_Response
+                                          {
+                                                  SurveyId = this.SurveyId,
+                                                  SurveyText = this.Text,
+                                                  ShowSurveyText = this.ShowText,
+                                                  TitleOption = this.TitleOption,
+                                                  SectionText = section.Text,
+                                                  SectionRelativeOrder = section.RelativeOrder,
+                                                  ShowSectionText = false
+                                          };
+            r.SectionRelativeOrder = section.RelativeOrder;
+            r.QuestionText = question.Text;
+            r.QuestionRelativeOrder = question.RelativeOrder;
+            r.QuestionFormatOption = this.QuestionFormatOption;
+            r.ControlType = question.ControlType;
+            r.AnswerFormatOption = this.AnswerFormatOption;
+            r.AnswerText = answer.Text;
+            r.AnswerRelativeOrder = answer.RelativeOrder;
+            r.AnswerIsCorrect = answer.IsCorrect;
+            r.Response = responseText;
+            r.CreatedBy = 1;
+            r.CreationDate = DateTime.Now;
+            r.RevisingUser = 1;
+            r.RevisionDate = DateTime.Now;
+
+            context.EngageSurvey_Responses.InsertOnSubmit(r);
+            context.SubmitChanges();
+
+            Debug.WriteLine(r.ResponseId);
         }
     }
 }

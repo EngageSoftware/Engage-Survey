@@ -59,11 +59,11 @@ namespace Engage.Survey.Entities
         /// </summary>
         /// <param name="key">The key name.</param>
         /// <returns>An IQuestion using the passed key.</returns>
-        public IQuestion GetQuestion(string key)
+        public IQuestion GetQuestion(Key key)
         {
             foreach (IQuestion question in this.Questions)
             {
-                if (question.RelationshipKey == key)
+                if (question.QuestionId == key.QuestionId)
                 {
                     return question;
                 }

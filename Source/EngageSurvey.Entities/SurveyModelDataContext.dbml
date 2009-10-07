@@ -1,19 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Database Name="campus_dnn" Class="SurveyModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=KENUAM03;Initial Catalog=campus_dnn;Persist Security Info=True;User ID=sa" SettingsObjectName="Engage.Survey.Entities.Properties.Settings" SettingsPropertyName="campus_dnnConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.EngageSurvey_Answer" Member="Answers">
-    <Type Name="Answer">
-      <Column Name="AnswerId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="QuestionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Text" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
-      <Column Name="IsCorrect" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="RevisingUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RevisionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="EngageSurvey_Question_Answer" Member="Question" ThisKey="QuestionId" OtherKey="QuestionId" Type="Question" IsForeignKey="true" />
-    </Type>
-  </Table>
+<Database Name="campus_dnn2" Class="SurveyModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=KENUAM03;Initial Catalog=campus_dnn2;Integrated Security=True" SettingsObjectName="Engage.Survey.Entities.Properties.Settings" SettingsPropertyName="campus_dnn2ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.EngageSurvey_Survey" Member="Surveys">
     <Type Name="Survey">
       <Column Name="SurveyId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -31,21 +18,7 @@
       <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Survey_Section" Member="Sections" ThisKey="SurveyId" OtherKey="SurveyId" Type="Section" />
-    </Type>
-  </Table>
-  <Table Name="dbo.EngageSurvey_Section" Member="Sections">
-    <Type Name="Section">
-      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="SurveyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Text" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
-      <Column Name="ShowText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="RelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RevisingUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RevisionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Section_EngageSurvey_Question" Member="Questions" ThisKey="SectionId" OtherKey="SectionId" Type="Question" />
-      <Association Name="Survey_Section" Member="Survey" ThisKey="SurveyId" OtherKey="SurveyId" Type="Survey" IsForeignKey="true" />
+      <Association Name="Survey_EngageSurvey_Response" Member="EngageSurvey_Responses" ThisKey="SurveyId" OtherKey="SurveyId" Type="EngageSurvey_Response" />
     </Type>
   </Table>
   <Table Name="dbo.EngageSurvey_Question" Member="Questions">
@@ -63,8 +36,63 @@
       <Column Name="RevisionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="EngageSurvey_Question_Answer" Member="Answers" ThisKey="QuestionId" OtherKey="QuestionId" Type="Answer" />
-      <Association Name="Section_EngageSurvey_Question" Member="Section" ThisKey="SectionId" OtherKey="SectionId" Type="Section" IsForeignKey="true" />
+      <Association Name="Question_EngageSurvey_Answer" Member="Answers" ThisKey="QuestionId" OtherKey="QuestionId" Type="Answer" />
+      <Association Name="Section_Question" Member="Section" ThisKey="SectionId" OtherKey="SectionId" Type="Section" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EngageSurvey_Section" Member="Sections">
+    <Type Name="Section">
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SurveyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="ShowText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RevisingUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RevisionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Section_Question" Member="Questions" ThisKey="SectionId" OtherKey="SectionId" Type="Question" />
+      <Association Name="Survey_Section" Member="Survey" ThisKey="SurveyId" OtherKey="SurveyId" Type="Survey" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EngageSurvey_Response" Member="EngageSurvey_Responses">
+    <Type Name="EngageSurvey_Response">
+      <Column Name="ResponseId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SurveyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SurveyText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="ShowSurveyText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="TitleOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="SectionText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="SectionRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShowSectionText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionFormatOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="ControlType" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="AnswerFormatOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="AnswerText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="AnswerRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AnswerIsCorrect" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Response" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="RevisingUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RevisionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Survey_EngageSurvey_Response" Member="Survey" ThisKey="SurveyId" OtherKey="SurveyId" Type="Survey" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EngageSurvey_Answer" Member="Answers">
+    <Type Name="Answer">
+      <Column Name="AnswerId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="QuestionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="IsCorrect" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RevisingUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RevisionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Question_EngageSurvey_Answer" Member="Question" ThisKey="QuestionId" OtherKey="QuestionId" Type="Question" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

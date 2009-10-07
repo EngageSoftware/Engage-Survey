@@ -14,6 +14,7 @@ namespace Engage.Survey.Entities
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using Util;
 
     /// <summary>
     /// Summary description for Question.
@@ -24,25 +25,48 @@ namespace Engage.Survey.Entities
         /// Gets the rendering key used by the SurveyControl to uniquely identify this element.
         /// </summary>
         /// <value>The rendering key.</value>
-        public string RelationshipKey
+        public Key RelationshipKey
         {
             get
             {
-                return this.SectionId + "-" +  this.QuestionId;
+                return new Key { SectionId = this.SectionId, QuestionId = this.QuestionId };
             }
         }
 
-        public string AnswerValue
+        public List<UserResponse> Responses
         {
             get;
             set;
         }
 
-        //public List<Response> Responses
-        //{
-        //    get;
-        //    set;
-        //}
+        public IAnswer GetAnswerChoice(Key key)
+        {
+            foreach (IAnswer answer in this.GetAnswerChoices())
+            {
+                if (answer.AnswerId == key.AnswerId)
+                {
+                    return answer;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Finds the response.
+        /// </summary>
+        /// <param name="answer">The answer.</param>
+        /// <returns></returns>
+        public UserResponse FindResponse(IAnswer answer)
+        {
+            foreach (UserResponse r in Responses)
+            {
+                if (r.RelationshipKey.Equals(answer.RelationshipKey))
+                {
+                    return r;
+                }
+            }
+            return null;
+        }
 
         /// <summary>
         /// Gets the section.

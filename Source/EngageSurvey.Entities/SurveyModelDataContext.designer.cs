@@ -22,7 +22,7 @@ namespace Engage.Survey.Entities
 	using System;
 	
 	
-	[System.Data.Linq.Mapping.DatabaseAttribute(Name="campus_dnn")]
+	[System.Data.Linq.Mapping.DatabaseAttribute(Name="campus_dnn2")]
 	public partial class SurveyModelDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -30,22 +30,25 @@ namespace Engage.Survey.Entities
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertAnswer(Answer instance);
-    partial void UpdateAnswer(Answer instance);
-    partial void DeleteAnswer(Answer instance);
     partial void InsertSurvey(Survey instance);
     partial void UpdateSurvey(Survey instance);
     partial void DeleteSurvey(Survey instance);
-    partial void InsertSection(Section instance);
-    partial void UpdateSection(Section instance);
-    partial void DeleteSection(Section instance);
     partial void InsertQuestion(Question instance);
     partial void UpdateQuestion(Question instance);
     partial void DeleteQuestion(Question instance);
+    partial void InsertSection(Section instance);
+    partial void UpdateSection(Section instance);
+    partial void DeleteSection(Section instance);
+    partial void InsertEngageSurvey_Response(EngageSurvey_Response instance);
+    partial void UpdateEngageSurvey_Response(EngageSurvey_Response instance);
+    partial void DeleteEngageSurvey_Response(EngageSurvey_Response instance);
+    partial void InsertAnswer(Answer instance);
+    partial void UpdateAnswer(Answer instance);
+    partial void DeleteAnswer(Answer instance);
     #endregion
 		
 		public SurveyModelDataContext() : 
-				base(global::Engage.Survey.Entities.Properties.Settings.Default.campus_dnnConnectionString, mappingSource)
+				base(global::Engage.Survey.Entities.Properties.Settings.Default.campus_dnn2ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -74,19 +77,19 @@ namespace Engage.Survey.Entities
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Answer> Answers
-		{
-			get
-			{
-				return this.GetTable<Answer>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Survey> Surveys
 		{
 			get
 			{
 				return this.GetTable<Survey>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Question> Questions
+		{
+			get
+			{
+				return this.GetTable<Question>();
 			}
 		}
 		
@@ -98,282 +101,19 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		public System.Data.Linq.Table<Question> Questions
+		public System.Data.Linq.Table<EngageSurvey_Response> EngageSurvey_Responses
 		{
 			get
 			{
-				return this.GetTable<Question>();
+				return this.GetTable<EngageSurvey_Response>();
 			}
 		}
-	}
-	
-	[Table(Name="dbo.EngageSurvey_Answer")]
-	public partial class Answer : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _AnswerId;
-		
-		private int _QuestionId;
-		
-		private string _Text;
-		
-		private bool _IsCorrect;
-		
-		private int _RevisingUser;
-		
-		private System.DateTime _RevisionDate;
-		
-		private int _CreatedBy;
-		
-		private System.DateTime _CreationDate;
-		
-		private EntityRef<Question> _Question;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnAnswerIdChanging(int value);
-    partial void OnAnswerIdChanged();
-    partial void OnQuestionIdChanging(int value);
-    partial void OnQuestionIdChanged();
-    partial void OnTextChanging(string value);
-    partial void OnTextChanged();
-    partial void OnIsCorrectChanging(bool value);
-    partial void OnIsCorrectChanged();
-    partial void OnRevisingUserChanging(int value);
-    partial void OnRevisingUserChanged();
-    partial void OnRevisionDateChanging(System.DateTime value);
-    partial void OnRevisionDateChanged();
-    partial void OnCreatedByChanging(int value);
-    partial void OnCreatedByChanged();
-    partial void OnCreationDateChanging(System.DateTime value);
-    partial void OnCreationDateChanged();
-    #endregion
-		
-		public Answer()
-		{
-			this._Question = default(EntityRef<Question>);
-			OnCreated();
-		}
-		
-		[Column(Storage="_AnswerId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int AnswerId
+		public System.Data.Linq.Table<Answer> Answers
 		{
 			get
 			{
-				return this._AnswerId;
-			}
-			set
-			{
-				if ((this._AnswerId != value))
-				{
-					this.OnAnswerIdChanging(value);
-					this.SendPropertyChanging();
-					this._AnswerId = value;
-					this.SendPropertyChanged("AnswerId");
-					this.OnAnswerIdChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_QuestionId", DbType="Int NOT NULL")]
-		public int QuestionId
-		{
-			get
-			{
-				return this._QuestionId;
-			}
-			set
-			{
-				if ((this._QuestionId != value))
-				{
-					if (this._Question.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnQuestionIdChanging(value);
-					this.SendPropertyChanging();
-					this._QuestionId = value;
-					this.SendPropertyChanged("QuestionId");
-					this.OnQuestionIdChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_Text", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		public string Text
-		{
-			get
-			{
-				return this._Text;
-			}
-			set
-			{
-				if ((this._Text != value))
-				{
-					this.OnTextChanging(value);
-					this.SendPropertyChanging();
-					this._Text = value;
-					this.SendPropertyChanged("Text");
-					this.OnTextChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_IsCorrect", DbType="Bit NOT NULL")]
-		public bool IsCorrect
-		{
-			get
-			{
-				return this._IsCorrect;
-			}
-			set
-			{
-				if ((this._IsCorrect != value))
-				{
-					this.OnIsCorrectChanging(value);
-					this.SendPropertyChanging();
-					this._IsCorrect = value;
-					this.SendPropertyChanged("IsCorrect");
-					this.OnIsCorrectChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
-		public int RevisingUser
-		{
-			get
-			{
-				return this._RevisingUser;
-			}
-			set
-			{
-				if ((this._RevisingUser != value))
-				{
-					this.OnRevisingUserChanging(value);
-					this.SendPropertyChanging();
-					this._RevisingUser = value;
-					this.SendPropertyChanged("RevisingUser");
-					this.OnRevisingUserChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
-		public System.DateTime RevisionDate
-		{
-			get
-			{
-				return this._RevisionDate;
-			}
-			set
-			{
-				if ((this._RevisionDate != value))
-				{
-					this.OnRevisionDateChanging(value);
-					this.SendPropertyChanging();
-					this._RevisionDate = value;
-					this.SendPropertyChanged("RevisionDate");
-					this.OnRevisionDateChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
-		public int CreatedBy
-		{
-			get
-			{
-				return this._CreatedBy;
-			}
-			set
-			{
-				if ((this._CreatedBy != value))
-				{
-					this.OnCreatedByChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedBy = value;
-					this.SendPropertyChanged("CreatedBy");
-					this.OnCreatedByChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
-		public System.DateTime CreationDate
-		{
-			get
-			{
-				return this._CreationDate;
-			}
-			set
-			{
-				if ((this._CreationDate != value))
-				{
-					this.OnCreationDateChanging(value);
-					this.SendPropertyChanging();
-					this._CreationDate = value;
-					this.SendPropertyChanged("CreationDate");
-					this.OnCreationDateChanged();
-				}
-			}
-		}
-		
-		[Association(Name="EngageSurvey_Question_Answer", Storage="_Question", ThisKey="QuestionId", OtherKey="QuestionId", IsForeignKey=true)]
-		public Question Question
-		{
-			get
-			{
-				return this._Question.Entity;
-			}
-			set
-			{
-				Question previousValue = this._Question.Entity;
-				if (((previousValue != value) 
-							|| (this._Question.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Question.Entity = null;
-						previousValue.Answers.Remove(this);
-					}
-					this._Question.Entity = value;
-					if ((value != null))
-					{
-						value.Answers.Add(this);
-						this._QuestionId = value.QuestionId;
-					}
-					else
-					{
-						this._QuestionId = default(int);
-					}
-					this.SendPropertyChanged("Question");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				return this.GetTable<Answer>();
 			}
 		}
 	}
@@ -414,6 +154,8 @@ namespace Engage.Survey.Entities
 		
 		private EntitySet<Section> _Sections;
 		
+		private EntitySet<EngageSurvey_Response> _EngageSurvey_Responses;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -451,6 +193,7 @@ namespace Engage.Survey.Entities
 		public Survey()
 		{
 			this._Sections = new EntitySet<Section>(new Action<Section>(this.attach_Sections), new Action<Section>(this.detach_Sections));
+			this._EngageSurvey_Responses = new EntitySet<EngageSurvey_Response>(new Action<EngageSurvey_Response>(this.attach_EngageSurvey_Responses), new Action<EngageSurvey_Response>(this.detach_EngageSurvey_Responses));
 			OnCreated();
 		}
 		
@@ -747,6 +490,19 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
+		[Association(Name="Survey_EngageSurvey_Response", Storage="_EngageSurvey_Responses", ThisKey="SurveyId", OtherKey="SurveyId")]
+		public EntitySet<EngageSurvey_Response> EngageSurvey_Responses
+		{
+			get
+			{
+				return this._EngageSurvey_Responses;
+			}
+			set
+			{
+				this._EngageSurvey_Responses.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -778,328 +534,17 @@ namespace Engage.Survey.Entities
 			this.SendPropertyChanging();
 			entity.Survey = null;
 		}
-	}
-	
-	[Table(Name="dbo.EngageSurvey_Section")]
-	public partial class Section : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _SectionId;
-		
-		private int _SurveyId;
-		
-		private string _Text;
-		
-		private bool _ShowText;
-		
-		private int _RelativeOrder;
-		
-		private int _RevisingUser;
-		
-		private System.DateTime _RevisionDate;
-		
-		private int _CreatedBy;
-		
-		private System.DateTime _CreationDate;
-		
-		private EntitySet<Question> _Questions;
-		
-		private EntityRef<Survey> _Survey;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSectionIdChanging(int value);
-    partial void OnSectionIdChanged();
-    partial void OnSurveyIdChanging(int value);
-    partial void OnSurveyIdChanged();
-    partial void OnTextChanging(string value);
-    partial void OnTextChanged();
-    partial void OnShowTextChanging(bool value);
-    partial void OnShowTextChanged();
-    partial void OnRelativeOrderChanging(int value);
-    partial void OnRelativeOrderChanged();
-    partial void OnRevisingUserChanging(int value);
-    partial void OnRevisingUserChanged();
-    partial void OnRevisionDateChanging(System.DateTime value);
-    partial void OnRevisionDateChanged();
-    partial void OnCreatedByChanging(int value);
-    partial void OnCreatedByChanged();
-    partial void OnCreationDateChanging(System.DateTime value);
-    partial void OnCreationDateChanged();
-    #endregion
-		
-		public Section()
-		{
-			this._Questions = new EntitySet<Question>(new Action<Question>(this.attach_Questions), new Action<Question>(this.detach_Questions));
-			this._Survey = default(EntityRef<Survey>);
-			OnCreated();
-		}
-		
-		[Column(Storage="_SectionId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int SectionId
-		{
-			get
-			{
-				return this._SectionId;
-			}
-			set
-			{
-				if ((this._SectionId != value))
-				{
-					this.OnSectionIdChanging(value);
-					this.SendPropertyChanging();
-					this._SectionId = value;
-					this.SendPropertyChanged("SectionId");
-					this.OnSectionIdChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_SurveyId", DbType="Int NOT NULL")]
-		public int SurveyId
-		{
-			get
-			{
-				return this._SurveyId;
-			}
-			set
-			{
-				if ((this._SurveyId != value))
-				{
-					if (this._Survey.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSurveyIdChanging(value);
-					this.SendPropertyChanging();
-					this._SurveyId = value;
-					this.SendPropertyChanged("SurveyId");
-					this.OnSurveyIdChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_Text", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		public string Text
-		{
-			get
-			{
-				return this._Text;
-			}
-			set
-			{
-				if ((this._Text != value))
-				{
-					this.OnTextChanging(value);
-					this.SendPropertyChanging();
-					this._Text = value;
-					this.SendPropertyChanged("Text");
-					this.OnTextChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_ShowText", DbType="Bit NOT NULL")]
-		public bool ShowText
-		{
-			get
-			{
-				return this._ShowText;
-			}
-			set
-			{
-				if ((this._ShowText != value))
-				{
-					this.OnShowTextChanging(value);
-					this.SendPropertyChanging();
-					this._ShowText = value;
-					this.SendPropertyChanged("ShowText");
-					this.OnShowTextChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_RelativeOrder", DbType="Int NOT NULL")]
-		public int RelativeOrder
-		{
-			get
-			{
-				return this._RelativeOrder;
-			}
-			set
-			{
-				if ((this._RelativeOrder != value))
-				{
-					this.OnRelativeOrderChanging(value);
-					this.SendPropertyChanging();
-					this._RelativeOrder = value;
-					this.SendPropertyChanged("RelativeOrder");
-					this.OnRelativeOrderChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
-		public int RevisingUser
-		{
-			get
-			{
-				return this._RevisingUser;
-			}
-			set
-			{
-				if ((this._RevisingUser != value))
-				{
-					this.OnRevisingUserChanging(value);
-					this.SendPropertyChanging();
-					this._RevisingUser = value;
-					this.SendPropertyChanged("RevisingUser");
-					this.OnRevisingUserChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
-		public System.DateTime RevisionDate
-		{
-			get
-			{
-				return this._RevisionDate;
-			}
-			set
-			{
-				if ((this._RevisionDate != value))
-				{
-					this.OnRevisionDateChanging(value);
-					this.SendPropertyChanging();
-					this._RevisionDate = value;
-					this.SendPropertyChanged("RevisionDate");
-					this.OnRevisionDateChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
-		public int CreatedBy
-		{
-			get
-			{
-				return this._CreatedBy;
-			}
-			set
-			{
-				if ((this._CreatedBy != value))
-				{
-					this.OnCreatedByChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedBy = value;
-					this.SendPropertyChanged("CreatedBy");
-					this.OnCreatedByChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
-		public System.DateTime CreationDate
-		{
-			get
-			{
-				return this._CreationDate;
-			}
-			set
-			{
-				if ((this._CreationDate != value))
-				{
-					this.OnCreationDateChanging(value);
-					this.SendPropertyChanging();
-					this._CreationDate = value;
-					this.SendPropertyChanged("CreationDate");
-					this.OnCreationDateChanged();
-				}
-			}
-		}
-		
-		[Association(Name="Section_EngageSurvey_Question", Storage="_Questions", ThisKey="SectionId", OtherKey="SectionId")]
-		public EntitySet<Question> Questions
-		{
-			get
-			{
-				return this._Questions;
-			}
-			set
-			{
-				this._Questions.Assign(value);
-			}
-		}
-		
-		[Association(Name="Survey_Section", Storage="_Survey", ThisKey="SurveyId", OtherKey="SurveyId", IsForeignKey=true)]
-		public Survey Survey
-		{
-			get
-			{
-				return this._Survey.Entity;
-			}
-			set
-			{
-				Survey previousValue = this._Survey.Entity;
-				if (((previousValue != value) 
-							|| (this._Survey.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Survey.Entity = null;
-						previousValue.Sections.Remove(this);
-					}
-					this._Survey.Entity = value;
-					if ((value != null))
-					{
-						value.Sections.Add(this);
-						this._SurveyId = value.SurveyId;
-					}
-					else
-					{
-						this._SurveyId = default(int);
-					}
-					this.SendPropertyChanged("Survey");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Questions(Question entity)
+		private void attach_EngageSurvey_Responses(EngageSurvey_Response entity)
 		{
 			this.SendPropertyChanging();
-			entity.Section = this;
+			entity.Survey = this;
 		}
 		
-		private void detach_Questions(Question entity)
+		private void detach_EngageSurvey_Responses(EngageSurvey_Response entity)
 		{
 			this.SendPropertyChanging();
-			entity.Section = null;
+			entity.Survey = null;
 		}
 	}
 	
@@ -1442,7 +887,7 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		[Association(Name="EngageSurvey_Question_Answer", Storage="_Answers", ThisKey="QuestionId", OtherKey="QuestionId")]
+		[Association(Name="Question_EngageSurvey_Answer", Storage="_Answers", ThisKey="QuestionId", OtherKey="QuestionId")]
 		public EntitySet<Answer> Answers
 		{
 			get
@@ -1455,7 +900,7 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		[Association(Name="Section_EngageSurvey_Question", Storage="_Section", ThisKey="SectionId", OtherKey="SectionId", IsForeignKey=true)]
+		[Association(Name="Section_Question", Storage="_Section", ThisKey="SectionId", OtherKey="SectionId", IsForeignKey=true)]
 		public Section Section
 		{
 			get
@@ -1519,6 +964,1207 @@ namespace Engage.Survey.Entities
 		{
 			this.SendPropertyChanging();
 			entity.Question = null;
+		}
+	}
+	
+	[Table(Name="dbo.EngageSurvey_Section")]
+	public partial class Section : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _SectionId;
+		
+		private int _SurveyId;
+		
+		private string _Text;
+		
+		private bool _ShowText;
+		
+		private int _RelativeOrder;
+		
+		private int _RevisingUser;
+		
+		private System.DateTime _RevisionDate;
+		
+		private int _CreatedBy;
+		
+		private System.DateTime _CreationDate;
+		
+		private EntitySet<Question> _Questions;
+		
+		private EntityRef<Survey> _Survey;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSectionIdChanging(int value);
+    partial void OnSectionIdChanged();
+    partial void OnSurveyIdChanging(int value);
+    partial void OnSurveyIdChanged();
+    partial void OnTextChanging(string value);
+    partial void OnTextChanged();
+    partial void OnShowTextChanging(bool value);
+    partial void OnShowTextChanged();
+    partial void OnRelativeOrderChanging(int value);
+    partial void OnRelativeOrderChanged();
+    partial void OnRevisingUserChanging(int value);
+    partial void OnRevisingUserChanged();
+    partial void OnRevisionDateChanging(System.DateTime value);
+    partial void OnRevisionDateChanged();
+    partial void OnCreatedByChanging(int value);
+    partial void OnCreatedByChanged();
+    partial void OnCreationDateChanging(System.DateTime value);
+    partial void OnCreationDateChanged();
+    #endregion
+		
+		public Section()
+		{
+			this._Questions = new EntitySet<Question>(new Action<Question>(this.attach_Questions), new Action<Question>(this.detach_Questions));
+			this._Survey = default(EntityRef<Survey>);
+			OnCreated();
+		}
+		
+		[Column(Storage="_SectionId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int SectionId
+		{
+			get
+			{
+				return this._SectionId;
+			}
+			set
+			{
+				if ((this._SectionId != value))
+				{
+					this.OnSectionIdChanging(value);
+					this.SendPropertyChanging();
+					this._SectionId = value;
+					this.SendPropertyChanged("SectionId");
+					this.OnSectionIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SurveyId", DbType="Int NOT NULL")]
+		public int SurveyId
+		{
+			get
+			{
+				return this._SurveyId;
+			}
+			set
+			{
+				if ((this._SurveyId != value))
+				{
+					if (this._Survey.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSurveyIdChanging(value);
+					this.SendPropertyChanging();
+					this._SurveyId = value;
+					this.SendPropertyChanged("SurveyId");
+					this.OnSurveyIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Text", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string Text
+		{
+			get
+			{
+				return this._Text;
+			}
+			set
+			{
+				if ((this._Text != value))
+				{
+					this.OnTextChanging(value);
+					this.SendPropertyChanging();
+					this._Text = value;
+					this.SendPropertyChanged("Text");
+					this.OnTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ShowText", DbType="Bit NOT NULL")]
+		public bool ShowText
+		{
+			get
+			{
+				return this._ShowText;
+			}
+			set
+			{
+				if ((this._ShowText != value))
+				{
+					this.OnShowTextChanging(value);
+					this.SendPropertyChanging();
+					this._ShowText = value;
+					this.SendPropertyChanged("ShowText");
+					this.OnShowTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_RelativeOrder", DbType="Int NOT NULL")]
+		public int RelativeOrder
+		{
+			get
+			{
+				return this._RelativeOrder;
+			}
+			set
+			{
+				if ((this._RelativeOrder != value))
+				{
+					this.OnRelativeOrderChanging(value);
+					this.SendPropertyChanging();
+					this._RelativeOrder = value;
+					this.SendPropertyChanged("RelativeOrder");
+					this.OnRelativeOrderChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
+		public int RevisingUser
+		{
+			get
+			{
+				return this._RevisingUser;
+			}
+			set
+			{
+				if ((this._RevisingUser != value))
+				{
+					this.OnRevisingUserChanging(value);
+					this.SendPropertyChanging();
+					this._RevisingUser = value;
+					this.SendPropertyChanged("RevisingUser");
+					this.OnRevisingUserChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
+		public System.DateTime RevisionDate
+		{
+			get
+			{
+				return this._RevisionDate;
+			}
+			set
+			{
+				if ((this._RevisionDate != value))
+				{
+					this.OnRevisionDateChanging(value);
+					this.SendPropertyChanging();
+					this._RevisionDate = value;
+					this.SendPropertyChanged("RevisionDate");
+					this.OnRevisionDateChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		public int CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CreationDate
+		{
+			get
+			{
+				return this._CreationDate;
+			}
+			set
+			{
+				if ((this._CreationDate != value))
+				{
+					this.OnCreationDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreationDate = value;
+					this.SendPropertyChanged("CreationDate");
+					this.OnCreationDateChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Section_Question", Storage="_Questions", ThisKey="SectionId", OtherKey="SectionId")]
+		public EntitySet<Question> Questions
+		{
+			get
+			{
+				return this._Questions;
+			}
+			set
+			{
+				this._Questions.Assign(value);
+			}
+		}
+		
+		[Association(Name="Survey_Section", Storage="_Survey", ThisKey="SurveyId", OtherKey="SurveyId", IsForeignKey=true)]
+		public Survey Survey
+		{
+			get
+			{
+				return this._Survey.Entity;
+			}
+			set
+			{
+				Survey previousValue = this._Survey.Entity;
+				if (((previousValue != value) 
+							|| (this._Survey.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Survey.Entity = null;
+						previousValue.Sections.Remove(this);
+					}
+					this._Survey.Entity = value;
+					if ((value != null))
+					{
+						value.Sections.Add(this);
+						this._SurveyId = value.SurveyId;
+					}
+					else
+					{
+						this._SurveyId = default(int);
+					}
+					this.SendPropertyChanged("Survey");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Questions(Question entity)
+		{
+			this.SendPropertyChanging();
+			entity.Section = this;
+		}
+		
+		private void detach_Questions(Question entity)
+		{
+			this.SendPropertyChanging();
+			entity.Section = null;
+		}
+	}
+	
+	[Table(Name="dbo.EngageSurvey_Response")]
+	public partial class EngageSurvey_Response : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ResponseId;
+		
+		private int _SurveyId;
+		
+		private string _SurveyText;
+		
+		private bool _ShowSurveyText;
+		
+		private string _TitleOption;
+		
+		private string _SectionText;
+		
+		private int _SectionRelativeOrder;
+		
+		private bool _ShowSectionText;
+		
+		private string _QuestionText;
+		
+		private int _QuestionRelativeOrder;
+		
+		private string _QuestionFormatOption;
+		
+		private string _ControlType;
+		
+		private string _AnswerFormatOption;
+		
+		private string _AnswerText;
+		
+		private int _AnswerRelativeOrder;
+		
+		private bool _AnswerIsCorrect;
+		
+		private string _Response;
+		
+		private int _RevisingUser;
+		
+		private System.DateTime _RevisionDate;
+		
+		private int _CreatedBy;
+		
+		private System.DateTime _CreationDate;
+		
+		private EntityRef<Survey> _Survey;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnResponseIdChanging(int value);
+    partial void OnResponseIdChanged();
+    partial void OnSurveyIdChanging(int value);
+    partial void OnSurveyIdChanged();
+    partial void OnSurveyTextChanging(string value);
+    partial void OnSurveyTextChanged();
+    partial void OnShowSurveyTextChanging(bool value);
+    partial void OnShowSurveyTextChanged();
+    partial void OnTitleOptionChanging(string value);
+    partial void OnTitleOptionChanged();
+    partial void OnSectionTextChanging(string value);
+    partial void OnSectionTextChanged();
+    partial void OnSectionRelativeOrderChanging(int value);
+    partial void OnSectionRelativeOrderChanged();
+    partial void OnShowSectionTextChanging(bool value);
+    partial void OnShowSectionTextChanged();
+    partial void OnQuestionTextChanging(string value);
+    partial void OnQuestionTextChanged();
+    partial void OnQuestionRelativeOrderChanging(int value);
+    partial void OnQuestionRelativeOrderChanged();
+    partial void OnQuestionFormatOptionChanging(string value);
+    partial void OnQuestionFormatOptionChanged();
+    partial void OnControlTypeChanging(string value);
+    partial void OnControlTypeChanged();
+    partial void OnAnswerFormatOptionChanging(string value);
+    partial void OnAnswerFormatOptionChanged();
+    partial void OnAnswerTextChanging(string value);
+    partial void OnAnswerTextChanged();
+    partial void OnAnswerRelativeOrderChanging(int value);
+    partial void OnAnswerRelativeOrderChanged();
+    partial void OnAnswerIsCorrectChanging(bool value);
+    partial void OnAnswerIsCorrectChanged();
+    partial void OnResponseChanging(string value);
+    partial void OnResponseChanged();
+    partial void OnRevisingUserChanging(int value);
+    partial void OnRevisingUserChanged();
+    partial void OnRevisionDateChanging(System.DateTime value);
+    partial void OnRevisionDateChanged();
+    partial void OnCreatedByChanging(int value);
+    partial void OnCreatedByChanged();
+    partial void OnCreationDateChanging(System.DateTime value);
+    partial void OnCreationDateChanged();
+    #endregion
+		
+		public EngageSurvey_Response()
+		{
+			this._Survey = default(EntityRef<Survey>);
+			OnCreated();
+		}
+		
+		[Column(Storage="_ResponseId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ResponseId
+		{
+			get
+			{
+				return this._ResponseId;
+			}
+			set
+			{
+				if ((this._ResponseId != value))
+				{
+					this.OnResponseIdChanging(value);
+					this.SendPropertyChanging();
+					this._ResponseId = value;
+					this.SendPropertyChanged("ResponseId");
+					this.OnResponseIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SurveyId", DbType="Int NOT NULL")]
+		public int SurveyId
+		{
+			get
+			{
+				return this._SurveyId;
+			}
+			set
+			{
+				if ((this._SurveyId != value))
+				{
+					if (this._Survey.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSurveyIdChanging(value);
+					this.SendPropertyChanging();
+					this._SurveyId = value;
+					this.SendPropertyChanged("SurveyId");
+					this.OnSurveyIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SurveyText", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string SurveyText
+		{
+			get
+			{
+				return this._SurveyText;
+			}
+			set
+			{
+				if ((this._SurveyText != value))
+				{
+					this.OnSurveyTextChanging(value);
+					this.SendPropertyChanging();
+					this._SurveyText = value;
+					this.SendPropertyChanged("SurveyText");
+					this.OnSurveyTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ShowSurveyText", DbType="Bit NOT NULL")]
+		public bool ShowSurveyText
+		{
+			get
+			{
+				return this._ShowSurveyText;
+			}
+			set
+			{
+				if ((this._ShowSurveyText != value))
+				{
+					this.OnShowSurveyTextChanging(value);
+					this.SendPropertyChanging();
+					this._ShowSurveyText = value;
+					this.SendPropertyChanged("ShowSurveyText");
+					this.OnShowSurveyTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_TitleOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string TitleOption
+		{
+			get
+			{
+				return this._TitleOption;
+			}
+			set
+			{
+				if ((this._TitleOption != value))
+				{
+					this.OnTitleOptionChanging(value);
+					this.SendPropertyChanging();
+					this._TitleOption = value;
+					this.SendPropertyChanged("TitleOption");
+					this.OnTitleOptionChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SectionText", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string SectionText
+		{
+			get
+			{
+				return this._SectionText;
+			}
+			set
+			{
+				if ((this._SectionText != value))
+				{
+					this.OnSectionTextChanging(value);
+					this.SendPropertyChanging();
+					this._SectionText = value;
+					this.SendPropertyChanged("SectionText");
+					this.OnSectionTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SectionRelativeOrder", DbType="Int NOT NULL")]
+		public int SectionRelativeOrder
+		{
+			get
+			{
+				return this._SectionRelativeOrder;
+			}
+			set
+			{
+				if ((this._SectionRelativeOrder != value))
+				{
+					this.OnSectionRelativeOrderChanging(value);
+					this.SendPropertyChanging();
+					this._SectionRelativeOrder = value;
+					this.SendPropertyChanged("SectionRelativeOrder");
+					this.OnSectionRelativeOrderChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ShowSectionText", DbType="Bit NOT NULL")]
+		public bool ShowSectionText
+		{
+			get
+			{
+				return this._ShowSectionText;
+			}
+			set
+			{
+				if ((this._ShowSectionText != value))
+				{
+					this.OnShowSectionTextChanging(value);
+					this.SendPropertyChanging();
+					this._ShowSectionText = value;
+					this.SendPropertyChanged("ShowSectionText");
+					this.OnShowSectionTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_QuestionText", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string QuestionText
+		{
+			get
+			{
+				return this._QuestionText;
+			}
+			set
+			{
+				if ((this._QuestionText != value))
+				{
+					this.OnQuestionTextChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionText = value;
+					this.SendPropertyChanged("QuestionText");
+					this.OnQuestionTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_QuestionRelativeOrder", DbType="Int NOT NULL")]
+		public int QuestionRelativeOrder
+		{
+			get
+			{
+				return this._QuestionRelativeOrder;
+			}
+			set
+			{
+				if ((this._QuestionRelativeOrder != value))
+				{
+					this.OnQuestionRelativeOrderChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionRelativeOrder = value;
+					this.SendPropertyChanged("QuestionRelativeOrder");
+					this.OnQuestionRelativeOrderChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_QuestionFormatOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string QuestionFormatOption
+		{
+			get
+			{
+				return this._QuestionFormatOption;
+			}
+			set
+			{
+				if ((this._QuestionFormatOption != value))
+				{
+					this.OnQuestionFormatOptionChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionFormatOption = value;
+					this.SendPropertyChanged("QuestionFormatOption");
+					this.OnQuestionFormatOptionChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ControlType", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string ControlType
+		{
+			get
+			{
+				return this._ControlType;
+			}
+			set
+			{
+				if ((this._ControlType != value))
+				{
+					this.OnControlTypeChanging(value);
+					this.SendPropertyChanging();
+					this._ControlType = value;
+					this.SendPropertyChanged("ControlType");
+					this.OnControlTypeChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AnswerFormatOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string AnswerFormatOption
+		{
+			get
+			{
+				return this._AnswerFormatOption;
+			}
+			set
+			{
+				if ((this._AnswerFormatOption != value))
+				{
+					this.OnAnswerFormatOptionChanging(value);
+					this.SendPropertyChanging();
+					this._AnswerFormatOption = value;
+					this.SendPropertyChanged("AnswerFormatOption");
+					this.OnAnswerFormatOptionChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AnswerText", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string AnswerText
+		{
+			get
+			{
+				return this._AnswerText;
+			}
+			set
+			{
+				if ((this._AnswerText != value))
+				{
+					this.OnAnswerTextChanging(value);
+					this.SendPropertyChanging();
+					this._AnswerText = value;
+					this.SendPropertyChanged("AnswerText");
+					this.OnAnswerTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AnswerRelativeOrder", DbType="Int NOT NULL")]
+		public int AnswerRelativeOrder
+		{
+			get
+			{
+				return this._AnswerRelativeOrder;
+			}
+			set
+			{
+				if ((this._AnswerRelativeOrder != value))
+				{
+					this.OnAnswerRelativeOrderChanging(value);
+					this.SendPropertyChanging();
+					this._AnswerRelativeOrder = value;
+					this.SendPropertyChanged("AnswerRelativeOrder");
+					this.OnAnswerRelativeOrderChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AnswerIsCorrect", DbType="Bit NOT NULL")]
+		public bool AnswerIsCorrect
+		{
+			get
+			{
+				return this._AnswerIsCorrect;
+			}
+			set
+			{
+				if ((this._AnswerIsCorrect != value))
+				{
+					this.OnAnswerIsCorrectChanging(value);
+					this.SendPropertyChanging();
+					this._AnswerIsCorrect = value;
+					this.SendPropertyChanged("AnswerIsCorrect");
+					this.OnAnswerIsCorrectChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Response", DbType="NVarChar(4000)")]
+		public string Response
+		{
+			get
+			{
+				return this._Response;
+			}
+			set
+			{
+				if ((this._Response != value))
+				{
+					this.OnResponseChanging(value);
+					this.SendPropertyChanging();
+					this._Response = value;
+					this.SendPropertyChanged("Response");
+					this.OnResponseChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
+		public int RevisingUser
+		{
+			get
+			{
+				return this._RevisingUser;
+			}
+			set
+			{
+				if ((this._RevisingUser != value))
+				{
+					this.OnRevisingUserChanging(value);
+					this.SendPropertyChanging();
+					this._RevisingUser = value;
+					this.SendPropertyChanged("RevisingUser");
+					this.OnRevisingUserChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
+		public System.DateTime RevisionDate
+		{
+			get
+			{
+				return this._RevisionDate;
+			}
+			set
+			{
+				if ((this._RevisionDate != value))
+				{
+					this.OnRevisionDateChanging(value);
+					this.SendPropertyChanging();
+					this._RevisionDate = value;
+					this.SendPropertyChanged("RevisionDate");
+					this.OnRevisionDateChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		public int CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CreationDate
+		{
+			get
+			{
+				return this._CreationDate;
+			}
+			set
+			{
+				if ((this._CreationDate != value))
+				{
+					this.OnCreationDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreationDate = value;
+					this.SendPropertyChanged("CreationDate");
+					this.OnCreationDateChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Survey_EngageSurvey_Response", Storage="_Survey", ThisKey="SurveyId", OtherKey="SurveyId", IsForeignKey=true)]
+		public Survey Survey
+		{
+			get
+			{
+				return this._Survey.Entity;
+			}
+			set
+			{
+				Survey previousValue = this._Survey.Entity;
+				if (((previousValue != value) 
+							|| (this._Survey.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Survey.Entity = null;
+						previousValue.EngageSurvey_Responses.Remove(this);
+					}
+					this._Survey.Entity = value;
+					if ((value != null))
+					{
+						value.EngageSurvey_Responses.Add(this);
+						this._SurveyId = value.SurveyId;
+					}
+					else
+					{
+						this._SurveyId = default(int);
+					}
+					this.SendPropertyChanged("Survey");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[Table(Name="dbo.EngageSurvey_Answer")]
+	public partial class Answer : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _AnswerId;
+		
+		private int _QuestionId;
+		
+		private string _Text;
+		
+		private bool _IsCorrect;
+		
+		private int _RelativeOrder;
+		
+		private int _RevisingUser;
+		
+		private System.DateTime _RevisionDate;
+		
+		private int _CreatedBy;
+		
+		private System.DateTime _CreationDate;
+		
+		private EntityRef<Question> _Question;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnAnswerIdChanging(int value);
+    partial void OnAnswerIdChanged();
+    partial void OnQuestionIdChanging(int value);
+    partial void OnQuestionIdChanged();
+    partial void OnTextChanging(string value);
+    partial void OnTextChanged();
+    partial void OnIsCorrectChanging(bool value);
+    partial void OnIsCorrectChanged();
+    partial void OnRelativeOrderChanging(int value);
+    partial void OnRelativeOrderChanged();
+    partial void OnRevisingUserChanging(int value);
+    partial void OnRevisingUserChanged();
+    partial void OnRevisionDateChanging(System.DateTime value);
+    partial void OnRevisionDateChanged();
+    partial void OnCreatedByChanging(int value);
+    partial void OnCreatedByChanged();
+    partial void OnCreationDateChanging(System.DateTime value);
+    partial void OnCreationDateChanged();
+    #endregion
+		
+		public Answer()
+		{
+			this._Question = default(EntityRef<Question>);
+			OnCreated();
+		}
+		
+		[Column(Storage="_AnswerId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int AnswerId
+		{
+			get
+			{
+				return this._AnswerId;
+			}
+			set
+			{
+				if ((this._AnswerId != value))
+				{
+					this.OnAnswerIdChanging(value);
+					this.SendPropertyChanging();
+					this._AnswerId = value;
+					this.SendPropertyChanged("AnswerId");
+					this.OnAnswerIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_QuestionId", DbType="Int NOT NULL")]
+		public int QuestionId
+		{
+			get
+			{
+				return this._QuestionId;
+			}
+			set
+			{
+				if ((this._QuestionId != value))
+				{
+					if (this._Question.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnQuestionIdChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionId = value;
+					this.SendPropertyChanged("QuestionId");
+					this.OnQuestionIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Text", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string Text
+		{
+			get
+			{
+				return this._Text;
+			}
+			set
+			{
+				if ((this._Text != value))
+				{
+					this.OnTextChanging(value);
+					this.SendPropertyChanging();
+					this._Text = value;
+					this.SendPropertyChanged("Text");
+					this.OnTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_IsCorrect", DbType="Bit NOT NULL")]
+		public bool IsCorrect
+		{
+			get
+			{
+				return this._IsCorrect;
+			}
+			set
+			{
+				if ((this._IsCorrect != value))
+				{
+					this.OnIsCorrectChanging(value);
+					this.SendPropertyChanging();
+					this._IsCorrect = value;
+					this.SendPropertyChanged("IsCorrect");
+					this.OnIsCorrectChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_RelativeOrder", DbType="Int NOT NULL")]
+		public int RelativeOrder
+		{
+			get
+			{
+				return this._RelativeOrder;
+			}
+			set
+			{
+				if ((this._RelativeOrder != value))
+				{
+					this.OnRelativeOrderChanging(value);
+					this.SendPropertyChanging();
+					this._RelativeOrder = value;
+					this.SendPropertyChanged("RelativeOrder");
+					this.OnRelativeOrderChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
+		public int RevisingUser
+		{
+			get
+			{
+				return this._RevisingUser;
+			}
+			set
+			{
+				if ((this._RevisingUser != value))
+				{
+					this.OnRevisingUserChanging(value);
+					this.SendPropertyChanging();
+					this._RevisingUser = value;
+					this.SendPropertyChanged("RevisingUser");
+					this.OnRevisingUserChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
+		public System.DateTime RevisionDate
+		{
+			get
+			{
+				return this._RevisionDate;
+			}
+			set
+			{
+				if ((this._RevisionDate != value))
+				{
+					this.OnRevisionDateChanging(value);
+					this.SendPropertyChanging();
+					this._RevisionDate = value;
+					this.SendPropertyChanged("RevisionDate");
+					this.OnRevisionDateChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		public int CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CreationDate
+		{
+			get
+			{
+				return this._CreationDate;
+			}
+			set
+			{
+				if ((this._CreationDate != value))
+				{
+					this.OnCreationDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreationDate = value;
+					this.SendPropertyChanged("CreationDate");
+					this.OnCreationDateChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Question_EngageSurvey_Answer", Storage="_Question", ThisKey="QuestionId", OtherKey="QuestionId", IsForeignKey=true)]
+		public Question Question
+		{
+			get
+			{
+				return this._Question.Entity;
+			}
+			set
+			{
+				Question previousValue = this._Question.Entity;
+				if (((previousValue != value) 
+							|| (this._Question.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Question.Entity = null;
+						previousValue.Answers.Remove(this);
+					}
+					this._Question.Entity = value;
+					if ((value != null))
+					{
+						value.Answers.Add(this);
+						this._QuestionId = value.QuestionId;
+					}
+					else
+					{
+						this._QuestionId = default(int);
+					}
+					this.SendPropertyChanged("Question");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

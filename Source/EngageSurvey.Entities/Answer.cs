@@ -1,6 +1,8 @@
 
 namespace Engage.Survey.Entities
 {
+    using Util;
+
     public partial class Answer : IAnswer
     {
         public string FormattedText
@@ -35,7 +37,7 @@ namespace Engage.Survey.Entities
         {
             get
             {
-                return new Key{ QuestionId = this.QuestionId, AnswerId = this.AnswerId};}
+                return new Key{ SectionId = this.Question.SectionId, QuestionId = this.QuestionId, AnswerId = this.AnswerId};}
             }
         }
 }

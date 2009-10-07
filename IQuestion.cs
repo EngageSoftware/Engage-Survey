@@ -12,6 +12,7 @@
 namespace Engage.Survey
 {
     using System.Collections.Generic;
+    using Util;
 
     /// <summary>
     /// IQuestion Class
@@ -28,7 +29,7 @@ namespace Engage.Survey
         ///// Gets or sets the free text response answer keyed by user (Small and Large Text Fields only).
         ///// </summary>
         ///// <value>The free text response answer value.</value>
-        //List<Response> Responses { get; set; }
+        //List<UserResponse> Responses { get; set; }
 
         /// <summary>
         /// Gets the answer choices.
@@ -48,7 +49,7 @@ namespace Engage.Survey
         /// Gets the rendering key used by the SurveyControl to uniquely identify this element.
         /// </summary>
         /// <value>The rendering key.</value>
-        string RelationshipKey { get; }
+        Key RelationshipKey { get; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is required.
@@ -80,7 +81,7 @@ namespace Engage.Survey
         /// Gets or sets the answer value.
         /// </summary>
         /// <value>The answer value.</value>
-        string AnswerValue { get; set;}
+        List<UserResponse> Responses { get; set; }
 
         /// <summary>
         /// Gets or sets the relative order.
@@ -88,29 +89,17 @@ namespace Engage.Survey
         /// <value>The relative order.</value>
         int RelativeOrder { get; set; }
 
+        /// <summary>
+        /// Gets the answer choice.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        IAnswer GetAnswerChoice(Key key);
+
+        /// <summary>
+        /// Finds the response.
+        /// </summary>
+        /// <param name="answer">The answer.</param>
+        /// <returns></returns>
+        UserResponse FindResponse(IAnswer answer);
     }
-
-    //public class Response
-    //{
-    //    private Key key;
-
-    //    public Response(Key k)
-    //    {
-    //        this.key = k;    
-    //    }
-        
-    //    public int AnswerId
-    //    {
-    //        get
-    //        {
-    //            return this.key.AnswerId;   
-    //        }
-    //    }
-
-    //    public string AnswerValue
-    //    {
-    //        get;
-    //        set;
-    //    }
-    //}
 }

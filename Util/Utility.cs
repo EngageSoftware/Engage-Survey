@@ -85,39 +85,39 @@ namespace Engage.Survey.Util
             
             if (question.ControlType == ControlType.DropDownChoices.Description)
             {
-                return RenderDropDownList(section, question);
+                return RenderDropDownList(question);
             }
 
             if (question.ControlType == ControlType.HorizontalOptionButtons.Description)
             {
-                return RenderHorizontalOptionButtons(section, question);
+                return RenderHorizontalOptionButtons(question);
             }
 
             if (question.ControlType == ControlType.VerticalOptionButtons.Description)
             {
-                return RenderVerticalOptionButtons(section, question);
+                return RenderVerticalOptionButtons(question);
             }
 
             if (question.ControlType == ControlType.LargeTextInputField.Description)
             {
-                return RenderLargeTextInputField(section, question);
+                return RenderLargeTextInputField(question);
             }
 
             if (question.ControlType == ControlType.SmallTextInputField.Description)
             {
-                return RenderSmallInputField(section, question);
+                return RenderSmallInputField(question);
             }
 
             if (question.ControlType == ControlType.Checkbox.Description)
             {
-                return RenderCheckBoxList(section, question);
+                return RenderCheckBoxList(question);
             }
 
             Label l = new Label { Text = ("No control info found for ControlType: " + question.ControlType) };
             return l;
         }
 
-        private static Control RenderVerticalOptionButtons(ISection section, IQuestion question)
+        private static Control RenderVerticalOptionButtons(IQuestion question)
         {
             RadioButtonList rbl = new RadioButtonList
             {
@@ -126,21 +126,21 @@ namespace Engage.Survey.Util
                 RepeatLayout = RepeatLayout.Table,
                 ID = question.QuestionId.ToString()
             };
-            rbl.Attributes.Add("SectionID", section.SectionId.ToString());
-            rbl.Attributes.Add("Attribute", question.RelationshipKey);
+            rbl.Attributes.Add("RelationshipKey", question.RelationshipKey.ToString());
             rbl.CssClass = CssClassAnswerVertical;
 
             foreach (IAnswer answer in question.GetAnswerChoices())
             {
                 //// 1 to skip the blank entry
                 ListItem li = new ListItem(answer.Text, answer.Text);
+                li.Attributes.Add("RelationshipKey", answer.RelationshipKey.ToString());
                 rbl.Items.Add(li);
             }
 
             return rbl;
         }
 
-        private static Control RenderHorizontalOptionButtons(ISection section, IQuestion question)
+        private static Control RenderHorizontalOptionButtons(IQuestion question)
         {
             RadioButtonList rbl = new RadioButtonList
             {
@@ -148,15 +148,15 @@ namespace Engage.Survey.Util
                 RepeatColumns = question.GetAnswerChoices().Count,
                 RepeatDirection = RepeatDirection.Horizontal,
                 RepeatLayout = RepeatLayout.Table,
-                ID = (question.RelationshipKey)
+                ID = (question.RelationshipKey.ToString())
             };
-            rbl.Attributes.Add("SectionID", section.SectionId.ToString());
-            rbl.Attributes.Add("Attribute", question.RelationshipKey);
+            rbl.Attributes.Add("RelationshipKey", question.RelationshipKey.ToString());
 
             foreach (IAnswer answer in question.GetAnswerChoices())
             {
                 // 1 to skip the blank entry
                 ListItem li = new ListItem(answer.Text, answer.Text);
+                li.Attributes.Add("RelationshipKey", answer.RelationshipKey.ToString());
                 rbl.Items.Add(li);
 
                 // preselect answer, if needed
@@ -169,7 +169,7 @@ namespace Engage.Survey.Util
             return rbl;
         }
 
-        private static Control RenderSmallInputField(ISection section, IQuestion question)
+        private static Control RenderSmallInputField(IQuestion question)
         {
             TextBox tb = new TextBox
             {
@@ -179,14 +179,13 @@ namespace Engage.Survey.Util
             };
 
             // make these a designer variable?
-            tb.Attributes.Add("SectionID", section.SectionId.ToString());
-            tb.Attributes.Add("Attribute", question.RelationshipKey);
+            tb.Attributes.Add("RelationshipKey", question.RelationshipKey.ToString());
             tb.ID = question.QuestionId.ToString();
 
             return tb;
         }
 
-        private static Control RenderLargeTextInputField(ISection section, IQuestion question)
+        private static Control RenderLargeTextInputField(IQuestion question)
         {
             TextBox tb = new TextBox
             {
@@ -196,15 +195,13 @@ namespace Engage.Survey.Util
                 Columns = 25
             };
 
-            // make these a designer variable?
-            tb.Attributes.Add("SectionID", section.SectionId.ToString());
-            tb.Attributes.Add("Attribute", question.RelationshipKey);
+            tb.Attributes.Add("RelationshipKey", question.RelationshipKey.ToString());
             tb.ID = question.QuestionId.ToString();
 
             return tb;
         }
         
-        private static Control RenderCheckBoxList(ISection section, IQuestion question)
+        private static Control RenderCheckBoxList(IQuestion question)
         {
             HtmlGenericControl container = new HtmlGenericControl("SPAN") { ID = ("CheckBoxSpan" + question.QuestionId) };
             container.Attributes["class"] = CssClassAnswerVertical;
@@ -221,8 +218,7 @@ namespace Engage.Survey.Util
             foreach (IAnswer answer in question.GetAnswerChoices())
             {
                 CheckBox cb = new CheckBox();
-                cb.Attributes.Add("SectionID", section.SectionId.ToString());
-                cb.Attributes.Add("Attribute", question.RelationshipKey);
+                cb.Attributes.Add("RelationshipKey", answer.RelationshipKey.ToString());
                 cb.ID = answer.RelationshipKey.ToString();
 
                 cb.Text = answer.FormattedText;
@@ -243,7 +239,7 @@ namespace Engage.Survey.Util
 
             //CheckBox check = new CheckBox { CssClass = CssClassAnswerVertical };
             //check.Attributes.Add("SectionID", section.SectionId.ToString());
-            //check.Attributes.Add("Attribute", question.RelationshipKey);
+            //check.Attributes.Add("RelationshipKey", question.RelationshipKey);
             //check.ID = section.RelationshipKey;
             //check.Text = bool.TrueString;
 
@@ -256,18 +252,18 @@ namespace Engage.Survey.Util
             //return check;
         }
 
-        private static Control RenderDropDownList(ISection section, IQuestion question)
+        private static Control RenderDropDownList(IQuestion question)
         {
             DropDownList ddl = new DropDownList { CssClass = CssClassAnswerVertical };
             ddl.Items.Add(new ListItem("[Please make a selection]", string.Empty));
-
-            ddl.Attributes.Add("SectionId", section.SectionId.ToString());
-            ddl.Attributes.Add("Attribute", question.RelationshipKey);
-            ddl.ID = question.RelationshipKey;
+          
+            ddl.Attributes.Add("RelationshipKey", question.RelationshipKey.ToString());
+            ddl.ID = question.RelationshipKey.ToString();
 
             foreach (IAnswer answer in question.GetAnswerChoices())
             {
                 ListItem li = new ListItem(answer.Text, answer.Text);
+                li.Attributes.Add("RelationshipKey", answer.RelationshipKey.ToString());
                 ddl.Items.Add(li);
             }
 

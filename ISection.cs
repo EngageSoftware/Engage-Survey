@@ -31,7 +31,7 @@ namespace Engage.Survey
         /// </summary>
         /// <param name="key">The key name.</param>
         /// <returns>An IQuestion using the passed key.</returns>
-        IQuestion GetQuestion(string key);
+        IQuestion GetQuestion(Key key);
 
         /// <summary>
         /// Determines whether [has multiple choice questions].

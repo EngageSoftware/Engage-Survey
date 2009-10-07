@@ -39,9 +39,9 @@ namespace Engage.Survey.UI
     [ToolboxData("<{0}:SurveyControl SurveyTypeId='-1' runat=server />")]
     public class SurveyControl : CompositeControl
     {
-        public delegate void SaveEventHandler(object sender, SavedEventArgs e);
+        //public delegate void SaveEventHandler(object sender, SavedEventArgs e);
 
-        public event SaveEventHandler SurveyCompleted;
+        //public event SaveEventHandler SurveyCompleted;
 
         /// <summary>
         /// CSS Class to use when no survey tyepid is defined
@@ -93,14 +93,15 @@ namespace Engage.Survey.UI
         /// </summary>
         public const string CssClassSubmitArea = "submit-area";
 
-        protected virtual void OnSurveyCompleted(SavedEventArgs e)
-        {
-            if (SurveyCompleted != null)
-                SurveyCompleted(this, e);
-        }
+        //protected virtual void OnSurveyCompleted(SavedEventArgs e)
+        //{
+        //    if (SurveyCompleted != null)
+        //        SurveyCompleted(this, e);
+        //}
 
         /// <summary>
-        /// The survey that is being rendered
+        /// The survey that is being rendered.
+        /// <remarks>The "Save" method will be called on ISurvey when the Submit button is clicked.</remarks>
         /// </summary>
         public ISurvey CurrentSurvey
         {
@@ -134,12 +135,14 @@ namespace Engage.Survey.UI
         /// Gets the value.
         /// </summary>
         /// <param name="c">The control to inspect</param>
+        /// <param name="key">The key.</param>
         /// <returns>The string value from the Text property.</returns>
-        private static string GetValue(Control c)
+        private static string GetValue(Control c, out string key)
         {
             if (c is TextBox)
             {
                 TextBox tb = (TextBox)c;
+                key = null;
                 return tb.Text == string.Empty ? null : tb.Text;
             }
 
@@ -148,10 +151,12 @@ namespace Engage.Survey.UI
                 DropDownList ddl = (DropDownList)c;
                 if (ddl.SelectedIndex == 0)
                 {
+                    key = null;
                     return null;
                 }
 
                 ListItem li = ddl.SelectedItem;
+                key = li.Attributes["RelationshipKey"];
                 return li.Value;
             }
 
@@ -163,27 +168,32 @@ namespace Engage.Survey.UI
                     string s = cb.Attributes["attributevalue"];
                     if (s == null)
                     {
+                        key = cb.Attributes["RelationshipKey"];
                         return cb.Checked ? cb.ID : null;
                     }
 
+                    key = null;
                     return s;
                 }
-
+                key = cb.Attributes["RelationshipKey"];
                 return cb.Checked.ToString().ToLower();
             }
 
             if (c is CheckBoxList)
             {
                 CheckBoxList cbl = (CheckBoxList)c;
+                key = cbl.SelectedItem.Attributes["RelationshipKey"];
                 return cbl.SelectedValue;
             }
 
             if (c is RadioButtonList)
             {
                 RadioButtonList rbl = (RadioButtonList)c;
+                key = rbl.SelectedItem.Attributes["RelationshipKey"];
                 return rbl.SelectedValue;
             }
 
+            key = null;
             return "Control Class: " + c.GetType() + " Value unknown";
         }       
 
@@ -358,21 +368,26 @@ namespace Engage.Survey.UI
             WebControl child = c as WebControl;
             if (child != null)
             {
-                int sectionID = Convert.ToInt32(child.Attributes["SectionID"]);
-                string renderingKey = child.Attributes["Attribute"];
+                string key = child.Attributes["RelationshipKey"];
+                if (key == null) return;
+
+                Key relationshipKey = Key.ParseKeyFromString(key);
 
                 ////find this attribute and update the value
                 foreach (ISection section in this.CurrentSurvey.GetSections())
                 {
-                    if (section.SectionId == sectionID)
+                    if (section.SectionId == relationshipKey.SectionId)
                     {
                         // have the correct section, get the question
-                        IQuestion question = section.GetQuestion(renderingKey);
+                        IQuestion question = section.GetQuestion(relationshipKey);
 
-                        string value = GetValue(child);
+                        string answerRelationshipKey;
+                        string value = GetValue(child, out answerRelationshipKey);
                         if (value != null)
                         {
-                            question.AnswerValue = value;
+                            Key answerKey = Key.ParseKeyFromString(answerRelationshipKey);
+                            if (question.Responses == null)  question.Responses = new List<UserResponse>();
+                            question.Responses.Add(new UserResponse { RelationshipKey = answerKey, AnswerValue = value });
                             break;
                         }
                     }
@@ -380,6 +395,7 @@ namespace Engage.Survey.UI
             }
         }
         
+       
         /// <summary>
         /// Redirects this instance.
         /// </summary>
@@ -401,20 +417,38 @@ namespace Engage.Survey.UI
         private void WriteSurvey()
         {
             ////Save to database.
-            int id = CurrentSurvey.Save();
-            //raise event so others can act on the SurveyId created.
-            this.OnSurveyCompleted(new SavedEventArgs(id));
-            
-
+            CurrentSurvey.Save();
+           
             this.Redirect();
         }
     }
 
     public class SavedEventArgs : EventArgs
     {
-        public SavedEventArgs(int surveyId)
+        public SavedEventArgs(SurveyResponse response)
         {
-            this.SurveyId = surveyId;    
+            this.Response = response;
+        }
+
+        // Properties.
+        public SurveyResponse Response
+        {
+            get;
+            set;
+        }
+    }
+
+    public class SurveyResponse
+    {
+        public SurveyResponse(int surveyId, int sectionId, int questionId, string questionText, int answerId, string answerText, string selectedValue)
+        {
+            this.SurveyId = surveyId;
+            this.SectionId = sectionId;
+            this.QuestionId = questionId;
+            this.QuestionText = questionText;
+            this.AnswerId = answerId;
+            this.SelectedValue = selectedValue;
+
         }
 
         // Properties.
@@ -423,6 +457,35 @@ namespace Engage.Survey.UI
             get;
             set;
         }
+        public int SectionId
+        {
+            get;
+            set;
+        }
+        public int QuestionId
+        {
+            get;
+            set;
+        }
+        public int AnswerId
+        {
+            get;
+            set;
+        }
+        public string QuestionText
+        {
+            get;
+            set;
+        }
+        public string AnswerText
+        {
+            get;
+            set;
+        }
+        public string SelectedValue
+        {
+            get;
+            set;
+        }
     }
-
 }

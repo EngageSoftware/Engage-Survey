@@ -62,12 +62,14 @@
     <Compile Include="ISurvey.cs" />
     <Compile Include="ISurveyElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserResponse.cs" />
     <Compile Include="UI\SurveyControl.cs" />
     <Compile Include="UI\SurveyControlDesigner.cs" />
     <Compile Include="Util\ControlType.cs" />
     <Compile Include="Util\ElementFormatOptions.cs" />
     <Compile Include="Util\EngageValidationProvider.cs" />
     <Compile Include="Util\FinalMessageOptions.cs" />
+    <Compile Include="Util\Key.cs" />
     <Compile Include="Util\TextBoxLengthValidator.cs" />
     <Compile Include="Util\TitleOptions.cs" />
     <Compile Include="Util\Utility.cs" />

@@ -11,6 +11,8 @@
 
 namespace Engage.Survey
 {
+    using Util;
+
     /// <summary>
     /// IAnswer Interface (Marker)
     /// </summary>
@@ -53,25 +55,11 @@ namespace Engage.Survey
         /// </summary>
         /// <value>The rendering key.</value>
         Key RelationshipKey { get; }
-    }
 
-    public class Key
-    {
-        public int QuestionId
-        {
-            get;
-            set;
-
-        }
-        public int AnswerId
-        {
-            get;
-            set;
-        }
-
-        public override string ToString()
-        {
-            return this.QuestionId + "-" + this.AnswerId;
-        }
+        /// <summary>
+        /// Gets or sets the relative order.
+        /// </summary>
+        /// <value>The relative order.</value>
+        int RelativeOrder { get; set; }
     }
 }

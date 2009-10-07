@@ -111,7 +111,7 @@ namespace Engage.Dnn.Survey
                 try
                 {
                     HostSettingsController controller = new HostSettingsController();
-                    controller.UpdateHostSetting(Util.Utility.ModuleConfigured + PortalId.ToString(CultureInfo.InvariantCulture), "true");
+                    controller.UpdateHostSetting(Utility.ModuleConfigured + PortalId.ToString(CultureInfo.InvariantCulture), "true");
 
                     ModuleController modules = new ModuleController();
                     modules.UpdateTabModuleSetting(this.TabModuleId, Setting.DisplayType.PropertyName, this.ListingDisplayDropDownList.SelectedValue);

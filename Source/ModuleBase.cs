@@ -37,7 +37,7 @@ namespace Engage.Dnn.Survey
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Util.Utility.ModuleConfigured + PortalId);
+                string s = HostSettings.GetHostSetting(Utility.ModuleConfigured + PortalId);
                 return !String.IsNullOrEmpty(s);
             }
         }
@@ -95,7 +95,7 @@ namespace Engage.Dnn.Survey
 
         protected static int GetDefaultCacheSetting(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Util.Utility.CacheTime + portalId);
+            string s = HostSettings.GetHostSetting(Utility.CacheTime + portalId);
             if (Engage.Util.Utility.HasValue(s))
             {
                 return Convert.ToInt32(s);
@@ -137,7 +137,7 @@ namespace Engage.Dnn.Survey
         {
             get
             {
-                return Util.Utility.DesktopModuleFolderName;
+                return Utility.DesktopModuleFolderName;
             }
         }
 

@@ -139,12 +139,32 @@ namespace Engage.Survey.Entities
         /// Saves this instance.
         /// </summary>
         /// <returns></returns>
-        public int Save()
+        public int Save(int userId)
+        {
+            int responseHeaderId = CreateResponseHeader(userId);
+            this.WriteResponses(responseHeaderId);
+
+            return responseHeaderId;
+        }
+
+        /// <summary>
+        /// Writes the responses.
+        /// </summary>
+        /// <param name="responseHeaderId">The response header id.</param>
+        private void WriteResponses(int responseHeaderId)
         {
             foreach (ISection section in Sections)
             {
                 foreach (IQuestion question in section.GetQuestions())
                 {
+                    if (question.GetAnswerChoices().Count == 0)
+                    {
+                        ////Open ended question.
+                        foreach (UserResponse response in question.Responses)
+                        {
+                            WriteResponseEntry(responseHeaderId, section, question, null, response.AnswerValue);
+                        }
+                    }
                     foreach (IAnswer answer in question.GetAnswerChoices())
                     {
                         if (question.Responses.Count == 1)
@@ -156,40 +176,55 @@ namespace Engage.Survey.Entities
                                 {
                                     responseText = answer.Text;
                                 }
-                                WriteResponseEntry(section, question, answer, responseText);
+                                WriteResponseEntry(responseHeaderId, section, question, answer, responseText);
                             }
                         }
                         else
                         {
                             UserResponse response = question.FindResponse(answer);
-                            WriteResponseEntry(section, question, answer, response.AnswerValue);
+                            WriteResponseEntry(responseHeaderId, section, question, answer, response.AnswerValue);
                         }
                     }
                 }
             }
+        }
 
-            return 1;
+        /// <summary>
+        /// Creates the response header.
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        /// <returns></returns>
+        private static int CreateResponseHeader(int userId)
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            ResponseHeader header = new ResponseHeader { CreatedBy = userId, RevisingUser = userId, UserId = userId };
+            context.ResponseHeaders.InsertOnSubmit(header);
+            context.SubmitChanges();
+
+            return header.ResponseHeaderId;
         }
 
         /// <summary>
         /// Writes the response entry.
         /// </summary>
+        /// <param name="responseHeaderId">The response header id.</param>
         /// <param name="section">The section.</param>
         /// <param name="question">The question.</param>
         /// <param name="answer">The answer.</param>
         /// <param name="responseText">The response text.</param>
-        private void WriteResponseEntry(ISection section, IQuestion question, IAnswer answer, string responseText)
+        private void WriteResponseEntry(int responseHeaderId, ISection section, IQuestion question, IAnswer answer, string responseText)
         {
             SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            EngageSurvey_Response r = new EngageSurvey_Response
-                                          {
-                                                  SurveyId = this.SurveyId,
-                                                  SurveyText = this.Text,
-                                                  ShowSurveyText = this.ShowText,
-                                                  TitleOption = this.TitleOption,
-                                                  SectionText = section.Text,
-                                                  SectionRelativeOrder = section.RelativeOrder,
-                                                  ShowSectionText = false
+            Response r = new Response
+                                         {
+                                                 SurveyId = this.SurveyId,
+                                                 SurveyText = this.Text,
+                                                 ShowSurveyText = this.ShowText,
+                                                 TitleOption = this.TitleOption,
+                                                 SectionText = section.Text,
+                                                 SectionRelativeOrder = section.RelativeOrder,
+                                                 ShowSectionText = false,
+                                                 ResponseHeaderId = responseHeaderId
                                           };
             r.SectionRelativeOrder = section.RelativeOrder;
             r.QuestionText = question.Text;
@@ -197,16 +232,19 @@ namespace Engage.Survey.Entities
             r.QuestionFormatOption = this.QuestionFormatOption;
             r.ControlType = question.ControlType;
             r.AnswerFormatOption = this.AnswerFormatOption;
-            r.AnswerText = answer.Text;
-            r.AnswerRelativeOrder = answer.RelativeOrder;
-            r.AnswerIsCorrect = answer.IsCorrect;
-            r.Response = responseText;
+            if (answer != null)
+            {
+                r.AnswerText = answer.Text;
+                r.AnswerRelativeOrder = answer.RelativeOrder;
+                r.AnswerIsCorrect = answer.IsCorrect;
+            }
+            r.UserResponse = responseText;
             r.CreatedBy = 1;
             r.CreationDate = DateTime.Now;
             r.RevisingUser = 1;
             r.RevisionDate = DateTime.Now;
 
-            context.EngageSurvey_Responses.InsertOnSubmit(r);
+            context.Responses.InsertOnSubmit(r);
             context.SubmitChanges();
 
             Debug.WriteLine(r.ResponseId);

@@ -1,0 +1,45 @@
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Answer_{objectQualifier}EngageSurvey_Question]    Script Date: 10/07/2009 16:37:26 ******/
+IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Answer_{objectQualifier}EngageSurvey_Question]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Answer]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Answer] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Answer_{objectQualifier}EngageSurvey_Question]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]    Script Date: 10/07/2009 16:37:34 ******/
+IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Question]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:37:47 ******/
+IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Response]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:37:53 ******/
+IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Section]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Section] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_ResponseHeader]    Script Date: 10/07/2009 17:56:59 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_ResponseHeader]') AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_ResponseHeader]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Answer]    Script Date: 10/07/2009 16:37:26 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Answer]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Answer]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Question]    Script Date: 10/07/2009 16:37:34 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Question]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:38:01 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Response]    Script Date: 10/07/2009 16:37:47 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Response]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Section]    Script Date: 10/07/2009 16:37:53 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Section]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Section]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_ResponseHeader]    Script Date: 10/07/2009 17:57:00 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_ResponseHeader]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_ResponseHeader]
+GO

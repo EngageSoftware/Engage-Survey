@@ -69,6 +69,16 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Gets or sets the comments for a Question. Questions can optionally have a "Allow Comments" on each of them in a future phase.
+        /// </summary>
+        /// <value>The comments.</value>
+        public string Comments
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the section.
         /// </summary>
         /// <returns></returns>

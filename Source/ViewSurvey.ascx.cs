@@ -14,13 +14,15 @@ namespace Engage.Dnn.Survey
     using System;
     using System.Globalization;
     using System.Linq;
+    using DotNetNuke.Entities.Modules.Communications;
     using DotNetNuke.Services.Exceptions;
     using Engage.Survey.Entities;
 
     /// <summary>
-    /// ViewSurvey Control
+    /// This control uses the Engage Survey Control to render a survey. It wires up an event to get in on the saving of a Survey and retrieves the ResponseId
+    /// back. It this is raised out to any listeners of this module via the DNN IModuleCommunicator interface.
     /// </summary>
-    public partial class ViewSurvey : ModuleBase
+    public partial class ViewSurvey : ModuleBase, IModuleCommunicator
     {
         #region Event Handlers
 
@@ -40,10 +42,26 @@ namespace Engage.Dnn.Survey
                               where s.SurveyId == SurveyId
                               select s).SingleOrDefault();
                 SurveyControl1.CurrentSurvey = survey;
+                SurveyControl1.SurveyCompleted += SurveyControl1_SurveyCompleted;
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// <summary>
+        /// Handles the SurveyCompleted event of the SurveyControl1 control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="Engage.Survey.UI.SavedEventArgs"/> instance containing the event data.</param>
+        private void SurveyControl1_SurveyCompleted(object sender, Engage.Survey.UI.SavedEventArgs e)
+        {
+            if (ModuleCommunication != null)
+            {
+                ModuleCommunicationEventArgs args = new ModuleCommunicationEventArgs
+                                                        { Sender = "ViewSurvey", Target = "Any module", Text = "NewRecord", Value = e.ResponseId };
+                ModuleCommunication(this, args);
             }
         }
 
@@ -67,6 +85,11 @@ namespace Engage.Dnn.Survey
             }
         }
         #endregion
+
+        /// <summary>
+        /// Occurs when module communication is invoked.
+        /// </summary>
+        public event ModuleCommunicationEventHandler ModuleCommunication;
     }
 }
 

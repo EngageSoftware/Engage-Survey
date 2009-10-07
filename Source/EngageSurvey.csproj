@@ -92,6 +92,10 @@
     <Content Include="Settings.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services.asmx.cs">
+      <DependentUpon>Services.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ThankYou.ascx.cs">
       <DependentUpon>ThankYou.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -138,7 +142,7 @@
     <Compile Include="Util\DeleteQuestionCommand.cs" />
     <Compile Include="Util\DeleteSectionCommand.cs" />
     <Compile Include="Util\DeleteSurveyCommand.cs" />
-    <Compile Include="Util\Utility.cs" />
+    <Compile Include="Utility.cs" />
     <Compile Include="ViewSurvey.ascx.cs">
       <DependentUpon>ViewSurvey.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -177,6 +181,7 @@
     <Content Include="References\DotNetNuke.WebUtility.dll" />
     <Content Include="References\Engage.Dnn.Framework.dll" />
     <Content Include="References\Engage.Framework.dll" />
+    <Content Include="Services.asmx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

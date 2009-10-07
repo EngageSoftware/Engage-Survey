@@ -1,1 +1,207 @@
-﻿
+﻿/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Answer_{objectQualifier}EngageSurvey_Question]    Script Date: 10/07/2009 16:37:26 ******/
+IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Answer_{objectQualifier}EngageSurvey_Question]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Answer]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Answer] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Answer_{objectQualifier}EngageSurvey_Question]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]    Script Date: 10/07/2009 16:37:34 ******/
+IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Question]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:37:47 ******/
+IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Response]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:37:53 ******/
+IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Section]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Section] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_ResponseHeader]    Script Date: 10/07/2009 17:56:59 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_ResponseHeader]') AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_ResponseHeader]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Answer]    Script Date: 10/07/2009 16:37:26 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Answer]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Answer]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Question]    Script Date: 10/07/2009 16:37:34 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Question]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:38:01 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Response]    Script Date: 10/07/2009 16:37:47 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Response]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Section]    Script Date: 10/07/2009 16:37:53 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Section]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Section]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_ResponseHeader]    Script Date: 10/07/2009 17:57:00 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_ResponseHeader]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[{objectQualifier}EngageSurvey_ResponseHeader]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:38:01 ******/
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey](
+	[SurveyId] [int] IDENTITY(1,1) NOT NULL,
+	[Text] [nvarchar](256) NOT NULL,
+	[FinalMessageOption] [nvarchar](256) NOT NULL,
+	[FinalMessage] [text] NULL,
+	[FinalUrl] [nvarchar](256) NULL,
+	[ShowText] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Survey_ShowTitle]  DEFAULT ((1)),
+	[QuestionFormatOption] [nvarchar](256) NOT NULL,
+	[AnswerFormatOption] [nvarchar](256) NOT NULL,
+	[TitleOption] [nvarchar](256) NOT NULL,
+	[LogoURL] [nvarchar](256) NULL,
+	[RevisingUser] [int] NOT NULL,
+	[RevisionDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Survey_RevisionDate]  DEFAULT (getdate()),
+	[CreatedBy] [int] NOT NULL,
+	[CreationDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Survey_CreationDate]  DEFAULT (getdate()),
+ CONSTRAINT [PK_{objectQualifier}EngageSurvey_Survey] PRIMARY KEY CLUSTERED 
+(
+	[SurveyId] ASC
+) ON [PRIMARY]
+) ON [PRIMARY] 
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Response]    Script Date: 10/07/2009 16:37:47 ******/
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response](
+	[ResponseId] [int] IDENTITY(1,1) NOT NULL,
+	[SurveyId] [int] NOT NULL,
+	[ResponseHeaderId] [int] NOT NULL,
+	[SurveyText] [nvarchar](256) NOT NULL,
+	[ShowSurveyText] [bit] NOT NULL CONSTRAINT [DF_EngageCampus_Response_ShowSurveyText]  DEFAULT ((1)),
+	[TitleOption] [nvarchar](256) NOT NULL,
+	[SectionText] [nvarchar](256) NOT NULL,
+	[SectionRelativeOrder] [int] NOT NULL,
+	[ShowSectionText] [bit] NOT NULL CONSTRAINT [DF_EngageCampus_Response_ShowSurveyText1]  DEFAULT ((1)),
+	[QuestionText] [nvarchar](256) NOT NULL,
+	[Comments] [nvarchar](4000) NULL,
+	[QuestionRelativeOrder] [int] NOT NULL,
+	[QuestionFormatOption] [nvarchar](256) NOT NULL,
+	[ControlType] [nvarchar](256) NOT NULL,
+	[AnswerFormatOption] [nvarchar](256) NOT NULL,
+	[AnswerText] [nvarchar](256) NULL,
+	[AnswerRelativeOrder] [int] NULL,
+	[AnswerIsCorrect] [bit] NULL CONSTRAINT [DF_EngageCampus_Response_IsCorrect]  DEFAULT ((0)),
+	[UserResponse] [nvarchar](4000) NULL,
+	[RevisingUser] [int] NOT NULL,
+	[RevisionDate] [datetime] NOT NULL CONSTRAINT [DF_EngageCampus_Response_RevisionDate]  DEFAULT (getdate()),
+	[CreatedBy] [int] NOT NULL,
+	[CreationDate] [datetime] NOT NULL CONSTRAINT [DF_EngageCampus_Response_CreationDate]  DEFAULT (getdate()),
+ CONSTRAINT [PK_EngageCampus_Response] PRIMARY KEY CLUSTERED 
+(
+	[ResponseId] ASC
+) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Section]    Script Date: 10/07/2009 16:37:53 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Section](
+	[SectionId] [int] IDENTITY(1,1) NOT NULL,
+	[SurveyId] [int] NOT NULL,
+	[Text] [nvarchar](256) NOT NULL,
+	[ShowText] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Section_ShowTitle]  DEFAULT ((1)),
+	[RelativeOrder] [int] NOT NULL,
+	[RevisingUser] [int] NOT NULL,
+	[RevisionDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Section_RevisionDate]  DEFAULT (getdate()),
+	[CreatedBy] [int] NOT NULL,
+	[CreationDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Section_CreationDate]  DEFAULT (getdate()),
+ CONSTRAINT [PK_{objectQualifier}EngageSurvey_Section] PRIMARY KEY CLUSTERED 
+(
+	[SectionId] ASC
+) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Answer]    Script Date: 10/07/2009 16:37:26 ******/
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Answer](
+	[AnswerId] [int] IDENTITY(1,1) NOT NULL,
+	[QuestionId] [int] NOT NULL,
+	[Text] [nvarchar](256) NOT NULL,
+	[IsCorrect] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Answer_IsCorrect]  DEFAULT ((0)),
+	[RelativeOrder] [int] NOT NULL,
+	[RevisingUser] [int] NOT NULL,
+	[RevisionDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Answer_RevisionDate]  DEFAULT (getdate()),
+	[CreatedBy] [int] NOT NULL,
+	[CreationDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Answer_CreationDate]  DEFAULT (getdate()),
+ CONSTRAINT [PK_{objectQualifier}EngageSurvey_Answer] PRIMARY KEY CLUSTERED 
+(
+	[AnswerId] ASC
+) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table {databaseOwner}[{objectQualifier}EngageSurvey_Question]    Script Date: 10/07/2009 16:37:34 ******/
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question](
+	[QuestionId] [int] IDENTITY(1,1) NOT NULL,
+	[SectionId] [int] NOT NULL,
+	[Text] [nvarchar](256) NOT NULL,
+	[ShowText] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Question_ShowTitle]  DEFAULT ((1)),
+	[IsRequired] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Question_IsRequired]  DEFAULT ((1)),
+	[RequiredMessage] [nchar](256) NULL,
+	[RelativeOrder] [int] NOT NULL,
+	[SelectionLimit] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Question_SelectionLimit]  DEFAULT ((0)),
+	[ControlType] [nvarchar](256) NOT NULL,
+	[RevisingUser] [int] NOT NULL,
+	[RevisionDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Question_RevisionDate]  DEFAULT (getdate()),
+	[CreatedBy] [int] NOT NULL,
+	[CreationDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Question_CreationDate]  DEFAULT (getdate()),
+ CONSTRAINT [PK_{objectQualifier}EngageSurvey_Question] PRIMARY KEY CLUSTERED 
+(
+	[QuestionId] ASC
+) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_ResponseHeader]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageSurvey_ResponseHeader](
+	[ResponseHeaderId] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [int] NULL,
+	[RevisingUser] [int] NOT NULL,
+	[RevisionDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_ResponseHeader_RevisionDate]  DEFAULT (getdate()),
+	[CreatedBy] [int] NOT NULL,
+	[CreationDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_ResponseHeader_CreationDate]  DEFAULT (getdate()),
+ CONSTRAINT [PK_{objectQualifier}EngageSurvey_ResponseHeader] PRIMARY KEY CLUSTERED 
+(
+	[ResponseHeaderId] ASC
+) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Answer_{objectQualifier}EngageSurvey_Question]    Script Date: 10/07/2009 16:37:26 ******/
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Answer]  WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}EngageSurvey_Answer_{objectQualifier}EngageSurvey_Question] FOREIGN KEY([QuestionId])
+REFERENCES {databaseOwner}[{objectQualifier}EngageSurvey_Question] ([QuestionId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Answer] CHECK CONSTRAINT [FK_{objectQualifier}EngageSurvey_Answer_{objectQualifier}EngageSurvey_Question]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]    Script Date: 10/07/2009 16:37:34 ******/
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question]  WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section] FOREIGN KEY([SectionId])
+REFERENCES {databaseOwner}[{objectQualifier}EngageSurvey_Section] ([SectionId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question] CHECK CONSTRAINT [FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:37:47 ******/
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response]  WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey] FOREIGN KEY([SurveyId])
+REFERENCES {databaseOwner}[{objectQualifier}EngageSurvey_Survey] ([SurveyId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response] CHECK CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:37:53 ******/
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Section]  WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey] FOREIGN KEY([SurveyId])
+REFERENCES {databaseOwner}[{objectQualifier}EngageSurvey_Survey] ([SurveyId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Section] CHECK CONSTRAINT [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]
+GO
+/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_ResponseHeader]    Script Date: 10/07/2009 17:56:59 ******/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_ResponseHeader]') AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response]  WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_ResponseHeader] FOREIGN KEY([ResponseHeaderId])
+REFERENCES {databaseOwner}[{objectQualifier}EngageSurvey_ResponseHeader] ([ResponseHeaderId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response] CHECK CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_ResponseHeader]
+GO

@@ -113,6 +113,6 @@ namespace Engage.Survey
         /// Saves this instance.
         /// </summary>
         /// <returns></returns>
-        int Save();
+        int Save(int userId);
     }
 }

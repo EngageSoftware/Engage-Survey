@@ -39,9 +39,9 @@ namespace Engage.Survey.UI
     [ToolboxData("<{0}:SurveyControl SurveyTypeId='-1' runat=server />")]
     public class SurveyControl : CompositeControl
     {
-        //public delegate void SaveEventHandler(object sender, SavedEventArgs e);
+        public delegate void SaveEventHandler(object sender, SavedEventArgs e);
 
-        //public event SaveEventHandler SurveyCompleted;
+        public event SaveEventHandler SurveyCompleted;
 
         /// <summary>
         /// CSS Class to use when no survey tyepid is defined
@@ -93,17 +93,28 @@ namespace Engage.Survey.UI
         /// </summary>
         public const string CssClassSubmitArea = "submit-area";
 
-        //protected virtual void OnSurveyCompleted(SavedEventArgs e)
-        //{
-        //    if (SurveyCompleted != null)
-        //        SurveyCompleted(this, e);
-        //}
+        protected virtual void OnSurveyCompleted(SavedEventArgs e)
+        {
+            if (SurveyCompleted != null)
+                SurveyCompleted(this, e);
+        }
 
         /// <summary>
         /// The survey that is being rendered.
         /// <remarks>The "Save" method will be called on ISurvey when the Submit button is clicked.</remarks>
         /// </summary>
         public ISurvey CurrentSurvey
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the user id.
+        /// </summary>
+        /// <remarks>You can optionally set this property and it will be stored with the ResponseHeader record.</remarks>
+        /// <value>The user id.</value>
+        public int UserId
         {
             get;
             set;
@@ -417,72 +428,23 @@ namespace Engage.Survey.UI
         private void WriteSurvey()
         {
             ////Save to database.
-            CurrentSurvey.Save();
-           
+            int responseHeaderId = CurrentSurvey.Save(UserId);
+
+            //raise event so others can act on the SurveyId created.
+            this.OnSurveyCompleted(new SavedEventArgs(responseHeaderId));
+            
             this.Redirect();
         }
     }
 
     public class SavedEventArgs : EventArgs
     {
-        public SavedEventArgs(SurveyResponse response)
+        public SavedEventArgs(int responseId)
         {
-            this.Response = response;
+            this.ResponseId = responseId;
         }
 
-        // Properties.
-        public SurveyResponse Response
-        {
-            get;
-            set;
-        }
-    }
-
-    public class SurveyResponse
-    {
-        public SurveyResponse(int surveyId, int sectionId, int questionId, string questionText, int answerId, string answerText, string selectedValue)
-        {
-            this.SurveyId = surveyId;
-            this.SectionId = sectionId;
-            this.QuestionId = questionId;
-            this.QuestionText = questionText;
-            this.AnswerId = answerId;
-            this.SelectedValue = selectedValue;
-
-        }
-
-        // Properties.
-        public int SurveyId
-        {
-            get;
-            set;
-        }
-        public int SectionId
-        {
-            get;
-            set;
-        }
-        public int QuestionId
-        {
-            get;
-            set;
-        }
-        public int AnswerId
-        {
-            get;
-            set;
-        }
-        public string QuestionText
-        {
-            get;
-            set;
-        }
-        public string AnswerText
-        {
-            get;
-            set;
-        }
-        public string SelectedValue
+        public int ResponseId
         {
             get;
             set;

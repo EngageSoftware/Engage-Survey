@@ -24,18 +24,12 @@ namespace Engage.Survey
         /// </summary>
         /// <value>The section.</value>
         ISection GetSection();
-
-        ///// <summary>
-        ///// Gets or sets the free text response answer keyed by user (Small and Large Text Fields only).
-        ///// </summary>
-        ///// <value>The free text response answer value.</value>
-        //List<UserResponse> Responses { get; set; }
-
+        
         /// <summary>
         /// Gets the answer choices.
         /// </summary>
         /// <value>The answer choices.</value>
-        List<IAnswer> GetAnswerChoices();
+        List<IAnswer> GetAnswers();
 
         /// <summary>
         /// Gets a value indicating whether this instance is boolean.
@@ -50,6 +44,12 @@ namespace Engage.Survey
         /// </summary>
         /// <value>The rendering key.</value>
         Key RelationshipKey { get; }
+
+        /// <summary>
+        /// Gets or sets the comments.
+        /// </summary>
+        /// <value>The comments.</value>
+        string Comments { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is required.
@@ -93,7 +93,7 @@ namespace Engage.Survey
         /// Gets the answer choice.
         /// </summary>
         /// <param name="key">The key.</param>
-        IAnswer GetAnswerChoice(Key key);
+        IAnswer GetAnswers(Key key);
 
         /// <summary>
         /// Finds the response.

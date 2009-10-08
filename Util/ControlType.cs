@@ -74,5 +74,11 @@ namespace Engage.Survey.Util
         /// Checkbox
         /// </summary>
         public static ControlType Checkbox = new ControlType("Checkbox");
+
+        /// <summary>
+        /// EmailInputField
+        /// </summary>
+        public static ControlType EmailInputField = new ControlType("EmailInputField");
+        
     }
 }

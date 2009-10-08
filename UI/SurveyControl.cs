@@ -121,6 +121,20 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is read only.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsReadOnly
+        {
+            get
+            {
+                return this.CurrentSurvey.IsReadonly;
+            }
+        }
+
+        /// <summary>
         /// Adds a reference to jQuery 1.2.6 (minified) to the page.  If you can reference DNN 5.0 or higher, use the built-in methods to register jQuery, instead.
         /// </summary>
         /// <remarks>
@@ -256,9 +270,9 @@ namespace Engage.Survey.UI
 
             // Need to make validator construction mechanism as we create new implementations! hk
             // draw the survey
-            this.CurrentSurvey.Render(ph, false, this.ShowRequiredNotation, new EngageValidationProvider());
+            this.CurrentSurvey.Render(ph, IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider());
 
-            this.RenderSubmitButton();
+            if (!IsReadOnly) this.RenderSubmitButton();
         }
         
         /// <summary>
@@ -285,25 +299,6 @@ namespace Engage.Survey.UI
             }
             
             base.Render(writer);
-
-            //if (this.Page.IsPostBack)
-            //{
-            //    this.Page.Validate();
-            //    if (this.Page.IsValid)
-            //    {
-            //        this.CollectResponses(this);
-
-            //        this.StoreSurvey();
-            //    }
-            //    else
-            //    {
-            //        base.Render(writer);
-            //    }
-            //}
-            //else
-            //{
-            //    base.Render(writer);
-            //}
         }
                        
         /// <summary>

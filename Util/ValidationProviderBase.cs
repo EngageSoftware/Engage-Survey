@@ -65,6 +65,7 @@ namespace Engage.Survey.Util
         /// <param name="errorMessage">The error message.</param>
         /// <param name="validationGroup">The validation group.</param>
         /// <param name="selectionLimit">The selection limit.</param>
-        public abstract void RegisterValidator(ClientScriptManager manager, ValidationType validationType, string cssClass, Control containerControl, string controlToValidate, string errorMessage, string validationGroup, int selectionLimit);
+        /// <param name="maxLength">Length of the max.</param>
+        public abstract void RegisterValidator(ClientScriptManager manager, ValidationType validationType, string cssClass, Control containerControl, string controlToValidate, string errorMessage, string validationGroup, int selectionLimit, int maxLength);
     }
 }

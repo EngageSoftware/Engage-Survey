@@ -22,6 +22,14 @@ namespace Engage.Survey
     {
 
         /// <summary>
+        /// Gets a value indicating whether this instance is readonly.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is readonly; otherwise, <c>false</c>.
+        /// </value>
+        bool IsReadonly { get; }
+
+        /// <summary>
         /// Gets or sets the survey id.
         /// </summary>
         /// <value>The survey id.</value>
@@ -91,7 +99,7 @@ namespace Engage.Survey
         /// <summary>
         /// Renders the survey from this survey.
         /// </summary>
-        /// <param name="ph">The place holder to render the survey..</param>
+        /// <param name="ph">The place holder to render the survey.</param>
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>

@@ -16,7 +16,7 @@ namespace Engage.Survey
     using Util;
 
     /// <summary>
-    /// ISection Interface 
+    /// ISection Interface
     /// </summary>
     public interface ISection : ISurveyElement
     {
@@ -34,12 +34,10 @@ namespace Engage.Survey
         IQuestion GetQuestion(Key key);
 
         /// <summary>
-        /// Determines whether [has multiple choice questions].
+        /// Gets or sets a value indicating whether [show text].
         /// </summary>
-        /// <returns>
-        /// <c>true</c> if [has multiple choice questions]; otherwise, <c>false</c>.
-        /// </returns>
-        bool HasMultipleChoiceQuestions();
+        /// <value><c>true</c> if [show text]; otherwise, <c>false</c>.</value>
+        bool ShowText { get; set; }
 
         /// <summary>
         /// Gets or sets the section id.

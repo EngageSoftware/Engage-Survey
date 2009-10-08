@@ -143,7 +143,7 @@ namespace Engage.Survey.Util
                 // preselect answer, if needed
                 if (question.Responses != null)
                 {
-                    if (string.Equals(question.Text, question.FindResponse(answer).AnswerValue, StringComparison.InvariantCultureIgnoreCase))
+                    if (string.Equals(answer.Text, question.FindResponse(answer).AnswerValue, StringComparison.InvariantCultureIgnoreCase))
                     {
                         li.Selected = true;
                     }
@@ -175,7 +175,7 @@ namespace Engage.Survey.Util
                 // preselect answer, if needed
                 if (question.Responses != null)
                 {
-                    if (string.Equals(question.Text, question.FindResponse(answer).AnswerValue, StringComparison.InvariantCultureIgnoreCase))
+                    if (string.Equals(answer.Text, question.FindResponse(answer).AnswerValue, StringComparison.InvariantCultureIgnoreCase))
                     {
                         li.Selected = true;
                     }
@@ -199,7 +199,7 @@ namespace Engage.Survey.Util
             tb.ID = question.QuestionId.ToString();
 
             //pre-select if needed
-            if (question.Responses != null)
+            if (question.Responses != null && question.Responses.Count == 1)
             {
                 tb.Text = question.Responses[0].AnswerValue;
             }
@@ -221,7 +221,7 @@ namespace Engage.Survey.Util
             tb.ID = question.QuestionId.ToString();
 
             //pre-select if needed
-            if (question.Responses != null)
+            if (question.Responses != null && question.Responses.Count == 1)
             {
                 tb.Text = question.Responses[0].AnswerValue;
             }

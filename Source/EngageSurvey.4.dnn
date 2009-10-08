@@ -32,6 +32,12 @@
           <name>Engage.Survey.dll</name>
         </file>
         <file>
+          <name>EngageSurvey.dll</name>
+        </file>
+        <file>
+          <name>EngageSurvey.Entities.dll</name>
+        </file>
+        <file>
           <name>Engage.Dnn.Framework.dll</name>
         </file>
         <file>

@@ -103,7 +103,6 @@
     <Compile Include="ThankYou.ascx.designer.cs">
       <DependentUpon>ThankYou.ascx</DependentUpon>
     </Compile>
-    <Compile Include="EditableLayout.cs" />
     <Compile Include="EditSurvey.ascx.cs">
       <DependentUpon>EditSurvey.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -111,7 +110,6 @@
     <Compile Include="EditSurvey.ascx.designer.cs">
       <DependentUpon>EditSurvey.ascx</DependentUpon>
     </Compile>
-    <Compile Include="LayoutStrategy.cs" />
     <Compile Include="MainContainer.ascx.cs">
       <DependentUpon>MainContainer.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

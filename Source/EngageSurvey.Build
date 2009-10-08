@@ -24,7 +24,6 @@
     <include name="**/*.xsd"/>
     <include name="**/*.js" />
     <include name="**/*.swf" />
-    <include name="**/*.reportstyle" />
     <exclude name="Licenses/EULA-*.htm"/>
     <exclude name="ReleaseNotes_*.htm"/>
     <exclude name="??.??.??.txt" />
@@ -140,12 +139,15 @@
       <fileset>
         <include name="${project.dll}"/>
         <include name="**/${references.directory}/*.dll"/>
-        <include name="${bin.directory}/EngageCampus.*.dll" />
+        <include name="${bin.directory}/EngagSurvey.dll" />
+        <include name="${bin.directory}/Engage.Survey.dll" />
+        <include name="${bin.directory}/EngageSurvey.Entities.dll" />
+        <include name="${bin.directory}/Engage.Framework.dll" />
+        <include name="${bin.directory}/Engage.Dnn.Framework.dll" />
         <exclude name="**/${references.directory}/DotNetNuke.dll"/>
         <exclude name="**/${references.directory}/DotNetNuke.WebUtility.dll"/>
         <exclude name="**/${references.directory}/Microsoft.ApplicationBlocks.Data.dll"/>
         <exclude name="**/${references.directory}/SharpZipLib.dll"/>
-        <exclude name="${bin.directory}/EngageCampus.Test.dll"/>
       </fileset>
     </copy>
 

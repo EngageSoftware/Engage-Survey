@@ -13,7 +13,6 @@ namespace Engage.Dnn.Survey
 {
     using System;
     using System.Globalization;
-    using System.Linq;
     using DotNetNuke.Entities.Modules.Communications;
     using DotNetNuke.Services.Exceptions;
     using Engage.Survey.Entities;
@@ -36,14 +35,8 @@ namespace Engage.Dnn.Survey
 
             try
             {
-                //// construct a survey from id on querystring.
-                SurveyModelDataContext context = SurveyModelDataContext.Instance;
-                //var survey = (from s in context.Surveys
-                //              where s.SurveyId == SurveyId
-                //              select s).SingleOrDefault();
-                //SurveyControl1.CurrentSurvey = survey;
+                this.SurveyControl1.CurrentSurvey = this.ResponseHeaderId == null ? Survey.LoadSurvey(this.SurveyId.GetValueOrDefault()) : ReadonlySurvey.LoadSurvey(this.ResponseHeaderId.GetValueOrDefault());
 
-                SurveyControl1.CurrentSurvey = ReadonlySurvey.LoadSurvey(4);
                 SurveyControl1.SurveyCompleted += SurveyControl1_SurveyCompleted;
             }
             catch (Exception exc)
@@ -79,6 +72,26 @@ namespace Engage.Dnn.Survey
                 {
                     int id;
                     if (int.TryParse(this.Request.QueryString["surveyId"], NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
+                    {
+                        return id;
+                    }
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ResponseHeaderId fromm the QueryString if possible.
+        /// </summary>
+        /// <value>The survey id.</value>
+        private int? ResponseHeaderId
+        {
+            get
+            {
+                if (this.Request.QueryString["responseheaderid"] != null)
+                {
+                    int id;
+                    if (int.TryParse(this.Request.QueryString["responseheaderid"], NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
                     {
                         return id;
                     }

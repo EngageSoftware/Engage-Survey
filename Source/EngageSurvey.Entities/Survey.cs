@@ -255,17 +255,17 @@ namespace Engage.Survey.Entities
         {
             SurveyModelDataContext context = SurveyModelDataContext.Instance;
             Response r = new Response
-                                         {
-                                                 SurveyId = this.SurveyId,
-                                                 SurveyText = this.Text,
-                                                 ShowSurveyText = this.ShowText,
-                                                 TitleOption = this.TitleOption,
-                                                 SectionText = section.Text,
-                                                 SectionRelativeOrder = section.RelativeOrder,
-                                                 ShowSectionText = false,
-                                                 ResponseHeaderId = responseHeaderId
-                                          };
-            r.SectionId = section.SectionId;
+                             {
+                                     SurveyId = this.SurveyId,
+                                     SurveyText = this.Text,
+                                     ShowSurveyText = this.ShowText,
+                                     TitleOption = this.TitleOption,
+                                     SectionText = section.Text,
+                                     SectionRelativeOrder = section.RelativeOrder,
+                                     ShowSectionText = false,
+                                     ResponseHeaderId = responseHeaderId,
+                                     SectionId = section.SectionId
+                             };
             r.SectionRelativeOrder = section.RelativeOrder;
             r.QuestionId = question.QuestionId;
             r.QuestionText = question.Text;
@@ -290,6 +290,12 @@ namespace Engage.Survey.Entities
             context.SubmitChanges();
 
             Debug.WriteLine(r.ResponseId);
+        }
+
+        public static IQueryable<Survey> LoadSurveys()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return context.Surveys;
         }
     }
 }

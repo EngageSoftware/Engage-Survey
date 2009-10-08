@@ -14,7 +14,9 @@ namespace Engage.Dnn.Survey
     using System;
     using System.Globalization;
     using System.Linq;
+    using System.Web.UI.WebControls;
     using DotNetNuke.Services.Exceptions;
+    using Engage.Survey;
     using Engage.Survey.Entities;
 
     /// <summary>
@@ -35,11 +37,7 @@ namespace Engage.Dnn.Survey
             {
                 if (!Page.IsPostBack)
                 {
-                    SurveyModelDataContext context = SurveyModelDataContext.Instance;
-                    
-                    //bind to survey's
-                    SurveyDataGrid.DataSource = context.Surveys;
-                    SurveyDataGrid.DataBind();
+                    this.BindData(0);
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -47,19 +45,72 @@ namespace Engage.Dnn.Survey
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        
+
+        private void BindData(int index)
+        {
+            if (index == 0)
+            {
+                //bind to survey definitions
+                SurveyDataGrid.DataSource = Survey.LoadSurveys();
+            }
+            else
+            {
+                SurveyDataGrid.DataSource = ReadonlySurvey.LoadSurveys();
+            }
+            SurveyDataGrid.DataBind();
+        }
+
         #endregion
 
-        protected string BuildPreviewUrl(object surveyId)
+        protected string BuildPreviewUrl(int id, string key)
         {
-            string href = BuildLinkUrl("&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=ViewSurvey&surveyId=" + surveyId + "");
+            string href = BuildLinkUrl("&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=ViewSurvey&" + key + "=" + id + "");
             return href;
         }
 
-        protected string BuildEditUrl(object surveyId)
+        protected string BuildEditUrl(int surveyId)
         {
             string href = BuildLinkUrl("&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=EditSurvey&surveyId=" + surveyId + "");
             return href;
+        }
+
+        protected void FilterRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.BindData(FilterRadioButtonList.SelectedIndex);
+        }
+
+        protected void SurveyDataGrid_OnItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                ISurvey survey = (ISurvey)e.Item.DataItem;
+                HyperLink editHyperLink = e.Item.FindControl("EditHyperLink") as HyperLink;
+                if (editHyperLink != null)
+                {
+                    editHyperLink.NavigateUrl = this.BuildEditUrl(survey.SurveyId);
+                    editHyperLink.Visible = !survey.IsReadonly;
+                }
+
+                HyperLink previewHyperLink = e.Item.FindControl("PreviewHyperLink") as HyperLink;
+                if (previewHyperLink != null)
+                {
+                    if (survey.IsReadonly)
+                    {
+                        ReadonlySurvey s = (ReadonlySurvey)survey;
+                        previewHyperLink.NavigateUrl = this.BuildPreviewUrl(s.ResponseHeaderId, "responseheaderid");
+                    }
+                    else
+                    {
+                        previewHyperLink.NavigateUrl = this.BuildPreviewUrl(survey.SurveyId, "surveyId");    
+                    }
+                }
+
+                Label textLabel = e.Item.FindControl("TextLabel") as Label;
+                if (textLabel != null)
+                {
+                    textLabel.Text = survey.Text;
+                }
+            }
         }
     }
 }

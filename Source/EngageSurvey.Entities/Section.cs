@@ -11,8 +11,6 @@
 
 namespace Engage.Survey.Entities
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -61,7 +59,7 @@ namespace Engage.Survey.Entities
         /// <returns>An IQuestion using the passed key.</returns>
         public IQuestion GetQuestion(Key key)
         {
-            foreach (IQuestion question in this.Questions)
+            foreach (IQuestion question in this.GetQuestions())
             {
                 if (question.QuestionId == key.QuestionId)
                 {
@@ -69,7 +67,6 @@ namespace Engage.Survey.Entities
                 }
             }
             return null;
-
         }
 
         public List<IQuestion> GetQuestions()
@@ -81,29 +78,44 @@ namespace Engage.Survey.Entities
                 questions.Add(q);
             }
 
+            questions.Sort(new Question.RelativeOrderComparer());
+
             return questions;
         }
 
         /// <summary>
         /// Renders the specified ph.
         /// </summary>
+        /// <param name="placeHolder">The place holder.</param>
+        /// <param name="readOnly">if set to <c>true</c> [read only].</param>
+        /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
+        /// <param name="validationProvider">The validation provider.</param>
+        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        {
+            RenderSection(this, placeHolder, readOnly, showRequiredNotation, validationProvider);
+        }
+
+        /// <summary>
+        /// Renders the specified ph.
+        /// </summary>
+        /// <param name="section">The section.</param>
         /// <param name="ph">The placeholder container.</param>
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        public virtual void Render(PlaceHolder ph, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        public static void RenderSection(ISection section, PlaceHolder ph, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
         {
             HtmlGenericControl sectionDiv = new HtmlGenericControl("DIV");
-            sectionDiv.Attributes["class"] = Engage.Survey.Util.Utility.CssClassSectionWrap + " section" + this.SectionId;
+            sectionDiv.Attributes["class"] = Engage.Survey.Util.Utility.CssClassSectionWrap + " section" + section.SectionId;
             ph.Controls.Add(sectionDiv);
 
             // row for the section text
             HtmlGenericControl title = new HtmlGenericControl("h3");
             title.Attributes["class"] = Engage.Survey.Util.Utility.CssClassSectionTitle;
-            title.InnerText = this.FormattedText;
+            title.InnerText = section.FormattedText;
             sectionDiv.Controls.Add(title);
 
-            foreach (IQuestion question in this.Questions)
+            foreach (IQuestion question in section.GetQuestions())
             {
                 // create the question wrap div.
                 HtmlGenericControl questionWrapDiv = new HtmlGenericControl("DIV");
@@ -115,7 +127,7 @@ namespace Engage.Survey.Entities
                 questionSpan.Attributes["class"] = Engage.Survey.Util.Utility.CssClassQuestion;
                 questionSpan.InnerHtml = question.FormattedText;
                 questionWrapDiv.Controls.Add(questionSpan);
-                
+
                 // <span class="questin">Phone<span>*</span></span>
                 //// if the question is required, then add the optional * notation.
                 if (question.IsRequired && showRequiredNotation)
@@ -134,29 +146,27 @@ namespace Engage.Survey.Entities
                 {
                     if (question.IsRequired)
                     {
-                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.RequiredField, "error-message", questionWrapDiv, control.ID, question.UnformattedText + " is required.", "survey", 1);
+                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.RequiredField, "error-message", questionWrapDiv, control.ID, question.UnformattedText + " is required.", "survey", 1, 0);
                     }
 
-                    //DefaultObjectAttribute attribute = question.GetObjectAttribute() as DefaultObjectAttribute;
-                    //if (attribute != null)
-                    //{
-                    //    validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedLengthField, "error-message", questionWrapDiv, control.ID, "Max characters exceeded for [" + question.UnformattedText + "]", "survey", 1);
-                    //}
+                    if (question.ControlType == ControlType.SmallTextInputField.Description || question.ControlType == ControlType.LargeTextInputField.Description)
+                    {
+                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedLengthField, "error-message", questionWrapDiv, control.ID, "Max characters exceeded for [" + question.UnformattedText + "]", "survey", 1, 256);
+                    }
 
-                    //EmailAttribute email = question.GetObjectAttribute() as EmailAttribute;
-                    //if (email != null)
-                    //{
-                    //    validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.EmailField, "error-message", questionWrapDiv, control.ID, "Email Address should be in name@domain.com format.", "survey", 1);
-                    //}
+                    if (question.ControlType == ControlType.EmailInputField.Description)
+                    {
+                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.EmailField, "error-message", questionWrapDiv, control.ID, "Email Address should be in name@domain.com format.", "survey", 1, 0);
+                    }
 
-                    //if (question is CompositeQuestion)
-                    //{
-                    //    CompositeQuestion cq = (CompositeQuestion)question;
-                    //    validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedSelection, "error-message", questionWrapDiv, control.ID, string.Empty, "survey", cq.SelectionLimit);
-                    //}
+                    if (question.ControlType == ControlType.Checkbox.Description)
+                    {
+                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedSelection, "error-message", questionWrapDiv, control.ID, string.Empty, "survey", question.SelectionLimit, 0);
+                    }
                 }
             }
         }
+
 
         /// <summary>
         /// Posts the save processing.
@@ -177,30 +187,12 @@ namespace Engage.Survey.Entities
         }
 
         #endregion
-
-        /// <summary>
-        /// Determines whether [has multiple choice questions].
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if [has multiple choice questions]; otherwise, <c>false</c>.
-        /// </returns>
-        public bool HasMultipleChoiceQuestions()
-        {
-            foreach (Question question in this.Questions)
-            {
-                if (question.GetAnswerChoices().Count > 0)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        
 
         /// <summary>
         /// RelativeOrderComparer class
         /// </summary>
-        internal class RelativeOrderComparer : IComparer
+        internal class RelativeOrderComparer : IComparer<ISection>
         {
             /// <summary>
             /// ASC or DESC
@@ -226,37 +218,34 @@ namespace Engage.Survey.Entities
             #region IComparer Members
 
             /// <summary>
-            /// Compares the specified o1.
+            /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
             /// </summary>
-            /// <param name="o1">The object1 to compare.</param>
-            /// <param name="o2">The object2 to compare.</param>
-            /// <returns>true or false</returns>
-            public int Compare(object o1, object o2)
+            /// <returns>
+            /// Value 
+            ///                     Condition 
+            ///                     Less than zero
+            ///                 <paramref name="x"/> is less than <paramref name="y"/>.
+            ///                     Zero
+            ///                 <paramref name="x"/> equals <paramref name="y"/>.
+            ///                     Greater than zero
+            ///                 <paramref name="x"/> is greater than <paramref name="y"/>.
+            /// </returns>
+            /// <param name="x">The first object to compare.
+            ///                 </param><param name="y">The second object to compare.
+            ///                 </param>            
+            public int Compare(ISection x, ISection y)
             {
-                if (o1 == null && o2 == null)
+                if (x == null && y == null)
                 {
                     return 0;
                 }
 
-                ISection s1 = o1 as ISection;
-                ISection s2 = o2 as ISection;
-
-                if (s1 == null)
-                {
-                    throw new ArgumentException("oa1 is not an instance of Section");
-                }
-
-                if (s2 == null)
-                {
-                    throw new ArgumentException("oa2 is not an instance of Section");
-                }
-
                 if (this.descending)
                 {
-                    return s1.RelativeOrder.CompareTo(s2.RelativeOrder);
+                    return x.RelativeOrder.CompareTo(y.RelativeOrder);
                 }
 
-                return s2.RelativeOrder.CompareTo(s1.RelativeOrder);
+                return y.RelativeOrder.CompareTo(x.RelativeOrder);
             }
 
             #endregion

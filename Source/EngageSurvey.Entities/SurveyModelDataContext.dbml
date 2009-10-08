@@ -88,14 +88,17 @@
       <Column Name="SurveyText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="ShowSurveyText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="TitleOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SectionText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="SectionRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ShowSectionText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="QuestionText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="Comments" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
       <Column Name="QuestionRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="QuestionFormatOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="ControlType" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="AnswerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AnswerFormatOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="AnswerText" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Column Name="AnswerRelativeOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />

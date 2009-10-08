@@ -38,10 +38,12 @@ namespace Engage.Dnn.Survey
             {
                 //// construct a survey from id on querystring.
                 SurveyModelDataContext context = SurveyModelDataContext.Instance;
-                var survey = (from s in context.Surveys
-                              where s.SurveyId == SurveyId
-                              select s).SingleOrDefault();
-                SurveyControl1.CurrentSurvey = survey;
+                //var survey = (from s in context.Surveys
+                //              where s.SurveyId == SurveyId
+                //              select s).SingleOrDefault();
+                //SurveyControl1.CurrentSurvey = survey;
+
+                SurveyControl1.CurrentSurvey = ReadonlySurvey.LoadSurvey(4);
                 SurveyControl1.SurveyCompleted += SurveyControl1_SurveyCompleted;
             }
             catch (Exception exc)

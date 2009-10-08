@@ -1824,11 +1824,15 @@ namespace Engage.Survey.Entities
 		
 		private string _TitleOption;
 		
+		private int _SectionId;
+		
 		private string _SectionText;
 		
 		private int _SectionRelativeOrder;
 		
 		private bool _ShowSectionText;
+		
+		private int _QuestionId;
 		
 		private string _QuestionText;
 		
@@ -1839,6 +1843,8 @@ namespace Engage.Survey.Entities
 		private string _QuestionFormatOption;
 		
 		private string _ControlType;
+		
+		private System.Nullable<int> _AnswerId;
 		
 		private string _AnswerFormatOption;
 		
@@ -1878,12 +1884,16 @@ namespace Engage.Survey.Entities
     partial void OnShowSurveyTextChanged();
     partial void OnTitleOptionChanging(string value);
     partial void OnTitleOptionChanged();
+    partial void OnSectionIdChanging(int value);
+    partial void OnSectionIdChanged();
     partial void OnSectionTextChanging(string value);
     partial void OnSectionTextChanged();
     partial void OnSectionRelativeOrderChanging(int value);
     partial void OnSectionRelativeOrderChanged();
     partial void OnShowSectionTextChanging(bool value);
     partial void OnShowSectionTextChanged();
+    partial void OnQuestionIdChanging(int value);
+    partial void OnQuestionIdChanged();
     partial void OnQuestionTextChanging(string value);
     partial void OnQuestionTextChanged();
     partial void OnCommentsChanging(string value);
@@ -1894,6 +1904,8 @@ namespace Engage.Survey.Entities
     partial void OnQuestionFormatOptionChanged();
     partial void OnControlTypeChanging(string value);
     partial void OnControlTypeChanged();
+    partial void OnAnswerIdChanging(System.Nullable<int> value);
+    partial void OnAnswerIdChanged();
     partial void OnAnswerFormatOptionChanging(string value);
     partial void OnAnswerFormatOptionChanged();
     partial void OnAnswerTextChanging(string value);
@@ -2049,6 +2061,26 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
+		[Column(Storage="_SectionId", DbType="Int NOT NULL")]
+		public int SectionId
+		{
+			get
+			{
+				return this._SectionId;
+			}
+			set
+			{
+				if ((this._SectionId != value))
+				{
+					this.OnSectionIdChanging(value);
+					this.SendPropertyChanging();
+					this._SectionId = value;
+					this.SendPropertyChanged("SectionId");
+					this.OnSectionIdChanged();
+				}
+			}
+		}
+		
 		[Column(Storage="_SectionText", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		public string SectionText
 		{
@@ -2105,6 +2137,26 @@ namespace Engage.Survey.Entities
 					this._ShowSectionText = value;
 					this.SendPropertyChanged("ShowSectionText");
 					this.OnShowSectionTextChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_QuestionId", DbType="Int NOT NULL")]
+		public int QuestionId
+		{
+			get
+			{
+				return this._QuestionId;
+			}
+			set
+			{
+				if ((this._QuestionId != value))
+				{
+					this.OnQuestionIdChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionId = value;
+					this.SendPropertyChanged("QuestionId");
+					this.OnQuestionIdChanged();
 				}
 			}
 		}
@@ -2205,6 +2257,26 @@ namespace Engage.Survey.Entities
 					this._ControlType = value;
 					this.SendPropertyChanged("ControlType");
 					this.OnControlTypeChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_AnswerId", DbType="Int")]
+		public System.Nullable<int> AnswerId
+		{
+			get
+			{
+				return this._AnswerId;
+			}
+			set
+			{
+				if ((this._AnswerId != value))
+				{
+					this.OnAnswerIdChanging(value);
+					this.SendPropertyChanging();
+					this._AnswerId = value;
+					this.SendPropertyChanged("AnswerId");
+					this.OnAnswerIdChanged();
 				}
 			}
 		}

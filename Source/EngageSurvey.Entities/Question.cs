@@ -11,8 +11,6 @@
 
 namespace Engage.Survey.Entities
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
     using Util;
 
@@ -33,15 +31,24 @@ namespace Engage.Survey.Entities
             }
         }
 
+        /// <summary>
+        /// Gets or sets the answer value.
+        /// </summary>
+        /// <value>The answer value.</value>
         public List<UserResponse> Responses
         {
             get;
             set;
         }
 
-        public IAnswer GetAnswerChoice(Key key)
+        /// <summary>
+        /// Gets the answer choice.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        public IAnswer GetAnswers(Key key)
         {
-            foreach (IAnswer answer in this.GetAnswerChoices())
+            foreach (IAnswer answer in this.GetAnswers())
             {
                 if (answer.AnswerId == key.AnswerId)
                 {
@@ -88,7 +95,12 @@ namespace Engage.Survey.Entities
             return this.Section; 
         }
 
-        public List<IAnswer> GetAnswerChoices()
+        /// <summary>
+        /// Gets the answer choices.
+        /// </summary>
+        /// <returns></returns>
+        /// <value>The answer choices.</value>
+        public List<IAnswer> GetAnswers()
         {
             List<IAnswer> answers = new List<IAnswer>();
 
@@ -97,6 +109,7 @@ namespace Engage.Survey.Entities
                 answers.Add(a);
             }
 
+            answers.Sort(new Answer.RelativeOrderComparer());
             return answers;
         }
 
@@ -139,13 +152,43 @@ namespace Engage.Survey.Entities
         /// <value></value>
         public string Formatting
         {
-            get { return string.Empty; }
+            get
+            {
+                //ISurvey survey = GetSection().GetSurvey();
+                string returnValue = string.Empty;
+
+                ////seeing where this is going
+                ////Needed when rendering section outside the context of a survey, may need NullSurvey if this continues
+                //if ((survey != null) && (survey.ContainsAttribute("QuestionFormatOption")))
+                //{
+                //    string option = survey.GetAttribute("QuestionFormatOption").AttributeValue;
+
+                //    if (option == ElementFormatOptions.Numbered.Description)
+                //    {
+                //        returnValue = this.oa.RelativeOrder + ". ";
+                //    }
+                //    else if (option == ElementFormatOptions.Lettered.Description)
+                //    {
+                //        returnValue = Utility.ConvertNumberToCharacter(this.oa.RelativeOrder.ToString()) + ". ";
+                //    }
+                //    else if (option == ElementFormatOptions.Roman.Description)
+                //    {
+                //        returnValue = Utility.ConvertNumberToRomanNumeral(this.oa.RelativeOrder.ToString()) + ". ";
+                //    }
+                //    else
+                //    {
+                //        returnValue = string.Empty;
+                //    }
+                //}
+
+                return returnValue;
+            }
         }
 
         /// <summary>
         /// RelativeOrderComparer
         /// </summary>
-        internal class RelativeOrderComparer : IComparer
+        internal class RelativeOrderComparer : IComparer<IQuestion>
         {
             private readonly bool descending = true;
 
@@ -160,19 +203,29 @@ namespace Engage.Survey.Entities
 
             #region IComparer Members
 
-            public int Compare(object q1, object q2)
+            /// <summary>
+            /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
+            /// </summary>
+            /// <returns>
+            /// Value 
+            ///                     Condition 
+            ///                     Less than zero
+            ///                 <paramref name="x"/> is less than <paramref name="y"/>.
+            ///                     Zero
+            ///                 <paramref name="x"/> equals <paramref name="y"/>.
+            ///                     Greater than zero
+            ///                 <paramref name="x"/> is greater than <paramref name="y"/>.
+            /// </returns>
+            /// <param name="x">The first object to compare.
+            ///                 </param><param name="y">The second object to compare.
+            ///                 </param>
+            public int Compare(IQuestion x, IQuestion y)
             {
-                if (q1 == null && q2 == null) return 0;
-
-                Question qu1 = q1 as Question;
-                Question qu2 = q2 as Question;
-
-                if (qu1 == null) throw new ArgumentException("oa1 is not an instance of Question");
-                if (qu2 == null) throw new ArgumentException("oa2 is not an instance of Question");
+                if (x == null || y == null) return 0;
 
                 if (this.descending)
-                    return qu1.RelativeOrder.CompareTo(qu2.RelativeOrder);
-                return qu2.RelativeOrder.CompareTo(qu1.RelativeOrder);
+                    return x.RelativeOrder.CompareTo(y.RelativeOrder);
+                return y.RelativeOrder.CompareTo(x.RelativeOrder);
             }
 
             #endregion

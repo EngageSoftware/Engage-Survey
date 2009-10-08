@@ -14,6 +14,7 @@ namespace Engage.Survey.Entities
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
     using Util;
@@ -23,6 +24,26 @@ namespace Engage.Survey.Entities
     /// </summary>
     public partial class Survey : ISurvey
     {
+        public static ISurvey LoadSurvey(int surveyId)
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return context.Surveys.FirstOrDefault(s => s.SurveyId == surveyId);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is readonly.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is readonly; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsReadonly
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Returns the formatting for the element plus the the unformatted text together. Used primarily by
         /// the Web and Windows viewers only. 
@@ -51,6 +72,10 @@ namespace Engage.Survey.Entities
             get	 { return string.Empty; }
         }
 
+        /// <summary>
+        /// Gets the sections.
+        /// </summary>
+        /// <returns>List of ISections for this survey</returns>
         public List<ISection> GetSections()
         {
             List<ISection> sections = new List<ISection>();
@@ -60,19 +85,20 @@ namespace Engage.Survey.Entities
                 sections.Add(s);
             }
 
+            sections.Sort(new Section.RelativeOrderComparer());
             return sections;
         }
 
         /// <summary>
         /// Gets the section.
         /// </summary>
-        /// <param name="key">The key.</param>
+        /// <param name="sectionId">The section id.</param>
         /// <returns></returns>
-        public ISection GetSection(string key)
+        public ISection GetSection(string sectionId)
         {
-            foreach (ISection section in this.Sections)
+            foreach (ISection section in this.GetSections())
             {
-                if (section.SectionId.ToString() == key)
+                if (section.SectionId.ToString() == sectionId)
                 {
                     return section;
                 }
@@ -84,28 +110,41 @@ namespace Engage.Survey.Entities
         /// <summary>
         /// Renders the survey from this survey.
         /// </summary>
-        /// <param name="ph">The place holder to render the survey..</param>
+        /// <param name="placeHolder">The place holder.</param>
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        public virtual void Render(PlaceHolder ph, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
         {
-            Debug.Assert(ph != null, "ph cannot be null");
+            RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider);
+        }
+
+        /// <summary>
+        /// Static mechanism to render a survey.
+        /// </summary>
+        /// <param name="survey">The survey.</param>
+        /// <param name="placeHolder">The place holder.</param>
+        /// <param name="readOnly">if set to <c>true</c> [read only].</param>
+        /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
+        /// <param name="validationProvider">The validation provider.</param>
+        public static void RenderSurvey(ISurvey survey, PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        {
+            Debug.Assert(placeHolder != null, "placeHolder cannot be null");
             Debug.Assert(validationProvider != null, "validationProvider cannot be null");
 
             // add the survey title
-            if (this.ShowText)
+            if (survey.ShowText)
             {
                 HtmlGenericControl titleDiv = new HtmlGenericControl("DIV");
                 titleDiv.Attributes["class"] = Utility.CssClassSurveyTitle;
-                titleDiv.InnerText = this.Text;
-                ph.Controls.Add(titleDiv);
+                titleDiv.InnerText = survey.Text;
+                placeHolder.Controls.Add(titleDiv);
             }
 
-            List<ISection> sections = this.GetSections();
+            List<ISection> sections = survey.GetSections();
             foreach (ISection s in sections)
             {
-                s.Render(ph, readOnly, showRequiredNotation, validationProvider);
+                s.Render(placeHolder, readOnly, showRequiredNotation, validationProvider);
             }
         }
 
@@ -153,11 +192,11 @@ namespace Engage.Survey.Entities
         /// <param name="responseHeaderId">The response header id.</param>
         private void WriteResponses(int responseHeaderId)
         {
-            foreach (ISection section in Sections)
+            foreach (ISection section in this.GetSections())
             {
                 foreach (IQuestion question in section.GetQuestions())
                 {
-                    if (question.GetAnswerChoices().Count == 0)
+                    if (question.GetAnswers().Count == 0)
                     {
                         ////Open ended question.
                         foreach (UserResponse response in question.Responses)
@@ -165,7 +204,7 @@ namespace Engage.Survey.Entities
                             WriteResponseEntry(responseHeaderId, section, question, null, response.AnswerValue);
                         }
                     }
-                    foreach (IAnswer answer in question.GetAnswerChoices())
+                    foreach (IAnswer answer in question.GetAnswers())
                     {
                         if (question.Responses.Count == 1)
                         {
@@ -197,7 +236,7 @@ namespace Engage.Survey.Entities
         private static int CreateResponseHeader(int userId)
         {
             SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            ResponseHeader header = new ResponseHeader { CreatedBy = userId, RevisingUser = userId, UserId = userId };
+            ResponseHeader header = new ResponseHeader { CreatedBy = userId, RevisingUser = userId, UserId = userId, RevisionDate = DateTime.Now, CreationDate = DateTime.Now};
             context.ResponseHeaders.InsertOnSubmit(header);
             context.SubmitChanges();
 
@@ -226,7 +265,9 @@ namespace Engage.Survey.Entities
                                                  ShowSectionText = false,
                                                  ResponseHeaderId = responseHeaderId
                                           };
+            r.SectionId = section.SectionId;
             r.SectionRelativeOrder = section.RelativeOrder;
+            r.QuestionId = question.QuestionId;
             r.QuestionText = question.Text;
             r.QuestionRelativeOrder = question.RelativeOrder;
             r.QuestionFormatOption = this.QuestionFormatOption;
@@ -234,6 +275,7 @@ namespace Engage.Survey.Entities
             r.AnswerFormatOption = this.AnswerFormatOption;
             if (answer != null)
             {
+                r.AnswerId = answer.AnswerId;
                 r.AnswerText = answer.Text;
                 r.AnswerRelativeOrder = answer.RelativeOrder;
                 r.AnswerIsCorrect = answer.IsCorrect;

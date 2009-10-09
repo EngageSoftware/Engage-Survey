@@ -129,6 +129,9 @@
   <data name="BackHyperLink.Text" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="CopyQuestionHyperLink.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
   <data name="CreateNewEvalHyperLink.Text" xml:space="preserve">
     <value>Create</value>
   </data>
@@ -140,6 +143,12 @@
   </data>
   <data name="DefineAnswerLabel.Text" xml:space="preserve">
     <value>Define Answer</value>
+  </data>
+  <data name="DeleteAnswerHyperLink.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="EditQuestionHyperLink.Text" xml:space="preserve">
+    <value>Edit</value>
   </data>
   <data name="EvalDescriptionLabel.Text" xml:space="preserve">
     <value>Description</value>
@@ -153,11 +162,20 @@
   <data name="MultipleAnswerCheckboxesOption.Text" xml:space="preserve">
     <value>Multiple Answer (Checkboxes)</value>
   </data>
+  <data name="PreviewAreaLabel.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="QuestionNumberTitle.Text" xml:space="preserve">
+    <value>Question</value>
+  </data>
   <data name="SaveAllAnswersHyperLink.Text" xml:space="preserve">
     <value>Save All Answers</value>
   </data>
   <data name="SaveAndCreateNewQuestionHyperLink.Text" xml:space="preserve">
     <value>Save and Add New Question</value>
+  </data>
+  <data name="SaveAnswerHyperLink.Text" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="SelectAnswerTypeOption.Text" xml:space="preserve">
     <value>Select Answer Type</value>

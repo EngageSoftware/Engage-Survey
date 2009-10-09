@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{678A96B6-1980-4B66-BB4C-8821CBD6DA13}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -92,6 +92,9 @@
     <Content Include="Settings.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditSurvey.ascx.designer.cs">
+      <DependentUpon>EditSurvey.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Services.asmx.cs">
       <DependentUpon>Services.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -106,9 +109,6 @@
     <Compile Include="EditSurvey.ascx.cs">
       <DependentUpon>EditSurvey.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EditSurvey.ascx.designer.cs">
-      <DependentUpon>EditSurvey.ascx</DependentUpon>
     </Compile>
     <Compile Include="MainContainer.ascx.cs">
       <DependentUpon>MainContainer.ascx</DependentUpon>
@@ -186,7 +186,7 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Code\EngageSurvey\Engage.Survey.csproj">
+    <ProjectReference Include="G:\Engage 3.0\Engage.Survey\Engage.Survey.csproj">
       <Project>{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}</Project>
       <Name>Engage.Survey</Name>
     </ProjectReference>
@@ -197,6 +197,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\EditSurvey.ascx.resx" />
+    <Content Include="images\btn-bg-on.gif" />
+    <Content Include="images\btn-bg.gif" />
+    <Content Include="images\help-icn.gif" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_GlobalResources\" />
@@ -222,6 +225,9 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{678A96B6-1980-4B66-BB4C-8821CBD6DA13}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -186,7 +186,7 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="G:\Engage 3.0\Engage.Survey\Engage.Survey.csproj">
+    <ProjectReference Include="..\..\..\..\..\Code\Engage 3.0\engage.survey\Engage.Survey.csproj">
       <Project>{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}</Project>
       <Name>Engage.Survey</Name>
     </ProjectReference>
@@ -196,7 +196,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_LocalResources\EditSurvey.ascx.resx" />
+    <Content Include="App_LocalResources\EditSurvey.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="images\btn-bg-on.gif" />
     <Content Include="images\btn-bg.gif" />
     <Content Include="images\help-icn.gif" />
@@ -225,9 +227,6 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

@@ -394,7 +394,7 @@ namespace Engage.Survey.Entities
                                                ControlType = s.ControlType,
                                                SectionId = s.SectionId,
                                                ResponseHeaderId = s.ResponseHeaderId
-                                       }).Distinct().ToList();
+                                       }).Distinct();
 
             List<IQuestion> questions = new List<IQuestion>();
             foreach (ReadonlyQuestion q in results)
@@ -616,7 +616,7 @@ namespace Engage.Survey.Entities
                                                QuestionId = s.QuestionId,
                                                ResponseHeaderId = s.ResponseHeaderId,
                                                AnswerValue =  s.UserResponse
-                                       }).Distinct().ToList();
+                                       }).Distinct();
 
             List<IAnswer> answers = new List<IAnswer>();
             foreach (ReadonlyAnswer a in results)

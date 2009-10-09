@@ -53,14 +53,14 @@
       </nestedChildShapes>
     </classShape>
     <associationConnector edgePoints="[(2.75 : 2.89505126953125); (3.5 : 2.89505126953125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/SurveyModelDataContext/Survey/EngageSurvey_Survey_Section" />
+      <AssociationMoniker Name="/SurveyModelDataContext/Survey/Survey_Section" />
       <nodes>
         <classShapeMoniker Id="2dd9bfb5-9f4e-4c94-ba10-1486011bfd8e" />
         <classShapeMoniker Id="20b8eefb-420a-49d3-b44a-2866d751a043" />
       </nodes>
     </associationConnector>
     <associationConnector edgePoints="[(2.75 : 9.73159912109375); (3.5 : 9.73159912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/SurveyModelDataContext/ResponseHeader/ResponseHeader_EngageSurvey_Response" />
+      <AssociationMoniker Name="/SurveyModelDataContext/ResponseHeader/ResponseHeader_Response" />
       <nodes>
         <classShapeMoniker Id="b24fc912-d83b-4cbf-b9c4-6801ca89fabb" />
         <classShapeMoniker Id="051de9a2-6b9e-4675-bc63-528c794bbca9" />

@@ -18,6 +18,7 @@ namespace Engage.Survey.Entities
 	using System.Reflection;
 	using System.Linq;
 	using System.Linq.Expressions;
+	using System.Runtime.Serialization;
 	using System.ComponentModel;
 	using System;
 	
@@ -130,6 +131,7 @@ namespace Engage.Survey.Entities
 	}
 	
 	[Table(Name="dbo.EngageSurvey_Question")]
+	[DataContract()]
 	public partial class Question : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -165,6 +167,8 @@ namespace Engage.Survey.Entities
 		
 		private EntityRef<Section> _Section;
 		
+		private bool serializing;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -199,12 +203,11 @@ namespace Engage.Survey.Entities
 		
 		public Question()
 		{
-			this._Answers = new EntitySet<Answer>(new Action<Answer>(this.attach_Answers), new Action<Answer>(this.detach_Answers));
-			this._Section = default(EntityRef<Section>);
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[Column(Storage="_QuestionId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
 		public int QuestionId
 		{
 			get
@@ -225,6 +228,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_SectionId", DbType="Int NOT NULL")]
+		[DataMember(Order=2)]
 		public int SectionId
 		{
 			get
@@ -249,6 +253,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_Text", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
 		public string Text
 		{
 			get
@@ -269,6 +274,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_ShowText", DbType="Bit NOT NULL")]
+		[DataMember(Order=4)]
 		public bool ShowText
 		{
 			get
@@ -289,6 +295,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_IsRequired", DbType="Bit NOT NULL")]
+		[DataMember(Order=5)]
 		public bool IsRequired
 		{
 			get
@@ -309,6 +316,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RequiredMessage", DbType="NChar(256)")]
+		[DataMember(Order=6)]
 		public string RequiredMessage
 		{
 			get
@@ -329,6 +337,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RelativeOrder", DbType="Int NOT NULL")]
+		[DataMember(Order=7)]
 		public int RelativeOrder
 		{
 			get
@@ -349,6 +358,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_SelectionLimit", DbType="Int NOT NULL")]
+		[DataMember(Order=8)]
 		public int SelectionLimit
 		{
 			get
@@ -369,6 +379,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_ControlType", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=9)]
 		public string ControlType
 		{
 			get
@@ -389,6 +400,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
+		[DataMember(Order=10)]
 		public int RevisingUser
 		{
 			get
@@ -409,6 +421,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=11)]
 		public System.DateTime RevisionDate
 		{
 			get
@@ -429,6 +442,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		[DataMember(Order=12)]
 		public int CreatedBy
 		{
 			get
@@ -449,6 +463,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=13)]
 		public System.DateTime CreationDate
 		{
 			get
@@ -469,10 +484,16 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Association(Name="Question_Answer", Storage="_Answers", ThisKey="QuestionId", OtherKey="QuestionId")]
+		[DataMember(Order=14, EmitDefaultValue=false)]
 		public EntitySet<Answer> Answers
 		{
 			get
 			{
+				if ((this.serializing 
+							&& (this._Answers.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
 				return this._Answers;
 			}
 			set
@@ -482,7 +503,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Association(Name="Section_Question", Storage="_Section", ThisKey="SectionId", OtherKey="SectionId", IsForeignKey=true)]
-		public Section Section
+		internal Section Section
 		{
 			get
 			{
@@ -546,9 +567,38 @@ namespace Engage.Survey.Entities
 			this.SendPropertyChanging();
 			entity.Question = null;
 		}
+		
+		private void Initialize()
+		{
+			this._Answers = new EntitySet<Answer>(new Action<Answer>(this.attach_Answers), new Action<Answer>(this.detach_Answers));
+			this._Section = default(EntityRef<Section>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
 	}
 	
 	[Table(Name="dbo.EngageSurvey_Section")]
+	[DataContract()]
 	public partial class Section : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -576,6 +626,8 @@ namespace Engage.Survey.Entities
 		
 		private EntityRef<Survey> _Survey;
 		
+		private bool serializing;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -602,12 +654,11 @@ namespace Engage.Survey.Entities
 		
 		public Section()
 		{
-			this._Questions = new EntitySet<Question>(new Action<Question>(this.attach_Questions), new Action<Question>(this.detach_Questions));
-			this._Survey = default(EntityRef<Survey>);
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[Column(Storage="_SectionId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
 		public int SectionId
 		{
 			get
@@ -628,6 +679,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_SurveyId", DbType="Int NOT NULL")]
+		[DataMember(Order=2)]
 		public int SurveyId
 		{
 			get
@@ -652,6 +704,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_Text", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
 		public string Text
 		{
 			get
@@ -672,6 +725,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_ShowText", DbType="Bit NOT NULL")]
+		[DataMember(Order=4)]
 		public bool ShowText
 		{
 			get
@@ -692,6 +746,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RelativeOrder", DbType="Int NOT NULL")]
+		[DataMember(Order=5)]
 		public int RelativeOrder
 		{
 			get
@@ -712,6 +767,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
+		[DataMember(Order=6)]
 		public int RevisingUser
 		{
 			get
@@ -732,6 +788,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=7)]
 		public System.DateTime RevisionDate
 		{
 			get
@@ -752,6 +809,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		[DataMember(Order=8)]
 		public int CreatedBy
 		{
 			get
@@ -772,6 +830,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=9)]
 		public System.DateTime CreationDate
 		{
 			get
@@ -792,10 +851,16 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Association(Name="Section_Question", Storage="_Questions", ThisKey="SectionId", OtherKey="SectionId")]
+		[DataMember(Order=10, EmitDefaultValue=false)]
 		public EntitySet<Question> Questions
 		{
 			get
 			{
+				if ((this.serializing 
+							&& (this._Questions.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
 				return this._Questions;
 			}
 			set
@@ -804,8 +869,8 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		[Association(Name="EngageSurvey_Survey_Section", Storage="_Survey", ThisKey="SurveyId", OtherKey="SurveyId", IsForeignKey=true)]
-		public Survey Survey
+		[Association(Name="Survey_Section", Storage="_Survey", ThisKey="SurveyId", OtherKey="SurveyId", IsForeignKey=true)]
+		internal Survey Survey
 		{
 			get
 			{
@@ -869,9 +934,38 @@ namespace Engage.Survey.Entities
 			this.SendPropertyChanging();
 			entity.Section = null;
 		}
+		
+		private void Initialize()
+		{
+			this._Questions = new EntitySet<Question>(new Action<Question>(this.attach_Questions), new Action<Question>(this.detach_Questions));
+			this._Survey = default(EntityRef<Survey>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
 	}
 	
 	[Table(Name="dbo.EngageSurvey_Answer")]
+	[DataContract()]
 	public partial class Answer : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -923,11 +1017,11 @@ namespace Engage.Survey.Entities
 		
 		public Answer()
 		{
-			this._Question = default(EntityRef<Question>);
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[Column(Storage="_AnswerId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
 		public int AnswerId
 		{
 			get
@@ -948,6 +1042,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_QuestionId", DbType="Int NOT NULL")]
+		[DataMember(Order=2)]
 		public int QuestionId
 		{
 			get
@@ -972,6 +1067,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_Text", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
 		public string Text
 		{
 			get
@@ -992,6 +1088,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_IsCorrect", DbType="Bit NOT NULL")]
+		[DataMember(Order=4)]
 		public bool IsCorrect
 		{
 			get
@@ -1012,6 +1109,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RelativeOrder", DbType="Int NOT NULL")]
+		[DataMember(Order=5)]
 		public int RelativeOrder
 		{
 			get
@@ -1032,6 +1130,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
+		[DataMember(Order=6)]
 		public int RevisingUser
 		{
 			get
@@ -1052,6 +1151,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=7)]
 		public System.DateTime RevisionDate
 		{
 			get
@@ -1072,6 +1172,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		[DataMember(Order=8)]
 		public int CreatedBy
 		{
 			get
@@ -1092,6 +1193,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=9)]
 		public System.DateTime CreationDate
 		{
 			get
@@ -1112,7 +1214,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Association(Name="Question_Answer", Storage="_Question", ThisKey="QuestionId", OtherKey="QuestionId", IsForeignKey=true)]
-		public Question Question
+		internal Question Question
 		{
 			get
 			{
@@ -1164,9 +1266,23 @@ namespace Engage.Survey.Entities
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void Initialize()
+		{
+			this._Question = default(EntityRef<Question>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
 	}
 	
 	[Table(Name="dbo.EngageSurvey_ResponseHeader")]
+	[DataContract()]
 	public partial class ResponseHeader : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -1185,6 +1301,8 @@ namespace Engage.Survey.Entities
 		private System.DateTime _CreationDate;
 		
 		private EntitySet<Response> _Responses;
+		
+		private bool serializing;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1206,11 +1324,11 @@ namespace Engage.Survey.Entities
 		
 		public ResponseHeader()
 		{
-			this._Responses = new EntitySet<Response>(new Action<Response>(this.attach_Responses), new Action<Response>(this.detach_Responses));
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[Column(Storage="_ResponseHeaderId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
 		public int ResponseHeaderId
 		{
 			get
@@ -1231,6 +1349,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_UserId", DbType="Int")]
+		[DataMember(Order=2)]
 		public System.Nullable<int> UserId
 		{
 			get
@@ -1251,6 +1370,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
+		[DataMember(Order=3)]
 		public int RevisingUser
 		{
 			get
@@ -1271,6 +1391,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=4)]
 		public System.DateTime RevisionDate
 		{
 			get
@@ -1291,6 +1412,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		[DataMember(Order=5)]
 		public int CreatedBy
 		{
 			get
@@ -1311,6 +1433,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=6)]
 		public System.DateTime CreationDate
 		{
 			get
@@ -1330,11 +1453,17 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		[Association(Name="ResponseHeader_EngageSurvey_Response", Storage="_Responses", ThisKey="ResponseHeaderId", OtherKey="ResponseHeaderId")]
+		[Association(Name="ResponseHeader_Response", Storage="_Responses", ThisKey="ResponseHeaderId", OtherKey="ResponseHeaderId")]
+		[DataMember(Order=7, EmitDefaultValue=false)]
 		public EntitySet<Response> Responses
 		{
 			get
 			{
+				if ((this.serializing 
+							&& (this._Responses.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
 				return this._Responses;
 			}
 			set
@@ -1374,9 +1503,37 @@ namespace Engage.Survey.Entities
 			this.SendPropertyChanging();
 			entity.ResponseHeader = null;
 		}
+		
+		private void Initialize()
+		{
+			this._Responses = new EntitySet<Response>(new Action<Response>(this.attach_Responses), new Action<Response>(this.detach_Responses));
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
 	}
 	
 	[Table(Name="dbo.EngageSurvey_Survey")]
+	[DataContract()]
 	public partial class Survey : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -1411,6 +1568,8 @@ namespace Engage.Survey.Entities
 		private System.DateTime _CreationDate;
 		
 		private EntitySet<Section> _Sections;
+		
+		private bool serializing;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1448,11 +1607,11 @@ namespace Engage.Survey.Entities
 		
 		public Survey()
 		{
-			this._Sections = new EntitySet<Section>(new Action<Section>(this.attach_Sections), new Action<Section>(this.detach_Sections));
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[Column(Storage="_SurveyId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
 		public int SurveyId
 		{
 			get
@@ -1473,6 +1632,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_Text", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=2)]
 		public string Text
 		{
 			get
@@ -1493,6 +1653,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_FinalMessageOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=3)]
 		public string FinalMessageOption
 		{
 			get
@@ -1513,6 +1674,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_FinalMessage", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		[DataMember(Order=4)]
 		public string FinalMessage
 		{
 			get
@@ -1533,6 +1695,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_FinalUrl", DbType="NVarChar(256)")]
+		[DataMember(Order=5)]
 		public string FinalUrl
 		{
 			get
@@ -1553,6 +1716,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_ShowText", DbType="Bit NOT NULL")]
+		[DataMember(Order=6)]
 		public bool ShowText
 		{
 			get
@@ -1573,6 +1737,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_QuestionFormatOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=7)]
 		public string QuestionFormatOption
 		{
 			get
@@ -1593,6 +1758,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_SectionFormatOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=8)]
 		public string SectionFormatOption
 		{
 			get
@@ -1613,6 +1779,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_TitleOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=9)]
 		public string TitleOption
 		{
 			get
@@ -1633,6 +1800,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_LogoURL", DbType="NVarChar(256)")]
+		[DataMember(Order=10)]
 		public string LogoURL
 		{
 			get
@@ -1653,6 +1821,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
+		[DataMember(Order=11)]
 		public int RevisingUser
 		{
 			get
@@ -1673,6 +1842,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=12)]
 		public System.DateTime RevisionDate
 		{
 			get
@@ -1693,6 +1863,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		[DataMember(Order=13)]
 		public int CreatedBy
 		{
 			get
@@ -1713,6 +1884,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=14)]
 		public System.DateTime CreationDate
 		{
 			get
@@ -1732,11 +1904,17 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		[Association(Name="EngageSurvey_Survey_Section", Storage="_Sections", ThisKey="SurveyId", OtherKey="SurveyId")]
-		internal EntitySet<Section> Sections
+		[Association(Name="Survey_Section", Storage="_Sections", ThisKey="SurveyId", OtherKey="SurveyId")]
+		[DataMember(Order=15, EmitDefaultValue=false)]
+		public EntitySet<Section> Sections
 		{
 			get
 			{
+				if ((this.serializing 
+							&& (this._Sections.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
 				return this._Sections;
 			}
 			set
@@ -1776,9 +1954,37 @@ namespace Engage.Survey.Entities
 			this.SendPropertyChanging();
 			entity.Survey = null;
 		}
+		
+		private void Initialize()
+		{
+			this._Sections = new EntitySet<Section>(new Action<Section>(this.attach_Sections), new Action<Section>(this.detach_Sections));
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[OnSerializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[OnSerialized()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
 	}
 	
 	[Table(Name="dbo.EngageSurvey_Response")]
+	[DataContract()]
 	public partial class Response : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -1898,11 +2104,11 @@ namespace Engage.Survey.Entities
 		
 		public Response()
 		{
-			this._ResponseHeader = default(EntityRef<ResponseHeader>);
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[Column(Storage="_ResponseId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[DataMember(Order=1)]
 		public int ResponseId
 		{
 			get
@@ -1923,6 +2129,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_SurveyId", DbType="Int NOT NULL")]
+		[DataMember(Order=2)]
 		public int SurveyId
 		{
 			get
@@ -1943,6 +2150,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_ResponseHeaderId", DbType="Int NOT NULL")]
+		[DataMember(Order=3)]
 		public int ResponseHeaderId
 		{
 			get
@@ -1967,6 +2175,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_SurveyText", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=4)]
 		public string SurveyText
 		{
 			get
@@ -1987,6 +2196,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_ShowSurveyText", DbType="Bit NOT NULL")]
+		[DataMember(Order=5)]
 		public bool ShowSurveyText
 		{
 			get
@@ -2007,6 +2217,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_TitleOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=6)]
 		public string TitleOption
 		{
 			get
@@ -2027,6 +2238,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_SectionId", DbType="Int NOT NULL")]
+		[DataMember(Order=7)]
 		public int SectionId
 		{
 			get
@@ -2047,6 +2259,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_SectionText", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=8)]
 		public string SectionText
 		{
 			get
@@ -2067,6 +2280,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_SectionRelativeOrder", DbType="Int NOT NULL")]
+		[DataMember(Order=9)]
 		public int SectionRelativeOrder
 		{
 			get
@@ -2087,6 +2301,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_ShowSectionText", DbType="Bit NOT NULL")]
+		[DataMember(Order=10)]
 		public bool ShowSectionText
 		{
 			get
@@ -2107,6 +2322,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_QuestionId", DbType="Int NOT NULL")]
+		[DataMember(Order=11)]
 		public int QuestionId
 		{
 			get
@@ -2127,6 +2343,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_QuestionText", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=12)]
 		public string QuestionText
 		{
 			get
@@ -2147,6 +2364,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_Comments", DbType="NVarChar(4000)")]
+		[DataMember(Order=13)]
 		public string Comments
 		{
 			get
@@ -2167,6 +2385,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_QuestionRelativeOrder", DbType="Int NOT NULL")]
+		[DataMember(Order=14)]
 		public int QuestionRelativeOrder
 		{
 			get
@@ -2187,6 +2406,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_QuestionFormatOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=15)]
 		public string QuestionFormatOption
 		{
 			get
@@ -2207,6 +2427,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_ControlType", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=16)]
 		public string ControlType
 		{
 			get
@@ -2227,6 +2448,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_AnswerId", DbType="Int")]
+		[DataMember(Order=17)]
 		public System.Nullable<int> AnswerId
 		{
 			get
@@ -2247,6 +2469,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_SectionFormatOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[DataMember(Order=18)]
 		public string SectionFormatOption
 		{
 			get
@@ -2267,6 +2490,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_AnswerText", DbType="NVarChar(256)")]
+		[DataMember(Order=19)]
 		public string AnswerText
 		{
 			get
@@ -2287,6 +2511,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_AnswerRelativeOrder", DbType="Int")]
+		[DataMember(Order=20)]
 		public System.Nullable<int> AnswerRelativeOrder
 		{
 			get
@@ -2307,6 +2532,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_AnswerIsCorrect", DbType="Bit")]
+		[DataMember(Order=21)]
 		public System.Nullable<bool> AnswerIsCorrect
 		{
 			get
@@ -2327,6 +2553,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_UserResponse", DbType="NVarChar(4000)")]
+		[DataMember(Order=22)]
 		public string UserResponse
 		{
 			get
@@ -2347,6 +2574,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisingUser", DbType="Int NOT NULL")]
+		[DataMember(Order=23)]
 		public int RevisingUser
 		{
 			get
@@ -2367,6 +2595,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_RevisionDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=24)]
 		public System.DateTime RevisionDate
 		{
 			get
@@ -2387,6 +2616,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		[DataMember(Order=25)]
 		public int CreatedBy
 		{
 			get
@@ -2407,6 +2637,7 @@ namespace Engage.Survey.Entities
 		}
 		
 		[Column(Storage="_CreationDate", DbType="DateTime NOT NULL")]
+		[DataMember(Order=26)]
 		public System.DateTime CreationDate
 		{
 			get
@@ -2426,7 +2657,7 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		[Association(Name="ResponseHeader_EngageSurvey_Response", Storage="_ResponseHeader", ThisKey="ResponseHeaderId", OtherKey="ResponseHeaderId", IsForeignKey=true)]
+		[Association(Name="ResponseHeader_Response", Storage="_ResponseHeader", ThisKey="ResponseHeaderId", OtherKey="ResponseHeaderId", IsForeignKey=true)]
 		public ResponseHeader ResponseHeader
 		{
 			get
@@ -2478,6 +2709,19 @@ namespace Engage.Survey.Entities
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void Initialize()
+		{
+			this._ResponseHeader = default(EntityRef<ResponseHeader>);
+			OnCreated();
+		}
+		
+		[OnDeserializing()]
+		[System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
 		}
 	}
 }

@@ -12,7 +12,7 @@
 namespace Engage.Survey.Entities
 {
     using System.Data.Linq;
-
+  
     /// <summary>
     /// SurveyModelDataContext class
     /// </summary>

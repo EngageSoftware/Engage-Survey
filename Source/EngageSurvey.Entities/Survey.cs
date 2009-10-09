@@ -24,10 +24,25 @@ namespace Engage.Survey.Entities
     /// </summary>
     public partial class Survey : ISurvey
     {
+        /// <summary>
+        /// Loads the survey.
+        /// </summary>
+        /// <param name="surveyId">The survey id.</param>
+        /// <returns></returns>
         public static ISurvey LoadSurvey(int surveyId)
         {
             SurveyModelDataContext context = SurveyModelDataContext.Instance;
             return context.Surveys.FirstOrDefault(s => s.SurveyId == surveyId);
+        }
+
+        /// <summary>
+        /// Loads the surveys.
+        /// </summary>
+        /// <returns></returns>
+        public static IQueryable<Survey> LoadSurveys()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return context.Surveys;
         }
 
         /// <summary>
@@ -267,12 +282,12 @@ namespace Engage.Survey.Entities
                                      SectionId = section.SectionId
                              };
             r.SectionRelativeOrder = section.RelativeOrder;
+            r.SectionFormatOption = this.SectionFormatOption; 
             r.QuestionId = question.QuestionId;
             r.QuestionText = question.Text;
             r.QuestionRelativeOrder = question.RelativeOrder;
             r.QuestionFormatOption = this.QuestionFormatOption;
             r.ControlType = question.ControlType;
-            r.AnswerFormatOption = this.AnswerFormatOption;
             if (answer != null)
             {
                 r.AnswerId = answer.AnswerId;
@@ -290,12 +305,6 @@ namespace Engage.Survey.Entities
             context.SubmitChanges();
 
             Debug.WriteLine(r.ResponseId);
-        }
-
-        public static IQueryable<Survey> LoadSurveys()
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return context.Surveys;
         }
     }
 }

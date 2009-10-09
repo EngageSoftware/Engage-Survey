@@ -14,22 +14,13 @@ namespace Engage.Dnn.Survey {
     public partial class EditSurvey {
         
         /// <summary>
-        /// SummaryPlaceHolder control.
+        /// AddSectionTitleLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder SummaryPlaceHolder;
-        
-        /// <summary>
-        /// SurveyTable control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Table SurveyTable;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor AddSectionTitleLabel;
         
         /// <summary>
         /// UpdateLinkButton control.

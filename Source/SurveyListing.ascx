@@ -28,3 +28,8 @@
     </Columns>
 </asp:DataGrid>
 
+<div align="center">
+    <asp:linkbutton cssclass="CommandButton" id="NewLinkButton" OnClick="NewLinkButton_Click" resourcekey="cmdNew" runat="server" borderstyle="none" text="Create Survey"></asp:linkbutton>&nbsp;
+    <asp:linkbutton cssclass="CommandButton" id="CancelLinkButton" OnClick="CancelLinkButton_Click" resourcekey="cmdCancel" runat="server" borderstyle="none" text="Cancel" causesvalidation="False"></asp:linkbutton>&nbsp;
+</div>
+

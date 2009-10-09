@@ -2,7 +2,7 @@
 
 namespace Engage.Dnn.Survey
 {
-    using System.Linq;
+    using System.Collections.Generic;
     using System.Web.Script.Services;
     using Engage.Survey.Entities;
 
@@ -17,21 +17,15 @@ namespace Engage.Dnn.Survey
     // [System.Web.Script.Services.ScriptService]
     public class Services : WebService
     {
-
-
         /// <summary>
         /// Gets a completed survey.
         /// </summary>
         /// <param name="responseHeaderId">The response header id.</param>
         /// <returns></returns>
         [WebMethod]
-        public Survey GetCompletedSurvey(int responseHeaderId)
+        public ReadonlySurvey GetCompletedSurvey(int responseHeaderId)
         {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            var survey = (from s in context.Surveys
-                          where s.SurveyId == 1
-                          select s).SingleOrDefault();
-            return survey;
+            return (ReadonlySurvey)ReadonlySurvey.LoadSurvey(responseHeaderId);
         }
 
         /// <summary>
@@ -42,11 +36,18 @@ namespace Engage.Dnn.Survey
         [WebMethod]
         public Survey GetSurvey(int surveyId)
         {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            var survey = (from s in context.Surveys
-                          where s.SurveyId == surveyId
-                          select s).SingleOrDefault();
-            return survey;
+            return (Survey)Survey.LoadSurvey(surveyId);
+        }
+        
+        /// <summary>
+        /// Gets the surveys.
+        /// </summary>
+        /// <returns></returns>
+        [WebMethod]
+        public List<Survey> GetSurveys()
+        {
+            List<Survey> surveys = new List<Survey>(Survey.LoadSurveys());
+            return surveys;
         }
     }
 }

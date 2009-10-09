@@ -1,0 +1,128 @@
+﻿INSERT INTO [dbo].[EngageSurvey_Survey]([Text],[FinalMessageOption],[FinalMessage],[FinalUrl],[ShowText],[QuestionFormatOption],[SectionFormatOption]
+           ,[TitleOption],[LogoURL],[RevisingUser],[RevisionDate],[CreatedBy]
+           ,[CreationDate])
+VALUES('Sample Evaluation 1', 'UseFinalMessage','Thank You', null,1, 'Numbered','Numbered','FirstPageOnly', null,  1, GETDATE(), 1, GETDATE())
+declare @id int
+select @id = SCOPE_IDENTITY()
+
+--Insert section
+INSERT INTO [dbo].[EngageSurvey_Section]([SurveyId] ,[Text] ,[ShowText] ,[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy] ,[CreationDate])
+VALUES (@Id, 'Section 1', 0, 1, 1, GETDATE(), 1, GETDATE())
+declare @sectionId int
+select @sectionId = SCOPE_IDENTITY()
+
+--insert question 1
+INSERT INTO [EngageSurvey_Question] ([SectionId],[Text],[ShowText],[IsRequired],[RequiredMessage],[RelativeOrder],[SelectionLimit],[ControlType] ,[RevisingUser],[RevisionDate],[CreatedBy],[CreationDate])
+VALUES (@sectionId, 'What is your favorite color?', 1, 1, null, 1, 0, 'VerticalOptionButtons', 1, GETDATE(), 1, GETDATE())
+
+declare @questionId int
+select @questionId = SCOPE_IDENTITY()
+--insert answers for question 1
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Red', 1, 1, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Green', 1, 2, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Blue', 1, 3, 1, GETDATE(), 1, GETDATE())
+
+--insert question 2
+INSERT INTO [EngageSurvey_Question] ([SectionId],[Text],[ShowText],[IsRequired],[RequiredMessage],[RelativeOrder],[SelectionLimit],[ControlType] ,[RevisingUser],[RevisionDate],[CreatedBy],[CreationDate])
+VALUES (@sectionId, 'How many questions are on this evaluation?', 1, 1, null, 2, 0, 'DropDownChoices', 1, GETDATE(), 1, GETDATE())
+
+select @questionId = SCOPE_IDENTITY()
+--insert answers for question 2
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'One', 1, 1, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Two', 1, 2, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Three', 1, 3, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Four', 1, 4, 1, GETDATE(), 1, GETDATE())
+
+
+--insert question 3
+INSERT INTO [EngageSurvey_Question] ([SectionId],[Text],[ShowText],[IsRequired],[RequiredMessage],[RelativeOrder],[SelectionLimit],[ControlType] ,[RevisingUser],[RevisionDate],[CreatedBy],[CreationDate])
+VALUES (@sectionId, 'Select all that apply.', 1, 1, null, 3, 0, 'Checkbox', 1, GETDATE(), 1, GETDATE())
+
+select @questionId = SCOPE_IDENTITY()
+--insert answers for question 3
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'We create our own Course content.', 1, 1, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'We have internal staff to create content.', 1, 2, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'We sometimes hire this work out.', 1, 3, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'We work with other vendors on a part-time basis.', 1, 4, 1, GETDATE(), 1, GETDATE())
+
+
+--insert question 4
+INSERT INTO [EngageSurvey_Question] ([SectionId],[Text],[ShowText],[IsRequired],[RequiredMessage],[RelativeOrder],[SelectionLimit],[ControlType] ,[RevisingUser],[RevisionDate],[CreatedBy],[CreationDate])
+VALUES (@sectionId, 'Please tell us about your experience with the tool?', 1, 1, null, 4, 0, 'LargeTextInputField', 1, GETDATE(), 1, GETDATE())
+
+
+/**************************SECOND EVALUATION******************************************/
+
+INSERT INTO [dbo].[EngageSurvey_Survey]([Text],[FinalMessageOption],[FinalMessage],[FinalUrl],[ShowText],[QuestionFormatOption],[SectionFormatOption]
+           ,[TitleOption],[LogoURL],[RevisingUser],[RevisionDate],[CreatedBy]
+           ,[CreationDate])
+VALUES('Sample Evaluation 2', 'UseFinalMessage','Thank You', null,1, 'Lettered','Lettered','FirstPageOnly', null,  1, GETDATE(), 1, GETDATE())
+select @Id = SCOPE_IDENTITY()
+
+--Insert section
+INSERT INTO [dbo].[EngageSurvey_Section]([SurveyId] ,[Text] ,[ShowText] ,[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy] ,[CreationDate])
+VALUES (@Id, 'Section 1', 0, 1, 1, GETDATE(), 1, GETDATE())
+select @sectionId = SCOPE_IDENTITY()
+
+--insert question 1
+INSERT INTO [EngageSurvey_Question] ([SectionId],[Text],[ShowText],[IsRequired],[RequiredMessage],[RelativeOrder],[SelectionLimit],[ControlType] ,[RevisingUser],[RevisionDate],[CreatedBy],[CreationDate])
+VALUES (@sectionId, 'Have you worked with other software development companies in the past?', 1, 1, null, 1, 0, 'VerticalOptionButtons', 1, GETDATE(), 1, GETDATE())
+
+select @questionId = SCOPE_IDENTITY()
+--insert answers for question 1
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Yes', 1, 1, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'No', 1, 2, 1, GETDATE(), 1, GETDATE())
+
+--insert question 2
+INSERT INTO [EngageSurvey_Question] ([SectionId],[Text],[ShowText],[IsRequired],[RequiredMessage],[RelativeOrder],[SelectionLimit],[ControlType] ,[RevisingUser],[RevisionDate],[CreatedBy],[CreationDate])
+VALUES (@sectionId, 'How many develeopers have you worked with?', 1, 1, null, 2, 0, 'DropDownChoices', 1, GETDATE(), 1, GETDATE())
+
+select @questionId = SCOPE_IDENTITY()
+--insert answers for question 2
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'One', 1, 1, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Two', 1, 2, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Three', 1, 3, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Four', 1, 4, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Lots', 1, 5, 1, GETDATE(), 1, GETDATE())
+
+--insert question 3
+INSERT INTO [EngageSurvey_Question] ([SectionId],[Text],[ShowText],[IsRequired],[RequiredMessage],[RelativeOrder],[SelectionLimit],[ControlType] ,[RevisingUser],[RevisionDate],[CreatedBy],[CreationDate])
+VALUES (@sectionId, 'Please select all that apply.', 1, 1, null, 3, 0, 'Checkbox', 1, GETDATE(), 1, GETDATE())
+
+select @questionId = SCOPE_IDENTITY()
+--insert answers for question 3
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'We enjoy working with Campus', 1, 1, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'It''s just ok working with Campus', 1, 2, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'We don''t enjoy working with Campus', 1, 3, 1, GETDATE(), 1, GETDATE())
+INSERT INTO [dbo].[EngageSurvey_Answer] ([QuestionId] ,[Text] ,[IsCorrect],[RelativeOrder],[RevisingUser] ,[RevisionDate] ,[CreatedBy],[CreationDate])
+VALUES( @questionId, 'Campus is a terrible product.', 1, 4, 1, GETDATE(), 1, GETDATE())
+
+
+--insert question 4
+INSERT INTO [EngageSurvey_Question] ([SectionId],[Text],[ShowText],[IsRequired],[RequiredMessage],[RelativeOrder],[SelectionLimit],[ControlType] ,[RevisingUser],[RevisionDate],[CreatedBy],[CreationDate])
+VALUES (@sectionId, 'Enter your initals here:', 1, 1, null, 4, 0, 'SmallTextInputField', 1, GETDATE(), 1, GETDATE())
+
+
+
+

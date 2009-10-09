@@ -17,7 +17,7 @@ namespace Engage.Dnn.Survey
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-
+    
     /// <summary>
     /// Summary description for Utility.
     /// </summary>

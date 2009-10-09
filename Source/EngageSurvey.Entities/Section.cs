@@ -15,6 +15,7 @@ namespace Engage.Survey.Entities
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
+    using Engage.Util;
     using Util;
 
     /// <summary>
@@ -47,7 +48,17 @@ namespace Engage.Survey.Entities
         /// <value></value>
         public string Formatting
         {
-            get { return string.Empty; }
+            get
+            {
+                ISurvey survey = this.Survey;
+                if (survey != null)
+                {
+                    ElementFormatOptions option = (ElementFormatOptions)EngageType.GetFromShortDescription(survey.SectionFormatOption, typeof(ElementFormatOptions));
+                    return Util.Utility.PrependFormatting(option, this.RelativeOrder);
+                }
+
+                return string.Empty;
+            }
         }
 
         #region ISection signatures
@@ -69,6 +80,19 @@ namespace Engage.Survey.Entities
             return null;
         }
 
+        /// <summary>
+        /// Gets the survey.
+        /// </summary>
+        /// <returns></returns>
+        public ISurvey GetSurvey()
+        {
+            return this.Survey;
+        }
+
+        /// <summary>
+        /// Gets the questions.
+        /// </summary>
+        /// <returns>Array of IQuestions</returns>
         public List<IQuestion> GetQuestions()
         {
             List<IQuestion> questions = new List<IQuestion>();
@@ -144,7 +168,7 @@ namespace Engage.Survey.Entities
 
                 if (string.IsNullOrEmpty(control.ID) == false)
                 {
-                    if (question.IsRequired)
+                    if (question.IsRequired && question.ControlType != ControlType.Checkbox.Description)
                     {
                         validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.RequiredField, "error-message", questionWrapDiv, control.ID, question.UnformattedText + " is required.", "survey", 1, 0);
                     }
@@ -188,7 +212,6 @@ namespace Engage.Survey.Entities
 
         #endregion
         
-
         /// <summary>
         /// RelativeOrderComparer class
         /// </summary>
@@ -235,7 +258,7 @@ namespace Engage.Survey.Entities
             ///                 </param>            
             public int Compare(ISection x, ISection y)
             {
-                if (x == null && y == null)
+                if (x == null || y == null)
                 {
                     return 0;
                 }

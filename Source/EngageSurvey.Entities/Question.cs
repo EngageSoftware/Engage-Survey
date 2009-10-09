@@ -12,6 +12,7 @@
 namespace Engage.Survey.Entities
 {
     using System.Collections.Generic;
+    using Engage.Util;
     using Util;
 
     /// <summary>
@@ -154,34 +155,14 @@ namespace Engage.Survey.Entities
         {
             get
             {
-                //ISurvey survey = GetSection().GetSurvey();
-                string returnValue = string.Empty;
+                ISurvey survey = this.Section.Survey;
+                if (survey != null)
+                {
+                    ElementFormatOptions option = (ElementFormatOptions)EngageType.GetFromShortDescription(survey.QuestionFormatOption, typeof(ElementFormatOptions));
+                    return Util.Utility.PrependFormatting(option, this.RelativeOrder);
+                }
 
-                ////seeing where this is going
-                ////Needed when rendering section outside the context of a survey, may need NullSurvey if this continues
-                //if ((survey != null) && (survey.ContainsAttribute("QuestionFormatOption")))
-                //{
-                //    string option = survey.GetAttribute("QuestionFormatOption").AttributeValue;
-
-                //    if (option == ElementFormatOptions.Numbered.Description)
-                //    {
-                //        returnValue = this.oa.RelativeOrder + ". ";
-                //    }
-                //    else if (option == ElementFormatOptions.Lettered.Description)
-                //    {
-                //        returnValue = Utility.ConvertNumberToCharacter(this.oa.RelativeOrder.ToString()) + ". ";
-                //    }
-                //    else if (option == ElementFormatOptions.Roman.Description)
-                //    {
-                //        returnValue = Utility.ConvertNumberToRomanNumeral(this.oa.RelativeOrder.ToString()) + ". ";
-                //    }
-                //    else
-                //    {
-                //        returnValue = string.Empty;
-                //    }
-                //}
-
-                return returnValue;
+                return string.Empty;
             }
         }
 

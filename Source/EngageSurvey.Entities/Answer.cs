@@ -12,6 +12,7 @@
 namespace Engage.Survey.Entities
 {
     using System.Collections.Generic;
+    using Engage.Util;
     using Util;
 
     public partial class Answer : IAnswer
@@ -43,23 +44,6 @@ namespace Engage.Survey.Entities
         {
             get
             {
-                //if (this.survey != null)
-                //{
-                //    ElementFormatOptions option = this.survey.AnswerFormatOption;
-                //    if (option == ElementFormatOptions.Numbered)
-                //    {
-                //        return this.relativeOrder.ToString() + ". ";
-                //    }
-                //    else if (option == ElementFormatOptions.Lettered)
-                //    {
-                //        return Utility.ConvertNumberToCharacter(this.relativeOrder.ToString()) + ". ";
-                //    }
-                //    else if (option == ElementFormatOptions.Roman)
-                //    {
-                //        return Utility.ConvertNumberToRomanNumeral(this.relativeOrder.ToString()) + ". ";
-                //    }
-                //}
-
                 //none
                 return string.Empty;
             }

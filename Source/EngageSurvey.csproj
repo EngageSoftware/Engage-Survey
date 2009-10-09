@@ -153,6 +153,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\01.00.00.SqlDataProvider" />
     <None Include="EngageSurvey.Build" />
     <None Include="EngageSurvey.4.dnn" />
+    <None Include="Providers\DataProviders\SqlDataProvider\SampleEvaluations.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +194,9 @@
       <Project>{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}</Project>
       <Name>Engage.Survey</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\EditSurvey.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_GlobalResources\" />

@@ -18,9 +18,9 @@ Global
 		SccProjectUniqueName2 = EngageSurvey.Entities\\EngageSurvey.Entities.csproj
 		SccProjectName2 = EngageSurvey.Entities
 		SccLocalPath2 = EngageSurvey.Entities
-		SccProjectUniqueName3 = G:\\Engage\u00203.0\\Engage.Survey\\Engage.Survey.csproj
-		SccProjectName3 = ../../Engage\u00203.0/Engage.Survey
-		SccLocalPath3 = G:\\Engage\u00203.0\\Engage.Survey
+		SccProjectUniqueName3 = Engage.Survey\\Engage.Survey.csproj
+		SccProjectName3 = Engage.Survey
+		SccLocalPath3 = Engage.Survey
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -126,7 +126,19 @@ namespace Engage.Dnn.Survey
         /// <returns></returns>
         public string BuildLinkUrl(string qsParameters)
         {
-            return DotNetNuke.Common.Globals.NavigateURL(TabId, "", qsParameters);
+            return BuildLinkUrl(TabId, "", qsParameters);
+        }
+
+        /// <summary>
+        /// Builds the link URL.
+        /// </summary>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="controlKey">The control key.</param>
+        /// <param name="qsParameters">The qs parameters.</param>
+        /// <returns></returns>
+        public static string BuildLinkUrl(int tabId, string controlKey, string qsParameters)
+        {
+            return DotNetNuke.Common.Globals.NavigateURL(tabId, "", qsParameters);
         }
 
         /// <summary>

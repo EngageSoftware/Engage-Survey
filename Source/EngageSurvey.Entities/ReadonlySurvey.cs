@@ -11,21 +11,68 @@
 
 namespace Engage.Survey.Entities
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.UI.WebControls;
+    using Engage.Util;
     using Util;
 
     public class ReadonlySurvey: ISurvey
     {
+        /// <summary>
+        /// Loads a completed survey using the ResponseHeaderId for the User/Survey.
+        /// </summary>
+        /// <param name="responseHeaderId">The response header id.</param>
+        /// <returns></returns>
+        public static ISurvey LoadSurvey(int responseHeaderId)
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            var survey = (from s in context.Responses
+                          where s.ResponseHeaderId == responseHeaderId
+
+                          select new ReadonlySurvey
+                          {
+                              SurveyId = s.SurveyId,
+                              Text = s.SurveyText,
+                              ShowText = s.ShowSurveyText,
+                              TitleOption = s.TitleOption,
+                              QuestionFormatOption = s.QuestionFormatOption,
+                              SectionFormatOption = s.SectionFormatOption
+                          }).FirstOrDefault();
+
+            survey.ResponseHeaderId = responseHeaderId;
+            return survey;
+        }
+
+        /// <summary>
+        /// Loads all completed surveys.
+        /// </summary>
+        /// <returns></returns>
+        public static IQueryable<ReadonlySurvey> LoadSurveys()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return (from s in context.Responses
+                    join r in context.ResponseHeaders on s.ResponseHeaderId equals r.ResponseHeaderId
+                    select
+                            new ReadonlySurvey
+                            {
+                                SurveyId = s.SurveyId,
+                                Text = s.SurveyText,
+                                ShowText = s.ShowSurveyText,
+                                TitleOption = s.TitleOption,
+                                QuestionFormatOption = s.QuestionFormatOption,
+                                SectionFormatOption = s.SectionFormatOption,
+                                ResponseHeaderId = r.ResponseHeaderId
+                            }).Distinct();
+        }
+
         /// <summary>
         /// ResponseHeaderId
         /// </summary>
         public int ResponseHeaderId
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>
@@ -54,6 +101,7 @@ namespace Engage.Survey.Entities
         public string Formatting
         {
             get { return string.Empty; }
+
         }
 
         /// <summary>
@@ -99,21 +147,21 @@ namespace Engage.Survey.Entities
             SurveyModelDataContext context = SurveyModelDataContext.Instance;
             var results = (from s in context.Responses
                           where s.ResponseHeaderId == this.ResponseHeaderId && s.SurveyId == this.SurveyId
-                          orderby s.SectionRelativeOrder, s.QuestionRelativeOrder, s.AnswerRelativeOrder
-                          select new ReadonlySection()
-                              {
+                          select new ReadonlySection {
+                                  SurveyId = s.SurveyId,
                                   SectionId = s.SectionId,
                                   Text = s.SectionText,
                                   ShowText = s.ShowSectionText,
                                   RelativeOrder = s.SectionRelativeOrder,
                                   ResponseHeaderId = s.ResponseHeaderId
-                              }).Distinct().ToList();
+                              }).Distinct();
             List<ISection> sections = new List<ISection>();
             foreach (ReadonlySection s in results)
             {
                 sections.Add(s);
             }
             
+            sections.Sort(new Section.RelativeOrderComparer());
             return sections;
         }
 
@@ -143,7 +191,7 @@ namespace Engage.Survey.Entities
         {
             get
             {
-                throw new NotImplementedException();
+                return string.Empty;
             }
         }
 
@@ -155,7 +203,7 @@ namespace Engage.Survey.Entities
         {
             get
             {
-                throw new NotImplementedException();
+                return string.Empty;
             }
         }
 
@@ -167,7 +215,7 @@ namespace Engage.Survey.Entities
         {
             get
             {
-                throw new NotImplementedException();
+                return string.Empty;
             }
         }
 
@@ -192,10 +240,10 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Gets or sets the answer format option.
+        /// Gets or sets the section format option.
         /// </summary>
         /// <value>The answer format option.</value>
-        public string AnswerFormatOption
+        public string SectionFormatOption
         {
             get;
             set;
@@ -255,45 +303,7 @@ namespace Engage.Survey.Entities
         /// <returns></returns>
         public int Save(int userId)
         {
-            throw new NotImplementedException();
-        }
-
-        public static ISurvey LoadSurvey(int responseHeaderId)
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            var survey = (from s in context.Responses
-                          where s.ResponseHeaderId == responseHeaderId
-
-                          select new ReadonlySurvey
-                          {
-                              SurveyId =  s.SurveyId,
-                              Text = s.SurveyText,
-                              ShowText = s.ShowSurveyText,
-                              TitleOption = s.TitleOption,
-                              QuestionFormatOption = s.QuestionFormatOption,
-                              AnswerFormatOption = s.AnswerFormatOption
-                          }).FirstOrDefault();
-
-            survey.ResponseHeaderId = responseHeaderId;
-            return survey;
-        }
-
-        public static IQueryable<ReadonlySurvey> LoadSurveys()
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return (from s in context.Responses
-                           join r in context.ResponseHeaders on s.ResponseHeaderId equals r.ResponseHeaderId
-                           select
-                                   new ReadonlySurvey
-                                   {
-                                       SurveyId = s.SurveyId,
-                                       Text = s.SurveyText,
-                                       ShowText = s.ShowSurveyText,
-                                       TitleOption = s.TitleOption,
-                                       QuestionFormatOption = s.QuestionFormatOption,
-                                       AnswerFormatOption = s.AnswerFormatOption,
-                                       ResponseHeaderId = r.ResponseHeaderId
-                                   }).Distinct();
+            return 0;
         }
     }
 
@@ -333,7 +343,17 @@ namespace Engage.Survey.Entities
         /// <value></value>
         public string Formatting
         {
-            get { return string.Empty; }
+            get
+            {
+                ISurvey survey = this.GetSurvey();
+                if (survey != null)
+                {
+                    ElementFormatOptions option = (ElementFormatOptions)EngageType.GetFromShortDescription(survey.SectionFormatOption, typeof(ElementFormatOptions));
+                    return Util.Utility.PrependFormatting(option, this.RelativeOrder);
+                }
+
+                return string.Empty;
+            }
         }
 
         /// <summary>
@@ -347,6 +367,16 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Gets the survey.
+        /// </summary>
+        /// <returns></returns>
+        public ISurvey GetSurvey()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return context.Surveys.FirstOrDefault(s => s.SurveyId == this.SurveyId);
+        }
+
+        /// <summary>
         /// Gets the questions.
         /// </summary>
         /// <returns>Array of IQuestions</returns>
@@ -356,8 +386,7 @@ namespace Engage.Survey.Entities
             var results = (from s in context.Responses
                            where s.ResponseHeaderId == this.ResponseHeaderId && s.SectionId == this.SectionId
                            select
-                                   new ReadonlyQuestion()
-                                       {
+                                   new ReadonlyQuestion {
                                                QuestionId = s.QuestionId,
                                                Text = s.QuestionText,
                                                Comments = s.Comments,
@@ -375,7 +404,8 @@ namespace Engage.Survey.Entities
                     //Special case, these are open ended questions with no rows in the asnwer table. LargeTextInputField or SmallTextInputField
                     q.Responses = new List<UserResponse>();
                     //fetch the open ended response since we can't include in distinct list above.
-                    var result = (context.Responses.Where(r => r.ResponseHeaderId == this.ResponseHeaderId && r.QuestionId == q.QuestionId)).FirstOrDefault();
+                    ReadonlyQuestion question = q;
+                    var result = (context.Responses.Where(r => r.ResponseHeaderId == this.ResponseHeaderId && r.QuestionId == question.QuestionId)).FirstOrDefault();
                     UserResponse response = new UserResponse { RelationshipKey = q.RelationshipKey, AnswerValue = result.UserResponse };
                     q.Responses.Add(response);    
                 }
@@ -407,6 +437,16 @@ namespace Engage.Survey.Entities
         /// </summary>
         /// <value><c>true</c> if [show text]; otherwise, <c>false</c>.</value>
         public bool ShowText
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the survey id.
+        /// </summary>
+        /// <value>The survey id.</value>
+        public int SurveyId
         {
             get;
             set;
@@ -463,16 +503,6 @@ namespace Engage.Survey.Entities
 
     public class ReadonlyQuestion : IQuestion
     {
-        ///// <summary>
-        ///// Gets or sets the answer value. 
-        ///// </summary>
-        ///// <value>The answer value.</value>
-        //public string AnswerValue
-        //{
-        //    get;
-        //    set;
-        //}
-
         /// <summary>
         /// ResponseHeaderId
         /// </summary>
@@ -508,9 +538,24 @@ namespace Engage.Survey.Entities
         /// <value></value>
         public string Formatting
         {
-            get { return string.Empty; }
+            get
+            {
+                ISurvey survey = this.GetSection().GetSurvey();
+                if (survey != null)
+                {
+
+                    ElementFormatOptions option = (ElementFormatOptions)EngageType.GetFromShortDescription(survey.QuestionFormatOption, typeof(ElementFormatOptions));
+                    return Util.Utility.PrependFormatting(option, this.RelativeOrder);
+                }
+
+                return string.Empty;
+            }
         }
 
+        /// <summary>
+        /// Gets or sets the section id.
+        /// </summary>
+        /// <value>The section id.</value>
         public int SectionId
         {
             get;
@@ -534,7 +579,18 @@ namespace Engage.Survey.Entities
         public ISection GetSection()
         {
             SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return context.Sections.FirstOrDefault(s => s.SectionId == this.SectionId);
+            return (from s in context.Responses
+                           where s.ResponseHeaderId == this.ResponseHeaderId && s.SectionId == this.SectionId
+                           select
+                                   new ReadonlySection
+                                       {
+                                               SurveyId = s.SurveyId,
+                                               SectionId = s.SectionId,
+                                               Text = s.SectionText,
+                                               ShowText = s.ShowSectionText,
+                                               RelativeOrder = s.SectionRelativeOrder,
+                                               ResponseHeaderId = s.ResponseHeaderId
+                                       }).FirstOrDefault();
         }
 
         /// <summary>
@@ -551,8 +607,7 @@ namespace Engage.Survey.Entities
             var results = (from s in context.Responses
                            where s.ResponseHeaderId == this.ResponseHeaderId && s.QuestionId == this.QuestionId
                            select
-                                   new ReadonlyAnswer()
-                                       {
+                                   new ReadonlyAnswer {
                                                AnswerId = s.AnswerId.GetValueOrDefault(0),
                                                Text = s.AnswerText,
                                                RelativeOrder = s.AnswerRelativeOrder.GetValueOrDefault(0),
@@ -707,7 +762,6 @@ namespace Engage.Survey.Entities
 
     public class ReadonlyAnswer : IAnswer
     {
-
         /// <summary>
         /// Gets or sets the response header id.
         /// </summary>
@@ -743,7 +797,34 @@ namespace Engage.Survey.Entities
         /// <value></value>
         public string Formatting
         {
-            get { return string.Empty; }
+            get
+            {
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Gets the question for this answer.
+        /// </summary>
+        /// <returns></returns>
+// ReSharper disable UnusedMember.Local
+        private IQuestion GetQuestion()
+// ReSharper restore UnusedMember.Local
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return (from s in context.Responses
+                           where s.ResponseHeaderId == this.ResponseHeaderId && s.QuestionId == this.QuestionId
+                           select
+                                   new ReadonlyQuestion
+                                   {
+                                       QuestionId = s.QuestionId,
+                                       Text = s.QuestionText,
+                                       Comments = s.Comments,
+                                       RelativeOrder = s.QuestionRelativeOrder,
+                                       ControlType = s.ControlType,
+                                       SectionId = s.SectionId,
+                                       ResponseHeaderId = s.ResponseHeaderId
+                                   }).FirstOrDefault();
         }
 
         /// <summary>
@@ -786,6 +867,10 @@ namespace Engage.Survey.Entities
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the section id.
+        /// </summary>
+        /// <value>The section id.</value>
         public int SectionId
         {
             get;

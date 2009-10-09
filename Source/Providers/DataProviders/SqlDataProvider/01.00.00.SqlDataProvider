@@ -6,10 +6,6 @@ GO
 IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Question]'))
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]
 GO
-/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:37:47 ******/
-IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Response]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]
-GO
 /****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:37:53 ******/
 IF EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Section]'))
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Section] DROP CONSTRAINT [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]
@@ -52,8 +48,8 @@ CREATE TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey](
 	[FinalMessage] [text] NULL,
 	[FinalUrl] [nvarchar](256) NULL,
 	[ShowText] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}EngageSurvey_Survey_ShowTitle]  DEFAULT ((1)),
+	[SectionFormatOption] [nvarchar](256) NOT NULL,
 	[QuestionFormatOption] [nvarchar](256) NOT NULL,
-	[AnswerFormatOption] [nvarchar](256) NOT NULL,
 	[TitleOption] [nvarchar](256) NOT NULL,
 	[LogoURL] [nvarchar](256) NULL,
 	[RevisingUser] [int] NOT NULL,
@@ -78,6 +74,7 @@ CREATE TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response](
 	[SectionText] [nvarchar](256) NOT NULL,
 	[SectionRelativeOrder] [int] NOT NULL,
 	[ShowSectionText] [bit] NOT NULL CONSTRAINT [DF_EngageCampus_Response_ShowSurveyText1]  DEFAULT ((1)),
+	[SectionFormatOption] [nvarchar](256) NOT NULL,
 	[QuestionId] [int] NOT NULL,
 	[QuestionText] [nvarchar](256) NOT NULL,
 	[Comments] [nvarchar](4000) NULL,
@@ -85,7 +82,6 @@ CREATE TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response](
 	[QuestionFormatOption] [nvarchar](256) NOT NULL,
 	[ControlType] [nvarchar](256) NOT NULL,
 	[AnswerId] [int] NULL,
-	[AnswerFormatOption] [nvarchar](256) NOT NULL,
 	[AnswerText] [nvarchar](256) NULL,
 	[AnswerRelativeOrder] [int] NULL,
 	[AnswerIsCorrect] [bit] NULL CONSTRAINT [DF_EngageCampus_Response_IsCorrect]  DEFAULT ((0)),
@@ -188,12 +184,6 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question]  WITH CHECK 
 REFERENCES {databaseOwner}[{objectQualifier}EngageSurvey_Section] ([SectionId])
 GO
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question] CHECK CONSTRAINT [FK_{objectQualifier}EngageSurvey_Question_{objectQualifier}EngageSurvey_Section]
-GO
-/****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:37:47 ******/
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response]  WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey] FOREIGN KEY([SurveyId])
-REFERENCES {databaseOwner}[{objectQualifier}EngageSurvey_Survey] ([SurveyId])
-GO
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response] CHECK CONSTRAINT [FK_{objectQualifier}EngageSurvey_Response_{objectQualifier}EngageSurvey_Survey]
 GO
 /****** Object:  ForeignKey [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey]    Script Date: 10/07/2009 16:37:53 ******/
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Section]  WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}EngageSurvey_Section_{objectQualifier}EngageSurvey_Survey] FOREIGN KEY([SurveyId])

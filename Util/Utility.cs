@@ -72,7 +72,6 @@ namespace Engage.Survey.Util
         /// </summary>
         public const string CssClassRequired = "required";
 
-
         /// <summary>
         /// Create a web control for the survey renderer.
         /// </summary>
@@ -121,6 +120,11 @@ namespace Engage.Survey.Util
             return control;
         }
 
+        /// <summary>
+        /// Renders the vertical option buttons.
+        /// </summary>
+        /// <param name="question">The question.</param>
+        /// <returns></returns>
         private static Control RenderVerticalOptionButtons(IQuestion question)
         {
             RadioButtonList rbl = new RadioButtonList
@@ -128,7 +132,7 @@ namespace Engage.Survey.Util
                 RepeatColumns = 1,
                 RepeatDirection = RepeatDirection.Vertical,
                 RepeatLayout = RepeatLayout.Table,
-                ID = question.QuestionId.ToString()
+                ID = question.RelationshipKey.ToString()
             };
             rbl.Attributes.Add("RelationshipKey", question.RelationshipKey.ToString());
             rbl.CssClass = CssClassAnswerVertical;
@@ -153,6 +157,11 @@ namespace Engage.Survey.Util
             return rbl;
         }
 
+        /// <summary>
+        /// Renders the horizontal option buttons.
+        /// </summary>
+        /// <param name="question">The question.</param>
+        /// <returns></returns>
         private static Control RenderHorizontalOptionButtons(IQuestion question)
         {
             RadioButtonList rbl = new RadioButtonList
@@ -161,7 +170,7 @@ namespace Engage.Survey.Util
                 RepeatColumns = question.GetAnswers().Count,
                 RepeatDirection = RepeatDirection.Horizontal,
                 RepeatLayout = RepeatLayout.Table,
-                ID = (question.RelationshipKey.ToString())
+                ID = question.RelationshipKey.ToString()
             };
             rbl.Attributes.Add("RelationshipKey", question.RelationshipKey.ToString());
 
@@ -185,6 +194,11 @@ namespace Engage.Survey.Util
             return rbl;
         }
 
+        /// <summary>
+        /// Renders the small input field.
+        /// </summary>
+        /// <param name="question">The question.</param>
+        /// <returns></returns>
         private static Control RenderSmallInputField(IQuestion question)
         {
             TextBox tb = new TextBox
@@ -196,7 +210,7 @@ namespace Engage.Survey.Util
 
             // make these a designer variable?
             tb.Attributes.Add("RelationshipKey", question.RelationshipKey.ToString());
-            tb.ID = question.QuestionId.ToString();
+            tb.ID = question.RelationshipKey.ToString();
 
             //pre-select if needed
             if (question.Responses != null && question.Responses.Count == 1)
@@ -207,6 +221,11 @@ namespace Engage.Survey.Util
             return tb;
         }
 
+        /// <summary>
+        /// Renders the large text input field.
+        /// </summary>
+        /// <param name="question">The question.</param>
+        /// <returns></returns>
         private static Control RenderLargeTextInputField(IQuestion question)
         {
             TextBox tb = new TextBox
@@ -218,7 +237,7 @@ namespace Engage.Survey.Util
             };
 
             tb.Attributes.Add("RelationshipKey", question.RelationshipKey.ToString());
-            tb.ID = question.QuestionId.ToString();
+            tb.ID = question.RelationshipKey.ToString();
 
             //pre-select if needed
             if (question.Responses != null && question.Responses.Count == 1)
@@ -228,6 +247,12 @@ namespace Engage.Survey.Util
             return tb;
         }
 
+        /// <summary>
+        /// Renders the check box list.
+        /// </summary>
+        /// <param name="question">The question.</param>
+        /// <param name="readOnly">if set to <c>true</c> [read only].</param>
+        /// <returns></returns>
         private static Control RenderCheckBoxList(IQuestion question, bool readOnly)
         {
             HtmlGenericControl container = new HtmlGenericControl("SPAN") { ID = ("CheckBoxSpan" + question.QuestionId) };
@@ -269,6 +294,11 @@ namespace Engage.Survey.Util
             return container;
         }
 
+        /// <summary>
+        /// Renders the drop down list.
+        /// </summary>
+        /// <param name="question">The question.</param>
+        /// <returns></returns>
         private static Control RenderDropDownList(IQuestion question)
         {
             DropDownList ddl = new DropDownList { CssClass = CssClassAnswerVertical };
@@ -295,69 +325,78 @@ namespace Engage.Survey.Util
             return ddl;
         }
 
-        public static string ConvertNumberToCharacter(string value)
+        /// <summary>
+        /// Converts the number to character.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public static string ConvertNumberToCharacter(int value)
         {
 
             switch (value)
             {
-                case "1":
+                case 1:
                     return "A";
-                case "2":
+                case 2:
                     return "B";
-                case "3":
+                case 3:
                     return "C";
-                case "4":
+                case 4:
                     return "D";
-                case "5":
+                case 5:
                     return "E";
-                case "6":
+                case 6:
                     return "F";
-                case "7":
+                case 7:
                     return "G";
-                case "8":
+                case 8:
                     return "H";
-                case "9":
+                case 9:
                     return "I";
-                case "10":
+                case 10:
                     return "J";
-                case "11":
+                case 11:
                     return "K";
-                case "12":
+                case 12:
                     return "L";
-                case "13":
+                case 13:
                     return "M";
-                case "14":
+                case 14:
                     return "N";
-                case "15":
+                case 15:
                     return "O";
-                case "16":
+                case 16:
                     return "P";
-                case "17":
+                case 17:
                     return "Q";
-                case "18":
+                case 18:
                     return "R";
-                case "19":
+                case 19:
                     return "S";
-                case "20":
+                case 20:
                     return "T";
-                case "21":
+                case 21:
                     return "U";
-                case "22":
+                case 22:
                     return "V";
-                case "23":
+                case 23:
                     return "W";
-                case "24":
+                case 24:
                     return "X";
-                case "25":
+                case 25:
                     return "Y";
-                case "26":
+                case 26:
                     return "Z";
                 default:
-                    return value;
-
+                    return string.Empty;
             }
         }
 
+        /// <summary>
+        /// Converts the number to roman numeral.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public static string ConvertNumberToRomanNumeral(int value)
         {
             try
@@ -391,6 +430,13 @@ namespace Engage.Survey.Util
             }
         }
 
+        /// <summary>
+        /// Generates the number.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="magnitude">The magnitude.</param>
+        /// <param name="letter">The letter.</param>
+        /// <returns></returns>
         private static string GenerateNumber(ref int value, int magnitude, char letter)
         {
             StringBuilder numberstring = new StringBuilder();
@@ -400,6 +446,29 @@ namespace Engage.Survey.Util
                 numberstring.Append(letter);
             }
             return (numberstring.ToString());
+        }
+
+        /// <summary>
+        /// Prepends the formatting.
+        /// </summary>
+        /// <param name="option">The option.</param>
+        /// <param name="relativeOrder">The relative order.</param>
+        /// <returns></returns>
+        public static string PrependFormatting(ElementFormatOptions option, int relativeOrder)
+        {
+            if (option.Description == ElementFormatOptions.Numbered.Description)
+            {
+                return relativeOrder + ". ";
+            }
+            if (option.Description == ElementFormatOptions.Lettered.Description)
+            {
+                return ConvertNumberToCharacter(relativeOrder) + ". ";
+            }
+            if (option.Description == ElementFormatOptions.Roman.Description)
+            {
+                return ConvertNumberToRomanNumeral(relativeOrder) + ". ";
+            }
+            return string.Empty;
         }
     }
 }

@@ -39,8 +39,14 @@ namespace Engage.Survey.UI
     [ToolboxData("<{0}:SurveyControl SurveyTypeId='-1' runat=server />")]
     public class SurveyControl : CompositeControl
     {
+        /// <summary>
+        /// SaveEventHandler used for Save Completed event.
+        /// </summary>
         public delegate void SaveEventHandler(object sender, SavedEventArgs e);
 
+        /// <summary>
+        /// Occurs when [survey completed].
+        /// </summary>
         public event SaveEventHandler SurveyCompleted;
 
         /// <summary>
@@ -93,6 +99,10 @@ namespace Engage.Survey.UI
         /// </summary>
         public const string CssClassSubmitArea = "submit-area";
 
+        /// <summary>
+        /// Raises the <see cref="SurveyCompleted"/> event.
+        /// </summary>
+        /// <param name="e">The <see cref="Engage.Survey.UI.SavedEventArgs"/> instance containing the event data.</param>
         protected virtual void OnSurveyCompleted(SavedEventArgs e)
         {
             if (SurveyCompleted != null)
@@ -401,7 +411,6 @@ namespace Engage.Survey.UI
             }
         }
         
-       
         /// <summary>
         /// Redirects this instance.
         /// </summary>
@@ -434,11 +443,19 @@ namespace Engage.Survey.UI
 
     public class SavedEventArgs : EventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SavedEventArgs"/> class.
+        /// </summary>
+        /// <param name="responseId">The response id.</param>
         public SavedEventArgs(int responseId)
         {
             this.ResponseId = responseId;
         }
 
+        /// <summary>
+        /// Gets or sets the response id.
+        /// </summary>
+        /// <value>The response id.</value>
         public int ResponseId
         {
             get;

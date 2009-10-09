@@ -21,6 +21,12 @@ namespace Engage.Survey
     public interface ISection : ISurveyElement
     {
         /// <summary>
+        /// Gets the survey.
+        /// </summary>
+        /// <returns></returns>
+        ISurvey GetSurvey();
+
+        /// <summary>
         /// Gets the questions.
         /// </summary>
         /// <returns>Array of IQuestions</returns>

@@ -107,8 +107,8 @@ namespace Engage.Survey.Util
                 sb.Append("return (value.length <= val.maxlength);");
                 sb.Append("}");
                 sb.Append("</script>");
-
-                this.Page.RegisterClientScriptBlock("TxtBxLngthValIsValid", sb.ToString());
+                
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "TxtBxLngthValIsValid", sb.ToString());
             }
         }
 

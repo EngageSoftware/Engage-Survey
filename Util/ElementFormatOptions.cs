@@ -11,42 +11,47 @@
 
 namespace Engage.Survey.Util
 {
+    using Engage.Util;
+
     /// <summary>
     /// ElementFormatOptions
     /// </summary>
-    public class ElementFormatOptions 
+    public class ElementFormatOptions : EngageType
     {
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>The description.</value>
-        public string Description
-        {
-            get;
-            set;
-        }
+        ///// <summary>
+        ///// Gets or sets the description.
+        ///// </summary>
+        ///// <value>The description.</value>
+        //public string Description
+        //{
+        //    get;
+        //    set;
+        //}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementFormatOptions"/> class.
         /// </summary>
         /// <param name="description">The description.</param>
-        public ElementFormatOptions(string description) 
+        public ElementFormatOptions(string description): base(0, description)
         {
-            this.Description = description;
+            //this.Description = description;
         }
 
         /// <summary>
         /// None 
         /// </summary>
         public static ElementFormatOptions None = new ElementFormatOptions("None");
+
         /// <summary>
         /// Numbered
         /// </summary>
         public static ElementFormatOptions Numbered = new ElementFormatOptions("Numbered");
+
         /// <summary>
         /// Lettered
         /// </summary>
         public static ElementFormatOptions Lettered = new ElementFormatOptions("Lettered");
+
         /// <summary>
         /// Roman
         /// </summary>

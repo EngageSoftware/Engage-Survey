@@ -79,10 +79,10 @@ namespace Engage.Survey
         string QuestionFormatOption { get; set; }
 
         /// <summary>
-        /// Gets or sets the answer format option.
+        /// Gets or sets the section format option.
         /// </summary>
         /// <value>The answer format option.</value>
-        string AnswerFormatOption { get; set; }
+        string SectionFormatOption { get; set; }
 
         /// <summary>
         /// Gets or sets the title option.

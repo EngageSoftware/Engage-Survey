@@ -13,14 +13,25 @@ namespace Engage.Survey
 {
     using Util;
 
+    /// <summary>
+    /// Represents a users response along with the relationship key information.
+    /// </summary>
     public class UserResponse
     {
+        /// <summary>
+        /// Gets or sets the relationship key.
+        /// </summary>
+        /// <value>The relationship key.</value>
         public Key RelationshipKey
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the answer value.
+        /// </summary>
+        /// <value>The answer value.</value>
         public string AnswerValue
         {
             get;

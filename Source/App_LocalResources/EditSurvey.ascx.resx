@@ -168,6 +168,9 @@
   <data name="QuestionNumberTitle.Text" xml:space="preserve">
     <value>Question</value>
   </data>
+  <data name="RemoveAnswerHyperLink.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
   <data name="SaveAllAnswersHyperLink.Text" xml:space="preserve">
     <value>Save All Answers</value>
   </data>

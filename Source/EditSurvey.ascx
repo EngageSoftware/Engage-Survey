@@ -19,13 +19,8 @@
     <fieldset class="ee-create-questions">
         <legend class="Head"><%=Localization.GetString("CreateNewQuestionsLabel.Text", LocalResourceFile)%></legend>
         <div class="ee-question">
-                <a href="" class="ee-edit add-section-title" id="AddSectionTitleLabel" runat="server"><%=Localization.GetString("AddSectionTitleLabel.Text", LocalResourceFile)%></a>
-                <div id="section-title-input" style="display:none;">
-                    <span class="ee-label"><%=Localization.GetString("TypeSectionTitleLabel.Text", LocalResourceFile)%></span>
-                    <span class="ee-input"><input id="SectionTitleTextBox" class="NormalTextBox" /></span><a href="" title="Remove section header" class="ee-delete add-section-title">Delete</a>
-                </div>
-                <span class="ee-label"><%=Localization.GetString("TypeQuestionLabel.Text", LocalResourceFile)%></span>
-                <span class="ee-input"><textarea class="NormalTextBox"></textarea></span>
+            <span class="ee-label"><%=Localization.GetString("TypeQuestionLabel.Text", LocalResourceFile)%></span>
+            <span class="ee-input"><textarea class="NormalTextBox"></textarea></span>
         </div>
         <div class="ee-define-answer">
             <span class="ee-label"><%=Localization.GetString("DefineAnswerLabel.Text", LocalResourceFile)%></span>
@@ -40,25 +35,27 @@
                         <option value="multiple-checkbox"><%=Localization.GetString("MultipleAnswerCheckboxesOption.Text", LocalResourceFile)%></option>
                     </select>
                 </span>                
-                <div class="answer-inputs">
-                    <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%></span>
-                    <div class="ai-selected">
-                        <span class="ai-input"><input id="AnswerInputTextBox" class="NormalTextBox" /></span>
-                        <a href="" title="Save this answer" class="ee-save"><%=Localization.GetString("SaveAnswerHyperLink.Text", LocalResourceFile)%></a>
-                        <a href="" title="Delete this answer, are you sure?" class="ee-delete"><%=Localization.GetString("DeleteAnswerHyperLink.Text", LocalResourceFile)%></a>
-                    </div>
-                    <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%></span>
-                    <div class="ai-selected">
-                        <span class="ai-input"><input id="Text1" class="NormalTextBox" /></span>
-                        <a href="" title="Save this answer" class="ee-save"><%=Localization.GetString("SaveAnswerHyperLink.Text", LocalResourceFile)%></a>
-                        <a href="" title="Delete this answer, are you sure?" class="ee-delete"><%=Localization.GetString("DeleteAnswerHyperLink.Text", LocalResourceFile)%></a>
-                    </div>
-                    <ul class="ee-action-btns">
-                        <li class="primary-btn"><a href="" title="Add New" class="add-new"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a</li>
-                        <li class="primary-btn"><a href="" title="Save all answers" class="save-all"><%=Localization.GetString("SaveAllAnswersHyperLink.Text", LocalResourceFile)%></a></li>
-                        <li class="secondary-btn"><a href="" title="Back" class="back"><%=Localization.GetString("BackHyperLink.Text", LocalResourceFile)%></a></li>
-                    </ul>
-                </div>
+                <ul class="answer-inputs">
+                    <li>
+                        <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%></span>
+                        <div class="ai-selected">
+                            <span class="ai-input"><input id="AnswerInputTextBox" class="NormalTextBox" /></span>
+                            <a href="" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
+                        </div>
+                    </li>
+                    <li>                        
+                        <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%></span>
+                        <div class="ai-selected">
+                            <span class="ai-input"><input id="Text1" class="NormalTextBox" /></span>
+                            <a href="" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
+                        </div>
+                    </li>
+                    <li class="primary-btn"><a href="" title="Add New" class="add-new"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a</li>
+                </ul>
+
+
+
+
             </span>
         </div>
         <ul class="ee-action-btns">
@@ -137,19 +134,11 @@
 </div>
 <script language="javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script language="javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
-<script type="text/javascript" language="javascript">
-    jQuery(document).ready(function() {
-        $(".add-section-title").click(function(event) {
-            $("#section-title-input").toggle("fast");
-            event.preventDefault();
-        });
-    });
-</script>
 <script type="text/javascript">
     $(function() {
-        $("#ee-previews").sortable({
+        $("#ee-previews, .answer-inputs").sortable({
             placeholder: 'ui-state-highlight'
         });
-        $("#ee-previews").disableSelection();
+        $("#ee-previews, .answer-inputs").disableSelection();
     });
 </script>

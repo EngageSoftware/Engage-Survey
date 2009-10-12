@@ -30,10 +30,10 @@
             .ee-description textarea.NormalTextBox{height:100px;}
         ul.ee-action-btns, ul.ee-pr-action-links{clear:both;padding:10px 15px 15px 110px;list-style:none;margin:0;}
             ul.ee-action-btns li{padding:0;list-style:none;margin:0;}
-                ul.ee-action-btns li.primary-btn a{color:#df3f00;font-weight:bold;font-size:16px;text-shadow:1px 1px 1px #fff;}
-                ul.ee-action-btns li.primary-btn a:hover{text-decoration:none;}
-            ul.ee-action-btns li.primary-btn{background: url(images/btn-bg.gif) repeat-x bottom;border:1px #f17b4d solid;padding:3px 15px;display:block;float:left;}
-            ul.ee-action-btns li.primary-btn:hover{text-decoration:none;background: url(images/btn-bg-on.gif) repeat-x bottom;}
+                ul.ee-action-btns li.primary-btn a, ul.answer-inputs li.primary-btn a{color:#df3f00;font-weight:bold;font-size:16px;text-shadow:1px 1px 1px #fff;}
+                ul.ee-action-btns li.primary-btn a:hover, ul.answer-inputs li.primary-btn a:hover{text-decoration:none;}
+            ul.ee-action-btns li.primary-btn, ul.answer-inputs li.primary-btn{background: url(images/btn-bg.gif) repeat-x bottom;border:1px #f17b4d solid;padding:3px 15px;display:block;float:left;}
+            ul.ee-action-btns li.primary-btn:hover, ul.answer-inputs li.primary-btn:hover{text-decoration:none;background: url(images/btn-bg-on.gif) repeat-x bottom;}
                 ul.ee-action-btns li.secondary-btn a{line-height:34px;padding-left:10px;color:#9e7261;font-weight:bold;font-size:16px;text-decoration:underline;}
                 ul.ee-action-btns li.secondary-btn a:hover{color:#000;text-decoration:none;}
             ul.ee-action-btns li.disabled, ul.ee-action-btns li.disabled:hover{border:1px #b2b2b2 solid;background: url(images/btn-bg.gif) repeat-x bottom;}
@@ -46,12 +46,11 @@
         .ee-define-answers{}
             .define-answer{float:left;display:block;}
             .define-answer .ee-input{margin-bottom:10px;}
-            .answer-inputs{background:#f7fee7;width:420px;margin-top:10px;padding:10px;border-bottom:1px #c4cbb2 solid;border-right:1px #cfcfcf solid;}
+            ul.answer-inputs{background:#f7fee7;width:420px;margin:10px 0 0 0;padding:10px;border-bottom:1px #c4cbb2 solid;border-right:1px #cfcfcf solid;list-style:none;clear:both;overflow:hidden;}
+				ul.answer-inputs li{list-style:none;}
                 #engage-evaluation .answer-inputs input.NormalTextBox, #engage-evaluation .answer-inputs textarea.NormalTextBox, #engage-evaluation .answer-inputs select.NormalTextBox{border:1px #cbcbcb solid;width:320px;padding:5px;}
-                .answer-inputs .ee-action-btns{padding-left:0;}
-                .answer-inputs ul.ee-action-btns li.primary-btn{margin-right:10px;}
-                .answer-inputs ul.ee-action-btns li.primary-btn a{font-size:12px;}
-                .answer-inputs ul.ee-action-btns li.secondary-btn a{padding-left:0px;font-size:12px;line-height:28px;}
+                ul.answer-inputs li.primary-btn a{font-size:12px;}
+                #engage-evaluation ul.answer-inputs a.ee-delete{padding-left:10px;}
                     .ai-label{font-weight:bold;}
 
 			ul#ee-previews{display:block;margin:0;padding:0;list-style:none;overflow:hidden;}

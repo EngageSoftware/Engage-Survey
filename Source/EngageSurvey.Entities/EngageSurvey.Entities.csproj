@@ -40,6 +40,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Engage.Framework, Version=3.1.1.27346, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

@@ -32,8 +32,25 @@ jQuery(function ($) {
     
     $(".add-new").click(function (event) {
         event.preventDefault();
-        var $answerNumberElement = $(".answer-inputs li:last").clone().appendTo('.answer-inputs').find('.answer-num');
+        
+        var $answerElement = $(".answer-inputs li:last").clone().appendTo('.answer-inputs');
+        
+        // increment answer number
+        var $answerNumberElement = $answerElement.find('.answer-num');
         var answerNumber = parseInt($answerNumberElement.text(), 10);
         $answerNumberElement.text(answerNumber + 1);
+        
+        $answerElement.find('input').val('');
+    });
+    
+    $(".answer-inputs .ee-delete").live('click', function (event) {
+        event.preventDefault();
+        
+        var $parentAnswerElement = $(this).parents('li');
+        $parentAnswerElement.remove();
+        
+        $(".answer-inputs li").each(function (i, elem) {
+            $(elem).find('.answer-num').text(i + 1);
+        });
     });
 });

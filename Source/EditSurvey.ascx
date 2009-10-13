@@ -39,14 +39,14 @@
                     <li>
                         <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%> <span class="answer-num">1</span></span>
                         <div class="ai-selected">
-                            <span class="ai-input"><input id="AnswerInputTextBox" class="NormalTextBox" /></span>
+                            <span class="ai-input"><input type="text" /></span>
                             <a href="" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
                         </div>
                     </li>
                     <li>                        
                         <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%> <span class="answer-num">2</span></span>
                         <div class="ai-selected">
-                            <span class="ai-input"><input id="Text1" class="NormalTextBox" /></span>
+                            <span class="ai-input"><input type="text"/></span>
                             <a href="" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
                         </div>
                     </li>

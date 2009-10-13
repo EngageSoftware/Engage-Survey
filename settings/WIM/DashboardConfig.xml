@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <configSections>
+        <section name="TfsDataProvider" type="IRC.Gear.WorkItemManager.Dashboard.TfsDataProvider.Config.TfsDataProviderConfigurationSectionHandler, IRC.Gear.WorkItemManager.Dashboard.TfsDataProvider, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    </configSections>
+    <appSettings>
+        <add key="BuildDataProviderName" value="TfsBuildDataProvider" />
+        <add key="SourceControlDataProviderName" value="TfsSourceControlDataProvider" />
+        <add key="TaskDataProviderName" value="TfsTaskDataProvider" />
+        <add key="BugDataProviderName" value="TfsBugDataProvider" />
+        <add key="TfsBuildDataProvider" value="IRC.Gear.WorkItemManager.Dashboard.TfsDataProvider.BuildDataProvider, IRC.Gear.WorkItemManager.Dashboard.TfsDataProvider" />
+        <add key="TfsSourceControlDataProvider" value="IRC.Gear.WorkItemManager.Dashboard.TfsDataProvider.SourceControlDataProvider, IRC.Gear.WorkItemManager.Dashboard.TfsDataProvider" />
+        <add key="TfsTaskDataProvider" value="IRC.Gear.WorkItemManager.Dashboard.TfsDataProvider.TaskDataProvider, IRC.Gear.WorkItemManager.Dashboard.TfsDataProvider" />
+        <add key="TfsBugDataProvider" value="IRC.Gear.WorkItemManager.Dashboard.TfsDataProvider.BugDataProvider, IRC.Gear.WorkItemManager.Dashboard.TfsDataProvider" />
+    </appSettings>
+    <TfsDataProvider ServerAddress="tfs2008.etg-inc.net" ProjectName="Engage Survey"
+        UserImagePath="Images" SoundsFolderPath="Sounds" ImageExtension=".jpg"
+        PollInterval="300" ADOMDConnectionString="Data Source=ETG40;Catalog=TfsWarehouse">
+        <BuildDataProvider>
+            <BuildHistory Enabled="true" UseGlobalPollInterval="false" PollInterval="300"
+                MaxBuildHistory="10" BrokenBuildSound="BuildBroken.wav" />
+            <CodeCoverage Enabled="false" UseGlobalPollInterval="false" PollInterval="300"
+                CoveredColor="FF14BE00" PartiallyCoveredColor="FFFCFF40" NotCoveredColor="FFFD6900"
+                NumBuilds="10" BuildTypes="Continuous Integration (Survey)" />
+            <CodeChurn Enabled="true" UseGlobalPollInterval="false" PollInterval="300"
+                BuildTypes="Continuous Integration (Survey)" />
+            <BuildBreaker Enabled="true" UseGlobalPollInterval="false" PollInterval="300"
+                NoBrokenBuildImage="BuildNotBroken.jpg" NoUserImage="DefaultUser.jpg" />
+        </BuildDataProvider>
+        <SourceControlDataProvider>
+            <RecentCheckins Enabled="true" UseGlobalPollInterval="false"
+                PollInterval="300" MaxChangeSets="10" />
+        </SourceControlDataProvider>
+        <TaskDataProvider>
+            <TeamProgress Enabled="true" UseGlobalPollInterval="false" PollInterval="300"
+                WorkItemTypes="Bug;Task;Quality of Service Requirement;Scenario"
+                TaskCompletedStates="Closed" NoUserImage="DefaultUser.jpg" />
+            <ActivityBoard Enabled="true" UseGlobalPollInterval="false" PollInterval="300"
+                WorkItemTypes="Bug;Task;Quality of Service Requirement;Scenario"
+                ExcludedStates="" />
+            <Velocity Enabled="true" UseGlobalPollInterval="false" PollInterval="300"
+                WorkItemTypes="Bug;Task" IncludedStates="Resolved;Closed"
+                NumberOfDays="10" AverageState="Resolved" />
+            <IterationEffort Enabled="true" UseGlobalPollInterval="false"
+                PollInterval="300" WorkItemType="Task" CompletedState="Closed"
+                ExcludedStates="" CalculationMethod="Effort" TotalEffortField="Baseline Work"
+                RemainingEffortField="Remaining Work" CompletedEffortColor="FF14BE00"
+                IncompleteEffortColor="FFFD6900" />
+            <NextIteration Enabled="true" UseGlobalPollInterval="false" PollInterval="300" />
+            <CurrentActivities Enabled="true" UseGlobalPollInterval="false"
+                PollInterval="300" WorkItemTypes="Task" ActiveStates="Active" />
+            <TeamActivities Enabled="true" UseGlobalPollInterval="false"
+                PollInterval="300" WorkItemTypes="Task" ActiveStates="Active" />
+            <RemainingWorkTrend Enabled="false" UseGlobalPollInterval="false"
+                PollInterval="0" />
+        </TaskDataProvider>
+        <BugDataProvider>
+            <BugHistory Enabled="true" UseGlobalPollInterval="false" PollInterval="300"
+                BugWorkItemType="Bug" NumberOfDays="10" />
+        </BugDataProvider>
+    </TfsDataProvider>
+</configuration>

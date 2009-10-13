@@ -54,8 +54,7 @@ namespace Engage.Dnn.Survey
         {
             if (ModuleCommunication != null)
             {
-                ModuleCommunicationEventArgs args = new ModuleCommunicationEventArgs
-                                                        { Sender = "ViewSurvey", Target = "Any module", Text = "NewRecord", Value = e.ResponseId };
+                ModuleCommunicationEventArgs args = new ModuleCommunicationEventArgs { Sender = "ViewSurvey", Target = "Any module", Text = "NewRecord", Value = e.ResponseHeaderId };
                 ModuleCommunication(this, args);
             }
         }

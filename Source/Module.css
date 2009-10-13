@@ -13,6 +13,7 @@ survey-title{font-weight: bold}
 
 /*============ Engage Evaluation ============*/
 #engage-evaluation{}
+    fieldset.ee-create-questions, fieldset.ee-preview-area{display:none;}
     fieldset.ee-create-new, fieldset.ee-create-questions, fieldset.ee-preview-area{border:none;padding:0 0 15px 0;margin:0;}
         #engage-evaluation legend{padding:0 0 5px 0;}
         #engage-evaluation legend.Head{color:#6f4719;font-family:"Lucida Grande", Lucida Sans Unicode, Helvetica, Arial, Sans-Serif;font-size:20px;letter-spacing:-1px;}
@@ -62,4 +63,4 @@ survey-title{font-weight: bold}
 				ul.ee-pr-action-links li{display:inline;}
 			#engage-evaluation .ee-preview .ee-label{padding-top:0;}
 			.pv-question{display:block;float:left;}
-			.pv-answer{display:block;clear:both;padding:5px 0 0 110px;}	
+			.pv-answer{display:block;clear:both;padding:5px 0 0 110px;}

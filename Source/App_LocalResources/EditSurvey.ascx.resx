@@ -126,8 +126,8 @@
   <data name="AnswerNumberTitle.Text" xml:space="preserve">
     <value>Answer</value>
   </data>
-  <data name="BackHyperLink.Text" xml:space="preserve">
-    <value>Back</value>
+  <data name="CancelHyperLink.Text" xml:space="preserve">
+    <value>Cancel</value>
   </data>
   <data name="CopyQuestionHyperLink.Text" xml:space="preserve">
     <value>Copy</value>
@@ -146,6 +146,12 @@
   </data>
   <data name="DeleteAnswerHyperLink.Text" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="DeleteHyperLink.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="EditEvalHyperLink.Text" xml:space="preserve">
+    <value>Edit</value>
   </data>
   <data name="EditQuestionHyperLink.Text" xml:space="preserve">
     <value>Edit</value>
@@ -197,5 +203,8 @@
   </data>
   <data name="TypeSectionTitleLabel.Text" xml:space="preserve">
     <value>Type Section Title</value>
+  </data>
+  <data name="UpdateEvalHyperLink.Text" xml:space="preserve">
+    <value>Update</value>
   </data>
 </root>

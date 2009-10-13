@@ -5,15 +5,18 @@
         <legend class="Head"><%=Localization.GetString("CreateNewLabel.Text", LocalResourceFile)%></legend>
         <div class="ee-title">
             <span class="ee-label eval-title"><%=Localization.GetString("EvalTitleLabel.Text", LocalResourceFile)%></span>
-            <span class="ee-input"><input class="NormalTextBox" /></span>
+            <span class="ee-input"><input class="required" id="EvalTitleInput" minlength="1" /></span>
         </div>
         <div class="ee-description">
             <span class="ee-label eval-description"><%=Localization.GetString("EvalDescriptionLabel.Text", LocalResourceFile)%></span>
-            <span class="ee-input"><textarea class="NormalTextBox"></textarea></span>
+            <span class="ee-input"><textarea id="EvalDescTextArea"></textarea></span>
         </div>
         <ul class="ee-action-btns">
-            <li class="primary-btn"><a href="" title="Create New" class="create-new"><%=Localization.GetString("CreateNewEvalHyperLink.Text", LocalResourceFile)%></a></li>
-            <li class="secondary-btn"><a href="" title="Back" class="back"><%=Localization.GetString("BackHyperLink.Text", LocalResourceFile)%></a></li>
+            <li class="primary-btn"><a href="#" title="Create New" id="EvalNew" class="create-new"><%=Localization.GetString("CreateNewEvalHyperLink.Text", LocalResourceFile)%></a></li>
+            <li class="primary-btn" style="display:none;"><a href="#" title="Edit" id="EvalEdit"><%=Localization.GetString("EditEvalHyperLink.Text", LocalResourceFile)%></a></li>
+            <li class="primary-btn" style="display:none;"><a href="#" title="Update" id="EvalUpdate"><%=Localization.GetString("UpdateEvalHyperLink.Text", LocalResourceFile)%></a></li>
+            <li class="secondary-btn" style="display:none;"><a href="#" title="Cancel" id="EvalCancel"><%=Localization.GetString("CancelHyperLink.Text", LocalResourceFile)%></a></li>
+            <li class="secondary-btn" style="display:none;"><a href="#" title="Delete" id="EvalDelete"><%=Localization.GetString("DeleteHyperLink.Text", LocalResourceFile)%></a></li>
         </ul>
     </fieldset>
     <fieldset class="ee-create-questions">

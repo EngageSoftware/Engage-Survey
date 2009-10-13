@@ -206,6 +206,8 @@
     <Content Include="Licenses\EULA-Enterprise.htm" />
     <Content Include="Licenses\EULA-Professional.htm" />
     <Content Include="Licenses\EULA-Standard.htm" />
+    <Content Include="References\Engage.Dnn.Framework.XML" />
+    <Content Include="References\Engage.Framework.XML" />
     <Content Include="ReleaseNotes_3.0.0.htm" />
   </ItemGroup>
   <ItemGroup>

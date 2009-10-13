@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="EditSurvey.ascx.cs" Inherits="Engage.Dnn.Survey.EditSurvey" %>
+<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="EditSurvey.ascx.cs" Inherits="Engage.Dnn.Survey.EditSurvey" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization"%>
 <div id="engage-evaluation">
     <fieldset class="ee-create-new">

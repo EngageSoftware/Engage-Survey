@@ -1,83 +1,33 @@
-// --------------------------------------------------------------------------------------------------------------------- 
 // <copyright file="EditSurvey.ascx.cs" company="Engage Software">
-//  Engage Software 
+// Engage: Survey
+// Copyright (c) 2004-2009
+// by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
-// <summary>
-//   Defines the EditSurvey type.
-// </summary>
-// ---------------------------------------------------------------------------------------------------------------------
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Survey
 {
     using System;
-    using DotNetNuke.Common;
-    using DotNetNuke.Services.Exceptions;
+    using System.Web.UI;
 
     /// <summary>
     /// The EditSurvey class is used to manage content
     /// </summary>
-    partial class EditSurvey : ModuleBase
+    public partial class EditSurvey : ModuleBase
     {
         /// <summary>
-        /// Handles the Load event of the Page control.
+        /// Raises the <see cref="Control.Init"/> event.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void Page_Load(Object sender, EventArgs e)
+        /// <param name="e">An <see cref="EventArgs"/> object that contains the event data.</param>
+        protected override void OnInit(EventArgs e)
         {
             this.AddJQueryReference();
-        }
-
-        /// <summary>
-        /// Handles the Click event of the cmdCancel control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void CancelLinkButton_Click(Object sender, EventArgs e)
-        {
-            try
-            {
-                this.Response.Redirect(Globals.NavigateURL(this.TabId), true);
-            }
-            catch (Exception exc) 
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the cmdDelete control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void DeleteLinkButton_Click(Object sender, EventArgs e)
-        {
-            try
-            {
-                this.Response.Redirect(Globals.NavigateURL(this.TabId), true);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the cmdUpdate control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void UpdateLinkButton_Click(Object sender, EventArgs e)
-        {
-            try
-            {
-                // Redirect back to the portal home page
-                this.Response.Redirect(Globals.NavigateURL(this.TabId), true);
-            }
-            catch (Exception exc) 
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
+            this.Page.ClientScript.RegisterClientScriptResource(typeof(EditSurvey), "Engage.Dnn.Survey.JavaScript.survey.js");
+            base.OnInit(e);
         }
     }
 }

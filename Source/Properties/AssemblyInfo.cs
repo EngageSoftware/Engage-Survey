@@ -30,3 +30,5 @@ using System.Web.UI;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("3.0.0.0")]
 [assembly: AssemblyFileVersion("3.0.0.0")]
+
+[assembly: WebResource("Engage.Dnn.Survey.JavaScript.survey.js", "text/javascript")]

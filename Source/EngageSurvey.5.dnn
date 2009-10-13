@@ -1,0 +1,99 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Engage: Survey" type="Module" version="REPLACED BY NANT">
+      <friendlyName>Engage: Survey</friendlyName>
+      <description>The DotNetNuke Survey module by Engage Software (www.engagesoftware.com)</description>
+      <owner>
+        <name>Engage Software</name>
+        <organization>Engage Software</organization>
+        <url>http://www.engagesoftware.com/</url>
+        <email>support@engagemodules.com</email>
+      </owner>
+      <license src="REPLACED BY NANT"/>
+      <releaseNotes src="REPLACED BY NANT" />
+      <components>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/EngageSurvey</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\EngageSurvey</basePath>
+            <script type="Install">
+              <name>01.00.00.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+            <script type="UnInstall">
+              <name>Uninstall.SqlDataProvider</name>
+              <version>REPLACED BY NANT</version>
+            </script>
+          </scripts>
+        </component>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>Engage: Survey</moduleName>
+            <foldername>EngageSurvey</foldername>
+            <businessControllerClass>Engage.Dnn.Survey.FeatureController</businessControllerClass>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Engage: Survey</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>
+                    <controlSrc>DesktopModules/EngageSurvey/MainContainer.ascx</controlSrc>
+                    <controlType>View</controlType>
+                    <helpUrl>http://www.EngageSoftware.com/Support.aspx</helpUrl>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/EngageSurvey/Settings.ascx</controlSrc>
+                    <controlType>Edit</controlType>
+                    <helpUrl>http://www.EngageSoftware.com/Support.aspx</helpUrl>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>Engage.Dnn.Survey.FeatureController</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>01.00.00,3.0.0</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <name>EngageSurvey.dll</name>
+              <version>REPLACED BY NANT</version>
+            </assembly>
+            <assembly>
+              <name>Engage.Survey.dll</name>
+              <version>3.0.0</version>
+            </assembly>
+            <assembly>
+              <name>EngageSurvey.Entites.dll</name>
+              <version>3.0.0</version>
+            </assembly>
+            <assembly>
+              <name>Engage.Framework.dll</name>
+              <version>3.1.2</version>
+            </assembly>
+            <assembly>
+              <name>Engage.Dnn.Framework.dll</name>
+              <version>3.1.2</version>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

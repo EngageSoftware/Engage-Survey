@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" name="Engage: Survey" basedir="." default="package">
   <property name="build" value="true" overwrite="false"/>
+  <!-- build is true if building from Visual Studio, false from Team Build (CI) -->
   <property name="bin.directory" value="..\..\bin" overwrite="false"/>
   <property name="project.config" value="release"/>
+  <property name="project.config" value="Debug" if="${build}"/>
+  <property name="ziplevel" value="9"/>
+  <property name="ziplevel" value="1" if="${build}"/>
   <property name="project.name" value="Survey"/>
-  <property name="solution.file" value="Engage${project.name}.sln"/>
+  <property name="solution.file" value="Engage${project.name}2008.sln"/>
   <property name="references.directory" value="References"/>
   <property name="project.dll" value="${bin.directory}\Engage${project.name}.dll"/>
 
@@ -22,8 +26,6 @@
     <include name="**/*.pdf" />
     <include name="**/*.xml"/>
     <include name="**/*.xsd"/>
-    <include name="**/*.js" />
-    <include name="**/*.swf" />
     <exclude name="Licenses/EULA-*.htm"/>
     <exclude name="ReleaseNotes_*.htm"/>
     <exclude name="??.??.??.txt" />
@@ -44,18 +46,15 @@
   </patternset>
 
   <target name="build" description="Builds the solution" if="${build}">
-    <exec program="${environment::get-variable('windir')}\Microsoft.NET\Framework\v3.5\msbuild.exe" failonerror="true">
-      <arg value="${solution.file}" />
-      <arg value="/p:Configuration=${project.config}" />
-      <arg value="/p:Platform=&quot;Any CPU&quot;" />
-    </exec>
+    <solution configuration="${project.config}" solutionfile="${solution.file}">
+      <assemblyfolders>
+        <include name="${references.directory}"/>
+      </assemblyfolders>
+    </solution>
   </target>
   <target name="get-version" depends="build" description="Sets the project.version property to the first three numbers from the version of the main assembly for this module">
-    <property name="version" value="${fileversioninfo::get-file-version(fileversioninfo::get-version-info(project.dll))}" />
-    <property name="version.major" value="${string::pad-left(version::get-major(version::parse(version)), 2, '0')}" />
-    <property name="version.minor" value="${string::pad-left(version::get-minor(version::parse(version)), 2, '0')}" />
-    <property name="version.build" value="${string::pad-left(version::get-build(version::parse(version)), 2, '0')}" />
-    <property name="project.version" value="${version.major}.${version.minor}.${version.build}" />
+    <property name="version" value="${assemblyname::get-version(assembly::get-name(assembly::load-from-file(project.dll)))}" />
+    <property name="project.version" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
   </target>
   <target name="package" depends="get-version" description="Creates packages for this module, one for each three licenses and version of DNN (4 and 5)">
     <property name="package.directory" value="package"/>
@@ -77,15 +76,18 @@
     <call target="add-sources-to-resource-zip"/>
     <call target="create-packages"/>
 
-    <delete file="${package.directory}\${package.name}" failonerror="false"/>
-    <delete dir="${package.directory}\temp" failonerror="false"/>
+    <call target="get-dependency-source"/>
 
     <property name="dnn.version" value="4"/>
     <call target="combine-enterprise"/>
-    <!--<property name="dnn.version" value="5"/>
-    <call target="combine-enterprise"/>-->
+    <property name="dnn.version" value="5"/>
+    <call target="combine-enterprise"/>
 
     <call target="project-specific-tasks"/>
+
+    <delete file="${package.directory}\${project.name}_${package.license}_${project.version}_DependencySource.zip" failonerror="false"/>
+    <delete file="${package.directory}\${package.name}" failonerror="false"/>
+    <delete dir="${package.directory}\temp" failonerror="false"/>
   </target>
   <target name="create-resources-zip" description="Creates the Resources.zip file for content (Install package) files">
     <mkdir dir="${package.directory}" failonerror="false"/>
@@ -122,7 +124,6 @@
   </target>
   <target name="setup-package-files" description="Copies common package files to the temp/package directory, and sets version-dependent attributes in the DNN 5 manifest file">
     <property name="releaseNotes.file" value="ReleaseNotes_${project.version}.htm"/>
-    <property name="license.file" value="EULA-${package.license}.htm"/>
     <mkdir dir="${package.directory}/temp/package" failonerror="false"/>
     <copy todir="${package.directory}/temp/package" flatten="true">
       <fileset>
@@ -132,22 +133,18 @@
         <include name="**/*.SqlDataProvider"/>
         <include name="**/*.4.dnn"/>
         <include name="**/*.5.dnn"/>
-        <include name="Licenses/${license.file}"/>
       </fileset>
     </copy>
     <copy todir="${package.directory}/temp/package/bin" flatten="true">
       <fileset>
         <include name="${project.dll}"/>
-        <include name="**/${references.directory}/*.dll"/>
-        <include name="${bin.directory}/EngagSurvey.dll" />
-        <include name="${bin.directory}/Engage.Survey.dll" />
-        <include name="${bin.directory}/EngageSurvey.Entities.dll" />
-        <include name="${bin.directory}/Engage.Framework.dll" />
-        <include name="${bin.directory}/Engage.Dnn.Framework.dll" />
-        <exclude name="**/${references.directory}/DotNetNuke.dll"/>
-        <exclude name="**/${references.directory}/DotNetNuke.WebUtility.dll"/>
-        <exclude name="**/${references.directory}/Microsoft.ApplicationBlocks.Data.dll"/>
-        <exclude name="**/${references.directory}/SharpZipLib.dll"/>
+        <include name="${bin.directory}/Engage.Survey.dll"/>
+        <include name="${bin.directory}/EngageSurvey.Entities.dll"/>
+        <include name="${references.directory}/*.dll"/>
+        <exclude name="${references.directory}/DotNetNuke.dll"/>
+        <exclude name="${references.directory}/DotNetNuke.WebUtility.dll"/>
+        <exclude name="${references.directory}/Microsoft.ApplicationBlocks.Data.dll"/>
+        <exclude name="${references.directory}/System.Web.Extensions.dll"/>
       </fileset>
     </copy>
 
@@ -157,21 +154,22 @@
       </fileset>
     </attrib>
 
-    <!--<xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${releaseNotes.file}" xpath="dotnetnuke/packages/package/releaseNotes/@src"/>
+    <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${releaseNotes.file}" xpath="dotnetnuke/packages/package/releaseNotes/@src"/>
     <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${project.version}" xpath="dotnetnuke/packages/package/@version"/>
     <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${project.version}" xpath="dotnetnuke/packages/package/components/component[@type='Script']/scripts/script[@type='UnInstall']/version"/>
-    <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${project.version}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[version='REPLACED BY NANT']/version"/>-->
+    <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${project.version}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[version='REPLACED BY NANT']/version"/>
     <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.4.dnn" value="${project.version}" xpath="dotnetnuke/folders/folder/version"/>
   </target>
-
   <target name="create-packages" description="For the given license and type, creates packages for DNN 4 and DNN 5">
     <property name="license.file" value="EULA-${package.license}.htm"/>
     <call target="switch-license"/>
 
     <property name="dnn.version" value="4"/>
     <call target="zip-package"/>
-  </target>
 
+    <property name="dnn.version" value="5"/>
+    <call target="zip-package"/>
+  </target>
   <target name="switch-license" description="Switches out the license file and updates the reference to it in the DNN 5 manifest file">
     <delete>
       <fileset>
@@ -184,7 +182,7 @@
       </fileset>
     </copy>
 
-    <!--<xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${license.file}" xpath="dotnetnuke/packages/package/license/@src"/>-->
+    <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${license.file}" xpath="dotnetnuke/packages/package/license/@src"/>
   </target>
   <target name="zip-package" description="Zips up the files in the temp/package directory, getting the correct manifest file and using the correct naming convention">
     <property name="package.type" value="Install"/>
@@ -204,12 +202,119 @@
       <fileset basedir="${package.directory}">
         <include name="${project.name}_${package.license}_${project.version}_Install_${dnn.version}.zip"/>
         <include name="${project.name}_${package.license}_${project.version}_Source_${dnn.version}.zip"/>
+        <include name="${project.name}_${package.license}_${project.version}_DependencySource.zip"/>
       </fileset>
     </zip>
 
     <delete file="${package.directory}/${project.name}_${package.license}_${project.version}_Install_${dnn.version}.zip" failonerror="false"/>
     <delete file="${package.directory}/${project.name}_${package.license}_${project.version}_Source_${dnn.version}.zip" failonerror="false"/>
   </target>
+  <target name="get-dependency-source" description="Gets the latest source packages for the Engage Framework dependencies for this module">
+    <property name="build.directory" value="_0.0"/>
+    <foreach item="Folder" in="\\etg19\qa\Engage\Engage 3.0\Builds\" property="foldername">
+      <property name="build.directory" value="${foldername}" if="${build-directory::is-greater-than(foldername, build.directory) and file::exists(path::combine(foldername, 'Release\Engage.Framework_Source.zip'))}"/>
+    </foreach>
+
+    <copy todir="${package.directory}/temp/dependencies">
+      <fileset basedir="${path::combine(build.directory, 'Release\')}">
+        <include name="*_Source.zip"/>
+      </fileset>
+    </copy>
+
+    <zip zipfile="${package.directory}/${project.name}_${package.license}_${project.version}_DependencySource.zip" ziplevel="${ziplevel}">
+      <fileset basedir="${package.directory}/temp/dependencies">
+        <include name="*_Source.zip"/>
+        <exclude name="*Events_Source.zip"/>
+      </fileset>
+    </zip>
+  </target>
   <target name="project-specific-tasks" description="Place tasks specific to the current project in this task">
   </target>
+  <script language="C#" prefix="build-directory" >
+    <imports>
+      <import namespace="System"/>
+      <import namespace="System.Globalization"/>
+      <import namespace="System.Text.RegularExpressions"/>
+    </imports>
+    <code>
+      <![CDATA[
+              [Function("is-greater-than")]
+              public static bool IsGreaterThan(string lhs, string rhs) {
+                  
+                  return new BuildDirectory(lhs) > new BuildDirectory(rhs);
+              }
+              
+              private struct BuildDirectory
+              {
+                  private static readonly Regex buildDirectoryRegex = new Regex(@".*_(\d+\.\d+)", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+                  private Version buildNumber;
+
+                  public BuildDirectory(string directoryName)
+                  {
+                      this.buildNumber = new Version(buildDirectoryRegex.Match(directoryName).Groups[1].Value);
+                  }
+
+			            public Version BuildNumber
+			            {
+				              get { return this.buildNumber; }
+			            }
+
+			            public static bool operator ==(BuildDirectory left, BuildDirectory right)
+			            {
+				              return left.Equals(right);
+			            }
+
+			            public static bool operator !=(BuildDirectory left, BuildDirectory right)
+			            {
+				              return !left.Equals(right);
+			            }
+
+			            public static bool operator <(BuildDirectory left, BuildDirectory right)
+			            {
+				              return left.buildNumber < right.buildNumber;
+			            }
+
+			            public static bool operator <=(BuildDirectory left, BuildDirectory right)
+			            {
+				              return left < right || left.Equals(right);
+			            }
+
+			            public static bool operator >(BuildDirectory left, BuildDirectory right)
+			            {
+				              return !(left <= right);
+			            }
+
+			            public static bool operator >=(BuildDirectory left, BuildDirectory right)
+			            {
+				              return !(left < right);
+			            }
+
+			            public bool Equals(BuildDirectory other)
+			            {
+				              return other.buildNumber == this.buildNumber;
+			            }
+
+			            public override bool Equals(object obj)
+			            {
+				              if (ReferenceEquals(null, obj))
+				              {
+					                return false;
+				              }
+
+				              if (obj.GetType() != typeof(BuildDirectory))
+				              {
+					                return false;
+				              }
+
+				              return this.Equals((BuildDirectory)obj);
+			            }
+
+			            public override int GetHashCode()
+			            {
+					            return this.buildNumber.GetHashCode();
+			            }
+	            }
+            ]]>
+    </code>
+  </script>
 </project>

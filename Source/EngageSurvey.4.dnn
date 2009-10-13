@@ -7,7 +7,7 @@
       <modulename>Engage: Survey</modulename>
       <description>The DotNetNuke Survey module by Engage Software (www.engagesoftware.com)</description>
       <version>REPLACED BY NANT</version>
-      <businesscontrollerclass></businesscontrollerclass>
+      <businesscontrollerclass>Engage.Dnn.Survey.FeatureController</businesscontrollerclass>
       <resourcefile>Resources.zip</resourcefile>
       <modules>
         <module>
@@ -20,9 +20,8 @@
             </control>
             <control>
               <key>Settings</key>
-              <title>Survey Settings</title>
               <src>DesktopModules/EngageSurvey/Settings.ascx</src>
-              <type>View</type>
+              <type>Edit</type>
             </control>
           </controls>
         </module>

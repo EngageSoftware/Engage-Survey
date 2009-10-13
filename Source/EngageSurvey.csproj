@@ -86,6 +86,7 @@
     <Compile Include="EditSurvey.ascx.designer.cs">
       <DependentUpon>EditSurvey.ascx</DependentUpon>
     </Compile>
+    <Compile Include="FeatureController.cs" />
     <Compile Include="Services.asmx.cs">
       <DependentUpon>Services.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -141,6 +142,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="EngageSurvey.5.dnn" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.00.00.SqlDataProvider" />
     <None Include="EngageSurvey.Build" />
     <None Include="EngageSurvey.4.dnn" />
@@ -197,6 +199,10 @@
   <ItemGroup>
     <Content Include="App_LocalResources\SurveyListing.ascx.resx">
     </Content>
+    <Content Include="Licenses\EULA-Enterprise.htm" />
+    <Content Include="Licenses\EULA-Professional.htm" />
+    <Content Include="Licenses\EULA-Standard.htm" />
+    <Content Include="ReleaseNotes_3.0.0.htm" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_GlobalResources\" />

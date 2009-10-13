@@ -446,17 +446,17 @@ namespace Engage.Survey.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="SavedEventArgs"/> class.
         /// </summary>
-        /// <param name="responseId">The response id.</param>
-        public SavedEventArgs(int responseId)
+        /// <param name="responseHeaderId">The response header id.</param>
+        public SavedEventArgs(int responseHeaderId)
         {
-            this.ResponseId = responseId;
+            this.ResponseHeaderId = responseHeaderId;
         }
 
         /// <summary>
         /// Gets or sets the response id.
         /// </summary>
         /// <value>The response id.</value>
-        public int ResponseId
+        public int ResponseHeaderId
         {
             get;
             set;

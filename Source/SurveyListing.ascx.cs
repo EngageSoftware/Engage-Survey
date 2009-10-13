@@ -13,6 +13,7 @@ namespace Engage.Dnn.Survey
 {
     using System;
     using System.Globalization;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
     using DotNetNuke.Common;
     using DotNetNuke.Services.Exceptions;
@@ -24,26 +25,18 @@ namespace Engage.Dnn.Survey
     /// </summary>
     public partial class SurveyListing : ModuleBase
     {
-        #region Event Handlers
-
         /// <summary>
-        /// Handles the Load event of the Page control.
+        /// Raises the <see cref="Control.Init"/> event.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void Page_Load(Object sender, EventArgs e)
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected override void OnInit(EventArgs e)
         {
-            try
-            {
-                if (!Page.IsPostBack)
-                {
-                    this.BindData(0);
-                }
-            }
-            catch (Exception exc) //Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
+            this.Load += this.Page_Load;
+            this.NewSurveyButton.Click += this.NewSurveyButton_Click;
+            this.CancelButton.Click += this.CancelButton_Click;
+            this.SurveyDataGrid.ItemDataBound += this.SurveyDataGrid_OnItemDataBound;
+            this.FilterRadioButtonList.SelectedIndexChanged += this.FilterRadioButtonList_SelectedIndexChanged;
+            base.OnInit(e);
         }
 
         /// <summary>
@@ -54,125 +47,144 @@ namespace Engage.Dnn.Survey
         {
             if (index == 0)
             {
-                //bind to survey definitions
-                SurveyDataGrid.DataSource = Survey.LoadSurveys();
+                // bind to survey definitions
+                this.SurveyDataGrid.DataSource = Survey.LoadSurveys();
             }
             else
             {
-                SurveyDataGrid.DataSource = ReadonlySurvey.LoadSurveys();
+                this.SurveyDataGrid.DataSource = ReadonlySurvey.LoadSurveys();
             }
-            SurveyDataGrid.DataBind();
-        }
 
-        #endregion
-
-        protected string BuildPreviewUrl(int id, string key)
-        {
-            string href = BuildLinkUrl("&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=ViewSurvey&" + key + "=" + id + "");
-            return href;
+            this.SurveyDataGrid.DataBind();
         }
 
         /// <summary>
-        /// Builds the new URL.
+        /// Builds the URL to delete the given survey.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="surveyId">The survey id.</param>
+        /// <returns>A URL which, when navigated to, deletes the survey with the given <paramref name="surveyId"/></returns>
+        private string BuildDeleteUrl(int surveyId)
+        {
+            return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=EditSurvey&delete=1&surveyId=" + surveyId);
+        }
+
+        /// <summary>
+        /// Builds the URL to edit the given survey.
+        /// </summary>
+        /// <param name="surveyId">The survey id.</param>
+        /// <returns>A URL which takes the user to a page to edit the survey with the given <paramref name="surveyId"/></returns>
+        private string BuildEditUrl(int surveyId)
+        {
+            return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=EditSurvey&surveyId=" + surveyId);
+        }
+
+        /// <summary>
+        /// Builds the URL to create a new survey.
+        /// </summary>
+        /// <returns>A URL which takes the user to a page to create a new survey</returns>
         private string BuildNewUrl()
         {
-            string href = BuildLinkUrl("&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=EditSurvey");
-            return href;
+            return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=EditSurvey");
         }
 
         /// <summary>
-        /// Builds the edit URL.
+        /// Build the URL to the read-only preview of the given survey.
         /// </summary>
-        /// <param name="surveyId">The survey id.</param>
-        /// <returns></returns>
-        protected string BuildEditUrl(int surveyId)
+        /// <param name="id">The id of the survey or response.</param>
+        /// <param name="key">"SurveyId" or "ResponseHeaderId"</param>
+        /// <returns>A URL to a read-only preview of the survey with the given <paramref name="id"/></returns>
+        private string BuildPreviewUrl(int id, string key)
         {
-            string href = BuildLinkUrl("&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=EditSurvey&surveyId=" + surveyId + "");
-            return href;
+            return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=ViewSurvey&" + key + "=" + id);
         }
 
         /// <summary>
-        /// Builds the delete URL.
-        /// </summary>
-        /// <param name="surveyId">The survey id.</param>
-        /// <returns></returns>
-        protected string BuildDeleteUrl(int surveyId)
-        {
-            string href = BuildLinkUrl("&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=EditSurvey&delete=1&surveyId=" + surveyId + "");
-            return href;
-        }
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the FilterRadioButtonList control.
+        /// Handles the <see cref="LinkButton.Click"/> event of the <see cref="CancelButton"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void FilterRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.BindData(FilterRadioButtonList.SelectedIndex);
+            // TODO: Implement ReturnURL functionality.
+            this.Response.Redirect(Globals.NavigateURL());
         }
 
         /// <summary>
-        /// Handles the OnItemDataBound event of the SurveyDataGrid control.
+        /// Handles the <see cref="ListControl.SelectedIndexChanged"/> event of the <see cref="FilterRadioButtonList"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Web.UI.WebControls.DataGridItemEventArgs"/> instance containing the event data.</param>
-        protected void SurveyDataGrid_OnItemDataBound(object sender, DataGridItemEventArgs e)
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void FilterRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.BindData(this.FilterRadioButtonList.SelectedIndex);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="LinkButton.Click"/> event of the <see cref="NewSurveyButton"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void NewSurveyButton_Click(object sender, EventArgs e)
+        {
+            this.Response.Redirect(this.BuildNewUrl());
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Control.Load"/> event of this control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!this.Page.IsPostBack)
+                {
+                    this.BindData(0);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="DataGrid.ItemDataBound"/> event of the <see cref="SurveyDataGrid"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DataGridItemEventArgs"/> instance containing the event data.</param>
+        private void SurveyDataGrid_OnItemDataBound(object sender, DataGridItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                ISurvey survey = (ISurvey)e.Item.DataItem;
-                HyperLink editHyperLink = e.Item.FindControl("EditHyperLink") as HyperLink;
+                var survey = (ISurvey)e.Item.DataItem;
+                var editHyperLink = e.Item.FindControl("EditHyperLink") as HyperLink;
                 if (editHyperLink != null)
                 {
                     editHyperLink.NavigateUrl = this.BuildEditUrl(survey.SurveyId);
                     editHyperLink.Visible = !survey.IsReadonly;
                 }
 
-                HyperLink previewHyperLink = e.Item.FindControl("PreviewHyperLink") as HyperLink;
+                var previewHyperLink = e.Item.FindControl("PreviewHyperLink") as HyperLink;
                 if (previewHyperLink != null)
                 {
                     if (survey.IsReadonly)
                     {
-                        ReadonlySurvey s = (ReadonlySurvey)survey;
-                        previewHyperLink.NavigateUrl = this.BuildPreviewUrl(s.ResponseHeaderId, "responseheaderid");
+                        previewHyperLink.NavigateUrl = this.BuildPreviewUrl(((ReadonlySurvey)survey).ResponseHeaderId, "ResponseHeaderId");
                     }
                     else
                     {
-                        previewHyperLink.NavigateUrl = this.BuildPreviewUrl(survey.SurveyId, "surveyId");    
+                        previewHyperLink.NavigateUrl = this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
                     }
                 }
 
-                Label textLabel = e.Item.FindControl("TextLabel") as Label;
+                var textLabel = e.Item.FindControl("TextLabel") as Label;
                 if (textLabel != null)
                 {
                     textLabel.Text = survey.Text;
                 }
             }
         }
-
-        /// <summary>
-        /// Handles the Click event of the NewLinkButton control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void NewLinkButton_Click(object sender, EventArgs e)
-        {
-            Response.Redirect(this.BuildNewUrl());
-        }
-
-        /// <summary>
-        /// Handles the Click event of the BackLinkButton control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void CancelLinkButton_Click(object sender, EventArgs e)
-        {
-            ////TODO: Implement ReturnURL functionality.
-            Response.Redirect(Globals.NavigateURL());
-        }
     }
 }
-

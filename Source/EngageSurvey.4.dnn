@@ -5,8 +5,8 @@
       <friendlyname>Engage: Survey</friendlyname>
       <foldername>EngageSurvey</foldername>
       <modulename>Engage: Survey</modulename>
-      <description>The DotNetNuke Survey module by Engage Software (www.engagesoftware.net)</description>
-      <version>01.05.00</version>
+      <description>The DotNetNuke Survey module by Engage Software (www.engagesoftware.com)</description>
+      <version>REPLACED BY NANT</version>
       <businesscontrollerclass></businesscontrollerclass>
       <resourcefile>Resources.zip</resourcefile>
       <modules>
@@ -42,6 +42,9 @@
         </file>
         <file>
           <name>Engage.Framework.dll</name>
+        </file>
+        <file>
+          <name>01.00.00.SqlDataProvider</name>
         </file>
       </files>
     </folder>

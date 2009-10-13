@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngageSurvey.Entities", "En
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engage.Survey", "..\..\..\..\..\..\Code\Engage 3.0\Engage.Survey\Engage.Survey.csproj", "{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{73E4178A-1A1C-47FC-AF7E-357241E7D1C6}"
+	ProjectSection(SolutionItems) = preProject
+		MSBuild\EcmaScript.NET.modified.dll = MSBuild\EcmaScript.NET.modified.dll
+		MSBuild\Yahoo.Yui.Compressor.dll = MSBuild\Yahoo.Yui.Compressor.dll
+		MSBuild\Yui.Compressor.targets = MSBuild\Yui.Compressor.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 4
@@ -18,9 +25,9 @@ Global
 		SccProjectUniqueName2 = EngageSurvey.Entities\\EngageSurvey.Entities.csproj
 		SccProjectName2 = EngageSurvey.Entities
 		SccLocalPath2 = EngageSurvey.Entities
-		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\Code\\EngageSurvey\\Engage.Survey.csproj
+		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\..\\Code\\Engage\u00203.0\\Engage.Survey\\Engage.Survey.csproj
 		SccProjectName3 = ../../Engage\u00203.0/Engage.Survey
-		SccLocalPath3 = ..\\..\\..\\..\\..\\Code\\EngageSurvey
+		SccLocalPath3 = ..\\..\\..\\..\\..\\..\\Code\\Engage\u00203.0\\Engage.Survey
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

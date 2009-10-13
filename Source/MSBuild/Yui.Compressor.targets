@@ -1,0 +1,44 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask AssemblyFile="Yahoo.Yui.Compressor.dll" TaskName="CompressorTask"/>
+  <PropertyGroup>
+    <ResGenDependsOn>CompressJavaScript;CompressCss;$(ResGenDependsOn)</ResGenDependsOn>
+  </PropertyGroup>
+  <Target Name="CompressJavaScript" Condition="'$(Configuration)' != 'Debug'">
+    <!-- Create a copy of the embedded resources in the \obj folder, so that we aren't minifying the actual files in the project -->
+    <Copy SourceFiles="@(EmbeddedResource)" DestinationFolder="$(IntermediateOutputPath)" Condition="'%(Extension)'=='.js'">
+      <Output TaskParameter="DestinationFiles" ItemName="Resources"/>
+    </Copy>
+    
+    <!-- Compress each embedded resource file -->
+    <CompressorTask
+       JavaScriptFiles="%(Resources.Identity)"
+       ObfuscateJavaScript="FoSho"
+       JavaScriptOutputFile="%(Resources.Identity)"
+       LoggingType="ALittleBit"
+       ThreadCulture="en-GB"/> <!-- Setting to en-GB because 1) that's the default for the MSBuild task, and 2) there's a bug in the task where it's always set to en-GB regardless of what you provide -->
+       
+    <ItemGroup>
+      <!-- Replace the items in the EmbeddedResource collection with our minified versions -->
+      <!-- Remove is only available in MSBuild 3.5, this won't work on 2.0 -->
+      <EmbeddedResource Remove="@(EmbeddedResource)" Condition="'%(Extension)'=='.js'" />
+      <EmbeddedResource Include="@(Resources)" />
+      
+      <!-- FileWrites is the list of files to delete when performing a Clean -->
+      <FileWrites Include="@(Resources)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="CompressCss">
+    <Message Text="CSS Compression to be implemented"/>
+    <!--CreateItem Include="$(SolutionDir)**\*.css">
+      <Output TaskParameter="Include" ItemName="CssFiles" />
+    </CreateItem-->
+    <!--CompressorTask
+       Condition="'%(CssFiles.Identity)' != ''"
+       CssFiles="%(CssFiles.Identity)"
+       DeleteCssFiles="false"
+       CssOutputFile="%(CssFiles.Identity)"
+       CssCompressionType="YuiStockCompression"
+       EncodingType="Default"
+       LoggingType="ALittleBit" /-->
+  </Target>
+</Project>

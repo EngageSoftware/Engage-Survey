@@ -17,9 +17,7 @@ namespace Engage.Dnn.Survey
     /// The EditSurvey class is used to manage content
     /// </summary>
     partial class EditSurvey : ModuleBase
-    {                
-        #region Event Handlers
-
+    {
         /// <summary>
         /// Handles the Load event of the Page control.
         /// </summary>
@@ -27,40 +25,7 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load(Object sender, EventArgs e)
         {
-            //Framework.VirtualRootId = 1;		// Default value
-
-            //try
-            //{
-            //    if (this.Request.QueryString["SurveyTypeId"] != null)
-            //    {
-            //        int itemId = Convert.ToInt32(Request.QueryString["SurveyTypeId"]);
-
-            //        if (!Page.IsPostBack)
-            //        {
-            //            DefaultSurveyBuilder builder = new DefaultSurveyBuilder(itemId);
-
-            //            // create the Director object
-            //            SurveyDirector d = new SurveyDirector();
-
-            //            // don't need to save these temporary objects
-            //            if (this.Page.IsPostBack == false)
-            //            {
-            //                Framework.EnableRegistrations = false;
-            //            }
-
-            //            // ask the Director to 'constuct' using the builder
-            //            d.Construct(builder);
-            //            // get back the constructed Survey
-            //            ISurvey survey = builder.GetSurvey();
-
-            //            survey.Render(this.SummaryPlaceHolder, false, false, new EngageValidationProvider());
-            //        }
-            //    }
-            //}
-            //catch (Exception exc)
-            //{
-            //    Exceptions.ProcessModuleLoadException(this, exc);
-            //}
+            this.AddJQueryReference();
         }
 
         /// <summary>
@@ -114,8 +79,5 @@ namespace Engage.Dnn.Survey
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 }

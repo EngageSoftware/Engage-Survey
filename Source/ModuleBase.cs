@@ -19,7 +19,7 @@ namespace Engage.Dnn.Survey
     /// <summary>
     /// Summary description for ModuleBase.
     /// </summary>
-    public class ModuleBase : PortalModuleBase
+    public class ModuleBase : Engage.Dnn.Framework.ModuleBase
     {
         private bool allowTitleUpdate = true;
         private bool useCache = true;
@@ -161,6 +161,11 @@ namespace Engage.Dnn.Survey
         public static string GetCleanTitle(object title)
         {
             return Engage.Util.Utility.RemoveHtmlMarkup(title.ToString(), false);
+        }
+
+        public override string DesktopModuleName
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }

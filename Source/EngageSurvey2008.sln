@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngageSurvey", "EngageSurve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngageSurvey.Entities", "EngageSurvey.Entities\EngageSurvey.Entities.csproj", "{EA6F3122-F987-46F2-AFA1-3B35CD818161}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engage.Survey", "..\..\..\..\..\Code\EngageSurvey\Engage.Survey.csproj", "{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engage.Survey", "..\..\..\..\..\..\Code\Engage 3.0\Engage.Survey\Engage.Survey.csproj", "{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution

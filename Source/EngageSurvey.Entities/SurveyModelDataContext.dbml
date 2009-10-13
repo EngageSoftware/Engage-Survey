@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Database Name="campus_dnn2" Class="SurveyModelDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=KENUAM03;Initial Catalog=campus_dnn2;Integrated Security=True" SettingsObjectName="Engage.Survey.Entities.Properties.Settings" SettingsPropertyName="campus_dnn2ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.EngageSurvey_Question" Member="Questions">
     <Type Name="Question">
       <Column Name="QuestionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />

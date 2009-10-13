@@ -29,4 +29,11 @@ jQuery(function ($) {
     }).blur(function () {
         $(this).removeClass("focus");
     });
+    
+    $(".add-new").click(function (event) {
+        event.preventDefault();
+        var $answerNumberElement = $(".answer-inputs li:last").clone().appendTo('.answer-inputs').find('.answer-num');
+        var answerNumber = parseInt($answerNumberElement.text(), 10);
+        $answerNumberElement.text(answerNumber + 1);
+    });
 });

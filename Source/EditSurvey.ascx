@@ -24,7 +24,7 @@
         </div>
         <div class="ee-define-answer">
             <span class="ee-label"><%=Localization.GetString("DefineAnswerLabel.Text", LocalResourceFile)%></span>
-            <span class="define-answer">
+            <div class="define-answer">
                 <span class="ee-input">
                     <select class="NormalTextBox answer-options" name="DefineAnswerType">
                         <option value="select-type"><%=Localization.GetString("SelectAnswerTypeOption.Text", LocalResourceFile)%></option>
@@ -37,26 +37,22 @@
                 </span>                
                 <ul class="answer-inputs">
                     <li>
-                        <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%></span>
+                        <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%> <span class="answer-num">1</span></span>
                         <div class="ai-selected">
                             <span class="ai-input"><input id="AnswerInputTextBox" class="NormalTextBox" /></span>
                             <a href="" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
                         </div>
                     </li>
                     <li>                        
-                        <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%></span>
+                        <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%> <span class="answer-num">2</span></span>
                         <div class="ai-selected">
                             <span class="ai-input"><input id="Text1" class="NormalTextBox" /></span>
                             <a href="" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
                         </div>
                     </li>
-                    <li class="primary-btn"><a href="" title="Add New" class="add-new"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a</li>
                 </ul>
-
-
-
-
-            </span>
+                <span class="primary-btn"><a href="" title="Add New" class="add-new"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a></span>
+            </div>
         </div>
         <ul class="ee-action-btns">
             <li class="primary-btn disabled"><a href="" title="Save and Create New" class="save-create-new"><%=Localization.GetString("SaveAndCreateNewQuestionHyperLink.Text", LocalResourceFile)%></a></li>

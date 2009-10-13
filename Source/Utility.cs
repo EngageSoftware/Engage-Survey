@@ -32,34 +32,6 @@ namespace Engage.Dnn.Survey
         /// ModuleDefinitionFriendlyName Constant
         /// </summary>
         public const string ModuleDefinitionFriendlyName = "Engage: Survey";
-        /// <summary>
-        /// ModuleConfigured Constant
-        /// </summary>
-        public const string ModuleConfigured = "ModuleConfigured";
-        /// <summary>
-        /// MainContainer Constant
-        /// </summary>
-        public const string Container = "MainContainer";
-        /// <summary>
-        /// CacheTime Constant
-        /// </summary>
-        public const string CacheTime = "CacheTime";
-
-        /// <summary>
-        /// Gets the name of the desktop module folder.
-        /// </summary>
-        /// <value>The name of the desktop module folder.</value>
-        public static string DesktopModuleFolderName
-        {
-            get
-            {
-                StringBuilder sb = new StringBuilder(128);
-                sb.Append("/DesktopModules/");
-                sb.Append(Globals.GetDesktopModuleByName(DesktopModuleName).FolderName);
-                sb.Append("/");
-                return sb.ToString();
-            }
-        }
 
         /// <summary>
         /// A public statically available method in which clients can call to get effectly the "NavigateUrl()"

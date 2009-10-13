@@ -80,29 +80,21 @@ namespace Engage.Dnn.Survey
             StringDictionary returnDict = GetAdminControlKeys();
             string keyParam = Request.Params["key"];
 
-            if (Engage.Util.Utility.HasValue(keyParam))
+            if (Util.Utility.HasValue(keyParam))
             {
-                controlToLoad = returnDict[keyParam.ToLower(CultureInfo.InvariantCulture)];
+                this.controlToLoad = returnDict[keyParam.ToLower(CultureInfo.InvariantCulture)];
             }
             else
             {
-                if (IsSetup == false)
+                // display unauthenticated version to user based on setting by administrator.
+                string displayType = ModuleSettings.DisplayType.GetValueAsStringFor(this);
+                if (!string.IsNullOrEmpty(displayType))
                 {
-                    //display the admin version
-                    controlToLoad = "SurveyListing.ascx";
+                    this.controlToLoad = displayType + ".ascx";
                 }
                 else
                 {
-                    //display unathenticated version to user based on setting by administrator.
-                    object o = Settings[Setting.DisplayType.PropertyName];
-                    if (o != null && !String.IsNullOrEmpty(o.ToString()))
-                    {
-                        controlToLoad = o + ".ascx";
-                    }
-                    else
-                    {
-                        controlToLoad = "SurveyListing.ascx";
-                    }
+                    this.controlToLoad = "SurveyListing.ascx";
                 }
             }
         }

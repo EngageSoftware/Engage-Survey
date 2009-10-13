@@ -11,112 +11,15 @@
 
 namespace Engage.Dnn.Survey
 {
-    using System;
-    using System.Web;
-    using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Modules;
-
-    /// <summary>
-    /// Summary description for ModuleBase.
-    /// </summary>
-    public class ModuleBase : Engage.Dnn.Framework.ModuleBase
+    public class ModuleBase : Framework.ModuleBase
     {
-        private bool allowTitleUpdate = true;
-        private bool useCache = true;
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            if (DotNetNuke.Framework.AJAX.IsInstalled())
-            {
-                DotNetNuke.Framework.AJAX.RegisterScriptManager();
-            }
-        }
-        
-        protected bool IsSetup
-        {
-            get
-            {
-                string s = HostSettings.GetHostSetting(Utility.ModuleConfigured + PortalId);
-                return !String.IsNullOrEmpty(s);
-            }
-        }
-
-        protected static bool IsHostMailConfigured
-        {
-            get
-            {
-                string s = HostSettings.GetHostSetting("SMTPServer");
-                return Engage.Util.Utility.HasValue(s);
-            }
-        }
-
-        protected bool UseCache
-        {
-            get {
-                return this.useCache && CacheTime > 0;
-            }
-            set { this.useCache = value; }
-        }
-
-        protected bool AllowTitleUpdate
-        {
-            get
-            {
-                object o = Settings["AllowTitleUpdate"];
-                if (o == null || !bool.TryParse(o.ToString(), out this.allowTitleUpdate))
-                {
-                    this.allowTitleUpdate = true;
-                }
-                return this.allowTitleUpdate;
-            }
-            set
-            {
-                this.allowTitleUpdate = value;
-            }
-        }
-
-        protected int CacheTime
-        {
-            get
-            {
-                object o = Settings["CacheTime"];
-                if (o != null)
-                {
-                    return Convert.ToInt32(o.ToString());
-                }
-                if (GetDefaultCacheSetting(PortalId) > 0)
-                {
-                    return GetDefaultCacheSetting(PortalId);
-                }
-                return 0;
-            }
-        }
-
-        protected static int GetDefaultCacheSetting(int portalId)
-        {
-            string s = HostSettings.GetHostSetting(Utility.CacheTime + portalId);
-            if (Engage.Util.Utility.HasValue(s))
-            {
-                return Convert.ToInt32(s);
-            }
-            return 0;
-        }
-
         /// <summary>
-        /// Gets the application URL.
+        /// Gets the name of the this module's desktop module record in DNN.
         /// </summary>
-        /// <value>The application URL.</value>
-        public static string ApplicationUrl
+        /// <value>The name of this module's desktop module record in DNN.</value>
+        public override string DesktopModuleName
         {
-            get
-            {
-                if (HttpContext.Current.Request.ApplicationPath == "/")
-                {
-                    return "";
-                }
-                return HttpContext.Current.Request.ApplicationPath;
-            }
+            get { return Utility.DesktopModuleName; }
         }
 
         /// <summary>
@@ -126,7 +29,7 @@ namespace Engage.Dnn.Survey
         /// <returns></returns>
         public string BuildLinkUrl(string qsParameters)
         {
-            return BuildLinkUrl(TabId, "", qsParameters);
+            return BuildLinkUrl(TabId, string.Empty, qsParameters);
         }
 
         /// <summary>
@@ -138,34 +41,7 @@ namespace Engage.Dnn.Survey
         /// <returns></returns>
         public static string BuildLinkUrl(int tabId, string controlKey, string qsParameters)
         {
-            return DotNetNuke.Common.Globals.NavigateURL(tabId, "", qsParameters);
-        }
-
-        /// <summary>
-        /// Gets the name of the desktop module folder.
-        /// </summary>
-        /// <value>The name of the desktop module folder.</value>
-        public static string DesktopModuleFolderName
-        {
-            get
-            {
-                return Utility.DesktopModuleFolderName;
-            }
-        }
-
-        /// <summary>
-        /// Gets the clean title.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <returns></returns>
-        public static string GetCleanTitle(object title)
-        {
-            return Engage.Util.Utility.RemoveHtmlMarkup(title.ToString(), false);
-        }
-
-        public override string DesktopModuleName
-        {
-            get { throw new NotImplementedException(); }
+            return DotNetNuke.Common.Globals.NavigateURL(tabId, controlKey, qsParameters);
         }
     }
 }

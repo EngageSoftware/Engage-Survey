@@ -12,20 +12,24 @@
 namespace Engage.Dnn.Survey
 {
     using System;
-    using System.Data;
-    using System.Globalization;
     using System.Web.UI.WebControls;
-    using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using Framework;
 
     /// <summary>
     /// Settings control
     /// </summary>
-    public partial class Settings : ModuleSettingsBase
-    {      
-        #region Base Method Implementations
+    public partial class Settings : SettingsBase
+    {
+        /// <summary>
+        /// Gets the name of the this module's desktop module record in DNN.
+        /// </summary>
+        /// <value>The name of this module's desktop module record in DNN.</value>
+        public override string DesktopModuleName
+        {
+            get { return Utility.DesktopModuleName; }
+        }
 
         /// <summary>
         /// Loads the settings.
@@ -37,56 +41,39 @@ namespace Engage.Dnn.Survey
             {
                 if (Page.IsPostBack == false)
                 {
-                    ListItem eventListing = new ListItem(Localization.GetString("SurveyListing", LocalResourceFile), "SurveyListing");
-                    ListItem viewSurvey = new ListItem(Localization.GetString("ViewSurvey", LocalResourceFile), "ViewSurvey");
-                    ListItem thanks = new ListItem(Localization.GetString("ThankYou", LocalResourceFile), "ThankYou");
+                    var eventListing = new ListItem(Localization.GetString("SurveyListing", LocalResourceFile), "SurveyListing");
+                    var viewSurvey = new ListItem(Localization.GetString("ViewSurvey", LocalResourceFile), "ViewSurvey");
+                    var thanks = new ListItem(Localization.GetString("ThankYou", LocalResourceFile), "ThankYou");
 
-                    ListingDisplayDropDownList.Items.Add(eventListing);
-                    ListingDisplayDropDownList.Items.Add(viewSurvey);
-                    ListingDisplayDropDownList.Items.Add(thanks);
+                    this.ListingDisplayDropDownList.Items.Add(eventListing);
+                    this.ListingDisplayDropDownList.Items.Add(viewSurvey);
+                    this.ListingDisplayDropDownList.Items.Add(thanks);
 
-                    object o = Settings[Setting.DisplayType.PropertyName];
-                    if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                    ListItem listingDisplayListItem = this.ListingDisplayDropDownList.Items.FindByValue(Survey.ModuleSettings.DisplayType.GetValueAsStringFor(this));
+                    if (listingDisplayListItem != null)
                     {
-                        ListItem li = ListingDisplayDropDownList.Items.FindByValue(Settings["DisplayType"].ToString());
-                        if (li != null)
-                        {
-                            li.Selected = true;
-                        }
+                        listingDisplayListItem.Selected = true;
                     }
 
-                    o = Settings[Setting.AllowMultpleEntries.PropertyName];
-                    if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                    this.AllowMultipleCheckBox.Checked = Survey.ModuleSettings.AllowMultpleEntries.GetValueAsBooleanFor(this).Value;
+                    this.ShowRequiredNotationCheckBox.Checked = Survey.ModuleSettings.ShowRequiredNotation.GetValueAsBooleanFor(this).Value;
+
+                    ////DataTable dt = Engage.Survey.Db.DbUtil.GetAssignedSurveys();
+
+                    ////// bind the survey's
+                    ////foreach (DataRow row in dt.Rows)
+                    ////{
+                    ////    ListItem li = new ListItem(ModuleBase.GetCleanTitle(row["SurveyTitle"].ToString()), row["ObjectTypeId"].ToString());
+                    ////    SurveyDropDownList.Items.Add(li);
+                    ////}
+
+                    ListItem surveyTypeListItem = this.SurveyDropDownList.Items.FindByValue(Survey.ModuleSettings.SurveyTypeId.GetValueAsStringFor(this));
+                    if (surveyTypeListItem != null)
                     {
-                        AllowMultipleCheckBox.Checked = Convert.ToBoolean(o);
+                        surveyTypeListItem.Selected = true;
                     }
 
-                    o = Settings[Setting.ShowRequiredNotation.PropertyName];
-                    if (o != null && !String.IsNullOrEmpty(o.ToString()))
-                    {
-                        ShowRequiredNotationCheckBox.Checked = Convert.ToBoolean(o);
-                    }
-
-                    //DataTable dt = Engage.Survey.Db.DbUtil.GetAssignedSurveys();
-
-                    //// bind the survey's
-                    //foreach (DataRow row in dt.Rows)
-                    //{
-                    //    ListItem li = new ListItem(ModuleBase.GetCleanTitle(row["SurveyTitle"].ToString()), row["ObjectTypeId"].ToString());
-                    //    SurveyDropDownList.Items.Add(li);
-                    //}
-
-                    o = Settings[Setting.SurveyTypeId.PropertyName];
-                    if (o != null && !String.IsNullOrEmpty(o.ToString()))
-                    {
-                        ListItem li = SurveyDropDownList.Items.FindByValue(o.ToString());
-                        if (li != null)
-                        {
-                            li.Selected = true;
-                        }
-                    }
-
-                    ViewSurveyPanel.Visible = (ListingDisplayDropDownList.SelectedValue == "ViewSurvey");
+                    this.ViewSurveyPanel.Visible = this.ListingDisplayDropDownList.SelectedValue == "ViewSurvey";
                 }
             }
             catch (Exception exc)
@@ -110,14 +97,12 @@ namespace Engage.Dnn.Survey
             {
                 try
                 {
-                    HostSettingsController controller = new HostSettingsController();
-                    controller.UpdateHostSetting(Utility.ModuleConfigured + PortalId.ToString(CultureInfo.InvariantCulture), "true");
+                    Survey.ModuleSettings.IsConfigured.Set(this, true);
 
-                    ModuleController modules = new ModuleController();
-                    modules.UpdateTabModuleSetting(this.TabModuleId, Setting.DisplayType.PropertyName, this.ListingDisplayDropDownList.SelectedValue);
-                    modules.UpdateTabModuleSetting(this.TabModuleId, Setting.SurveyTypeId.PropertyName, SurveyDropDownList.SelectedValue);
-                    modules.UpdateTabModuleSetting(this.TabModuleId, Setting.AllowMultpleEntries.PropertyName, AllowMultipleCheckBox.Checked.ToString());
-                    modules.UpdateTabModuleSetting(this.TabModuleId, Setting.ShowRequiredNotation.PropertyName, ShowRequiredNotationCheckBox.Checked.ToString());
+                    Survey.ModuleSettings.DisplayType.Set(this, this.ListingDisplayDropDownList.SelectedValue);
+                    Survey.ModuleSettings.SurveyTypeId.Set(this, this.SurveyDropDownList.SelectedValue);
+                    Survey.ModuleSettings.AllowMultpleEntries.Set(this, this.AllowMultipleCheckBox.Checked);
+                    Survey.ModuleSettings.ShowRequiredNotation.Set(this, this.ShowRequiredNotationCheckBox.Checked);
                 }
                 catch (Exception exc)
                 {
@@ -126,16 +111,14 @@ namespace Engage.Dnn.Survey
             }
         }
 
-        #endregion
-
         /// <summary>
-        /// Handles the SelectedIndexChanged event of the ddListingDisplay control.
+        /// Handles the <see cref="DropDownList.SelectedIndexChanged"/> event of the <see cref="ListingDisplayDropDownList"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void ListingDisplayDropDownList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ViewSurveyPanel.Visible = (ListingDisplayDropDownList.SelectedValue == "ViewSurvey");
+            this.ViewSurveyPanel.Visible = this.ListingDisplayDropDownList.SelectedValue == "ViewSurvey";
         }      
     }
 }

@@ -216,4 +216,33 @@ jQuery(function ($) {
             $(elem).find('.answer-num').text(i + 1);
         });
     });
+
+    $('#DefineAnswerType').change(function(event) {
+        var questionType = $(this).val();
+        if (questionType == "short-input") {
+            $('#ShortTextAnswer').show();
+            $('#LongTextAnswer').hide();
+            $('#MultipleAnswer').hide();
+            $('#SaveQuestion').parent().removeClass('disabled');
+        }
+        else if(questionType == "long-input") {
+            $('#ShortTextAnswer').hide();
+            $('#LongTextAnswer').show();
+            $('#MultipleAnswer').hide();
+            $('#SaveQuestion').parent().removeClass('disabled');
+        }
+        else if(questionType == "select-type") { //default
+            $('#ShortTextAnswer').hide();
+            $('#LongTextAnswer').hide();
+            $('#MultipleAnswer').hide();
+            $('#SaveQuestion').parent().addClass('disabled');
+        }
+        else { //multiple answer
+            $('#MultipleAnswer').show();
+            $('#ShortTextAnswer').hide();
+            $('#LongTextAnswer').hide();
+            $('#SaveQuestion').parent().addClass('disabled');
+        }
+    });
+
 });

@@ -5,11 +5,11 @@
         <legend class="Head"><%=Localization.GetString("CreateNewLabel.Text", LocalResourceFile)%></legend>
         <div class="ee-title">
             <span class="ee-label eval-title"><%=Localization.GetString("EvalTitleLabel.Text", LocalResourceFile)%></span>
-            <span class="ee-input"><input class="required" id="EvalTitleInput" minlength="1" /></span>
+            <span class="ee-input"><input class="required" id="EvalTitleInput" minlength="1" maxlength="256" /></span>
         </div>
         <div class="ee-description">
             <span class="ee-label eval-description"><%=Localization.GetString("EvalDescriptionLabel.Text", LocalResourceFile)%></span>
-            <span class="ee-input"><textarea id="EvalDescTextArea"></textarea></span>
+            <span class="ee-input"><textarea id="EvalDescTextArea" maxlength="256"></textarea></span>
         </div>
         <ul class="ee-action-btns">
             <li class="primary-btn"><a href="#" title="Create New" id="EvalNew" class="create-new"><%=Localization.GetString("CreateNewEvalHyperLink.Text", LocalResourceFile)%></a></li>
@@ -22,13 +22,13 @@
         <legend class="Head"><%=Localization.GetString("CreateNewQuestionsLabel.Text", LocalResourceFile)%></legend>
         <div class="ee-question">
             <span class="ee-label"><%=Localization.GetString("TypeQuestionLabel.Text", LocalResourceFile)%></span>
-            <span class="ee-input"><textarea class="NormalTextBox"></textarea></span>
+            <span class="ee-input"><textarea id="QuestionText" class="required" minlength="1" maxlength="256"></textarea></span>
         </div>
         <div class="ee-define-answer">
             <span class="ee-label"><%=Localization.GetString("DefineAnswerLabel.Text", LocalResourceFile)%></span>
             <div class="define-answer">
                 <span class="ee-input">
-                    <select class="NormalTextBox answer-options" name="DefineAnswerType">
+                    <select class="NormalTextBox answer-options" name="DefineAnswerType" id="DefineAnswerType">
                         <option value="select-type"><%=Localization.GetString("SelectAnswerTypeOption.Text", LocalResourceFile)%></option>
                         <option value="short-input"><%=Localization.GetString("ShortAnswerOption.Text", LocalResourceFile)%></option>
                         <option value="long-input"><%=Localization.GetString("LongAnswerOption.Text", LocalResourceFile)%></option>
@@ -36,8 +36,10 @@
                         <option value="single-radio"><%=Localization.GetString("SingleAnswerRadioButtonOption.Text", LocalResourceFile)%></option>
                         <option value="multiple-checkbox"><%=Localization.GetString("MultipleAnswerCheckboxesOption.Text", LocalResourceFile)%></option>
                     </select>
-                </span>                
-                <ul class="answer-inputs">
+                </span>
+                <div id="ShortTextAnswer" style="display:none;">todo: show the short text preview content here</div>
+                <div id="LongTextAnswer" style="display:none;">todo: show the long text preview content here</div>
+                <ul id="MultipleAnswer" class="answer-inputs" style="display:none;">
                     <li>
                         <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%> <span class="answer-num">1</span></span>
                         <div class="ai-selected">
@@ -53,11 +55,11 @@
                         </div>
                     </li>
                 </ul>
-                <span class="primary-btn"><a href="" title="Add New" class="add-new"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a></span>
+                <span class="primary-btn" style="display:none;"><a href="" title="Add New" class="add-new"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a></span>
             </div>
         </div>
         <ul class="ee-action-btns">
-            <li class="primary-btn disabled"><a href="" title="Save and Create New" class="save-create-new"><%=Localization.GetString("SaveAndCreateNewQuestionHyperLink.Text", LocalResourceFile)%></a></li>
+            <li class="primary-btn disabled"><a href="" title="Save and Create New" class="save-create-new" id="SaveQuestion"><%=Localization.GetString("SaveAndCreateNewQuestionHyperLink.Text", LocalResourceFile)%></a></li>
             <li class="secondary-btn"><a href="" title="Back" class="back"><%=Localization.GetString("BackHyperLink.Text", LocalResourceFile)%></a></li>
         </ul>
     </fieldset>

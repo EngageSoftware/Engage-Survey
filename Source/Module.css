@@ -80,7 +80,7 @@ survey-title{font-weight: bold}
 /*============ Global Navigation ============*/
 ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px #e4bbab solid;border-bottom:1px #e4bbab solid;padding:10px 15px;margin:0;}
 	ul.em-global-nav li{display:block;float:left;padding:5px 25px 5px 0;}
-		ul.em-global-nav li a{padding-left:25px;color:#df3f00;text-decoration:underline;font-weight:bold;}
+		ul.em-global-nav li a{padding-left:25px;color:#df3f00;text-decoration:underline;font-weight:bold;font-size:14px;}
 		ul.em-global-nav li a:hover{text-decoration:none;color:#000;}
 	ul.em-global-nav li.egn-home{background: url(images/em-home-icn.gif) left no-repeat;}
 	ul.em-global-nav li.egn-add-new{background: url(images/em-add-icn.gif) left no-repeat;}

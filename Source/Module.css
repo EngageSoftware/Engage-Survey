@@ -4,7 +4,7 @@ survey-title{font-weight: bold}
 	h3.section-title{}
 	.question-wrap{padding:0 0 10px 0;}
 		.question{display:block;font-weight:bold;padding:0 0 2px 0;}
-			.required{color:#f00;}
+			.required{}
 		.answer-horizontal,	.answer-vertical, .answer-vertical span{display:block;}
 	.error-message{background:url(images/inline-validator-bg.png) no-repeat right;padding:2px 4px;color:#fff !important;font-weight:bold;}
 		.error-text{color:#fff !important;font-weight:bold;}
@@ -19,9 +19,9 @@ survey-title{font-weight: bold}
         #engage-evaluation legend.Head{color:#6f4719;font-family:"Lucida Grande", Lucida Sans Unicode, Helvetica, Arial, Sans-Serif;font-size:20px;letter-spacing:-1px;}
         #engage-evaluation div{clear:both;overflow:hidden;padding-bottom:8px;}
         #engage-evaluation .ee-label{display:block;float:left;text-align:right;width:100px;font-weight:bold;padding-right:10px;padding-top:5px;}
-        #engage-evaluation .ee-input{display:block;float:left;background:#ebf5fc;padding:3px 5px;}
-            #engage-evaluation input.NormalTextBox, #engage-evaluation textarea.NormalTextBox, #engage-evaluation select.NormalTextBox{border:1px #cbcbcb solid;width:300px;padding:5px;}
-
+        #engage-evaluation .ee-input{display:block;float:left;background:#ebf5fc;padding:3px 5px;position:relative;}
+            #engage-evaluation input.NormalTextBox, #engage-evaluation textarea.NormalTextBox, #engage-evaluation select.NormalTextBox{border:1px #cbcbcb solid;width:300px;padding:8px;}
+			label.error{display:block;position:absolute;top:10%;left:310px;padding:5px 20px;background: url(images/validator-bg.gif) left no-repeat;color:#ebc6c6;min-width:140px;font-weight:bold;}
         #engage-evaluation a.ee-edit, #engage-evaluation a.ee-save, #engage-evaluation a.ee-delete{color:#007b00;padding:4px;text-decoration:underline;font-weight:bold;}
         #engage-evaluation a.ee-edit{color:#0063dd;padding:0;}
         #engage-evaluation a.ee-delete{color:#dd001a;padding:0;}
@@ -29,6 +29,7 @@ survey-title{font-weight: bold}
 
             .ee-title, .ee-question{border-top:1px #ccc solid;padding-top:15px;}
             .ee-description textarea.NormalTextBox{height:100px;}
+            .ee-input-pre{display:block;width:300px;}
         ul.ee-action-btns, ul.ee-pr-action-links{clear:both;padding:10px 15px 15px 110px;list-style:none;margin:0;}
             ul.ee-action-btns li{padding:0;list-style:none;margin:0;}
                 ul.ee-action-btns li.primary-btn a, ul.answer-inputs li.primary-btn a{color:#df3f00;font-weight:bold;font-size:16px;text-shadow:1px 1px 1px #fff;}
@@ -39,13 +40,13 @@ survey-title{font-weight: bold}
                 ul.ee-action-btns li.secondary-btn a:hover{color:#000;text-decoration:none;}
             ul.ee-action-btns li.disabled, ul.ee-action-btns li.disabled:hover{border:1px #b2b2b2 solid;background: url(images/btn-bg.gif) repeat-x bottom;}
                 ul.ee-action-btns li.disabled a{color:#b6b6b6;}
-        
+		.survey-listing ul{padding:15px 0 0 0;}
         .ee-create-questions{}
             .ee-question .ee-label{}
             #engage-evaluation .ee-question a.ee-edit{display:block;cursor:pointer;margin-left:110px;padding-left:20px !important;clear:both;background: url(images/help-icn.gif) no-repeat left}
                 #section-title-input a.ee-delete{padding:5px 0 0 10px;display:block;float:left;}
         .ee-define-answers{}
-            .define-answer{float:left;display:block;}
+            #engage-evaluation .define-answer{float:left;display:block;clear:none;}
             .define-answer .ee-input{margin-bottom:10px;}
             ul.answer-inputs{background:#f7fee7;width:420px;margin:10px 0 0 0;padding:10px;border-bottom:1px #c4cbb2 solid;border-right:1px #cfcfcf solid;list-style:none;clear:both;overflow:hidden;}
 				ul.answer-inputs li{list-style:none;}
@@ -64,3 +65,14 @@ survey-title{font-weight: bold}
 			#engage-evaluation .ee-preview .ee-label{padding-top:0;}
 			.pv-question{display:block;float:left;}
 			.pv-answer{display:block;clear:both;padding:5px 0 0 110px;}
+			
+/*------ Survey Listing ------*/
+.survey-listing{}
+	.survey-listing h3{color:#000;font-size:18px;margin-bottom:0;}
+		#survey-filters{clear:both;overflow:hidden;}
+		#survey-filters table{float:right;}
+	.survey-listing td{padding:5px 10px;}
+	ul.sl-repeater{margin:0;padding:0;border-top:1px solid #D4DFE1;}
+		ul.sl-repeater li{list-style:none;padding:5px 10px;margin:0;display:block;}
+		ul.sl-repeater li.sl-item, ul.sl-repeater li.sl-alt-item{background:#F2F6F9;border:1px solid #D4DFE1;border-top:none;}
+			ul.sl-repeater li.sl-alt-item{background:#fff;}

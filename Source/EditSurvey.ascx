@@ -5,11 +5,11 @@
         <legend class="Head"><%=Localization.GetString("CreateNewLabel.Text", LocalResourceFile)%></legend>
         <div class="ee-title">
             <span class="ee-label eval-title"><%=Localization.GetString("EvalTitleLabel.Text", LocalResourceFile)%></span>
-            <span class="ee-input"><input class="required" id="EvalTitleInput" minlength="1" maxlength="256" /></span>
+            <span class="ee-input"><input class="NormalTextBox required" id="EvalTitleInput" minlength="1" maxlength="256" /></span>
         </div>
         <div class="ee-description">
             <span class="ee-label eval-description"><%=Localization.GetString("EvalDescriptionLabel.Text", LocalResourceFile)%></span>
-            <span class="ee-input"><textarea id="EvalDescTextArea" maxlength="256"></textarea></span>
+            <span class="ee-input"><textarea id="EvalDescTextArea" class="NormalTextBox" maxlength="256"></textarea></span>
         </div>
         <ul class="ee-action-btns">
             <li class="primary-btn"><a href="#" title="Create New" id="EvalNew" class="create-new"><%=Localization.GetString("CreateNewEvalHyperLink.Text", LocalResourceFile)%></a></li>
@@ -22,7 +22,7 @@
         <legend class="Head"><%=Localization.GetString("CreateNewQuestionsLabel.Text", LocalResourceFile)%></legend>
         <div class="ee-question">
             <span class="ee-label"><%=Localization.GetString("TypeQuestionLabel.Text", LocalResourceFile)%></span>
-            <span class="ee-input"><textarea id="QuestionText" class="required" minlength="1" maxlength="256"></textarea></span>
+            <span class="ee-input"><textarea id="QuestionText" class="NormalTextBox required" minlength="1" maxlength="256"></textarea></span>
         </div>
         <div class="ee-define-answer">
             <span class="ee-label"><%=Localization.GetString("DefineAnswerLabel.Text", LocalResourceFile)%></span>

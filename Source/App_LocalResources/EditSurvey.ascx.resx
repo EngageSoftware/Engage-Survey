@@ -142,7 +142,7 @@
     <value>Create Questions</value>
   </data>
   <data name="DefineAnswerLabel.Text" xml:space="preserve">
-    <value>Define Answer</value>
+    <value>Answer</value>
   </data>
   <data name="DeleteAnswerHyperLink.Text" xml:space="preserve">
     <value>Delete</value>
@@ -196,7 +196,7 @@
     <value>Single Answer (Dropdown List)</value>
   </data>
   <data name="TypeQuestionLabel.Text" xml:space="preserve">
-    <value>Type Question</value>
+    <value>Question</value>
   </data>
   <data name="TypeSectionTitleLabel.Text" xml:space="preserve">
     <value>Type Section Title</value>

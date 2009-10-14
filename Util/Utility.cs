@@ -98,7 +98,7 @@ namespace Engage.Survey.Util
                 case ControlType.SmallTextInputField:
                     control = (WebControl)RenderSmallInputField(question);
                     break;
-                case ControlType.CheckBox:
+                case ControlType.Checkbox:
                     return RenderCheckBoxList(question, readOnly);
                 default:
                     control = new Label { Text = "No control info found for ControlType: " + question.ControlType };

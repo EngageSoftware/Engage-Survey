@@ -300,10 +300,21 @@ jQuery(function ($) {
         }
     });
 
+  $('.ai-input input:first').blur(function() {
+        if($(this).val() != '') {
+            $('#SaveQuestion').parent().removeClass('disabled');
+        }
+        else {
+            $('#SaveQuestion').parent().addClass('disabled');
+        }
+    });
+    
     $('#SaveQuestion').click(function(event) {
         event.preventDefault();
 
-        if($('#Form').validate().form() && $('#Form').validate().element('#QuestionText')){
+        if($('#SaveQuestion').parent().hasClass('disabled') == false &&
+           $('#Form').validate().form() &&
+           $('#Form').validate().element('#QuestionText')){
         
             $('#PreviewArea').show();
             
@@ -311,22 +322,50 @@ jQuery(function ($) {
             
             // copy the last list item in our UL, which is always a blank and hidden list item.
             var questionCount = $('.ee-preview').size();
-            var blankListItem = $('.ee-preview:last').clone(true);
+            var $blankListItem = $('.ee-preview:last').clone(true);
             
             //append and hide the new blank list item for future use
-            $('#ee-previews').append(blankListItem);
+            $('#ee-previews').append($blankListItem);
             $('.ee-preview').eq(questionCount).hide();
             
             //retrieve question values
             var questionText = $('#QuestionText').val();
             
             //update the new question preview
-            $('.pv-question').eq(questionCount -1).text(questionText).show();
-            $('.ee-preview').eq(questionCount -1).show();
+            $('.pv-question').eq(questionCount - 1).text(questionText).show();
+            $('.ee-preview').eq(questionCount - 1).show();
             
-            //todo: retrieve the answer values
-            
-            //todo: update the answer preview
+            //update the preview with answer values
+            var $answerDiv = $('.pv-answer').eq(questionCount - 1);
+            var questionType = $('#DefineAnswerType :selected').val();
+            if (questionType == "short-input") {
+                $answerDiv.html("<input type=\"text\" class=\"NormalTextBox\" />");
+            }
+            else if(questionType == "long-input") {
+                $answerDiv.html("<textarea class=\"NormalTextBox\" />");
+            }
+            else if(questionType == "single-dropdown") {
+                $answerDiv.append("<select class=\"NormalTextBox dropdown-prev\"></select>");
+                $('.ai-input input').each(function(i) {
+                    $("<option>" + $(this).val() + "</option>").appendTo('.dropdown-prev', $answerDiv);
+                });
+            }
+            else if(questionType == "single-radio") {
+                $('.ai-input input').each(function(i) {
+                    var questionValue = $(this).val();
+                    $answerDiv.append("<input type=\"radio\" name=\"" + questionCount + "\">" + questionValue + "</input>");
+                });
+            }
+            else if(questionType == "multiple-checkbox") {
+                $('.ai-input input').each(function(i) {
+                    var questionValue = $(this).val();
+                    $answerDiv.append("<span class=\"check-prev\"><input type=\"checkbox\">" + questionValue + "</span>");
+                });
+                
+            }
+            else { //default
+                alert("todo: implement validation, shouldn't be able to add a question if you have 'select answer type' selected in the drop down.");
+            }
             
             //reset the "create question" section
             $('#QuestionText').val('');
@@ -334,10 +373,11 @@ jQuery(function ($) {
             $('#ShortTextAnswer').hide();
             $('#LongTextAnswer').hide();
             $('#MultipleAnswer').hide();
+            $('.ai-input input').val('');
+            $('#AddNewQuestion').parent().hide();
             $('#SaveQuestion').parent().addClass('disabled');
         }
     });
-
     
     // Load survey to edit
     if (CurrentContextInfo.Survey) {

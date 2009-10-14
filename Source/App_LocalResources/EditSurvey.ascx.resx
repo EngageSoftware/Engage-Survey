@@ -123,7 +123,7 @@
   <data name="AddSectionTitleLabel.Text" xml:space="preserve">
     <value>Add Section Title</value>
   </data>
-  <data name="AnswerNumberTitle.Text" xml:space="preserve">
+  <data name="AnswerTitle.Text" xml:space="preserve">
     <value>Answer</value>
   </data>
   <data name="CancelHyperLink.Text" xml:space="preserve">

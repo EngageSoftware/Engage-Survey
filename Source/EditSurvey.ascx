@@ -41,21 +41,21 @@
                 <div id="LongTextAnswer" style="display:none;">todo: show the long text preview content here</div>
                 <ul id="MultipleAnswer" class="answer-inputs" style="display:none;">
                     <li>
-                        <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%> <span class="answer-num">1</span></span>
+                        <span class="ai-label"><%=Localization.GetString("AnswerTitle.Text", LocalResourceFile)%> <span class="answer-num">1</span></span>
                         <div class="ai-selected">
                             <span class="ai-input"><input type="text" /></span>
                             <a href="#" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
                         </div>
                     </li>
                     <li>                        
-                        <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%> <span class="answer-num">2</span></span>
+                        <span class="ai-label"><%=Localization.GetString("AnswerTitle.Text", LocalResourceFile)%> <span class="answer-num">2</span></span>
                         <div class="ai-selected">
                             <span class="ai-input"><input type="text"/></span>
                             <a href="#" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
                         </div>
                     </li>
                 </ul>
-                <span class="primary-btn" style="display:none;"><a href="#" title="Add New" class="add-new"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a></span>
+                <span class="primary-btn" style="display:none;"><a href="#" title="Add New" class="add-new" id="AddNewQuestion"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a></span>
             </div>
         </div>
         <ul class="ee-action-btns">
@@ -74,7 +74,8 @@
                 </ul>
                 <span class="ee-label pv-question-label"><%=Localization.GetString("QuestionTitle.Text", LocalResourceFile)%></span>
                 <span class="pv-question"></span>
-                <div class="pv-answer"></div>
+                <span class="ee-label pv-answer-label"><%=Localization.GetString("AnswerTitle.Text", LocalResourceFile)%></span>
+                <span class="pv-answer"></span>
             </li>
         </ul>
     </fieldset>   

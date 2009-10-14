@@ -248,18 +248,25 @@ jQuery(function ($) {
         
         // clear out cloned textbox
         $answerElement.find('input').val('');
+        
+        $(".answer-inputs .ee-delete").removeClass('disabled')
     });
     
     // remove answer
     $(".answer-inputs .ee-delete").click(function (event) {
         event.preventDefault();
         
-        var $parentAnswerElement = $(this).parents('li');
-        $parentAnswerElement.remove();
-        
-        $(".answer-inputs li").each(function (i, elem) {
-            $(elem).find('.answer-num').text(i + 1);
-        });
+        if ($(".answer-inputs li").length > 1) {
+            var $parentAnswerElement = $(this).parents('li');
+            $parentAnswerElement.remove();
+            
+            var $answers = $(".answer-inputs li").each(function (i, elem) {
+                $(elem).find('.answer-num').text(i + 1);
+            });
+        }
+        else {
+            $answers.find('.ee-delete').addClass('disabled');
+        }
     });
 
     $('#DefineAnswerType').change(function (event) {

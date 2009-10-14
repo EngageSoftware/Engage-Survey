@@ -1,0 +1,13 @@
+  <!--Engage: Survey->Engage: Campus-->
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/Engage.Survey.dll" Destination="$/Engage Campus/Source/References/Engage.Survey.dll" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/Engage.Survey.xml" Destination="$/Engage Campus/Source/References/Engage.Survey.xml" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/EngageSurvey.dll" Destination="$/Engage Campus/Source/References/EngageSurvey.dll" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/EngageSurvey.xml" Destination="$/Engage Campus/Source/References/EngageSurvey.xml" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/Engage.Survey.dll" Destination="$/Engage Campus/Source/References/EngageCampus.Evaluations/Engage.Survey.dll" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/Engage.Survey.xml" Destination="$/Engage Campus/Source/References/EngageCampus.Evaluations/Engage.Survey.xml" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/EngageSurvey.dll" Destination="$/Engage Campus/Source/References/EngageCampus.Evaluations/EngageSurvey.dll" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/EngageSurvey.xml" Destination="$/Engage Campus/Source/References/EngageCampus.Evaluations/EngageSurvey.xml" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/EngageSurvey.Entities.dll" Destination="$/Engage Campus/Source/References/EngageCampus.Evaluations/EngageSurvey.Entities.dll" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/EngageSurvey.Entities.xml" Destination="$/Engage Campus/Source/References/EngageCampus.Evaluations/EngageSurvey.Entities.xml" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/EngageSurvey.dll" Destination="$/Engage Campus/Source/EngageCampus.Configuration/References/EngageSurvey.dll" EventType="New" />
+  <Rule BuildType="Continuous Integration (Survey)"  Source="Release/EngageSurvey.xml" Destination="$/Engage Campus/Source/EngageCampus.Configuration/References/EngageSurvey.xml" EventType="New" />

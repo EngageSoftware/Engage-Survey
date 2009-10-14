@@ -1,4 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="false" CodeBehind="EditSurvey.ascx.cs" Inherits="Engage.Dnn.Survey.EditSurvey" %>
+<%@ Import Namespace="Engage.Survey.Util"%>
 <%@ Import Namespace="DotNetNuke.Services.Localization"%>
 <div id="engage-evaluation">
     <fieldset class="ee-create-new">
@@ -29,12 +30,12 @@
             <div class="define-answer">
                 <span class="ee-input">
                     <select class="NormalTextBox answer-options" name="DefineAnswerType" id="DefineAnswerType">
-                        <option value="select-type"><%=Localization.GetString("SelectAnswerTypeOption.Text", LocalResourceFile)%></option>
-                        <option value="SmallTextInputField"><%=Localization.GetString("ShortAnswerOption.Text", LocalResourceFile)%></option>
-                        <option value="LargeTextInputField"><%=Localization.GetString("LongAnswerOption.Text", LocalResourceFile)%></option>
-                        <option value="DropDownChoices"><%=Localization.GetString("SingleAnwserDropdownListOption.Text", LocalResourceFile)%></option>
-                        <option value="VerticalOptionButtons"><%=Localization.GetString("SingleAnswerRadioButtonOption.Text", LocalResourceFile)%></option>
-                        <option value="Checkbox"><%=Localization.GetString("MultipleAnswerCheckboxesOption.Text", LocalResourceFile)%></option>
+                        <option value='<%=(int)ControlType.None %>'><%=Localization.GetString("SelectAnswerTypeOption.Text", LocalResourceFile)%></option>
+                        <option value='<%=(int)ControlType.SmallTextInputField %>'><%=Localization.GetString("ShortAnswerOption.Text", LocalResourceFile)%></option>
+                        <option value='<%=(int)ControlType.LargeTextInputField %>'><%=Localization.GetString("LongAnswerOption.Text", LocalResourceFile)%></option>
+                        <option value='<%=(int)ControlType.DropDownChoices %>'><%=Localization.GetString("SingleAnwserDropdownListOption.Text", LocalResourceFile)%></option>
+                        <option value='<%=(int)ControlType.VerticalOptionButtons %>'><%=Localization.GetString("SingleAnswerRadioButtonOption.Text", LocalResourceFile)%></option>
+                        <option value='<%=(int)ControlType.Checkbox %>'><%=Localization.GetString("MultipleAnswerCheckboxesOption.Text", LocalResourceFile)%></option>
                     </select>
                 </span>
                 <div id="ShortTextAnswer" style="display:none;">todo: show the short text preview content here</div>

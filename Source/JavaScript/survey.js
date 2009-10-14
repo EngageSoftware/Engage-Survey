@@ -280,26 +280,30 @@ jQuery(function ($) {
     });
 
     $('#DefineAnswerType').change(function (event) {
-        var questionType = $(this).val();
-        if (questionType == "SmallTextInputField") {
+        var questionType = parseInt($(this).val(), 10);
+        if (questionType === 2) {
+            // ControlType.SmallTextInputField
             $('#ShortTextAnswer').show();
             $('#LongTextAnswer').hide();
             $('#MultipleAnswer').hide();
             $('#SaveQuestion').parent().removeClass('disabled');
         }
-        else if(questionType == "LargeTextInputField") {
+        else if(questionType === 1) {
+            // ControlType.LargeTextInputField
             $('#ShortTextAnswer').hide();
             $('#LongTextAnswer').show();
             $('#MultipleAnswer').hide();
             $('#SaveQuestion').parent().removeClass('disabled');
         }
-        else if(questionType == "select-type") { //default
+        else if(questionType === 0) {
+            // ControlType.None
             $('#ShortTextAnswer').hide();
             $('#LongTextAnswer').hide();
             $('#MultipleAnswer').hide();
             $('#SaveQuestion').parent().addClass('disabled');
         }
-        else { //multiple answer
+        else { 
+            //multiple answer
             $('#MultipleAnswer').show();
             $('#ShortTextAnswer').hide();
             $('#LongTextAnswer').hide();
@@ -327,64 +331,74 @@ jQuery(function ($) {
             callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
                 $('#PreviewArea').show();
                 
-                // copy the last list item in our UL, which is always a blank and hidden list item.
-                var questionCount = $('.ee-preview').length;
-                var $blankListItem = $('.ee-preview:last').clone(true);
-                
-                // append and hide the new blank list item for future use
-                $('#ee-previews').append($blankListItem);
-                $('.ee-preview').eq(questionCount).hide();
-                
-                // retrieve question values
-                var questionText = $('#QuestionText').val();
-                
-                // update the new question preview
-                $('.pv-question').eq(questionCount - 1).text(questionText).show();
-                $('.ee-preview').eq(questionCount - 1).show().data('questionId', question.QuestionId);
-                
-            //update the preview with answer values
-            var $answerDiv = $('.pv-answer').eq(questionCount - 1);
-            var questionType = $('#DefineAnswerType :selected').val();
-            if (questionType === "SmallTextInputField") {
-                $answerDiv.html("<input type=\"text\" class=\"NormalTextBox\" />");
-            }
-            else if(questionType === "LargeTextInputField") {
-                $answerDiv.html("<textarea class=\"NormalTextBox\" />");
-            }
-            else if(questionType === "DropDownChoices") {
-                $answerDiv.append("<select class=\"NormalTextBox dropdown-prev\"></select>");
-                $('.ai-input input').each(function(i) {
-                    $("<option>" + $(this).val() + "</option>").appendTo('.dropdown-prev', $answerDiv);
-                });
-            }
-            else if(questionType === "VerticalOptionButtons") {
-                $('.ai-input input').each(function(i) {
-                    var questionValue = $(this).val();
-                    $answerDiv.append("<input type=\"radio\" name=\"" + questionCount + "\">" + questionValue + "</input>");
-                });
-            }
-            else if(questionType === "Checkbox") {
-                $('.ai-input input').each(function(i) {
-                    var questionValue = $(this).val();
-                    $answerDiv.append("<span class=\"check-prev\"><input type=\"checkbox\">" + questionValue + "</span>");
-                });    
-            }
-            else { //default
-                alert("todo: implement validation, shouldn't be able to add a question if you have 'select answer type' selected in the drop down.");
-            }
-                
-                // reset the "create question" section
-                $('#QuestionText').val('');
-                $('#DefineAnswerType').find('option:first').attr('selected', true);
-                $('#ShortTextAnswer').hide();
-                $('#LongTextAnswer').hide();
-                $('#MultipleAnswer').hide();
-            $('.ai-input input').val('');
-            $('#AddNewQuestion').parent().hide();
-                $('#SaveQuestion').parent().addClass('disabled');
+                addQuestionPreview(question.QuestionId, $('#QuestionText').val(), parseInt($('#DefineAnswerType :selected').val(), 10), question.Answers);
+                    
+                resetCreateQuestionSection();
             });
         }
     });
+    
+    function addQuestionPreview(questionId, questionText, questionType, answers) {
+        // copy the last list item in our UL, which is always a blank and hidden list item.
+        var questionCount = $('.ee-preview').length;
+        var $blankListItem = $('.ee-preview:last').clone(true);
+        
+        // append and hide the new blank list item for future use
+        $('#ee-previews').append($blankListItem);
+        $('.ee-preview').eq(questionCount).hide();
+        
+        // retrieve question values
+        var questionText = questionText;
+        
+        // update the new question preview
+        $('.pv-question').eq(questionCount - 1).text(questionText).show();
+        $('.ee-preview').eq(questionCount - 1).show().data('questionId', questionId);
+        
+        //update the preview with answer values
+        var $answerDiv = $('.pv-answer').eq(questionCount - 1);
+        if (questionType === 2) {
+            // ControlType.SmallTextInputField
+            $answerDiv.html("<input type=\"text\" class=\"NormalTextBox\" />");
+        }
+        else if(questionType === 1) {
+            // ControlType.LargeTextInputField
+            $answerDiv.html("<textarea class=\"NormalTextBox\" />");
+        }
+        else if(questionType === 5) {
+            // ControlType.DropDownChoices
+            $answerDiv.append("<select class=\"NormalTextBox dropdown-prev\"></select>");
+            $.each(answers, function(i, answer) {
+                $("<option>" + answer.Text + "</option>").appendTo('.dropdown-prev', $answerDiv).data('answerId', answer.AnswerId);
+            });
+        }
+        else if(questionType === 3) {
+            // ControlType.VerticalOptionsButtons
+            $.each(answers, function(i, answer) {
+                $answerDiv.append("<input type=\"radio\" name=\"" + questionId + "\">" + answer.Text + "</input>").data('answerId', answer.AnswerId);
+            });
+        }
+        else if(questionType === 6) {
+            // ControlType.Checkbox
+            $.each(answers, function(i, answer) {
+                $answerDiv.append("<span class=\"check-prev\"><input type=\"checkbox\">" + answer.Text + "</span>").data('answerId', answer.AnswerId);
+            });    
+        }
+        else { //default
+            alert("todo: implement validation, shouldn't be able to add a question if you have 'select answer type' selected in the drop down.");
+        }
+    }
+
+    function resetCreateQuestionSection() {
+        // reset the "create question" section
+        $('#QuestionText').val('');
+        $('#DefineAnswerType').find('option:first').attr('selected', true);
+        $('#ShortTextAnswer').hide();
+        $('#LongTextAnswer').hide();
+        $('#MultipleAnswer').hide();
+        $('.ai-input input').val('');
+        $('#AddNewQuestion').parent().hide();
+        $('#SaveQuestion').parent().addClass('disabled');
+    }
     
     function getQuestionParameters () {
         return {
@@ -415,5 +429,13 @@ jQuery(function ($) {
         makeSurveyReadOnly();
         hideEditModeButtons();
         $('.ee-create-questions').show(); 
+        
+        if (CurrentContextInfo.Survey.Sections[0].Questions) {
+            $('#PreviewArea').show();
+            
+            $.each(CurrentContextInfo.Survey.Sections[0].Questions, function (i, question) {
+                addQuestionPreview(question.QuestionId, question.Text, question.ControlType, question.Answers);
+            });
+        }
     }
 });

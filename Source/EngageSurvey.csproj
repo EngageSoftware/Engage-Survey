@@ -217,6 +217,7 @@
     </Content>
     <EmbeddedResource Include="JavaScript\survey.js" />
     <Content Include="Controls\GlobalNavigation.ascx" />
+    <Content Include="images\em-add-icn.gif" />
     <Content Include="images\em-home-icn.gif" />
     <Content Include="images\em-manage-icn.gif" />
     <Content Include="images\em-settings-icn.gif" />

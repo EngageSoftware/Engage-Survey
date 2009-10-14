@@ -37,7 +37,7 @@ namespace Engage.Survey.Util
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FinalMessageOptions"/> class.
+        /// Initializes a new instance of the <see cref="FinalMessageOption"/> class.
         /// </summary>
         /// <param name="description">The description.</param>
         public ControlType(string description)

@@ -52,7 +52,7 @@ namespace Engage.Survey
         /// Gets the final message option.
         /// </summary>
         /// <value>The final message option.</value>
-        string FinalMessageOption { get; }
+        FinalMessageOption FinalMessageOption { get; }
 
         /// <summary>
         /// Gets the final message.
@@ -76,19 +76,19 @@ namespace Engage.Survey
         /// Gets or sets the question format option.
         /// </summary>
         /// <value>The question format option.</value>
-        string QuestionFormatOption { get; set; }
+        ElementFormatOption QuestionFormatOption { get; set; }
 
         /// <summary>
         /// Gets or sets the section format option.
         /// </summary>
         /// <value>The answer format option.</value>
-        string SectionFormatOption { get; set; }
+        ElementFormatOption SectionFormatOption { get; set; }
 
         /// <summary>
         /// Gets or sets the title option.
         /// </summary>
         /// <value>The title option.</value>
-        string TitleOption { get; set; }
+        TitleOption TitleOption { get; set; }
 
         /// <summary>
         /// Gets or sets the logo URL.

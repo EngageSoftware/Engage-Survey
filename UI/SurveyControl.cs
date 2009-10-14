@@ -416,7 +416,7 @@ namespace Engage.Survey.UI
         /// </summary>
         private void Redirect()
         {
-            if (this.CurrentSurvey.FinalMessageOption == FinalMessageOptions.UseFinalMessage.Description)
+            if (this.CurrentSurvey.FinalMessageOption == FinalMessageOption.UseFinalMessage)
             {
                 this.Page.Response.Redirect("ThankYou.aspx?typeid=" + this.CurrentSurvey.SurveyId);
             }

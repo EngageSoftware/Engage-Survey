@@ -454,21 +454,19 @@ namespace Engage.Survey.Util
         /// <param name="option">The option.</param>
         /// <param name="relativeOrder">The relative order.</param>
         /// <returns></returns>
-        public static string PrependFormatting(ElementFormatOptions option, int relativeOrder)
+        public static string PrependFormatting(ElementFormatOption option, int relativeOrder)
         {
-            if (option.Description == ElementFormatOptions.Numbered.Description)
+            switch (option)
             {
-                return relativeOrder + ". ";
+                case ElementFormatOption.Numbered:
+                    return relativeOrder + ". ";
+                case ElementFormatOption.Lettered:
+                    return ConvertNumberToCharacter(relativeOrder) + ". ";
+                case ElementFormatOption.Roman:
+                    return ConvertNumberToRomanNumeral(relativeOrder) + ". ";
+                default:
+                    return string.Empty;
             }
-            if (option.Description == ElementFormatOptions.Lettered.Description)
-            {
-                return ConvertNumberToCharacter(relativeOrder) + ". ";
-            }
-            if (option.Description == ElementFormatOptions.Roman.Description)
-            {
-                return ConvertNumberToRomanNumeral(relativeOrder) + ". ";
-            }
-            return string.Empty;
         }
     }
 }

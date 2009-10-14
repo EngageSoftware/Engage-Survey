@@ -137,6 +137,7 @@
 <script type="text/javascript">
 var CurrentContextInfo = {
     WebMethodUrl: '<%= ResolveUrl("~/DesktopModules/EngageSurvey/Services.asmx") %>/UpdateSurvey',
-    UserId: <%=UserId %>
+    UserId: <%=UserId %>,
+    Survey: <%=SerializedSurvey %>
 };
 </script>

@@ -12,6 +12,8 @@
 namespace Engage.Dnn.Survey
 {
     using System;
+    using System.Globalization;
+    using System.Web.Script.Serialization;
     using System.Web.UI;
 
     /// <summary>
@@ -20,14 +22,68 @@ namespace Engage.Dnn.Survey
     public partial class EditSurvey : ModuleBase
     {
         /// <summary>
+        /// Backing function for <see cref="SurveyId"/>
+        /// </summary>
+        private int? surveyId;
+
+        /// <summary>
+        /// Gets the survey id, or <c>null</c> if creating a new survey.
+        /// </summary>
+        /// <value>The survey id.</value>
+        protected int? SurveyId
+        {
+            get
+            {
+                if (this.surveyId == null)
+                {
+                    int value;
+                    if (int.TryParse(this.Request.QueryString["surveyId"], NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
+                    {
+                        this.surveyId = value;
+                    }
+                }
+
+                return this.surveyId;
+            }
+        }
+
+        /// <summary>
+        /// Gets the survey serialized to a JSON object, or <c>"null"</c> if there is no survey.
+        /// </summary>
+        /// <value>The serialized survey.</value>
+        protected string SerializedSurvey
+        {
+            get
+            {
+                if (this.SurveyId == null)
+                {
+                    return "null";
+                }
+
+                var serializer = new JavaScriptSerializer();
+                return serializer.Serialize(Engage.Survey.Entities.Survey.LoadSurvey(this.SurveyId.Value));
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="Control.Init"/> event.
         /// </summary>
         /// <param name="e">An <see cref="EventArgs"/> object that contains the event data.</param>
         protected override void OnInit(EventArgs e)
         {
+            this.Load += this.Page_Load;
+            base.OnInit(e);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Control.Load"/> event of this control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void Page_Load(object sender, EventArgs e)
+        {
             this.AddJQueryReference();
             this.Page.ClientScript.RegisterClientScriptResource(typeof(EditSurvey), "Engage.Dnn.Survey.JavaScript.survey.js");
-            base.OnInit(e);
         }
     }
 }

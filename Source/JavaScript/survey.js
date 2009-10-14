@@ -235,6 +235,7 @@ jQuery(function ($) {
         $('#EvalCancel').parent().hide();
     }
     
+    // add answer
     $(".add-new").click(function (event) {
         event.preventDefault();
         
@@ -249,6 +250,7 @@ jQuery(function ($) {
         $answerElement.find('input').val('');
     });
     
+    // remove answer
     $(".answer-inputs .ee-delete").click(function (event) {
         event.preventDefault();
         
@@ -287,5 +289,15 @@ jQuery(function ($) {
             $('#SaveQuestion').parent().addClass('disabled');
         }
     });
-
+    
+    // Load survey to edit
+    if (CurrentContextInfo.Survey) {
+        $('.ee-create-new').data('surveyId', CurrentContextInfo.Survey.SurveyId);
+        $('#EvalTitleInput').val(CurrentContextInfo.Survey.Text);
+        $('#EvalDescTextArea').val(CurrentContextInfo.Survey.Sections[0].Text)
+        
+        makeSurveyReadOnly();
+        hideEditModeButtons();
+        $('.ee-create-questions').show(); 
+    }
 });

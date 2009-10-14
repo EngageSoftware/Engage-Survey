@@ -129,3 +129,163 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
 /*     Engage: Survey     */
 /*                        */
 /**************************/
+jQuery(function ($) {
+    $("#ee-previews, .answer-inputs").sortable({
+        placeholder: 'ui-state-highlight'
+    });
+    $("#ee-previews, .answer-inputs").disableSelection();
+    
+    // Add selection style back to the inputs, since our CSS is removing or hiding the native style
+    $("#engage-evaluation :input").focus(function () {
+        $(this).addClass("focus");
+    }).blur(function () {
+        $(this).removeClass("focus");
+    });
+
+    $('#EvalNew').click(function (event) {
+        event.preventDefault();
+        
+        if($('#Form').validate().form()) {
+            updateSurvey(function () {
+                $('.ee-create-questions').show(); 
+            });
+        }
+    });
+    
+    $('#EvalUpdate').click(function (event) {
+        event.preventDefault();
+        
+        if($('#Form').validate().form()) {
+            updateSurvey(function () {
+                hideEditModeButtons();
+            });
+        }
+    });
+    
+    function updateSurvey(callback) {
+        jQuery.ajax({
+            type: "POST",
+            url: CurrentContextInfo.WebMethodUrl,
+            data: JSON.stringify(getSurveyParameters()),
+            contentType: "application/json; charset=utf-8",
+            dataFilter: function(data) {
+                var msg = eval('(' + data + ')');
+                if (msg.hasOwnProperty('d'))
+                    return msg.d;
+                else
+                    return msg;
+            },
+            success: function(msg) { 
+                $('.ee-create-new').data('surveyId', msg); 
+                makeSurveyReadOnly();
+                if (typeof(callback) === 'function') {
+                    callback();
+                }
+            },
+            error: function(/*XMLHttpRequest, textStatus, errorThrown*/) { 
+                alert('There was an error submitting the survey, please try again.'); 
+            }
+        });
+    }
+    
+    function getSurveyParameters () {
+        return {
+            survey : {
+                SurveyId: $('.ee-create-new').data('surveyId') || -1,
+                Text: $('#EvalTitleInput').val(),
+                RevisingUser: CurrentContextInfo.UserId,
+                Sections: [{
+                    Text: $('#EvalDescTextArea').val()
+                }]
+            }
+        };
+    }
+    
+    $('#EvalEdit').click(function (event) {
+        event.preventDefault();
+        $('#EvalTitleInput').convertTo('input').removeClass('ee-input-pre');
+        $('#EvalDescTextArea').convertTo('textarea').removeClass('ee-input-pre');
+        $('.ee-description').show();
+        $('#EvalEdit').parent().hide();
+        $('#EvalCancel').parent().show();
+        $('#EvalUpdate').parent().show();
+    });
+    
+    $('#EvalCancel').click(function (event) {
+        event.preventDefault();
+        makeSurveyReadOnly();
+        hideEditModeButtons();
+    });
+        
+    function makeSurveyReadOnly () {
+        if ($('#EvalDescTextArea').val() != '') {
+            $('#EvalDescTextArea').convertTo('span').addClass('ee-input-pre');
+            $('.ee-description').show();
+        }
+        else {
+            $('.ee-description').hide();
+        }
+        $('#EvalTitleInput').convertTo('span').addClass('ee-input-pre');
+        $('#EvalNew').parent().hide();
+        $('#EvalEdit').parent().show();
+    }
+
+    function hideEditModeButtons () {
+        $('#EvalUpdate').parent().hide();
+        $('#EvalCancel').parent().hide();
+    }
+    
+    $(".add-new").click(function (event) {
+        event.preventDefault();
+        
+        var $answerElement = $(".answer-inputs li:last").clone(true).appendTo('.answer-inputs');
+        
+        // increment answer number
+        var $answerNumberElement = $answerElement.find('.answer-num');
+        var answerNumber = parseInt($answerNumberElement.text(), 10);
+        $answerNumberElement.text(answerNumber + 1);
+        
+        // clear out cloned textbox
+        $answerElement.find('input').val('');
+    });
+    
+    $(".answer-inputs .ee-delete").click(function (event) {
+        event.preventDefault();
+        
+        var $parentAnswerElement = $(this).parents('li');
+        $parentAnswerElement.remove();
+        
+        $(".answer-inputs li").each(function (i, elem) {
+            $(elem).find('.answer-num').text(i + 1);
+        });
+    });
+
+    $('#DefineAnswerType').change(function (event) {
+        var questionType = $(this).val();
+        if (questionType == "short-input") {
+            $('#ShortTextAnswer').show();
+            $('#LongTextAnswer').hide();
+            $('#MultipleAnswer').hide();
+            $('#SaveQuestion').parent().removeClass('disabled');
+        }
+        else if(questionType == "long-input") {
+            $('#ShortTextAnswer').hide();
+            $('#LongTextAnswer').show();
+            $('#MultipleAnswer').hide();
+            $('#SaveQuestion').parent().removeClass('disabled');
+        }
+        else if(questionType == "select-type") { //default
+            $('#ShortTextAnswer').hide();
+            $('#LongTextAnswer').hide();
+            $('#MultipleAnswer').hide();
+            $('#SaveQuestion').parent().addClass('disabled');
+        }
+        else { //multiple answer
+            $('#MultipleAnswer').show();
+            $('#ShortTextAnswer').hide();
+            $('#LongTextAnswer').hide();
+            $('#SaveQuestion').parent().addClass('disabled');
+        }
+    });
+
+});

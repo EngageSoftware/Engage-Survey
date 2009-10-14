@@ -72,8 +72,8 @@ namespace Engage.Dnn.Survey
             if (survey.SurveyId > 0)
             {
                 surveyToUpdate = dataContext.Surveys.Where(s => s.SurveyId == survey.SurveyId).Single();
-                surveyToUpdate.RevisingUser = survey.RevisingUser;
-                surveyToUpdate.RevisionDate = DateTime.Now;
+                surveyToUpdate.RevisingUser = surveyToUpdate.Sections[0].RevisingUser = survey.RevisingUser;
+                surveyToUpdate.RevisionDate = surveyToUpdate.Sections[0].RevisionDate = DateTime.Now;
             }
             else
             {

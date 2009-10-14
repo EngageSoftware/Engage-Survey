@@ -10,7 +10,7 @@
       <Column Name="RequiredMessage" Type="System.String" DbType="NChar(256)" CanBeNull="true" />
       <Column Name="RelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SelectionLimit" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ControlType" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="ControlType" Type="global::Engage.Survey.Util.ControlType" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="RevisingUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="RevisionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -95,7 +95,7 @@
       <Column Name="Comments" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
       <Column Name="QuestionRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="QuestionFormatOption" Type="global::Engage.Survey.Util.ElementFormatOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
-      <Column Name="ControlType" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="ControlType" Type="global::Engage.Survey.Util.ControlType" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="AnswerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SectionFormatOption" Type="global::Engage.Survey.Util.ElementFormatOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="AnswerText" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />

@@ -167,22 +167,22 @@ namespace Engage.Survey.Entities
 
                 if (string.IsNullOrEmpty(control.ID) == false)
                 {
-                    if (question.IsRequired && question.ControlType != ControlType.Checkbox.Description)
+                    if (question.IsRequired && question.ControlType != ControlType.CheckBox)
                     {
                         validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.RequiredField, "error-message", questionWrapDiv, control.ID, question.UnformattedText + " is required.", "survey", 1, 0);
                     }
 
-                    if (question.ControlType == ControlType.SmallTextInputField.Description || question.ControlType == ControlType.LargeTextInputField.Description)
+                    if (question.ControlType == ControlType.SmallTextInputField || question.ControlType == ControlType.LargeTextInputField)
                     {
                         validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedLengthField, "error-message", questionWrapDiv, control.ID, "Max characters exceeded for [" + question.UnformattedText + "]", "survey", 1, 256);
                     }
 
-                    if (question.ControlType == ControlType.EmailInputField.Description)
+                    if (question.ControlType == ControlType.EmailInputField)
                     {
                         validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.EmailField, "error-message", questionWrapDiv, control.ID, "Email Address should be in name@domain.com format.", "survey", 1, 0);
                     }
 
-                    if (question.ControlType == ControlType.Checkbox.Description)
+                    if (question.ControlType == ControlType.CheckBox)
                     {
                         validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedSelection, "error-message", questionWrapDiv, control.ID, string.Empty, "survey", question.SelectionLimit, 0);
                     }

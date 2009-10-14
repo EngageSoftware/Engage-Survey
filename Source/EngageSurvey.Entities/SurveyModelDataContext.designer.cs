@@ -147,7 +147,7 @@ namespace Engage.Survey.Entities
 		
 		private int _SelectionLimit;
 		
-		private string _ControlType;
+		private global::Engage.Survey.Util.ControlType _ControlType;
 		
 		private int _RevisingUser;
 		
@@ -183,7 +183,7 @@ namespace Engage.Survey.Entities
     partial void OnRelativeOrderChanged();
     partial void OnSelectionLimitChanging(int value);
     partial void OnSelectionLimitChanged();
-    partial void OnControlTypeChanging(string value);
+    partial void OnControlTypeChanging(global::Engage.Survey.Util.ControlType value);
     partial void OnControlTypeChanged();
     partial void OnRevisingUserChanging(int value);
     partial void OnRevisingUserChanged();
@@ -374,7 +374,7 @@ namespace Engage.Survey.Entities
 		
 		[Column(Storage="_ControlType", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=9)]
-		public string ControlType
+		public global::Engage.Survey.Util.ControlType ControlType
 		{
 			get
 			{
@@ -2014,7 +2014,7 @@ namespace Engage.Survey.Entities
 		
 		private global::Engage.Survey.Util.ElementFormatOption _QuestionFormatOption;
 		
-		private string _ControlType;
+		private global::Engage.Survey.Util.ControlType _ControlType;
 		
 		private System.Nullable<int> _AnswerId;
 		
@@ -2072,7 +2072,7 @@ namespace Engage.Survey.Entities
     partial void OnQuestionRelativeOrderChanged();
     partial void OnQuestionFormatOptionChanging(global::Engage.Survey.Util.ElementFormatOption value);
     partial void OnQuestionFormatOptionChanged();
-    partial void OnControlTypeChanging(string value);
+    partial void OnControlTypeChanging(global::Engage.Survey.Util.ControlType value);
     partial void OnControlTypeChanged();
     partial void OnAnswerIdChanging(System.Nullable<int> value);
     partial void OnAnswerIdChanged();
@@ -2422,7 +2422,7 @@ namespace Engage.Survey.Entities
 		
 		[Column(Storage="_ControlType", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=16)]
-		public string ControlType
+		public global::Engage.Survey.Util.ControlType ControlType
 		{
 			get
 			{

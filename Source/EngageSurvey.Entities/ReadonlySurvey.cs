@@ -687,7 +687,7 @@ namespace Engage.Survey.Entities
         /// Gets or sets the control type.
         /// </summary>
         /// <value>The control type.</value>
-        public string ControlType
+        public ControlType ControlType
         {
             get;
             set;

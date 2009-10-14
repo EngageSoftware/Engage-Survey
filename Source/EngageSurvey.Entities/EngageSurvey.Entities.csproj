@@ -85,6 +85,7 @@
     <Content Include="References\DotNetNuke.dll" />
     <Content Include="References\DotNetNuke.WebUtility.dll" />
     <Content Include="References\Engage.Framework.dll" />
+    <Content Include="References\Engage.Framework.XML" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SurveyModelDataContext.dbml">

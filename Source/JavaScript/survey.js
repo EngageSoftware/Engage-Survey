@@ -158,7 +158,6 @@ jQuery(function ($) {
         $('#EvalDescTextArea').convertTo('textarea').removeClass('ee-input-pre');
         $('#EvalEdit').parent().hide();
         $('#EvalCancel').parent().show();
-        $('#EvalDelete').parent().show();
         $('#EvalUpdate').parent().show();
     });
     
@@ -174,14 +173,7 @@ jQuery(function ($) {
         makeSurveyReadOnly();
         hideEditModeButtons();
     });
-    
-    $('#EvalDelete').click(function(event) {
-        event.preventDefault();
-        //TODO: get the evaluation's id and hit the delete survey web method with it.
-        //TODO: reset the page completely.
-        alert('Not Implemented');
-    });
-    
+        
     function makeSurveyReadOnly(){
         $('#EvalTitleInput').convertTo('span').addClass('ee-input-pre');
         $('#EvalDescTextArea').convertTo('span').addClass('ee-input-pre');
@@ -192,7 +184,6 @@ jQuery(function ($) {
     function hideEditModeButtons(){
         $('#EvalUpdate').parent().hide();
         $('#EvalCancel').parent().hide();
-        $('#EvalDelete').parent().hide();
     }
     
     $(".add-new").click(function (event) {

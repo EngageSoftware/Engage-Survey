@@ -16,7 +16,6 @@
             <li class="primary-btn" style="display:none;"><a href="#" title="Edit" id="EvalEdit"><%=Localization.GetString("EditEvalHyperLink.Text", LocalResourceFile)%></a></li>
             <li class="primary-btn" style="display:none;"><a href="#" title="Update" id="EvalUpdate"><%=Localization.GetString("UpdateEvalHyperLink.Text", LocalResourceFile)%></a></li>
             <li class="secondary-btn" style="display:none;"><a href="#" title="Cancel" id="EvalCancel"><%=Localization.GetString("CancelHyperLink.Text", LocalResourceFile)%></a></li>
-            <li class="secondary-btn" style="display:none;"><a href="#" title="Delete" id="EvalDelete"><%=Localization.GetString("DeleteHyperLink.Text", LocalResourceFile)%></a></li>
         </ul>
     </fieldset>
     <fieldset class="ee-create-questions">

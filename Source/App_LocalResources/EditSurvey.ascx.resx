@@ -147,9 +147,6 @@
   <data name="DeleteAnswerHyperLink.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="DeleteHyperLink.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
   <data name="EditEvalHyperLink.Text" xml:space="preserve">
     <value>Edit</value>
   </data>

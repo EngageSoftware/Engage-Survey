@@ -156,6 +156,7 @@ jQuery(function ($) {
         event.preventDefault();
         $('#EvalTitleInput').convertTo('input').removeClass('ee-input-pre');
         $('#EvalDescTextArea').convertTo('textarea').removeClass('ee-input-pre');
+        $('.ee-description').show();
         $('#EvalEdit').parent().hide();
         $('#EvalCancel').parent().show();
         $('#EvalUpdate').parent().show();
@@ -175,12 +176,18 @@ jQuery(function ($) {
     });
         
     function makeSurveyReadOnly(){
+        if ($('#EvalDescTextArea').val() != '') {
+            $('#EvalDescTextArea').convertTo('span').addClass('ee-input-pre');
+            $('.ee-description').show();
+        }
+        else {
+            $('.ee-description').hide();
+        }
         $('#EvalTitleInput').convertTo('span').addClass('ee-input-pre');
-        $('#EvalDescTextArea').convertTo('span').addClass('ee-input-pre');
         $('#EvalNew').parent().hide();
         $('#EvalEdit').parent().show();
     }
-    
+
     function hideEditModeButtons(){
         $('#EvalUpdate').parent().hide();
         $('#EvalCancel').parent().hide();

@@ -54,7 +54,6 @@ survey-title{font-weight: bold}
                 ul.answer-inputs li.primary-btn a{font-size:12px;}
                 #engage-evaluation ul.answer-inputs a.ee-delete{padding-left:10px;}
                     .ai-label{font-weight:bold;}
-
 			ul#ee-previews{display:block;margin:0;padding:0;list-style:none;overflow:hidden;}
 				ul#ee-previews li.ee-preview{cursor:pointer;padding:10px 15px;margin:10px;display:block;overflow:hidden;list-style:none;background:#feffef;border-right:1px #e7e9bc solid;border-bottom:1px #e7e9bc solid;}
 					ul#ee-previews li.ee-preview:hover{background:#feffe8;border-right:1px #b9bd77 solid;border-bottom:1px #b9bd77 solid;}
@@ -64,8 +63,8 @@ survey-title{font-weight: bold}
 				ul.ee-pr-action-links li{display:inline;}
 			#engage-evaluation .ee-preview .ee-label{padding-top:0;}
 			.pv-question{display:block;float:left;}
-			.pv-answer{clear:both;padding:5px 0 0 110px;}
-			
+			.pv-answer{clear:both;padding:5px 0 0 0;}
+			#engage-evaluation hr{border:none;border-top:1px #ccc solid;}
 /*------ Survey Listing ------*/
 .survey-listing{}
 	.survey-listing h3{color:#000;font-size:18px;margin-bottom:0;}

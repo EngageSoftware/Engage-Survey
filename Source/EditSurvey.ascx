@@ -66,6 +66,7 @@
     </fieldset>
     <fieldset id="PreviewArea" class="ee-preview-area">
         <legend class="Head"><%=Localization.GetString("PreviewAreaLabel.Text", LocalResourceFile)%></legend>
+        <hr />
         <ul id="ee-previews">
             <li class="ee-preview">
                 <ul class="ee-pr-action-links">
@@ -75,8 +76,10 @@
                 </ul>
                 <span class="ee-label pv-question-label"><%=Localization.GetString("QuestionTitle.Text", LocalResourceFile)%></span>
                 <span class="pv-question"></span>
-                <span class="ee-label pv-answer-label"><%=Localization.GetString("AnswerTitle.Text", LocalResourceFile)%></span>
-                <span class="pv-answer"></span>
+                <div>
+                    <span class="ee-label pv-answer-label"><%=Localization.GetString("AnswerTitle.Text", LocalResourceFile)%></span>
+                    <span class="pv-answer"></span>
+                </div>
             </li>
         </ul>
     </fieldset>   

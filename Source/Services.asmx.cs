@@ -88,5 +88,61 @@ namespace Engage.Dnn.Survey
 
             return surveyToUpdate.SurveyId;
         }
+
+        /// <summary>
+        /// Inserts or updates the give <paramref name="question"/>.
+        /// </summary>
+        /// <param name="surveyId">The ID of the <see cref="Survey"/> that <paramref name="question"/> belongs to.</param>
+        /// <param name="question">The question.</param>
+        /// <returns>
+        /// The inserted question, with IDs for the question and answers
+        /// </returns>
+        [WebMethod]
+        public Question UpdateQuestion(int surveyId, Question question)
+        {
+            var now = DateTime.Now;
+            var dataContext = SurveyModelDataContext.Instance;
+            var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
+            Question questionToUpdate;
+            if (question.QuestionId > 0)
+            {
+                questionToUpdate = survey.Sections.First().Questions.Where(q => q.QuestionId == question.QuestionId).Single();
+                questionToUpdate.RevisingUser = question.RevisingUser;
+                questionToUpdate.RevisionDate = now;
+            }
+            else
+            {
+                questionToUpdate = new Question(question.RevisingUser);
+                survey.Sections[0].Questions.Add(questionToUpdate);
+            }
+
+            questionToUpdate.Text = question.Text;
+            questionToUpdate.RelativeOrder = question.RelativeOrder;
+            questionToUpdate.ControlType = question.ControlType;
+
+            int answerOrder = 0;
+            foreach (var answer in question.Answers)
+            {
+                Answer answerToUpdate;
+                if (answer.AnswerId > 0)
+                {
+                    answerToUpdate = questionToUpdate.Answers.Where(a => a.AnswerId == answer.AnswerId).Single();
+                    answerToUpdate.RevisingUser = question.RevisingUser;
+                    answerToUpdate.RevisionDate = now;
+                }
+                else
+                {
+                    answerToUpdate = new Answer(question.RevisingUser);
+                    questionToUpdate.Answers.Add(answerToUpdate);
+                }
+
+                answerToUpdate.Text = answer.Text;
+                answerToUpdate.RelativeOrder = answerOrder++;
+            }
+
+            dataContext.SubmitChanges();
+
+            return questionToUpdate;
+        }
     }
 }

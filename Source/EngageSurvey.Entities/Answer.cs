@@ -11,12 +11,23 @@
 
 namespace Engage.Survey.Entities
 {
+    using System;
     using System.Collections.Generic;
-    using Engage.Util;
     using Util;
 
     public partial class Answer : IAnswer
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Answer"/> class.
+        /// </summary>
+        /// <param name="revisingUser">The revising user.</param>
+        public Answer(int revisingUser)
+            : this()
+        {
+            this.CreatedBy = this.RevisingUser = revisingUser;
+            this.CreationDate = this.RevisionDate = DateTime.Now;
+        }
+
         /// <summary>
         /// Returns the formatting for the element plus the the unformatted text together. Used primarily by
         /// the Web and Windows viewers only.

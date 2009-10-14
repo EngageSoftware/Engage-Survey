@@ -30,11 +30,11 @@
                 <span class="ee-input">
                     <select class="NormalTextBox answer-options" name="DefineAnswerType" id="DefineAnswerType">
                         <option value="select-type"><%=Localization.GetString("SelectAnswerTypeOption.Text", LocalResourceFile)%></option>
-                        <option value="short-input"><%=Localization.GetString("ShortAnswerOption.Text", LocalResourceFile)%></option>
-                        <option value="long-input"><%=Localization.GetString("LongAnswerOption.Text", LocalResourceFile)%></option>
-                        <option value="single-dropdown"><%=Localization.GetString("SingleAnwserDropdownListOption.Text", LocalResourceFile)%></option>
-                        <option value="single-radio"><%=Localization.GetString("SingleAnswerRadioButtonOption.Text", LocalResourceFile)%></option>
-                        <option value="multiple-checkbox"><%=Localization.GetString("MultipleAnswerCheckboxesOption.Text", LocalResourceFile)%></option>
+                        <option value="SmallTextInputField"><%=Localization.GetString("ShortAnswerOption.Text", LocalResourceFile)%></option>
+                        <option value="LargeTextInputField"><%=Localization.GetString("LongAnswerOption.Text", LocalResourceFile)%></option>
+                        <option value="DropDownChoices"><%=Localization.GetString("SingleAnwserDropdownListOption.Text", LocalResourceFile)%></option>
+                        <option value="VerticalOptionButtons"><%=Localization.GetString("SingleAnswerRadioButtonOption.Text", LocalResourceFile)%></option>
+                        <option value="Checkbox"><%=Localization.GetString("MultipleAnswerCheckboxesOption.Text", LocalResourceFile)%></option>
                     </select>
                 </span>
                 <div id="ShortTextAnswer" style="display:none;">todo: show the short text preview content here</div>
@@ -84,7 +84,7 @@
 <% if (false) { %><script type="text/ecmascript" src="JavaScript/jquery-1.3.2.debug-vsdoc.js"></script><% } %>
 <script type="text/javascript">
 var CurrentContextInfo = {
-    WebMethodUrl: '<%= ResolveUrl("~/DesktopModules/EngageSurvey/Services.asmx") %>/UpdateSurvey',
+    WebMethodUrl: '<%= ResolveUrl("~/DesktopModules/EngageSurvey/Services.asmx") %>/',
     UserId: <%=UserId %>,
     Survey: <%=SerializedSurvey %>
 };

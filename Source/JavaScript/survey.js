@@ -162,11 +162,11 @@ jQuery(function ($) {
         }
     });
     
-    function updateSurvey(callback) {
+    function callWebMethod (methodName, parameters, callback) {
         jQuery.ajax({
             type: "POST",
-            url: CurrentContextInfo.WebMethodUrl,
-            data: JSON.stringify(getSurveyParameters()),
+            url: CurrentContextInfo.WebMethodUrl + methodName,
+            data: JSON.stringify(parameters),
             contentType: "application/json; charset=utf-8",
             dataFilter: function(data) {
                 var msg = eval('(' + data + ')');
@@ -176,14 +176,22 @@ jQuery(function ($) {
                     return msg;
             },
             success: function(msg) { 
-                $('.ee-create-new').data('surveyId', msg); 
-                makeSurveyReadOnly();
                 if (typeof(callback) === 'function') {
-                    callback();
+                    callback(msg);
                 }
             },
             error: function(/*XMLHttpRequest, textStatus, errorThrown*/) { 
                 alert('There was an error submitting the survey, please try again.'); 
+            }
+        });
+    }
+    
+    function updateSurvey(callback) {
+        callWebMethod('UpdateSurvey', getSurveyParameters(), function(surveyId) {
+            $('.ee-create-new').data('surveyId', surveyId); 
+            makeSurveyReadOnly();
+            if (typeof(callback) === 'function') {
+                callback(surveyId);
             }
         });
     }
@@ -273,13 +281,13 @@ jQuery(function ($) {
 
     $('#DefineAnswerType').change(function (event) {
         var questionType = $(this).val();
-        if (questionType == "short-input") {
+        if (questionType == "SmallTextInputField") {
             $('#ShortTextAnswer').show();
             $('#LongTextAnswer').hide();
             $('#MultipleAnswer').hide();
             $('#SaveQuestion').parent().removeClass('disabled');
         }
-        else if(questionType == "long-input") {
+        else if(questionType == "LargeTextInputField") {
             $('#ShortTextAnswer').hide();
             $('#LongTextAnswer').show();
             $('#MultipleAnswer').hide();
@@ -315,70 +323,89 @@ jQuery(function ($) {
         if($('#SaveQuestion').parent().hasClass('disabled') == false &&
            $('#Form').validate().form() &&
            $('#Form').validate().element('#QuestionText')){
-        
-            $('#PreviewArea').show();
             
-            //todo: save the question, get id, and set that on the new question preview list item.
-            
-            // copy the last list item in our UL, which is always a blank and hidden list item.
-            var questionCount = $('.ee-preview').size();
-            var $blankListItem = $('.ee-preview:last').clone(true);
-            
-            //append and hide the new blank list item for future use
-            $('#ee-previews').append($blankListItem);
-            $('.ee-preview').eq(questionCount).hide();
-            
-            //retrieve question values
-            var questionText = $('#QuestionText').val();
-            
-            //update the new question preview
-            $('.pv-question').eq(questionCount - 1).text(questionText).show();
-            $('.ee-preview').eq(questionCount - 1).show();
-            
+            callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
+                $('#PreviewArea').show();
+                
+                // copy the last list item in our UL, which is always a blank and hidden list item.
+                var questionCount = $('.ee-preview').length;
+                var $blankListItem = $('.ee-preview:last').clone(true);
+                
+                // append and hide the new blank list item for future use
+                $('#ee-previews').append($blankListItem);
+                $('.ee-preview').eq(questionCount).hide();
+                
+                // retrieve question values
+                var questionText = $('#QuestionText').val();
+                
+                // update the new question preview
+                $('.pv-question').eq(questionCount - 1).text(questionText).show();
+                $('.ee-preview').eq(questionCount - 1).show().data('questionId', question.QuestionId);
+                
             //update the preview with answer values
             var $answerDiv = $('.pv-answer').eq(questionCount - 1);
             var questionType = $('#DefineAnswerType :selected').val();
-            if (questionType == "short-input") {
+            if (questionType === "SmallTextInputField") {
                 $answerDiv.html("<input type=\"text\" class=\"NormalTextBox\" />");
             }
-            else if(questionType == "long-input") {
+            else if(questionType === "LargeTextInputField") {
                 $answerDiv.html("<textarea class=\"NormalTextBox\" />");
             }
-            else if(questionType == "single-dropdown") {
+            else if(questionType === "DropDownChoices") {
                 $answerDiv.append("<select class=\"NormalTextBox dropdown-prev\"></select>");
                 $('.ai-input input').each(function(i) {
                     $("<option>" + $(this).val() + "</option>").appendTo('.dropdown-prev', $answerDiv);
                 });
             }
-            else if(questionType == "single-radio") {
+            else if(questionType === "VerticalOptionButtons") {
                 $('.ai-input input').each(function(i) {
                     var questionValue = $(this).val();
                     $answerDiv.append("<input type=\"radio\" name=\"" + questionCount + "\">" + questionValue + "</input>");
                 });
             }
-            else if(questionType == "multiple-checkbox") {
+            else if(questionType === "Checkbox") {
                 $('.ai-input input').each(function(i) {
                     var questionValue = $(this).val();
                     $answerDiv.append("<span class=\"check-prev\"><input type=\"checkbox\">" + questionValue + "</span>");
-                });
-                
+                });    
             }
             else { //default
                 alert("todo: implement validation, shouldn't be able to add a question if you have 'select answer type' selected in the drop down.");
             }
-            
-            //reset the "create question" section
-            $('#QuestionText').val('');
-            $('#DefineAnswerType').find('option:first').attr('selected', true);
-            $('#ShortTextAnswer').hide();
-            $('#LongTextAnswer').hide();
-            $('#MultipleAnswer').hide();
+                
+                // reset the "create question" section
+                $('#QuestionText').val('');
+                $('#DefineAnswerType').find('option:first').attr('selected', true);
+                $('#ShortTextAnswer').hide();
+                $('#LongTextAnswer').hide();
+                $('#MultipleAnswer').hide();
             $('.ai-input input').val('');
             $('#AddNewQuestion').parent().hide();
-            $('#SaveQuestion').parent().addClass('disabled');
+                $('#SaveQuestion').parent().addClass('disabled');
+            });
         }
     });
     
+    function getQuestionParameters () {
+        return {
+            surveyId: $('.ee-create-new').data('surveyId') || -1,
+            question: {
+                QuestionId: $('.ee-create-questions').data('questionId') || -1,
+                Text: $('#QuestionText').val(),
+                RelativeOrder: $('.ee-preview').length,
+                ControlType: $('#DefineAnswerType').val(),
+                RevisingUser: CurrentContextInfo.UserId,
+                Answers: $.map($('#MultipleAnswer:visible li'), function (elem, i) {
+                    var $elem = $(elem);
+                    return {
+                        AnswerId: $elem.data('answerId') || -1,
+                        Text: $elem.find(':input').val()
+                    };
+                })
+            }
+        };
+    }
+
     // Load survey to edit
     if (CurrentContextInfo.Survey) {
         $('.ee-create-new').data('surveyId', CurrentContextInfo.Survey.SurveyId);

@@ -11,15 +11,23 @@
 
 namespace Engage.Survey.Entities
 {
+    using System;
     using System.Collections.Generic;
-    using Engage.Util;
     using Util;
 
-    /// <summary>
-    /// Summary description for Question.
-    /// </summary>
     public partial class Question : IQuestion
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Question"/> class.
+        /// </summary>
+        /// <param name="revisingUser">The revising user.</param>
+        public Question(int revisingUser)
+            : this()
+        {
+            this.CreatedBy = this.RevisingUser = revisingUser;
+            this.CreationDate = this.RevisionDate = DateTime.Now;
+        }
+
         /// <summary>
         /// Gets the rendering key used by the SurveyControl to uniquely identify this element.
         /// </summary>

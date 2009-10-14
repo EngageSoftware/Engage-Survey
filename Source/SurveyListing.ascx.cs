@@ -13,6 +13,7 @@ namespace Engage.Dnn.Survey
 {
     using System;
     using System.Globalization;
+    using System.Linq;
     using System.Web.UI;
     using System.Web.UI.WebControls;
     using DotNetNuke.Common;
@@ -48,11 +49,11 @@ namespace Engage.Dnn.Survey
             if (index == 0)
             {
                 // bind to survey definitions
-                this.SurveyDataGrid.DataSource = Survey.LoadSurveys();
+                this.SurveyDataGrid.DataSource = Survey.LoadSurveys().ToList();
             }
             else
             {
-                this.SurveyDataGrid.DataSource = ReadonlySurvey.LoadSurveys();
+                this.SurveyDataGrid.DataSource = ReadonlySurvey.LoadSurveys().ToList();
             }
 
             this.SurveyDataGrid.DataBind();

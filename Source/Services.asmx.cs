@@ -11,6 +11,7 @@
 
 namespace Engage.Dnn.Survey
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Script.Services;
@@ -56,6 +57,36 @@ namespace Engage.Dnn.Survey
         public List<Survey> GetSurveys()
         {
             return Survey.LoadSurveys().ToList();
+        }
+
+        /// <summary>
+        /// Inserts or updates the given <paramref name="survey"/>.
+        /// </summary>
+        /// <param name="survey">The survey.</param>
+        /// <returns>The ID of the survey</returns>
+        [WebMethod]
+        public int UpdateSurvey(Survey survey)
+        {
+            Survey surveyToUpdate;
+            var dataContext = SurveyModelDataContext.Instance;
+            if (survey.SurveyId > 0)
+            {
+                surveyToUpdate = dataContext.Surveys.Where(s => s.SurveyId == survey.SurveyId).Single();
+                surveyToUpdate.RevisingUser = survey.RevisingUser;
+                surveyToUpdate.RevisionDate = DateTime.Now;
+            }
+            else
+            {
+                surveyToUpdate = new Survey(survey.RevisingUser);
+                dataContext.Surveys.InsertOnSubmit(surveyToUpdate);
+            }
+
+            surveyToUpdate.Text = survey.Text;
+            surveyToUpdate.Sections.First().Text = survey.Sections.First().Text;
+
+            dataContext.SubmitChanges();
+
+            return surveyToUpdate.SurveyId;
         }
     }
 }

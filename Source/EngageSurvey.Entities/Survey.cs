@@ -25,6 +25,25 @@ namespace Engage.Survey.Entities
     public partial class Survey : ISurvey
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Survey"/> class.
+        /// </summary>
+        /// <param name="revisingUser">The revising user.</param>
+        public Survey(int revisingUser)
+            : this()
+        {
+            var now = DateTime.Now;
+            this.CreationDate = this.RevisionDate = now;
+            this.CreatedBy = this.RevisingUser = revisingUser;
+            this.Sections.Add(new Section
+                                  {
+                                          CreationDate = now,
+                                          RevisionDate = now,
+                                          CreatedBy = revisingUser,
+                                          RevisingUser = revisingUser
+                                  });
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this instance is readonly.
         /// </summary>
         /// <value>
@@ -202,7 +221,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Survey"/> class with default settings.
+        /// Called when a <see cref="Survey"/> instance is created.
         /// </summary>
         partial void OnCreated()
         {
@@ -210,8 +229,6 @@ namespace Engage.Survey.Entities
             this.SectionFormatOption = ElementFormatOption.None;
             this.QuestionFormatOption = ElementFormatOption.None;
             this.TitleOption = TitleOption.FirstPageOnly;
-
-            this.Sections.Add(new Section());
         }
 
         /// <summary>

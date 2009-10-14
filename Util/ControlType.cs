@@ -22,7 +22,7 @@ namespace Engage.Survey.Util
         VerticalOptionButtons,
         HorizontalOptionButtons,
         DropDownChoices,
-        CheckBox,
+        Checkbox,
         EmailInputField
     }
 }

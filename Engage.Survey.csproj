@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="References\Engage.Framework.dll" />
+    <Content Include="References\Engage.Framework.XML" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

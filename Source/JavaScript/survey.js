@@ -256,11 +256,13 @@ jQuery(function ($) {
     $(".answer-inputs .ee-delete").click(function (event) {
         event.preventDefault();
         
-        if ($(".answer-inputs li").length > 1) {
+        var $answers = $(".answer-inputs li")
+        if ($answers.length > 1) {
             var $parentAnswerElement = $(this).parents('li');
             $parentAnswerElement.remove();
             
-            var $answers = $(".answer-inputs li").each(function (i, elem) {
+            // have to run query again to get rid of the element we just removed
+            $answers = $(".answer-inputs li").each(function (i, elem) {
                 $(elem).find('.answer-num').text(i + 1);
             });
         }
@@ -294,6 +296,7 @@ jQuery(function ($) {
             $('#ShortTextAnswer').hide();
             $('#LongTextAnswer').hide();
             $('#SaveQuestion').parent().addClass('disabled');
+            $('.ee-define-answer .primary-btn').show();
         }
     });
     

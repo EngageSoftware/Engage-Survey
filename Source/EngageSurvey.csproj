@@ -176,7 +176,6 @@
     <Content Include="App_LocalResources\MainContainer.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="images\inline-validator-bg.png" />
     <Content Include="images\submit-btn.jpg" />
     <Content Include="module.css" />
     <Content Include="References\DotNetNuke.dll" />

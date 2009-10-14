@@ -64,7 +64,7 @@ survey-title{font-weight: bold}
 				ul.ee-pr-action-links li{display:inline;}
 			#engage-evaluation .ee-preview .ee-label{padding-top:0;}
 			.pv-question{display:block;float:left;}
-			.pv-answer{display:block;clear:both;padding:5px 0 0 110px;}
+			.pv-answer{clear:both;padding:5px 0 0 110px;}
 			
 /*------ Survey Listing ------*/
 .survey-listing{}
@@ -73,12 +73,16 @@ survey-title{font-weight: bold}
 		#survey-filters table{float:right;}
 	.survey-listing td{padding:5px 10px;}
 	ul.sl-repeater{margin:0;padding:0;border-top:1px solid #D4DFE1;}
-		ul.sl-repeater li{list-style:none;padding:10px;margin:0;display:block;}
+		ul.sl-repeater li{list-style:none;padding:10px;margin:0;display:block;clear:both;overflow:hidden;}
+		ul.sl-repeater li span{display:block;width:350px;float:left;}
+		ul.sl-repeater li a{display:block;float:left;padding:2px 15px;text-transform:capitalize;font-weight:bold;margin:0 3px;border-color:#fff #c8d6e1 #c8d6e1 #fff;border-style:solid;border-width:1px;}
+			ul.sl-repeater li.sl-item a:hover{background:#fff;}
+			ul.sl-repeater li.sl-alt-item a:hover{background:#F2F6F9;}
 		ul.sl-repeater li.sl-item, ul.sl-repeater li.sl-alt-item{background:#F2F6F9;border:1px solid #D4DFE1;border-top:none;}
 			ul.sl-repeater li.sl-alt-item{background:#fff;}
 
 /*============ Global Navigation ============*/
-ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px #e4bbab solid;border-bottom:1px #e4bbab solid;padding:10px 15px;margin:0;}
+ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px #e4bbab solid;border-bottom:1px #e4bbab solid;padding:10px 15px;margin:0 0 15px 0;}
 	ul.em-global-nav li{display:block;float:left;padding:5px 25px 5px 0;}
 		ul.em-global-nav li a{padding-left:25px;color:#df3f00;text-decoration:underline;font-weight:bold;font-size:14px;}
 		ul.em-global-nav li a:hover{text-decoration:none;color:#000;}

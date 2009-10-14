@@ -73,6 +73,6 @@ survey-title{font-weight: bold}
 		#survey-filters table{float:right;}
 	.survey-listing td{padding:5px 10px;}
 	ul.sl-repeater{margin:0;padding:0;border-top:1px solid #D4DFE1;}
-		ul.sl-repeater li{list-style:none;padding:5px 10px;margin:0;display:block;}
+		ul.sl-repeater li{list-style:none;padding:10px;margin:0;display:block;}
 		ul.sl-repeater li.sl-item, ul.sl-repeater li.sl-alt-item{background:#F2F6F9;border:1px solid #D4DFE1;border-top:none;}
 			ul.sl-repeater li.sl-alt-item{background:#fff;}

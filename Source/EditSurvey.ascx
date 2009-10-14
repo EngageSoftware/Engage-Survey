@@ -44,90 +44,37 @@
                         <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%> <span class="answer-num">1</span></span>
                         <div class="ai-selected">
                             <span class="ai-input"><input type="text" /></span>
-                            <a href="" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
+                            <a href="#" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
                         </div>
                     </li>
                     <li>                        
                         <span class="ai-label"><%=Localization.GetString("AnswerNumberTitle.Text", LocalResourceFile)%> <span class="answer-num">2</span></span>
                         <div class="ai-selected">
                             <span class="ai-input"><input type="text"/></span>
-                            <a href="" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
+                            <a href="#" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
                         </div>
                     </li>
                 </ul>
-                <span class="primary-btn" style="display:none;"><a href="" title="Add New" class="add-new"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a></span>
+                <span class="primary-btn" style="display:none;"><a href="#" title="Add New" class="add-new"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a></span>
             </div>
         </div>
         <ul class="ee-action-btns">
-            <li class="primary-btn disabled"><a href="" title="Save and Create New" class="save-create-new" id="SaveQuestion"><%=Localization.GetString("SaveAndCreateNewQuestionHyperLink.Text", LocalResourceFile)%></a></li>
-            <li class="secondary-btn"><a href="" title="Back" class="back"><%=Localization.GetString("BackHyperLink.Text", LocalResourceFile)%></a></li>
+            <li class="primary-btn disabled"><a href="#" title="Save and Create New" class="save-create-new" id="SaveQuestion"><%=Localization.GetString("SaveAndCreateNewQuestionHyperLink.Text", LocalResourceFile)%></a></li>
+            <li class="secondary-btn"><a href="#" title="Back" class="back"><%=Localization.GetString("BackHyperLink.Text", LocalResourceFile)%></a></li>
         </ul>
     </fieldset>
-    <fieldset class="ee-preview-area">
+    <fieldset id="PreviewArea" class="ee-preview-area">
         <legend class="Head"><%=Localization.GetString("PreviewAreaLabel.Text", LocalResourceFile)%></legend>
         <ul id="ee-previews">
             <li class="ee-preview">
                 <ul class="ee-pr-action-links">
-                    <li><a href="" title="Edit this question" class="ee-edit"><%=Localization.GetString("EditQuestionHyperLink.Text", LocalResourceFile)%></a></li>
-                    <li><a href="" title="Copy this question and create new" class="ee-save"><%=Localization.GetString("CopyQuestionHyperLink.Text", LocalResourceFile)%></a></li>
-                    <li><a href="" title="Delete this question, are you sure?" class="ee-delete"><%=Localization.GetString("DeleteAnswerHyperLink.Text", LocalResourceFile)%></a></li>
+                    <li><a href="#" title="Edit this question" class="ee-edit"><%=Localization.GetString("EditQuestionHyperLink.Text", LocalResourceFile)%></a></li>
+                    <li><a href="#" title="Copy this question and create new" class="ee-save"><%=Localization.GetString("CopyQuestionHyperLink.Text", LocalResourceFile)%></a></li>
+                    <li><a href="#" title="Delete this question, are you sure?" class="ee-delete"><%=Localization.GetString("DeleteAnswerHyperLink.Text", LocalResourceFile)%></a></li>
                 </ul>
-                <span class="ee-label pv-question-label"><%=Localization.GetString("QuestionNumberTitle.Text", LocalResourceFile)%></span>
-                <span class="pv-question">Who invented the toilet?</span>
-                <span class="pv-answer">
-                    <span class="ee-input">
-                        <select class="NormalTextBox answer-options" name="DefineAnswerType">
-                            <option value="select-type"><%=Localization.GetString("SelectAnswerTypeOption.Text", LocalResourceFile)%></option>
-                            <option value="short-input"><%=Localization.GetString("ShortAnswerOption.Text", LocalResourceFile)%></option>
-                            <option value="long-input"><%=Localization.GetString("LongAnswerOption.Text", LocalResourceFile)%></option>
-                            <option value="single-dropdown"><%=Localization.GetString("SingleAnwserDropdownListOption.Text", LocalResourceFile)%></option>
-                            <option value="single-radio"><%=Localization.GetString("SingleAnswerRadioButtonOption.Text", LocalResourceFile)%></option>
-                            <option value="multiple-checkbox"><%=Localization.GetString("MultipleAnswerCheckboxesOption.Text", LocalResourceFile)%></option>
-                        </select>
-                    </span>                
-                </span>
-            </li>
-            <li class="ee-preview">
-                <ul class="ee-pr-action-links">
-                    <li><a href="" title="Edit this question" class="ee-edit"><%=Localization.GetString("EditQuestionHyperLink.Text", LocalResourceFile)%></a></li>
-                    <li><a href="" title="Copy this question and create new" class="ee-save"><%=Localization.GetString("CopyQuestionHyperLink.Text", LocalResourceFile)%></a></li>
-                    <li><a href="" title="Delete this question, are you sure?" class="ee-delete"><%=Localization.GetString("DeleteAnswerHyperLink.Text", LocalResourceFile)%></a></li>
-                </ul>
-                <span class="ee-label pv-question-label"><%=Localization.GetString("QuestionNumberTitle.Text", LocalResourceFile)%></span>
-                <span class="pv-question">What's your invention of the year?</span>
-                <span class="pv-answer">
-                    <span class="ee-input">
-                        <select class="NormalTextBox answer-options" name="DefineAnswerType">
-                            <option value="select-type"><%=Localization.GetString("SelectAnswerTypeOption.Text", LocalResourceFile)%></option>
-                            <option value="short-input"><%=Localization.GetString("ShortAnswerOption.Text", LocalResourceFile)%></option>
-                            <option value="long-input"><%=Localization.GetString("LongAnswerOption.Text", LocalResourceFile)%></option>
-                            <option value="single-dropdown"><%=Localization.GetString("SingleAnwserDropdownListOption.Text", LocalResourceFile)%></option>
-                            <option value="single-radio"><%=Localization.GetString("SingleAnswerRadioButtonOption.Text", LocalResourceFile)%></option>
-                            <option value="multiple-checkbox"><%=Localization.GetString("MultipleAnswerCheckboxesOption.Text", LocalResourceFile)%></option>
-                        </select>
-                    </span>                
-                </span>
-            </li>
-            <li class="ee-preview">
-                <ul class="ee-pr-action-links">
-                    <li><a href="" title="Edit this question" class="ee-edit"><%=Localization.GetString("EditQuestionHyperLink.Text", LocalResourceFile)%></a></li>
-                    <li><a href="" title="Copy this question and create new" class="ee-save"><%=Localization.GetString("CopyQuestionHyperLink.Text", LocalResourceFile)%></a></li>
-                    <li><a href="" title="Delete this question, are you sure?" class="ee-delete"><%=Localization.GetString("DeleteAnswerHyperLink.Text", LocalResourceFile)%></a></li>
-                </ul>
-                <span class="ee-label pv-question-label"><%=Localization.GetString("QuestionNumberTitle.Text", LocalResourceFile)%></span>
-                <span class="pv-question">In what year Abraham Lincoln got assassinated?</span>
-                <span class="pv-answer">
-                    <span class="ee-input">
-                        <select class="NormalTextBox answer-options" name="DefineAnswerType">
-                            <option value="select-type"><%=Localization.GetString("SelectAnswerTypeOption.Text", LocalResourceFile)%></option>
-                            <option value="short-input"><%=Localization.GetString("ShortAnswerOption.Text", LocalResourceFile)%></option>
-                            <option value="long-input"><%=Localization.GetString("LongAnswerOption.Text", LocalResourceFile)%></option>
-                            <option value="single-dropdown"><%=Localization.GetString("SingleAnwserDropdownListOption.Text", LocalResourceFile)%></option>
-                            <option value="single-radio"><%=Localization.GetString("SingleAnswerRadioButtonOption.Text", LocalResourceFile)%></option>
-                            <option value="multiple-checkbox"><%=Localization.GetString("MultipleAnswerCheckboxesOption.Text", LocalResourceFile)%></option>
-                        </select>
-                    </span>                
-                </span>
+                <span class="ee-label pv-question-label"><%=Localization.GetString("QuestionTitle.Text", LocalResourceFile)%></span>
+                <span class="pv-question"></span>
+                <div class="pv-answer"></div>
             </li>
         </ul>
     </fieldset>   

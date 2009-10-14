@@ -168,7 +168,7 @@
   <data name="PreviewAreaLabel.Text" xml:space="preserve">
     <value>Preview</value>
   </data>
-  <data name="QuestionNumberTitle.Text" xml:space="preserve">
+  <data name="QuestionTitle.Text" xml:space="preserve">
     <value>Question</value>
   </data>
   <data name="RemoveAnswerHyperLink.Text" xml:space="preserve">

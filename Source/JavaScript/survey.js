@@ -299,6 +299,45 @@ jQuery(function ($) {
             $('.ee-define-answer .primary-btn').show();
         }
     });
+
+    $('#SaveQuestion').click(function(event) {
+        event.preventDefault();
+
+        if($('#Form').validate().form() && $('#Form').validate().element('#QuestionText')){
+        
+            $('#PreviewArea').show();
+            
+            //todo: save the question, get id, and set that on the new question preview list item.
+            
+            // copy the last list item in our UL, which is always a blank and hidden list item.
+            var questionCount = $('.ee-preview').size();
+            var blankListItem = $('.ee-preview:last').clone(true);
+            
+            //append and hide the new blank list item for future use
+            $('#ee-previews').append(blankListItem);
+            $('.ee-preview').eq(questionCount).hide();
+            
+            //retrieve question values
+            var questionText = $('#QuestionText').val();
+            
+            //update the new question preview
+            $('.pv-question').eq(questionCount -1).text(questionText).show();
+            $('.ee-preview').eq(questionCount -1).show();
+            
+            //todo: retrieve the answer values
+            
+            //todo: update the answer preview
+            
+            //reset the "create question" section
+            $('#QuestionText').val('');
+            $('#DefineAnswerType').find('option:first').attr('selected', true);
+            $('#ShortTextAnswer').hide();
+            $('#LongTextAnswer').hide();
+            $('#MultipleAnswer').hide();
+            $('#SaveQuestion').parent().addClass('disabled');
+        }
+    });
+
     
     // Load survey to edit
     if (CurrentContextInfo.Survey) {

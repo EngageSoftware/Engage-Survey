@@ -69,7 +69,7 @@ namespace Engage.Survey
         /// Gets or sets the control type.
         /// </summary>
         /// <value>The control type.</value>
-        string ControlType { get; set; }
+        ControlType ControlType { get; set; }
 
         /// <summary>
         /// Gets or sets the selection limit.

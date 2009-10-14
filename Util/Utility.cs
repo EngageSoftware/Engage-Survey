@@ -80,40 +80,29 @@ namespace Engage.Survey.Util
         /// <returns>A Div with controls in it.</returns>
         public static Control CreateWebControl(IQuestion question, bool readOnly)
         {
-            WebControl control = null;
-            if (question.ControlType == ControlType.DropDownChoices.Description)
+            WebControl control;
+            switch (question.ControlType)
             {
-                control = (WebControl)RenderDropDownList(question);
-            }
-
-            if (question.ControlType == ControlType.HorizontalOptionButtons.Description)
-            {
-                control = (WebControl)RenderHorizontalOptionButtons(question);
-            }
-
-            if (question.ControlType == ControlType.VerticalOptionButtons.Description)
-            {
-                control = (WebControl)RenderVerticalOptionButtons(question);
-            }
-
-            if (question.ControlType == ControlType.LargeTextInputField.Description)
-            {
-                control = (WebControl)RenderLargeTextInputField(question);
-            }
-
-            if (question.ControlType == ControlType.SmallTextInputField.Description)
-            {
-                control = (WebControl)RenderSmallInputField(question);
-            }
-
-            if (question.ControlType == ControlType.Checkbox.Description)
-            {
-                return RenderCheckBoxList(question, readOnly);
-            }
-
-            if (control == null)
-            {
-                control = new Label { Text = ("No control info found for ControlType: " + question.ControlType) };
+                case ControlType.DropDownChoices:
+                    control = (WebControl)RenderDropDownList(question);
+                    break;
+                case ControlType.HorizontalOptionButtons:
+                    control = (WebControl)RenderHorizontalOptionButtons(question);
+                    break;
+                case ControlType.VerticalOptionButtons:
+                    control = (WebControl)RenderVerticalOptionButtons(question);
+                    break;
+                case ControlType.LargeTextInputField:
+                    control = (WebControl)RenderLargeTextInputField(question);
+                    break;
+                case ControlType.SmallTextInputField:
+                    control = (WebControl)RenderSmallInputField(question);
+                    break;
+                case ControlType.CheckBox:
+                    return RenderCheckBoxList(question, readOnly);
+                default:
+                    control = new Label { Text = "No control info found for ControlType: " + question.ControlType };
+                    break;
             }
 
             control.Enabled = !readOnly;

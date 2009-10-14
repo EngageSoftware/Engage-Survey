@@ -10,19 +10,12 @@
     <asp:Repeater ID="SurveyGrid" runat="server">
         <HeaderTemplate><ul class="sl-repeater"></HeaderTemplate>
         <ItemTemplate>
-            <li class="sl-item">
+            <li class='<%# Container.ItemIndex % 2 == 0 ? "sl-item" : "sl-alt-item" %>'>
                 <asp:Label ID="TextLabel" runat="server" CssClass="NormalBold" />
-                <asp:HyperLink ID="PreviewHyperLink" runat="server" />
-                <asp:HyperLink ID="EditHyperLink" runat="server" />
+                <asp:HyperLink ID="PreviewHyperLink" runat="server" ResourceKey="PreviewLink" />
+                <asp:HyperLink ID="EditHyperLink" runat="server" ResourceKey="EditLink" />
             </li>
         </ItemTemplate>
-        <AlternatingItemTemplate>
-            <li class="sl-alt-item">
-                <asp:Label ID="TextLabel" runat="server" CssClass="NormalBold" />
-                <asp:HyperLink ID="PreviewHyperLink" runat="server" />
-                <asp:HyperLink ID="EditHyperLink" runat="server" />
-            </li>
-        </AlternatingItemTemplate>
         <FooterTemplate></ul></FooterTemplate>
     </asp:Repeater>
     <ul class="ee-action-btns">

@@ -167,7 +167,7 @@ namespace Engage.Survey.Entities
 
                 if (string.IsNullOrEmpty(control.ID) == false)
                 {
-                    if (question.IsRequired && question.ControlType != ControlType.CheckBox)
+                    if (question.IsRequired && question.ControlType != ControlType.Checkbox)
                     {
                         validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.RequiredField, "error-message", questionWrapDiv, control.ID, question.UnformattedText + " is required.", "survey", 1, 0);
                     }
@@ -182,7 +182,7 @@ namespace Engage.Survey.Entities
                         validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.EmailField, "error-message", questionWrapDiv, control.ID, "Email Address should be in name@domain.com format.", "survey", 1, 0);
                     }
 
-                    if (question.ControlType == ControlType.CheckBox)
+                    if (question.ControlType == ControlType.Checkbox)
                     {
                         validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedSelection, "error-message", questionWrapDiv, control.ID, string.Empty, "survey", question.SelectionLimit, 0);
                     }

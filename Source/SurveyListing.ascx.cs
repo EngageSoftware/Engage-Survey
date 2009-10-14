@@ -35,7 +35,7 @@ namespace Engage.Dnn.Survey
             this.Load += this.Page_Load;
             this.NewSurveyButton.Click += this.NewSurveyButton_Click;
             this.CancelButton.Click += this.CancelButton_Click;
-            this.SurveyDataGrid.ItemDataBound += this.SurveyDataGrid_OnItemDataBound;
+            this.SurveyGrid.ItemDataBound += this.SurveyDataGrid_OnItemDataBound;
             this.FilterRadioButtonList.SelectedIndexChanged += this.FilterRadioButtonList_SelectedIndexChanged;
             base.OnInit(e);
         }
@@ -49,14 +49,14 @@ namespace Engage.Dnn.Survey
             if (index == 0)
             {
                 // bind to survey definitions
-                this.SurveyDataGrid.DataSource = Survey.LoadSurveys().ToList();
+                this.SurveyGrid.DataSource = Survey.LoadSurveys();
             }
             else
             {
-                this.SurveyDataGrid.DataSource = ReadonlySurvey.LoadSurveys().ToList();
+                this.SurveyGrid.DataSource = ReadonlySurvey.LoadSurveys();
             }
 
-            this.SurveyDataGrid.DataBind();
+            this.SurveyGrid.DataBind();
         }
 
         /// <summary>
@@ -151,11 +151,11 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Handles the <see cref="DataGrid.ItemDataBound"/> event of the <see cref="SurveyDataGrid"/> control.
+        /// Handles the <see cref="DataGrid.ItemDataBound"/> event of the <see cref="SurveyGrid"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="DataGridItemEventArgs"/> instance containing the event data.</param>
-        private void SurveyDataGrid_OnItemDataBound(object sender, DataGridItemEventArgs e)
+        private void SurveyDataGrid_OnItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {

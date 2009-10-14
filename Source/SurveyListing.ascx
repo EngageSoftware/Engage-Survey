@@ -7,25 +7,10 @@
         <asp:ListItem ResourceKey="Completed Surveys.Text" Value="1"/>
     </asp:RadioButtonList>
 </div>
-<asp:DataGrid ID="SurveyDataGrid" runat="server" AutoGenerateColumns="false" GridLines="None" CssClass="Normal" EnableViewState="true">
-    <Columns>
-	<asp:TemplateColumn>
-		    <ItemTemplate>
-		        <asp:HyperLink ID="EditHyperLink" runat="server" ResourceKey="EditLink.Text" CssClass="CommandButton" Visible="<%# IsEditable%>"/>
-		    </ItemTemplate>
-		</asp:TemplateColumn>
-		<asp:TemplateColumn>
-		    <ItemTemplate>
-		        <asp:HyperLink ID="PreviewHyperLink" runat="server" ResourceKey="PreviewLink.Text" CssClass="CommandButton" />
-		    </ItemTemplate>
-		</asp:TemplateColumn>
-    	<asp:TemplateColumn>
-		    <ItemTemplate>
-		        <asp:Label ID="TextLabel" runat="server" CssClass="Normal"/>
-		    </ItemTemplate>
-		</asp:TemplateColumn>
-    </Columns>
-</asp:DataGrid>
+
+<asp:Repeater ID="SurveyGrid" runat="server">
+
+</asp:Repeater>
 
 <div>
     <asp:linkbutton CssClass="CommandButton" ID="NewSurveyButton" Resourcekey="NewSurveyButton.Text" runat="server" />&nbsp;

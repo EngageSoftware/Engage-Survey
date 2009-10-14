@@ -14,6 +14,8 @@ namespace Engage.Dnn.Survey
     using System;
     using System.Collections.Specialized;
     using System.Globalization;
+    using System.IO;
+    using System.Web.UI;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Exceptions;
@@ -26,31 +28,6 @@ namespace Engage.Dnn.Survey
         private static StringDictionary ControlKeys;
         private string controlToLoad;
 
-        #region Web Form Designer generated code
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            ReadItemType();
-            LoadControlType();
-
-            //add on a query string param so that we can grab ALL content, not just for this moduleId. hk
-            string title = Localization.GetString(ModuleActionType.ExportModule, Localization.GlobalResourceFile);
-            foreach (ModuleAction action in Actions)
-            {
-                if (action.Title == title)
-                {
-                    action.Url = action.Url + "?all=1";
-                    break;
-                }
-
-            }
-        }
-
-        #endregion
-
-        #region Private Methods
-
         /// <summary>
         /// Gets the admin control keys.
         /// </summary>
@@ -62,14 +39,33 @@ namespace Engage.Dnn.Survey
             {
                 FillControlKeys();
             }
+
             return ControlKeys;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Control.Init"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="EventArgs"/> object that contains the event data.</param>
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            this.ReadItemType();
+            this.LoadControlType();
+
+            this.GlobalNavigation.ModuleConfiguration = this.ModuleConfiguration;
         }
 
         private static void FillControlKeys()
         {
-            StringDictionary controlKeys = new StringDictionary { { "ViewSurvey", "ViewSurvey.ascx" }, { "EditSurvey", "EditSurvey.ascx" }, { "SurveyListing", "SurveyListing.ascx" }, { "ThankYou", "ThankYou.ascx" } };
-
-            ControlKeys = controlKeys;
+            ControlKeys = new StringDictionary
+                              {
+                                      { "ViewSurvey", "ViewSurvey.ascx" }, 
+                                      { "EditSurvey", "EditSurvey.ascx" }, 
+                                      { "SurveyListing", "SurveyListing.ascx" }, 
+                                      { "ThankYou", "ThankYou.ascx" }
+                              };
         }
 
 
@@ -103,12 +99,15 @@ namespace Engage.Dnn.Survey
         {
             try
             {
-                if (controlToLoad == null) return;
+                if (this.controlToLoad == null)
+                {
+                    return;
+                }
 
-                ModuleBase mb = (ModuleBase)LoadControl(controlToLoad);
-                mb.ModuleConfiguration = ModuleConfiguration;
-                mb.ID = System.IO.Path.GetFileNameWithoutExtension(controlToLoad);
-                ControlsPlaceHolder.Controls.Add(mb);
+                var loadedControl = (ModuleBase)this.LoadControl(this.controlToLoad);
+                loadedControl.ModuleConfiguration = ModuleConfiguration;
+                loadedControl.ID = Path.GetFileNameWithoutExtension(this.controlToLoad);
+                this.ControlsPlaceHolder.Controls.Add(loadedControl);
 
             }
             catch (Exception exc)
@@ -116,8 +115,6 @@ namespace Engage.Dnn.Survey
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
     }
 }
 

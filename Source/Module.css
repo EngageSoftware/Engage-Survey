@@ -76,3 +76,13 @@ survey-title{font-weight: bold}
 		ul.sl-repeater li{list-style:none;padding:10px;margin:0;display:block;}
 		ul.sl-repeater li.sl-item, ul.sl-repeater li.sl-alt-item{background:#F2F6F9;border:1px solid #D4DFE1;border-top:none;}
 			ul.sl-repeater li.sl-alt-item{background:#fff;}
+
+/*============ Global Navigation ============*/
+ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px #e4bbab solid;border-bottom:1px #e4bbab solid;padding:10px 15px;margin:0;}
+	ul.em-global-nav li{display:block;float:left;padding:5px 25px 5px 0;}
+		ul.em-global-nav li a{padding-left:25px;color:#df3f00;text-decoration:underline;font-weight:bold;}
+		ul.em-global-nav li a:hover{text-decoration:none;color:#000;}
+	ul.em-global-nav li.egn-home{background: url(images/em-home-icn.gif) left no-repeat;}
+	ul.em-global-nav li.egn-add-new{background: url(images/em-add-icn.gif) left no-repeat;}
+	ul.em-global-nav li.egn-manage{background: url(images/em-manage-icn.gif) left no-repeat;}
+	ul.em-global-nav li.egn-settings{background: url(images/em-settings-icn.gif) left no-repeat;}

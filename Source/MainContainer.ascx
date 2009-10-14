@@ -1,2 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Survey.MainContainer" Codebehind="MainContainer.ascx.cs" %>
-<div style="clear:both;"><asp:PlaceHolder id="ControlsPlaceHolder" runat="Server" /></div>
+<%@ Register TagPrefix="engage" TagName="GlobalNav" Src="Controls/GlobalNavigation.ascx" %>
+<div style="clear:both;">
+    <engage:GlobalNav ID="GlobalNavigation" runat="server" />
+    <asp:PlaceHolder id="ControlsPlaceHolder" runat="server" />
+</div>

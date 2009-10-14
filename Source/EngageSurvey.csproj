@@ -87,6 +87,13 @@
     <Content Include="Settings.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\GlobalNavigation.ascx.cs">
+      <DependentUpon>GlobalNavigation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\GlobalNavigation.ascx.designer.cs">
+      <DependentUpon>GlobalNavigation.ascx</DependentUpon>
+    </Compile>
     <Compile Include="EditSurvey.ascx.designer.cs">
       <DependentUpon>EditSurvey.ascx</DependentUpon>
     </Compile>
@@ -203,7 +210,14 @@
     <Content Include="App_LocalResources\SurveyListing.ascx.resx">
     </Content>
     <None Include="JavaScript\jquery-1.3.2.debug-vsdoc.js" />
+    <Content Include="Controls\App_LocalResources\GlobalNavigation.ascx.resx">
+    </Content>
     <EmbeddedResource Include="JavaScript\survey.js" />
+    <Content Include="Controls\GlobalNavigation.ascx" />
+    <Content Include="images\em-add-icn.gif" />
+    <Content Include="images\em-home-icn.gif" />
+    <Content Include="images\em-manage-icn.gif" />
+    <Content Include="images\em-settings-icn.gif" />
     <Content Include="images\validator-bg.gif" />
     <Content Include="Licenses\EULA-Enterprise.htm" />
     <Content Include="Licenses\EULA-Professional.htm" />

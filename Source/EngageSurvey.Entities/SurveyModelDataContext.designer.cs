@@ -1537,7 +1537,7 @@ namespace Engage.Survey.Entities
 		
 		private string _Text;
 		
-		private string _FinalMessageOption;
+		private global::Engage.Survey.Util.FinalMessageOption _FinalMessageOption;
 		
 		private string _FinalMessage;
 		
@@ -1545,11 +1545,11 @@ namespace Engage.Survey.Entities
 		
 		private bool _ShowText;
 		
-		private string _QuestionFormatOption;
+		private global::Engage.Survey.Util.ElementFormatOption _QuestionFormatOption;
 		
-		private string _SectionFormatOption;
+		private global::Engage.Survey.Util.ElementFormatOption _SectionFormatOption;
 		
-		private string _TitleOption;
+		private global::Engage.Survey.Util.TitleOption _TitleOption;
 		
 		private string _LogoURL;
 		
@@ -1573,7 +1573,7 @@ namespace Engage.Survey.Entities
     partial void OnSurveyIdChanged();
     partial void OnTextChanging(string value);
     partial void OnTextChanged();
-    partial void OnFinalMessageOptionChanging(string value);
+    partial void OnFinalMessageOptionChanging(global::Engage.Survey.Util.FinalMessageOption value);
     partial void OnFinalMessageOptionChanged();
     partial void OnFinalMessageChanging(string value);
     partial void OnFinalMessageChanged();
@@ -1581,11 +1581,11 @@ namespace Engage.Survey.Entities
     partial void OnFinalUrlChanged();
     partial void OnShowTextChanging(bool value);
     partial void OnShowTextChanged();
-    partial void OnQuestionFormatOptionChanging(string value);
+    partial void OnQuestionFormatOptionChanging(global::Engage.Survey.Util.ElementFormatOption value);
     partial void OnQuestionFormatOptionChanged();
-    partial void OnSectionFormatOptionChanging(string value);
+    partial void OnSectionFormatOptionChanging(global::Engage.Survey.Util.ElementFormatOption value);
     partial void OnSectionFormatOptionChanged();
-    partial void OnTitleOptionChanging(string value);
+    partial void OnTitleOptionChanging(global::Engage.Survey.Util.TitleOption value);
     partial void OnTitleOptionChanged();
     partial void OnLogoURLChanging(string value);
     partial void OnLogoURLChanged();
@@ -1648,7 +1648,7 @@ namespace Engage.Survey.Entities
 		
 		[Column(Storage="_FinalMessageOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=3)]
-		public string FinalMessageOption
+		public global::Engage.Survey.Util.FinalMessageOption FinalMessageOption
 		{
 			get
 			{
@@ -1732,7 +1732,7 @@ namespace Engage.Survey.Entities
 		
 		[Column(Storage="_QuestionFormatOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=7)]
-		public string QuestionFormatOption
+		public global::Engage.Survey.Util.ElementFormatOption QuestionFormatOption
 		{
 			get
 			{
@@ -1753,7 +1753,7 @@ namespace Engage.Survey.Entities
 		
 		[Column(Storage="_SectionFormatOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=8)]
-		public string SectionFormatOption
+		public global::Engage.Survey.Util.ElementFormatOption SectionFormatOption
 		{
 			get
 			{
@@ -1774,7 +1774,7 @@ namespace Engage.Survey.Entities
 		
 		[Column(Storage="_TitleOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=9)]
-		public string TitleOption
+		public global::Engage.Survey.Util.TitleOption TitleOption
 		{
 			get
 			{
@@ -1994,7 +1994,7 @@ namespace Engage.Survey.Entities
 		
 		private bool _ShowSurveyText;
 		
-		private string _TitleOption;
+		private global::Engage.Survey.Util.TitleOption _TitleOption;
 		
 		private int _SectionId;
 		
@@ -2012,13 +2012,13 @@ namespace Engage.Survey.Entities
 		
 		private int _QuestionRelativeOrder;
 		
-		private string _QuestionFormatOption;
+		private global::Engage.Survey.Util.ElementFormatOption _QuestionFormatOption;
 		
 		private string _ControlType;
 		
 		private System.Nullable<int> _AnswerId;
 		
-		private string _SectionFormatOption;
+		private global::Engage.Survey.Util.ElementFormatOption _SectionFormatOption;
 		
 		private string _AnswerText;
 		
@@ -2052,7 +2052,7 @@ namespace Engage.Survey.Entities
     partial void OnSurveyTextChanged();
     partial void OnShowSurveyTextChanging(bool value);
     partial void OnShowSurveyTextChanged();
-    partial void OnTitleOptionChanging(string value);
+    partial void OnTitleOptionChanging(global::Engage.Survey.Util.TitleOption value);
     partial void OnTitleOptionChanged();
     partial void OnSectionIdChanging(int value);
     partial void OnSectionIdChanged();
@@ -2070,13 +2070,13 @@ namespace Engage.Survey.Entities
     partial void OnCommentsChanged();
     partial void OnQuestionRelativeOrderChanging(int value);
     partial void OnQuestionRelativeOrderChanged();
-    partial void OnQuestionFormatOptionChanging(string value);
+    partial void OnQuestionFormatOptionChanging(global::Engage.Survey.Util.ElementFormatOption value);
     partial void OnQuestionFormatOptionChanged();
     partial void OnControlTypeChanging(string value);
     partial void OnControlTypeChanged();
     partial void OnAnswerIdChanging(System.Nullable<int> value);
     partial void OnAnswerIdChanged();
-    partial void OnSectionFormatOptionChanging(string value);
+    partial void OnSectionFormatOptionChanging(global::Engage.Survey.Util.ElementFormatOption value);
     partial void OnSectionFormatOptionChanged();
     partial void OnAnswerTextChanging(string value);
     partial void OnAnswerTextChanged();
@@ -2212,7 +2212,7 @@ namespace Engage.Survey.Entities
 		
 		[Column(Storage="_TitleOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=6)]
-		public string TitleOption
+		public global::Engage.Survey.Util.TitleOption TitleOption
 		{
 			get
 			{
@@ -2401,7 +2401,7 @@ namespace Engage.Survey.Entities
 		
 		[Column(Storage="_QuestionFormatOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=15)]
-		public string QuestionFormatOption
+		public global::Engage.Survey.Util.ElementFormatOption QuestionFormatOption
 		{
 			get
 			{
@@ -2464,7 +2464,7 @@ namespace Engage.Survey.Entities
 		
 		[Column(Storage="_SectionFormatOption", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=18)]
-		public string SectionFormatOption
+		public global::Engage.Survey.Util.ElementFormatOption SectionFormatOption
 		{
 			get
 			{

@@ -187,11 +187,11 @@ namespace Engage.Survey.Entities
         /// Gets the final message option.
         /// </summary>
         /// <value>The final message option.</value>
-        public string FinalMessageOption
+        public FinalMessageOption FinalMessageOption
         {
             get
             {
-                return string.Empty;
+                return FinalMessageOption.None;
             }
         }
 
@@ -233,7 +233,7 @@ namespace Engage.Survey.Entities
         /// Gets or sets the question format option.
         /// </summary>
         /// <value>The question format option.</value>
-        public string QuestionFormatOption
+        public ElementFormatOption QuestionFormatOption
         {
             get;
             set;
@@ -243,7 +243,7 @@ namespace Engage.Survey.Entities
         /// Gets or sets the section format option.
         /// </summary>
         /// <value>The answer format option.</value>
-        public string SectionFormatOption
+        public ElementFormatOption SectionFormatOption
         {
             get;
             set;
@@ -253,7 +253,7 @@ namespace Engage.Survey.Entities
         /// Gets or sets the title option.
         /// </summary>
         /// <value>The title option.</value>
-        public string TitleOption
+        public TitleOption TitleOption
         {
             get;
             set;
@@ -348,8 +348,7 @@ namespace Engage.Survey.Entities
                 ISurvey survey = this.GetSurvey();
                 if (survey != null)
                 {
-                    ElementFormatOptions option = (ElementFormatOptions)EngageType.GetFromShortDescription(survey.SectionFormatOption, typeof(ElementFormatOptions));
-                    return Util.Utility.PrependFormatting(option, this.RelativeOrder);
+                    return Util.Utility.PrependFormatting(survey.SectionFormatOption, this.RelativeOrder);
                 }
 
                 return string.Empty;
@@ -543,9 +542,7 @@ namespace Engage.Survey.Entities
                 ISurvey survey = this.GetSection().GetSurvey();
                 if (survey != null)
                 {
-
-                    ElementFormatOptions option = (ElementFormatOptions)EngageType.GetFromShortDescription(survey.QuestionFormatOption, typeof(ElementFormatOptions));
-                    return Util.Utility.PrependFormatting(option, this.RelativeOrder);
+                    return Util.Utility.PrependFormatting(survey.QuestionFormatOption, this.RelativeOrder);
                 }
 
                 return string.Empty;

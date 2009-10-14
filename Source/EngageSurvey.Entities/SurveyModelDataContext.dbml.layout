@@ -21,13 +21,13 @@
         <classShapeMoniker Id="798c40ce-1036-45c2-892d-27c318dafd3a" />
       </nodes>
     </associationConnector>
-    <classShape Id="a47e5fc2-7858-46e6-a9d0-c06a8490d4f1" absoluteBounds="9.375, 4.5, 2, 2.5401025390625">
+    <classShape Id="a47e5fc2-7858-46e6-a9d0-c06a8490d4f1" absoluteBounds="9.375, 1.625, 2, 2.5401025390625">
       <DataClassMoniker Name="/SurveyModelDataContext/Answer" />
       <nestedChildShapes>
-        <elementListCompartment Id="8bd74e4a-32ed-4599-b4a9-01fdb7307319" absoluteBounds="9.39, 4.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="8bd74e4a-32ed-4599-b4a9-01fdb7307319" absoluteBounds="9.39, 2.085, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(8.25 : 2.8749995); (10.375 : 2.8749995); (10.375 : 4.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(8.25 : 2.89505126953125); (9.375 : 2.89505126953125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SurveyModelDataContext/Question/Question_Answer" />
       <nodes>
         <classShapeMoniker Id="798c40ce-1036-45c2-892d-27c318dafd3a" />

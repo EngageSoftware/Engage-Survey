@@ -158,8 +158,7 @@ namespace Engage.Survey.Entities
                 ISurvey survey = this.Section.Survey;
                 if (survey != null)
                 {
-                    ElementFormatOptions option = (ElementFormatOptions)EngageType.GetFromShortDescription(survey.QuestionFormatOption, typeof(ElementFormatOptions));
-                    return Util.Utility.PrependFormatting(option, this.RelativeOrder);
+                    return Util.Utility.PrependFormatting(survey.QuestionFormatOption, this.RelativeOrder);
                 }
 
                 return string.Empty;

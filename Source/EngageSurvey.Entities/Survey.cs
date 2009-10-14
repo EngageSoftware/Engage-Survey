@@ -25,31 +25,10 @@ namespace Engage.Survey.Entities
     public partial class Survey : ISurvey
     {
         /// <summary>
-        /// Loads the survey.
-        /// </summary>
-        /// <param name="surveyId">The survey id.</param>
-        /// <returns></returns>
-        public static ISurvey LoadSurvey(int surveyId)
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return context.Surveys.FirstOrDefault(s => s.SurveyId == surveyId);
-        }
-
-        /// <summary>
-        /// Loads the surveys.
-        /// </summary>
-        /// <returns></returns>
-        public static IQueryable<Survey> LoadSurveys()
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return context.Surveys;
-        }
-
-        /// <summary>
         /// Gets a value indicating whether this instance is readonly.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if this instance is readonly; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance is readonly; otherwise, <c>false</c>.
         /// </value>
         public bool IsReadonly
         {
@@ -85,6 +64,27 @@ namespace Engage.Survey.Entities
         public string Formatting
         {
             get	 { return string.Empty; }
+        }
+
+        /// <summary>
+        /// Loads the survey.
+        /// </summary>
+        /// <param name="surveyId">The survey id.</param>
+        /// <returns></returns>
+        public static ISurvey LoadSurvey(int surveyId)
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return context.Surveys.FirstOrDefault(s => s.SurveyId == surveyId);
+        }
+
+        /// <summary>
+        /// Loads the surveys.
+        /// </summary>
+        /// <returns></returns>
+        public static IQueryable<Survey> LoadSurveys()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return context.Surveys;
         }
 
         /// <summary>
@@ -199,6 +199,19 @@ namespace Engage.Survey.Entities
             this.WriteResponses(responseHeaderId);
 
             return responseHeaderId;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Survey"/> class with default settings.
+        /// </summary>
+        partial void OnCreated()
+        {
+            this.FinalMessageOption = FinalMessageOption.UseFinalMessage;
+            this.SectionFormatOption = ElementFormatOption.None;
+            this.QuestionFormatOption = ElementFormatOption.None;
+            this.TitleOption = TitleOption.FirstPageOnly;
+
+            this.Sections.Add(new Section());
         }
 
         /// <summary>

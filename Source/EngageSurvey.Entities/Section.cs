@@ -53,8 +53,7 @@ namespace Engage.Survey.Entities
                 ISurvey survey = this.Survey;
                 if (survey != null)
                 {
-                    ElementFormatOptions option = (ElementFormatOptions)EngageType.GetFromShortDescription(survey.SectionFormatOption, typeof(ElementFormatOptions));
-                    return Util.Utility.PrependFormatting(option, this.RelativeOrder);
+                    return Util.Utility.PrependFormatting(survey.SectionFormatOption, this.RelativeOrder);
                 }
 
                 return string.Empty;

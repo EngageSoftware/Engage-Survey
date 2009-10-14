@@ -63,13 +63,13 @@
     <Type Name="Survey">
       <Column Name="SurveyId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Text" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
-      <Column Name="FinalMessageOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="FinalMessageOption" Type="global::Engage.Survey.Util.FinalMessageOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="FinalMessage" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="FinalUrl" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Column Name="ShowText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="QuestionFormatOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
-      <Column Name="SectionFormatOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
-      <Column Name="TitleOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionFormatOption" Type="global::Engage.Survey.Util.ElementFormatOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="SectionFormatOption" Type="global::Engage.Survey.Util.ElementFormatOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="TitleOption" Type="global::Engage.Survey.Util.TitleOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="LogoURL" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Column Name="RevisingUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="RevisionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -85,7 +85,7 @@
       <Column Name="ResponseHeaderId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SurveyText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="ShowSurveyText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="TitleOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="TitleOption" Type="global::Engage.Survey.Util.TitleOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SectionText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="SectionRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -94,10 +94,10 @@
       <Column Name="QuestionText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="Comments" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
       <Column Name="QuestionRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="QuestionFormatOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionFormatOption" Type="global::Engage.Survey.Util.ElementFormatOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="ControlType" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="AnswerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="SectionFormatOption" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="SectionFormatOption" Type="global::Engage.Survey.Util.ElementFormatOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="AnswerText" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Column Name="AnswerRelativeOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AnswerIsCorrect" Type="System.Boolean" DbType="Bit" CanBeNull="true" />

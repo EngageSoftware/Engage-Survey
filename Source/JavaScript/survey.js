@@ -414,6 +414,8 @@ jQuery(function ($) {
     });
     
     function addQuestionPreview(questionId, questionText, questionType, answers) {
+        // TODO: Check if the question already exists (if this is an edit) and update that instead of creating a new preview, maybe send the element in?
+        
         // copy the last list item in our UL, which is always a blank and hidden list item.
         var questionCount = $('.ee-preview').length;
         var $blankListItem = $('.ee-preview:last').clone(true);
@@ -479,6 +481,8 @@ jQuery(function ($) {
             question: {
                 QuestionId: $('.ee-create-questions').data('questionId') || -1,
                 Text: $('#QuestionText').val(),
+                
+                // TODO: get relative order of existing question (when editing question instead of adding new)
                 RelativeOrder: $('.ee-preview').length,
                 ControlType: $('#DefineAnswerType').val(),
                 RevisingUser: CurrentContextInfo.UserId,

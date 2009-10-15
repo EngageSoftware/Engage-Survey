@@ -17,6 +17,7 @@ namespace Engage.Survey.Entities
     using System.Linq;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Services.Localization;
     using Util;
 
     /// <summary>
@@ -223,6 +224,7 @@ namespace Engage.Survey.Entities
         /// </summary>
         partial void OnCreated()
         {
+            this.FinalMessage = Localization.GetString("Survey Complete.Text", "~/DesktopModules/EngageSurvey/App_LocalResources/SharedResources.resx");
             this.FinalMessageOption = FinalMessageOption.UseFinalMessage;
             this.SectionFormatOption = ElementFormatOption.None;
             this.QuestionFormatOption = ElementFormatOption.None;

@@ -215,6 +215,8 @@
     <Content Include="Controls\App_LocalResources\GlobalNavigation.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_LocalResources\SharedResources.resx">
+    </Content>
     <EmbeddedResource Include="JavaScript\survey.js" />
     <Content Include="Controls\GlobalNavigation.ascx" />
     <Content Include="images\em-add-icn.gif" />

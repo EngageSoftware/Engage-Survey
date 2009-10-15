@@ -418,7 +418,8 @@ namespace Engage.Survey.UI
         {
             if (this.CurrentSurvey.FinalMessageOption == FinalMessageOption.UseFinalMessage)
             {
-                this.Page.Response.Redirect("ThankYou.aspx?typeid=" + this.CurrentSurvey.SurveyId);
+                this.Controls.Clear(); //remove everything.
+                this.Controls.Add(new Literal{Text = this.CurrentSurvey.FinalMessage});
             }
             else
             {

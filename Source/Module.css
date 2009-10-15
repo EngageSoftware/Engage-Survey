@@ -4,7 +4,7 @@ survey-title{font-weight: bold}
 	h3.section-title{}
 	.question-wrap{padding:0 0 10px 0;}
 		.question{display:block;font-weight:bold;padding:0 0 2px 0;}
-			.required{}
+			.ee-required{}
 		.answer-horizontal,	.answer-vertical, .answer-vertical span{display:block;}
 	.error-message{background:url(images/inline-validator-bg.png) no-repeat right;padding:2px 4px;color:#fff !important;font-weight:bold;}
 		.error-text{color:#fff !important;font-weight:bold;}
@@ -32,9 +32,9 @@ survey-title{font-weight: bold}
             .ee-input-pre{display:block;width:300px;}
         ul.ee-action-btns, ul.ee-pr-action-links{clear:both;padding:10px 15px 15px 110px;list-style:none;margin:0;}
             ul.ee-action-btns li{padding:0;list-style:none;margin:0;}
-                ul.ee-action-btns li.primary-btn a, ul.answer-inputs li.primary-btn a{color:#df3f00;font-weight:bold;font-size:16px;text-shadow:1px 1px 1px #fff;}
+                ul.ee-action-btns li.primary-btn a, ul.answer-inputs li.primary-btn a{color:#df3f00;font-weight:bold;font-size:16px;text-shadow:1px 1px 1px #fff;display:block;padding:3px 15px;}
                 ul.ee-action-btns li.primary-btn a:hover, ul.answer-inputs li.primary-btn a:hover{text-decoration:none;}
-            ul.ee-action-btns li.primary-btn, ul.answer-inputs li.primary-btn{background: url(images/btn-bg.gif) repeat-x bottom;border:1px #f17b4d solid;padding:3px 15px;display:block;float:left;}
+            ul.ee-action-btns li.primary-btn, ul.answer-inputs li.primary-btn{background: url(images/btn-bg.gif) repeat-x bottom;border:1px #f17b4d solid;display:block;float:left;}
             ul.ee-action-btns li.primary-btn:hover, ul.answer-inputs li.primary-btn:hover{text-decoration:none;background: url(images/btn-bg-on.gif) repeat-x bottom;}
                 ul.ee-action-btns li.secondary-btn a{line-height:34px;padding-left:10px;color:#9e7261;font-weight:bold;font-size:16px;text-decoration:underline;}
                 ul.ee-action-btns li.secondary-btn a:hover{color:#000;text-decoration:none;}
@@ -48,17 +48,22 @@ survey-title{font-weight: bold}
         .ee-define-answers{}
             #engage-evaluation .define-answer{float:left;display:block;clear:none;}
             .define-answer .ee-input{margin-bottom:10px;}
-            ul.answer-inputs{background:#f7fee7;width:420px;margin:10px 0 0 0;padding:10px;border-bottom:1px #c4cbb2 solid;border-right:1px #cfcfcf solid;list-style:none;clear:both;overflow:hidden;}
-				ul.answer-inputs li{list-style:none;}
-                #engage-evaluation .answer-inputs input.NormalTextBox, #engage-evaluation .answer-inputs textarea.NormalTextBox, #engage-evaluation .answer-inputs select.NormalTextBox{border:1px #cbcbcb solid;width:320px;padding:5px;}
-                ul.answer-inputs li.primary-btn a{font-size:12px;}
-                #engage-evaluation ul.answer-inputs a.ee-delete{padding-left:10px;}
-                    .ai-label{font-weight:bold;}
+            .ee-answer-inputs{background:#eee;width:420px;border-bottom:1px #c4cbb2 solid;border-right:1px #cfcfcf solid;clear:both;overflow:hidden;}
+				ul.answer-inputs{margin:10px 0 0 0;padding:10px;list-style:none;clear:both;overflow:hidden;}
+					ul.answer-inputs li{list-style:none;padding-left:10px;background: url(images/drag-icn.gif) no-repeat right 25px;}
+						ul.answer-inputs li.ui-state-highlight{background:none;}
+					#engage-evaluation .answer-inputs input.NormalTextBox, #engage-evaluation .answer-inputs textarea.NormalTextBox, #engage-evaluation .answer-inputs select.NormalTextBox{border:1px #cbcbcb solid;width:320px;padding:5px;}
+						#engage-evaluation .ee-answer-inputs .answer-inputs input.NormalTextBox{width:260px;}
+					#engage-evaluation .ee-answer-inputs ul.ee-action-btns{padding:0 10px 15px 20px;overflow:hidden}
+					#engage-evaluation .ee-answer-inputs li.primary-btn a{font-size:12px;}
+					#engage-evaluation ul.answer-inputs a.ee-delete{padding-left:10px;}
+						.ai-label{font-weight:bold;}
+					#ShortTextAnswer, #LongTextAnswer{padding-left:10px;}
 			ul#ee-previews{display:block;margin:0;padding:0;list-style:none;overflow:hidden;}
-				ul#ee-previews li.ee-preview{cursor:pointer;padding:10px 15px;margin:10px;display:block;overflow:hidden;list-style:none;background:#feffef;border-right:1px #e7e9bc solid;border-bottom:1px #e7e9bc solid;}
-					ul#ee-previews li.ee-preview:hover{background:#feffe8;border-right:1px #b9bd77 solid;border-bottom:1px #b9bd77 solid;}
+				ul#ee-previews li.ee-preview{cursor:pointer;padding:10px 15px;margin:10px;display:block;overflow:hidden;list-style:none;background:#eee url(images/drag-icn.gif) no-repeat 15px 15px;border-right:1px #ccc solid;border-bottom:1px #ccc solid;}
+					ul#ee-previews li.ee-preview:hover{background:#FEFFEF url(images/drag-icn.gif) no-repeat 15px 15px;border-right:1px #b9bd77 solid;border-bottom:1px #b9bd77 solid;}
 			.ui-sortable-helper{background:#feffe8;border-right:1px #b9bd77 solid;border-bottom:1px #b9bd77 solid;overflow:hidden;padding:10px 15px !important;cursor:pointer}
-			li.ui-state-highlight {height:100px;background:#f8f8f8;list-style:none;}
+			li.ui-state-highlight {height:100px;background:#f1f1f1;list-style:none;}
 			ul.ee-pr-action-links{padding:0 0 10px 0;text-align:right;border-bottom:1px #ccc dotted;margin-bottom:10px;}
 				ul.ee-pr-action-links li{display:inline;}
 			#engage-evaluation .ee-preview .ee-label{padding-top:0;}

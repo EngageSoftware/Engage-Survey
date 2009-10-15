@@ -15,6 +15,7 @@ namespace Engage.Dnn.Survey
     using System.Globalization;
     using System.Web.Script.Serialization;
     using System.Web.UI;
+    using Engage.Survey.Entities;
 
     /// <summary>
     /// The EditSurvey class is used to manage content
@@ -55,13 +56,8 @@ namespace Engage.Dnn.Survey
         {
             get
             {
-                if (this.SurveyId == null)
-                {
-                    return "null";
-                }
-
-                var serializer = new JavaScriptSerializer();
-                return serializer.Serialize(Engage.Survey.Entities.Survey.LoadSurvey(this.SurveyId.Value));
+                var survey = this.SurveyId == null ? null : Survey.LoadSurvey(this.SurveyId.Value);
+                return new JavaScriptSerializer().Serialize(survey);
             }
         }
 

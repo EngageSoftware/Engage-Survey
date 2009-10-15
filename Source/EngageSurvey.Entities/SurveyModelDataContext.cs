@@ -12,7 +12,8 @@
 namespace Engage.Survey.Entities
 {
     using System.Data.Linq;
-  
+    using System.Linq;
+
     /// <summary>
     /// SurveyModelDataContext class
     /// </summary>
@@ -28,6 +29,18 @@ namespace Engage.Survey.Entities
             {
                 return new SurveyModelDataContext(DotNetNuke.Common.Utilities.Config.GetConnectionString());
             }
+        }
+
+        /// <summary>
+        /// Called when this instance is created.
+        /// </summary>
+        partial void OnCreated()
+        {
+            var loadOptions = new DataLoadOptions();
+            loadOptions.AssociateWith<Survey>(survey => survey.Sections.OrderBy(section => section.RelativeOrder));
+            loadOptions.AssociateWith<Section>(section => section.Questions.OrderBy(question => question.RelativeOrder));
+            loadOptions.AssociateWith<Question>(question => question.Answers.OrderBy(answer => answer.RelativeOrder));
+            this.LoadOptions = loadOptions;
         }
     }
 }

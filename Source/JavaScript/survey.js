@@ -134,6 +134,19 @@ jQuery(function ($) {
         placeholder: 'ui-state-highlight'
     });
     $("#ee-previews, .answer-inputs").disableSelection();
+    $('#ee-previews').bind('sortupdate', function (event, ui) {
+        var questionOrderMap = {};
+        $('#ee-previews li.ee-preview:visible').each(function (i, elem) {
+            questionOrderMap[$(elem).data('questionId')] = i + 1;
+        });
+        
+        var parameters = {
+            surveyId: $('.ee-create-new').data('surveyId'),
+            questionOrderMap: questionOrderMap
+        };
+        
+        callWebMethod('ReorderQuestions', parameters);
+    });
     
     // Add selection style back to the inputs, since our CSS is removing or hiding the native style
     $("#engage-evaluation :input").focus(function () {
@@ -346,10 +359,7 @@ jQuery(function ($) {
         // append and hide the new blank list item for future use
         $('#ee-previews').append($blankListItem);
         $('.ee-preview').eq(questionCount).hide();
-        
-        // retrieve question values
-        var questionText = questionText;
-        
+                
         // update the new question preview
         $('.pv-question').eq(questionCount - 1).text(questionText).show();
         $('.ee-preview').eq(questionCount - 1).show().data('questionId', questionId);

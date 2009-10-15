@@ -90,10 +90,9 @@ namespace Engage.Survey.Entities
         /// </summary>
         /// <param name="surveyId">The survey id.</param>
         /// <returns></returns>
-        public static ISurvey LoadSurvey(int surveyId)
+        public static Survey LoadSurvey(int surveyId)
         {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return context.Surveys.FirstOrDefault(s => s.SurveyId == surveyId);
+            return SurveyModelDataContext.Instance.Surveys.FirstOrDefault(s => s.SurveyId == surveyId);
         }
 
         /// <summary>
@@ -102,8 +101,7 @@ namespace Engage.Survey.Entities
         /// <returns></returns>
         public static IQueryable<Survey> LoadSurveys()
         {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return context.Surveys;
+            return SurveyModelDataContext.Instance.Surveys;
         }
 
         /// <summary>
@@ -112,11 +110,11 @@ namespace Engage.Survey.Entities
         /// <returns>List of ISections for this survey</returns>
         public List<ISection> GetSections()
         {
-            List<ISection> sections = new List<ISection>();
+            var sections = new List<ISection>();
             
-            foreach (Section s in Sections)
+            foreach (var section in Sections)
             {
-                sections.Add(s);
+                sections.Add(section);
             }
 
             sections.Sort(new Section.RelativeOrderComparer());

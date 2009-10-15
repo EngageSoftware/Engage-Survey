@@ -29,6 +29,21 @@ namespace Engage.Dnn.Survey
     public class Services : WebService
     {
         /// <summary>
+        /// Deletes the question.
+        /// </summary>
+        /// <param name="questionId">The question id.</param>
+        [WebMethod]
+        public void DeleteQuestion(int questionId)
+        {
+            var dataContext = SurveyModelDataContext.Instance;
+
+            var question = dataContext.Questions.Where(q => q.QuestionId == questionId).Single();
+            dataContext.Questions.DeleteOnSubmit(question);
+
+            dataContext.SubmitChanges();
+        }
+
+        /// <summary>
         /// Gets a completed survey.
         /// </summary>
         /// <param name="responseHeaderId">The response header id.</param>
@@ -47,7 +62,7 @@ namespace Engage.Dnn.Survey
         [WebMethod]
         public Survey GetSurvey(int surveyId)
         {
-            return (Survey)Survey.LoadSurvey(surveyId);
+            return Survey.LoadSurvey(surveyId);
         }
         
         /// <summary>
@@ -58,6 +73,27 @@ namespace Engage.Dnn.Survey
         public List<Survey> GetSurveys()
         {
             return Survey.LoadSurveys().ToList();
+        }
+
+        /// <summary>
+        /// Reorders the questions for a given <see cref="Survey"/>.
+        /// </summary>
+        /// <param name="surveyId">The ID of the <see cref="Survey"/> to which the questions belong.</param>
+        /// <param name="questionOrderMap">A <see cref="Dictionary{String,Int32}"/> mapping question IDs to relative order.</param>
+        [WebMethod]
+        public void ReorderQuestions(int surveyId, Dictionary<string, int> questionOrderMap)
+        {
+            var dataContext = SurveyModelDataContext.Instance;
+            var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
+
+            foreach (var questionIdOrderPair in questionOrderMap)
+            {
+                var questionId = int.Parse(questionIdOrderPair.Key, CultureInfo.InvariantCulture);
+                var relativeOrder = questionIdOrderPair.Value;
+                survey.Sections[0].Questions.Where(q => q.QuestionId == questionId).Single().RelativeOrder = relativeOrder;
+            }
+
+            dataContext.SubmitChanges();
         }
 
         /// <summary>
@@ -127,7 +163,8 @@ namespace Engage.Dnn.Survey
                 Answer answerToUpdate;
                 if (answer.AnswerId > 0)
                 {
-                    answerToUpdate = questionToUpdate.Answers.Where(a => a.AnswerId == answer.AnswerId).Single();
+                    var lambdaAnswer = answer;
+                    answerToUpdate = questionToUpdate.Answers.Where(a => a.AnswerId == lambdaAnswer.AnswerId).Single();
                     answerToUpdate.RevisingUser = question.RevisingUser;
                     answerToUpdate.RevisionDate = now;
                 }
@@ -144,27 +181,6 @@ namespace Engage.Dnn.Survey
             dataContext.SubmitChanges();
 
             return questionToUpdate;
-        }
-
-        /// <summary>
-        /// Reorders the questions for a given <see cref="Survey"/>.
-        /// </summary>
-        /// <param name="surveyId">The ID of the <see cref="Survey"/> to which the questions belong.</param>
-        /// <param name="questionOrderMap">A <see cref="Dictionary{String,Int32}"/> mapping question IDs to relative order.</param>
-        [WebMethod]
-        public void ReorderQuestions(int surveyId, Dictionary<string, int> questionOrderMap)
-        {
-            var dataContext = SurveyModelDataContext.Instance;
-            var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
-
-            foreach (var questionIdOrderPair in questionOrderMap)
-            {
-                var questionId = int.Parse(questionIdOrderPair.Key, CultureInfo.InvariantCulture);
-                var relativeOrder = questionIdOrderPair.Value;
-                survey.Sections[0].Questions.Where(q => q.QuestionId == questionId).Single().RelativeOrder = relativeOrder;
-            }
-
-            dataContext.SubmitChanges();
         }
     }
 }

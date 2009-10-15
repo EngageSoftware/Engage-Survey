@@ -297,6 +297,18 @@ jQuery(function ($) {
             $answers.find('.ee-delete').addClass('disabled');
         }
     });
+    
+    // delete question
+    $('.ee-pr-action-links .ee-delete').click(function (event) {
+        event.preventDefault();
+        
+        var $parentQuestionElement = $(this).parents('li.ee-preview');
+        var questionId = $parentQuestionElement.data('questionId');
+        
+        callWebMethod('DeleteQuestion', { questionId: questionId }, function() {
+            $parentQuestionElement.remove();
+        });
+    });
 
     $('a.ee-edit').click(function(event) {
         event.preventDefault();

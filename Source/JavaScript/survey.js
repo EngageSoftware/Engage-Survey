@@ -298,38 +298,81 @@ jQuery(function ($) {
         }
     });
 
+    $('a.ee-edit').click(function(event) {
+        event.preventDefault();
+        //get "parent" question preview list item
+        var $questionLi = $(this).parents('li.ee-preview');
+        var questionType = $questionLi.data('questionType');
+        var questionId = $questionLi.data('questionId');
+        
+        //set the "edit" question text based on the "preview" question text
+        $('#QuestionText').val($questionLi.children('.pv-question').text());
+        
+        //todo: set the question id on the "edit" section based on the question id in the "preview" section
+        $('#CreateQuestions').data('questionId', questionId);
+        
+        //todo: set the "edit" answer type based on the "preview" answer type
+        $('#DefineAnswerType').val(questionType);
+        
+        if (questionType != 2 && questionType != 1 && questionType != 0) { // Not SmallTextInputField or LargeTextInputField or ControlType.None
+            //for multi-select types, loop over and grab the values.
+            
+            //clone an existing element
+            var $baseAnswerElement = $(".answer-inputs li:last").clone(true);
+            
+            //wipe out all of the answers
+            $('.answer-inputs li').remove();
+            
+            //get each answer
+            $questionLi.find('.pv-answer').find('input, option').each(function(i){
+            
+                var $answerElement = $baseAnswerElement.clone(true);
+            
+                // increment answer number
+                var $answerNumberElement = $answerElement.find('.answer-num');
+                $answerNumberElement.text(i + 1);
+
+                // update cloned textbox's value
+                $answerElement.find('input').val($(this).text() || $(this).next('span').text());
+                
+                //append answer LI to UL and set the answer id
+                $answerElement.appendTo('.answer-inputs').data('answerId', $(this).data('answerId'));
+            });
+        }
+        ShowAnswersInput(questionType);
+    });
+    
     $('#DefineAnswerType').change(function (event) {
-        var questionType = parseInt($(this).val(), 10);
+        ShowAnswersInput(parseInt($(this).val(), 10));
+    });
+    
+    function ShowAnswersInput(questionType) {
+    
+        $('#MultipleAnswer').hide();
+        $('#ShortTextAnswer').hide();
+        $('#LongTextAnswer').hide();
+        $('.ee-define-answer .primary-btn').hide();
+        $('#SaveQuestion').parent().addClass('disabled');
+            
         if (questionType === 2) {
             // ControlType.SmallTextInputField
             $('#ShortTextAnswer').show();
-            $('#LongTextAnswer').hide();
-            $('#MultipleAnswer').hide();
             $('#SaveQuestion').parent().removeClass('disabled');
         }
         else if(questionType === 1) {
             // ControlType.LargeTextInputField
-            $('#ShortTextAnswer').hide();
             $('#LongTextAnswer').show();
-            $('#MultipleAnswer').hide();
             $('#SaveQuestion').parent().removeClass('disabled');
         }
         else if(questionType === 0) {
             // ControlType.None
-            $('#ShortTextAnswer').hide();
-            $('#LongTextAnswer').hide();
-            $('#MultipleAnswer').hide();
-            $('#SaveQuestion').parent().addClass('disabled');
         }
         else { 
             //multiple answer
             $('#MultipleAnswer').show();
-            $('#ShortTextAnswer').hide();
-            $('#LongTextAnswer').hide();
-            $('#SaveQuestion').parent().addClass('disabled');
             $('.ee-define-answer .primary-btn').show();
         }
-    });
+    }
 
   $('.ai-input input:first').blur(function() {
         if($(this).val() != '') {
@@ -368,17 +411,17 @@ jQuery(function ($) {
                 
         // update the new question preview
         $('.pv-question').eq(questionCount - 1).text(questionText).show();
-        $('.ee-preview').eq(questionCount - 1).show().data('questionId', questionId);
+        $('.ee-preview').eq(questionCount - 1).show().data('questionId', questionId).data('questionType', questionType);
         
         //update the preview with answer values
         var $answerDiv = $('.pv-answer').eq(questionCount - 1);
         if (questionType === 2) {
             // ControlType.SmallTextInputField
-            $answerDiv.html("<input type=\"text\" class=\"NormalTextBox\" />");
+            $answerDiv.html("<input type='text' class='NormalTextBox' />");
         }
         else if(questionType === 1) {
             // ControlType.LargeTextInputField
-            $answerDiv.html("<textarea class=\"NormalTextBox\" />");
+            $answerDiv.html("<textarea class='NormalTextBox' />");
         }
         else if(questionType === 5) {
             // ControlType.DropDownChoices
@@ -390,13 +433,13 @@ jQuery(function ($) {
         else if(questionType === 3) {
             // ControlType.VerticalOptionsButtons
             $.each(answers, function(i, answer) {
-                $answerDiv.append("<input type=\"radio\" name=\"" + questionId + "\">" + answer.Text + "</input>").data('answerId', answer.AnswerId);
+                $answerDiv.append("<input type='radio' name='" + questionId + "' /> <span>" + answer.Text + "</span>").data('answerId', answer.AnswerId);
             });
         }
         else if(questionType === 6) {
             // ControlType.Checkbox
             $.each(answers, function(i, answer) {
-                $answerDiv.append("<span class=\"check-prev\"><input type=\"checkbox\">" + answer.Text + "</span>").data('answerId', answer.AnswerId);
+                $answerDiv.append("<input type='checkbox' /> <span>" + answer.Text + "</span>").data('answerId', answer.AnswerId);
             });    
         }
         else { //default

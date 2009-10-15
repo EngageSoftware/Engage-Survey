@@ -19,7 +19,7 @@
             <li class="secondary-btn" style="display:none;"><a href="#" title="Cancel" id="EvalCancel"><%=Localization.GetString("CancelHyperLink.Text", LocalResourceFile)%></a></li>
         </ul>
     </fieldset>
-    <fieldset class="ee-create-questions">
+    <fieldset class="ee-create-questions" id="CreateQuestions">
         <legend class="Head"><%=Localization.GetString("CreateNewQuestionsLabel.Text", LocalResourceFile)%></legend>
         <div class="ee-question">
             <span class="ee-label"><%=Localization.GetString("TypeQuestionLabel.Text", LocalResourceFile)%></span>

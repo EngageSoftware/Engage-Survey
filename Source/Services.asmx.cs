@@ -38,6 +38,8 @@ namespace Engage.Dnn.Survey
             var dataContext = SurveyModelDataContext.Instance;
 
             var question = dataContext.Questions.Where(q => q.QuestionId == questionId).Single();
+
+            dataContext.Answers.DeleteAllOnSubmit(question.Answers);
             dataContext.Questions.DeleteOnSubmit(question);
 
             dataContext.SubmitChanges();
@@ -156,6 +158,15 @@ namespace Engage.Dnn.Survey
             questionToUpdate.Text = question.Text;
             questionToUpdate.RelativeOrder = question.RelativeOrder;
             questionToUpdate.ControlType = question.ControlType;
+
+            foreach (var answer in questionToUpdate.Answers)
+            {
+                var lambdaAnswer = answer;
+                if (!question.Answers.Any(a => a.AnswerId == lambdaAnswer.AnswerId))
+                {
+                    dataContext.Answers.DeleteOnSubmit(answer);
+                }
+            }
 
             int answerOrder = 0;
             foreach (var answer in question.Answers)

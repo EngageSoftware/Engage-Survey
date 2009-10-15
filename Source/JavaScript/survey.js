@@ -133,7 +133,9 @@ jQuery(function ($) {
     $("#ee-previews, .answer-inputs").sortable({
         placeholder: 'ui-state-highlight'
     });
-    $("#ee-previews, .answer-inputs").disableSelection();
+    ////$("#ee-previews, .answer-inputs").disableSelection();
+    
+    // after reordering questions
     $('#ee-previews').bind('sortupdate', function (event, ui) {
         var questionOrderMap = {};
         $('#ee-previews li.ee-preview:visible').each(function (i, elem) {
@@ -147,6 +149,8 @@ jQuery(function ($) {
         
         callWebMethod('ReorderQuestions', parameters);
     });
+    
+    // after reordering answers
     $('.answer-inputs').bind('sortupdate', function (event, ui) {
         var $answerNumberElements = $(".answer-inputs li").find('.answer-num');
         $answerNumberElements.each(function (i, elem) {
@@ -161,6 +165,7 @@ jQuery(function ($) {
         $(this).removeClass("focus");
     });
 
+    // save new survey
     $('#EvalNew').click(function (event) {
         event.preventDefault();
         
@@ -171,6 +176,7 @@ jQuery(function ($) {
         }
     });
     
+    // update existing survey
     $('#EvalUpdate').click(function (event) {
         event.preventDefault();
         
@@ -200,6 +206,7 @@ jQuery(function ($) {
                 }
             },
             error: function(/*XMLHttpRequest, textStatus, errorThrown*/) { 
+                // TODO: Localize this error message
                 alert('There was an error submitting the survey, please try again.'); 
             }
         });
@@ -228,6 +235,7 @@ jQuery(function ($) {
         };
     }
     
+    // edit survey
     $('#EvalEdit').click(function (event) {
         event.preventDefault();
         $('#EvalTitleInput').convertTo('input').removeClass('ee-input-pre');
@@ -245,7 +253,7 @@ jQuery(function ($) {
     });
         
     function makeSurveyReadOnly () {
-        if ($('#EvalDescTextArea').val() != '') {
+        if ($('#EvalDescTextArea').val()) {
             $('#EvalDescTextArea').convertTo('span').addClass('ee-input-pre');
             $('.ee-description').show();
         }
@@ -310,25 +318,30 @@ jQuery(function ($) {
         });
     });
 
+    // edit question
     $('a.ee-edit').click(function(event) {
         event.preventDefault();
-        //get "parent" question preview list item
+        // get "parent" question preview list item
         var $questionLi = $(this).parents('li.ee-preview');
         var questionType = $questionLi.data('questionType');
         var questionId = $questionLi.data('questionId');
         
-        //set the "edit" question text based on the "preview" question text
+        // set the "edit" question text based on the "preview" question text
         $('#QuestionText').val($questionLi.children('.pv-question').text());
         
-        //todo: set the question id on the "edit" section based on the question id in the "preview" section
-        $('#CreateQuestions').data('questionId', questionId);
+        // set the question id on the "edit" section based on the question id in the "preview" section
+        $('#CreateQuestions').data('questionId', questionId).data('relativeOrder', $('#ee-previews li.ee-preview').index($questionLi) + 1);
         
-        //todo: set the "edit" answer type based on the "preview" answer type
+        // set the "edit" answer type based on the "preview" answer type
         $('#DefineAnswerType').val(questionType);
         
+        ShowAnswersInput(questionType);
+        
         if (questionType != 2 && questionType != 1 && questionType != 0) { // Not SmallTextInputField or LargeTextInputField or ControlType.None
-            //for multi-select types, loop over and grab the values.
-            
+
+            // enable "Save" button            
+            $('#SaveQuestion').parent().removeClass('disabled');
+
             //clone an existing element
             var $baseAnswerElement = $(".answer-inputs li:last").clone(true);
             
@@ -341,19 +354,19 @@ jQuery(function ($) {
                 var $answerElement = $baseAnswerElement.clone(true);
             
                 // increment answer number
-                var $answerNumberElement = $answerElement.find('.answer-num');
-                $answerNumberElement.text(i + 1);
+                var $answerNumberElement = $answerElement.find('.answer-num').text(i + 1);
 
                 // update cloned textbox's value
-                $answerElement.find('input').val($(this).text() || $(this).next('span').text());
+                $answerElement.find('input').val($(this).text() || $(this).parent().text());
                 
                 //append answer LI to UL and set the answer id
                 $answerElement.appendTo('.answer-inputs').data('answerId', $(this).data('answerId'));
             });
         }
-        ShowAnswersInput(questionType);
+        
     });
     
+    // change answer type
     $('#DefineAnswerType').change(function (event) {
         ShowAnswersInput(parseInt($(this).val(), 10));
     });
@@ -396,12 +409,13 @@ jQuery(function ($) {
         }
     });
     
+    // save questions
     $('#SaveQuestion').click(function(event) {
         event.preventDefault();
 
-        if($('#SaveQuestion').parent().hasClass('disabled') == false &&
+        if($('#SaveQuestion').parent().hasClass('disabled') === false &&
            $('#Form').validate().form() &&
-           $('#Form').validate().element('#QuestionText')){
+           $('#Form').validate().element('#QuestionText')) {
             
             callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
                 $('#PreviewArea').show();
@@ -414,22 +428,27 @@ jQuery(function ($) {
     });
     
     function addQuestionPreview(questionId, questionText, questionType, answers) {
-        // TODO: Check if the question already exists (if this is an edit) and update that instead of creating a new preview, maybe send the element in?
+        var $questionElement, questionOrder = $('#CreateQuestions').data('relativeOrder');
+        if (questionOrder) {
+            $questionElement = $('.ee-preview').eq(questionOrder - 1);
+        }
+        else {
+            $questionElement = $('.ee-preview:last');
+            
+            // if this is the first question, just use the hidden element
+            // otherwise, clone that element and replace its values
+            if ($questionElement.data('questionId')) {
+                $questionElement = $questionElement.clone(true);
+                $('#ee-previews').append($questionElement);
+            }
+        }
         
-        // copy the last list item in our UL, which is always a blank and hidden list item.
-        var questionCount = $('.ee-preview').length;
-        var $blankListItem = $('.ee-preview:last').clone(true);
-        
-        // append and hide the new blank list item for future use
-        $('#ee-previews').append($blankListItem);
-        $('.ee-preview').eq(questionCount).hide();
-                
         // update the new question preview
-        $('.pv-question').eq(questionCount - 1).text(questionText).show();
-        $('.ee-preview').eq(questionCount - 1).show().data('questionId', questionId).data('questionType', questionType);
+        $questionElement.find('.pv-question').text(questionText).show();
+        $questionElement.show().data('questionId', questionId).data('questionType', questionType);
         
-        //update the preview with answer values
-        var $answerDiv = $('.pv-answer').eq(questionCount - 1);
+        // update the preview with answer values
+        var $answerDiv = $questionElement.find('.pv-answer').empty();
         switch (questionType) {
         case 2:
             // ControlType.SmallTextInputField
@@ -441,21 +460,22 @@ jQuery(function ($) {
             break;
         case 5:
             // ControlType.DropDownChoices
-            $answerDiv.append("<select class=\"NormalTextBox dropdown-prev\"></select>");
+            var $dropDown = $("<select class='NormalTextBox dropdown-prev'></select>")
+            $answerDiv.append($dropDown);
             $.each(answers, function(i, answer) {
-                $("<option>" + answer.Text + "</option>").appendTo('.dropdown-prev', $answerDiv).data('answerId', answer.AnswerId);
+                $("<option>" + answer.Text + "</option>").appendTo($dropDown).data('answerId', answer.AnswerId);
             });
             break;
         case 3:
             // ControlType.VerticalOptionsButtons
             $.each(answers, function(i, answer) {
-                $answerDiv.append("<input type='radio' name='" + questionId + "' /> <span>" + answer.Text + "</span>").data('answerId', answer.AnswerId);
+                $answerDiv.append("<label><input type='radio' name='" + questionId + "' />" + answer.Text + "</label>").data('answerId', answer.AnswerId);
             });
             break;
         case 6:
             // ControlType.Checkbox
             $.each(answers, function(i, answer) {
-                $answerDiv.append("<input type='checkbox' /> <span>" + answer.Text + "</span>").data('answerId', answer.AnswerId);
+                $answerDiv.append("<label><input type='checkbox' />" + answer.Text + "</label>").data('answerId', answer.AnswerId);
             });
             break;
         default:
@@ -470,20 +490,26 @@ jQuery(function ($) {
         $('#ShortTextAnswer').hide();
         $('#LongTextAnswer').hide();
         $('#MultipleAnswer').hide();
-        $('.ai-input input').val('');
         $('#AddNewQuestion').parent().hide();
+        
+        // only should have two answers by default
+        $('#MultipleAnswer li:gt(1)').remove();
+        $('.ai-input input').val('');
+        
         $('#SaveQuestion').parent().addClass('disabled');
+        
+        // clear out stored data values
+        $('#CreateQuestions').removeData('questionId').removeData('relativeOrder')
+            .find('#MultipleAnswer li').removeData('answerId');
     }
     
     function getQuestionParameters () {
         return {
             surveyId: $('.ee-create-new').data('surveyId') || -1,
             question: {
-                QuestionId: $('.ee-create-questions').data('questionId') || -1,
+                QuestionId: $('#CreateQuestions').data('questionId') || -1,
                 Text: $('#QuestionText').val(),
-                
-                // TODO: get relative order of existing question (when editing question instead of adding new)
-                RelativeOrder: $('.ee-preview').length,
+                RelativeOrder: $('#CreateQuestions').data('relativeOrder') || $('.ee-preview').length,
                 ControlType: $('#DefineAnswerType').val(),
                 RevisingUser: CurrentContextInfo.UserId,
                 Answers: $.map($('#MultipleAnswer:visible li'), function (elem, i) {

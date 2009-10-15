@@ -366,28 +366,29 @@ jQuery(function ($) {
         $('.ee-define-answer .primary-btn').hide();
         $('#SaveQuestion').parent().addClass('disabled');
             
-        if (questionType === 2) {
+        switch (questionType) {
+        case 2:
             // ControlType.SmallTextInputField
             $('#ShortTextAnswer').show();
             $('#SaveQuestion').parent().removeClass('disabled');
-        }
-        else if(questionType === 1) {
+            break;
+        case 1:
             // ControlType.LargeTextInputField
             $('#LongTextAnswer').show();
             $('#SaveQuestion').parent().removeClass('disabled');
-        }
-        else if(questionType === 0) {
+            break;
+        case 0:
             // ControlType.None
-        }
-        else { 
-            //multiple answer
+            break;
+        default: 
+            // multiple answer
             $('#MultipleAnswer').show();
             $('.ee-define-answer .primary-btn').show();
         }
     }
 
   $('.ai-input input:first').blur(function() {
-        if($(this).val() != '') {
+        if($(this).val()) {
             $('#SaveQuestion').parent().removeClass('disabled');
         }
         else {
@@ -427,34 +428,35 @@ jQuery(function ($) {
         
         //update the preview with answer values
         var $answerDiv = $('.pv-answer').eq(questionCount - 1);
-        if (questionType === 2) {
+        switch (questionType) {
+        case 2:
             // ControlType.SmallTextInputField
             $answerDiv.html("<input type='text' class='NormalTextBox' />");
-        }
-        else if(questionType === 1) {
+            break;
+        case 1:
             // ControlType.LargeTextInputField
             $answerDiv.html("<textarea class='NormalTextBox' />");
-        }
-        else if(questionType === 5) {
+            break;
+        case 5:
             // ControlType.DropDownChoices
             $answerDiv.append("<select class=\"NormalTextBox dropdown-prev\"></select>");
             $.each(answers, function(i, answer) {
                 $("<option>" + answer.Text + "</option>").appendTo('.dropdown-prev', $answerDiv).data('answerId', answer.AnswerId);
             });
-        }
-        else if(questionType === 3) {
+            break;
+        case 3:
             // ControlType.VerticalOptionsButtons
             $.each(answers, function(i, answer) {
                 $answerDiv.append("<input type='radio' name='" + questionId + "' /> <span>" + answer.Text + "</span>").data('answerId', answer.AnswerId);
             });
-        }
-        else if(questionType === 6) {
+            break;
+        case 6:
             // ControlType.Checkbox
             $.each(answers, function(i, answer) {
                 $answerDiv.append("<input type='checkbox' /> <span>" + answer.Text + "</span>").data('answerId', answer.AnswerId);
-            });    
-        }
-        else { //default
+            });
+            break;
+        default:
             alert("todo: implement validation, shouldn't be able to add a question if you have 'select answer type' selected in the drop down.");
         }
     }

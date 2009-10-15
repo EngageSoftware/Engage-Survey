@@ -285,7 +285,7 @@ jQuery(function ($) {
         
         var $answers = $(".answer-inputs li")
         if ($answers.length > 1) {
-            var $parentAnswerElement = $(this).parents('li');
+            var $parentAnswerElement = $(this).parents('.answer-inputs li');
             $parentAnswerElement.remove();
             
             // have to run query again to get rid of the element we just removed

@@ -6,7 +6,7 @@
         <legend class="Head"><%=Localization.GetString("CreateNewLabel.Text", LocalResourceFile)%></legend>
         <div class="ee-title">
             <span class="ee-label eval-title"><%=Localization.GetString("EvalTitleLabel.Text", LocalResourceFile)%></span>
-            <span class="ee-input"><input class="NormalTextBox required" id="EvalTitleInput" minlength="1" maxlength="256" /></span>
+            <span class="ee-input"><input class="NormalTextBox ee-required" id="EvalTitleInput" minlength="1" maxlength="256" /></span>
         </div>
         <div class="ee-description">
             <span class="ee-label eval-description"><%=Localization.GetString("EvalDescriptionLabel.Text", LocalResourceFile)%></span>
@@ -23,7 +23,7 @@
         <legend class="Head"><%=Localization.GetString("CreateNewQuestionsLabel.Text", LocalResourceFile)%></legend>
         <div class="ee-question">
             <span class="ee-label"><%=Localization.GetString("TypeQuestionLabel.Text", LocalResourceFile)%></span>
-            <span class="ee-input"><textarea id="QuestionText" class="NormalTextBox required" minlength="1" maxlength="256"></textarea></span>
+            <span class="ee-input"><textarea id="QuestionText" class="NormalTextBox ee-required" minlength="1" maxlength="256"></textarea></span>
         </div>
         <div class="ee-define-answer">
             <span class="ee-label"><%=Localization.GetString("DefineAnswerLabel.Text", LocalResourceFile)%></span>
@@ -38,25 +38,35 @@
                         <option value='<%=(int)ControlType.Checkbox %>'><%=Localization.GetString("MultipleAnswerCheckboxesOption.Text", LocalResourceFile)%></option>
                     </select>
                 </span>
-                <div id="ShortTextAnswer" style="display:none;">todo: show the short text preview content here</div>
-                <div id="LongTextAnswer" style="display:none;">todo: show the long text preview content here</div>
-                <ul id="MultipleAnswer" class="answer-inputs" style="display:none;">
-                    <li>
-                        <span class="ai-label"><%=Localization.GetString("AnswerTitle.Text", LocalResourceFile)%> <span class="answer-num">1</span></span>
-                        <div class="ai-selected">
-                            <span class="ai-input"><input type="text" /></span>
-                            <a href="#" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
-                        </div>
-                    </li>
-                    <li>                        
-                        <span class="ai-label"><%=Localization.GetString("AnswerTitle.Text", LocalResourceFile)%> <span class="answer-num">2</span></span>
-                        <div class="ai-selected">
-                            <span class="ai-input"><input type="text"/></span>
-                            <a href="#" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
-                        </div>
-                    </li>
-                </ul>
-                <span class="primary-btn" style="display:none;"><a href="#" title="Add New" class="add-new" id="AddNewQuestion"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a></span>
+                    <div id="ShortTextAnswer" style="display:none;" class="ee-answer-inputs">
+                        <p>Here's a little preview of what a short answer input looks like:</p>
+                        <img src="/DesktopModules/EngageSurvey/images/short-answer-input.gif" title="Short answer input" />
+                    </div>
+                    <div id="LongTextAnswer" style="display:none;" class="ee-answer-inputs">
+                        <p>Here's a little preview of what a long answer input looks like:</p>
+                        <img src="/DesktopModules/EngageSurvey/images/long-answer-input.gif" title="Long answer input" />
+                    </div>
+                <div class="ee-answer-inputs" id="MultipleAnswer" style="display:none;">
+                    <ul class="answer-inputs">
+                        <li>
+                            <span class="ai-label"><%=Localization.GetString("AnswerTitle.Text", LocalResourceFile)%> <span class="answer-num">1</span></span>
+                            <div class="ai-selected">
+                                <span class="ai-input"><input class="NormalTextBox" type="text" /></span>
+                                <a href="#" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
+                            </div>
+                        </li>
+                        <li>                        
+                            <span class="ai-label"><%=Localization.GetString("AnswerTitle.Text", LocalResourceFile)%> <span class="answer-num">2</span></span>
+                            <div class="ai-selected">
+                                <span class="ai-input"><input class="NormalTextBox" type="text"/></span>
+                                <a href="#" title="Remove this answer, are you sure?" class="ee-delete"><%=Localization.GetString("RemoveAnswerHyperLink.Text", LocalResourceFile)%></a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="ee-action-btns">
+                        <li class="primary-btn" style="display:none;"><a href="#" title="Add New" class="add-new" id="AddNewQuestion"><%=Localization.GetString("AddNewAnswerHyperLink.Text", LocalResourceFile)%></a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <ul class="ee-action-btns">

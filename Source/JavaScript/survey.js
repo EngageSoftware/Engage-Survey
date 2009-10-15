@@ -147,6 +147,12 @@ jQuery(function ($) {
         
         callWebMethod('ReorderQuestions', parameters);
     });
+    $('.answer-inputs').bind('sortupdate', function (event, ui) {
+        var $answerNumberElements = $(".answer-inputs li").find('.answer-num');
+        $answerNumberElements.each(function (i, elem) {
+            $(elem).text(i + 1);
+        });
+    });
     
     // Add selection style back to the inputs, since our CSS is removing or hiding the native style
     $("#engage-evaluation :input").focus(function () {

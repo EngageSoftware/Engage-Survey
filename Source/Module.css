@@ -22,10 +22,10 @@ survey-title{font-weight: bold}
         #engage-evaluation .ee-input{display:block;float:left;background:#ebf5fc;padding:3px 5px;position:relative;}
             #engage-evaluation input.NormalTextBox, #engage-evaluation textarea.NormalTextBox, #engage-evaluation select.NormalTextBox{border:1px #cbcbcb solid;width:300px;padding:8px;}
 			label.error{display:block;position:absolute;top:10%;left:310px;padding:5px 20px;background: url(images/validator-bg.gif) left no-repeat;color:#ebc6c6;min-width:140px;font-weight:bold;}
-        #engage-evaluation a.ee-edit, #engage-evaluation a.ee-save, #engage-evaluation a.ee-delete{color:#007b00;padding:4px;text-decoration:underline;font-weight:bold;}
+        #engage-evaluation a.ee-edit, #engage-evaluation a.ee-copy, #engage-evaluation a.ee-delete{color:#007b00;padding:4px;text-decoration:underline;font-weight:bold;}
         #engage-evaluation a.ee-edit{color:#0063dd;padding:0;}
         #engage-evaluation a.ee-delete{color:#dd001a;padding:0;}
-            #engage-evaluation a.ee-edit:hover, #engage-evaluation a.ee-save:hover, #engage-evaluation a.ee-delete:hover{text-decoration:none;}
+            #engage-evaluation a.ee-edit:hover, #engage-evaluation a.ee-copy:hover, #engage-evaluation a.ee-delete:hover{text-decoration:none;}
 
             .ee-title, .ee-question{border-top:1px #ccc solid;padding-top:15px;}
             .ee-description textarea.NormalTextBox{height:100px;}

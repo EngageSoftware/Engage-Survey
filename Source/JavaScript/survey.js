@@ -355,7 +355,7 @@ jQuery(function ($) {
     });
     
     // copy question
-    $('.ee-pr-action-links .ee-save').click(function (event) {
+    $('.ee-pr-action-links .ee-copy').click(function (event) {
         event.preventDefault();
         
         

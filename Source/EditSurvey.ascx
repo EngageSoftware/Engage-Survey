@@ -80,7 +80,7 @@
             <li class="ee-preview">
                 <ul class="ee-pr-action-links">
                     <li><a href="#" title='<%=Localize("EditQuestionHyperLink.ToolTip")%>' class="ee-edit"><%=Localize("EditQuestionHyperLink.Text")%></a></li>
-                    <li><a href="#" title='<%=Localize("CopyQuestionHyperLink.ToolTip")%>' class="ee-save"><%=Localize("CopyQuestionHyperLink.Text")%></a></li>
+                    <li><a href="#" title='<%=Localize("CopyQuestionHyperLink.ToolTip")%>' class="ee-copy"><%=Localize("CopyQuestionHyperLink.Text")%></a></li>
                     <li><a href="#" title='<%=Localize("DeleteQuestionHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("DeleteQuestionHyperLink.Text")%></a></li>
                 </ul>
                 <span class="ee-label pv-question-label"><%=Localize("QuestionTitle.Text")%></span>

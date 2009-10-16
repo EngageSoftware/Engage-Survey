@@ -293,7 +293,7 @@ jQuery(function ($) {
         
         var $answers = $(".answer-inputs li")
         if ($answers.length > 1) {
-            var $parentAnswerElement = $(this).parents('.answer-inputs li');
+            var $parentAnswerElement = $(this).closest('li');
             $parentAnswerElement.remove();
             
             // have to run query again to get rid of the element we just removed
@@ -310,7 +310,7 @@ jQuery(function ($) {
     $('.ee-pr-action-links .ee-edit').click(function(event) {
         event.preventDefault();
         // get "parent" question preview list item
-        var $questionLi = $(this).parents('li.ee-preview');
+        var $questionLi = $(this).closest('li.ee-preview');
         var questionType = $questionLi.data('questionType');
         var questionId = $questionLi.data('questionId');
         
@@ -365,7 +365,7 @@ jQuery(function ($) {
     $('.ee-pr-action-links .ee-delete').click(function (event) {
         event.preventDefault();
         
-        var $parentQuestionElement = $(this).parents('li.ee-preview');
+        var $parentQuestionElement = $(this).closest('li.ee-preview');
         var questionId = $parentQuestionElement.data('questionId');
         
         callWebMethod('DeleteQuestion', { questionId: questionId }, function() {

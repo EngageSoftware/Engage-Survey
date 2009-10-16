@@ -120,20 +120,35 @@
   <data name="AddNewAnswerHyperLink.Text" xml:space="preserve">
     <value>Add New Answer</value>
   </data>
+  <data name="AddNewAnswerHyperLink.ToolTip" xml:space="preserve">
+    <value>Add New</value>
+  </data>
   <data name="AddSectionTitleLabel.Text" xml:space="preserve">
     <value>Add Section Title</value>
   </data>
   <data name="AnswerTitle.Text" xml:space="preserve">
     <value>Answer</value>
   </data>
+  <data name="BackHyperLink.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="CancelHyperLink.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CancelHyperLink.ToolTip" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="CopyQuestionHyperLink.Text" xml:space="preserve">
     <value>Copy</value>
   </data>
+  <data name="CopyQuestionHyperLink.ToolTip" xml:space="preserve">
+    <value>Copy this question and create new</value>
+  </data>
   <data name="CreateNewEvalHyperLink.Text" xml:space="preserve">
     <value>Create</value>
+  </data>
+  <data name="CreateNewEvalHyperLink.ToolTip" xml:space="preserve">
+    <value>Create New</value>
   </data>
   <data name="CreateNewLabel.Text" xml:space="preserve">
     <value>Create New Survey</value>
@@ -144,14 +159,23 @@
   <data name="DefineAnswerLabel.Text" xml:space="preserve">
     <value>Answer</value>
   </data>
-  <data name="DeleteAnswerHyperLink.Text" xml:space="preserve">
+  <data name="DeleteQuestionHyperLink.Text" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="DeleteQuestionHyperLink.ToolTip" xml:space="preserve">
+    <value>Delete this question, are you sure?</value>
   </data>
   <data name="EditEvalHyperLink.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="EditEvalHyperLink.ToolTip" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="EditQuestionHyperLink.Text" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="EditQuestionHyperLink.ToolTip" xml:space="preserve">
+    <value>Edit this question</value>
   </data>
   <data name="EvalDescriptionLabel.Text" xml:space="preserve">
     <value>Description</value>
@@ -161,6 +185,15 @@
   </data>
   <data name="LongAnswerOption.Text" xml:space="preserve">
     <value>Long Answer (Multi-line Input Field)</value>
+  </data>
+  <data name="LongAnswerPreview.Text" xml:space="preserve">
+    <value>Here's a little preview of what a long answer input looks like:</value>
+  </data>
+  <data name="LongAnswerPreviewImage.AltText" xml:space="preserve">
+    <value>Long answer input</value>
+  </data>
+  <data name="LongAnswerPreviewImage.ToolTip" xml:space="preserve">
+    <value>Long answer input</value>
   </data>
   <data name="MultipleAnswerCheckboxesOption.Text" xml:space="preserve">
     <value>Multiple Answer (Checkboxes)</value>
@@ -174,11 +207,17 @@
   <data name="RemoveAnswerHyperLink.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="RemoveAnswerHyperLink.ToolTip" xml:space="preserve">
+    <value>Remove this answer, are you sure?</value>
+  </data>
   <data name="SaveAllAnswersHyperLink.Text" xml:space="preserve">
     <value>Save All Answers</value>
   </data>
   <data name="SaveAndCreateNewQuestionHyperLink.Text" xml:space="preserve">
     <value>Save and Add New Question</value>
+  </data>
+  <data name="SaveAndCreateNewQuestionHyperLink.ToolTip" xml:space="preserve">
+    <value>Save and Create New</value>
   </data>
   <data name="SaveAnswerHyperLink.Text" xml:space="preserve">
     <value>Save</value>
@@ -188,6 +227,15 @@
   </data>
   <data name="ShortAnswerOption.Text" xml:space="preserve">
     <value>Short Answer (Short Input Field)</value>
+  </data>
+  <data name="ShortAnswerPreview.Text" xml:space="preserve">
+    <value>Here's a little preview of what a short answer input looks like:</value>
+  </data>
+  <data name="ShortAnswerPreviewImage.AltText" xml:space="preserve">
+    <value>Short answer input</value>
+  </data>
+  <data name="ShortAnswerPreviewImage.ToolTip" xml:space="preserve">
+    <value>Short answer input</value>
   </data>
   <data name="SingleAnswerRadioButtonOption.Text" xml:space="preserve">
     <value>Single Answer (Radio Button)</value>
@@ -202,6 +250,9 @@
     <value>Type Section Title</value>
   </data>
   <data name="UpdateEvalHyperLink.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="UpdateEvalHyperLink.ToolTip" xml:space="preserve">
     <value>Update</value>
   </data>
 </root>

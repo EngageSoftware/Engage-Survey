@@ -136,7 +136,7 @@ namespace Engage.Dnn.Survey
         /// The inserted question, with IDs for the question and answers
         /// </returns>
         [WebMethod]
-        public Question UpdateQuestion(int surveyId, Question question)
+        public object UpdateQuestion(int surveyId, Question question)
         {
             var now = DateTime.Now;
             var dataContext = SurveyModelDataContext.Instance;
@@ -190,7 +190,14 @@ namespace Engage.Dnn.Survey
 
             dataContext.SubmitChanges();
 
-            return questionToUpdate;
+            return new
+                       {
+                               questionToUpdate.QuestionId, 
+                               questionToUpdate.ControlType, 
+                               questionToUpdate.RelativeOrder, 
+                               questionToUpdate.Text,
+                               Answers = questionToUpdate.Answers.OrderBy(a => a.RelativeOrder).Select(a => new { a.AnswerId, a.RelativeOrder, a.Text })
+                       };
         }
     }
 }

@@ -206,8 +206,8 @@ jQuery(function ($) {
                 }
             },
             error: function(/*XMLHttpRequest, textStatus, errorThrown*/) { 
-                // TODO: Localize this error message
-                alert('There was an error submitting the survey, please try again.'); 
+                // TODO provide a more friendly error message
+                alert(CurrentContextInfo.ErrorMessage); 
             }
         });
     }

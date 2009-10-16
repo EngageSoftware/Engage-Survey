@@ -39,11 +39,11 @@
                 </span>
                 <div id="ShortTextAnswer" style="display:none;" class="ee-answer-inputs">
                     <p><%=Localize("ShortAnswerPreview.Text") %></p>
-                    <img src="/DesktopModules/EngageSurvey/images/short-answer-input.gif" alt='<%=Localize("ShortAnswerPreviewImage.AltText") %>' title='<%=Localize("ShortAnswerPreviewImage.ToolTip") %>' />
+                    <img src='<%=ResolveUrl("images/short-answer-input.gif")%>' alt='<%=Localize("ShortAnswerPreviewImage.AltText") %>' title='<%=Localize("ShortAnswerPreviewImage.ToolTip") %>' />
                 </div>
                 <div id="LongTextAnswer" style="display:none;" class="ee-answer-inputs">
                     <p><%=Localize("LongAnswerPreview.Text") %></p>
-                    <img src="/DesktopModules/EngageSurvey/images/long-answer-input.gif" alt='<%=Localize("LongAnswerPreviewImage.AltText") %>' title='<%=Localize("LongAnswerPreviewImage.ToolTip") %>' />
+                    <img src='<%=ResolveUrl("images/long-answer-input.gif")%>' alt='<%=Localize("LongAnswerPreviewImage.AltText") %>' title='<%=Localize("LongAnswerPreviewImage.ToolTip") %>' />
                 </div>
                 <div class="ee-answer-inputs" id="MultipleAnswer" style="display:none;">
                     <ul class="answer-inputs">
@@ -99,6 +99,7 @@
 var CurrentContextInfo = {
     WebMethodUrl: '<%= ResolveUrl("~/DesktopModules/EngageSurvey/Services.asmx") %>/',
     UserId: <%=UserId %>,
-    Survey: <%=SerializedSurvey %>
+    Survey: <%=SerializedSurvey %>,
+    ErrorMessage: '<%=Localize("AjaxError.Text") %>'
 };
 </script>

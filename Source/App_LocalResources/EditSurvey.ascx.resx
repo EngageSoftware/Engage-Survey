@@ -126,6 +126,9 @@
   <data name="AddSectionTitleLabel.Text" xml:space="preserve">
     <value>Add Section Title</value>
   </data>
+  <data name="AjaxError.Text" xml:space="preserve">
+    <value>There was an error saving this update to the survey.  Please try again.</value>
+  </data>
   <data name="AnswerTitle.Text" xml:space="preserve">
     <value>Answer</value>
   </data>

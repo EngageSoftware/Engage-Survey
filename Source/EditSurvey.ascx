@@ -70,7 +70,7 @@
         </div>
         <ul class="ee-action-btns">
             <li class="primary-btn disabled"><a href="#" title='<%=Localize("SaveAndCreateNewQuestionHyperLink.ToolTip")%>' class="save-create-new" id="SaveQuestion"><%=Localize("SaveAndCreateNewQuestionHyperLink.Text")%></a></li>
-            <li class="secondary-btn"><a href="#" title="Back" class="back"><%=Localize("BackHyperLink.Text")%></a></li>
+            <li class="secondary-btn"><a href="#" title='<%=Localize("BackHyperLink.ToolTip")%>' class="back"><%=Localize("BackHyperLink.Text")%></a></li>
         </ul>
     </fieldset>
     <fieldset id="PreviewArea" class="ee-preview-area">

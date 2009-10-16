@@ -306,19 +306,54 @@ jQuery(function ($) {
         }
     });
     
+    // cancel question create/edit
+    $('.ee-action-btns .back').click(function (event) {
+        event.preventDefault();
+        
+        resetCreateQuestionSection();
+    });
+    
     // edit question
     $('.ee-pr-action-links .ee-edit').click(function(event) {
         event.preventDefault();
-        // get "parent" question preview list item
+
         var $questionLi = $(this).closest('li.ee-preview');
+        populateCreateQuestionSection($questionLi, true);
+    });
+    
+    // copy question
+    $('.ee-pr-action-links .ee-copy').click(function (event) {
+        event.preventDefault();
+        
+        var $questionLi = $(this).closest('li.ee-preview');
+        populateCreateQuestionSection($questionLi, false);
+    });
+    
+    // delete question
+    $('.ee-pr-action-links .ee-delete').click(function (event) {
+        event.preventDefault();
+        
+        var $parentQuestionElement = $(this).closest('li.ee-preview');
+        var questionId = $parentQuestionElement.data('questionId');
+        
+        callWebMethod('DeleteQuestion', { questionId: questionId }, function() {
+            $parentQuestionElement.remove();
+        });
+    });
+    
+    function populateCreateQuestionSection ($questionLi, setQuestionData) {
+        resetCreateQuestionSection();
+                
         var questionType = $questionLi.data('questionType');
         var questionId = $questionLi.data('questionId');
         
         // set the "edit" question text based on the "preview" question text
         $('#QuestionText').val($questionLi.children('.pv-question').text());
         
-        // set the question id on the "edit" section based on the question id in the "preview" section
-        $('#CreateQuestions').data('questionId', questionId).data('relativeOrder', $('#ee-previews li.ee-preview').index($questionLi) + 1);
+        if (setQuestionData) {
+            // set the question id on the "edit" section based on the question id in the "preview" section
+            $('#CreateQuestions').data('questionId', questionId).data('relativeOrder', $('#ee-previews li.ee-preview').index($questionLi) + 1);
+        }
         
         // set the "edit" answer type based on the "preview" answer type
         $('#DefineAnswerType').val(questionType);
@@ -337,7 +372,7 @@ jQuery(function ($) {
             $('.answer-inputs li').remove();
             
             //get each answer
-            $questionLi.find('.pv-answer').find('input, option').each(function(i){
+            $questionLi.find('.pv-answer').find('input, option').each(function (i) {
             
                 var $answerElement = $baseAnswerElement.clone(true);
             
@@ -348,30 +383,14 @@ jQuery(function ($) {
                 $answerElement.find('input').val($(this).text() || $(this).parent().text());
                 
                 //append answer LI to UL and set the answer id
-                $answerElement.appendTo('.answer-inputs').data('answerId', $(this).data('answerId'));
+                $answerElement.appendTo('.answer-inputs');
+                
+                if (setQuestionData) {
+                    $answerElement.data('answerId', $(this).data('answerId'));
+                }
             });
         }
-        
-    });
-    
-    // copy question
-    $('.ee-pr-action-links .ee-copy').click(function (event) {
-        event.preventDefault();
-        
-        
-    });
-    
-    // delete question
-    $('.ee-pr-action-links .ee-delete').click(function (event) {
-        event.preventDefault();
-        
-        var $parentQuestionElement = $(this).closest('li.ee-preview');
-        var questionId = $parentQuestionElement.data('questionId');
-        
-        callWebMethod('DeleteQuestion', { questionId: questionId }, function() {
-            $parentQuestionElement.remove();
-        });
-    });
+    }
 
     // change answer type
     $('#DefineAnswerType').change(function (event) {
@@ -500,6 +519,7 @@ jQuery(function ($) {
         $('#AddNewQuestion').parent().hide();
         
         // only should have two answers by default
+        // TODO: Make sure there aren't less than two answers
         $('#MultipleAnswer li:gt(1)').remove();
         $('.ai-input input').val('');
         
@@ -516,7 +536,7 @@ jQuery(function ($) {
             question: {
                 QuestionId: $('#CreateQuestions').data('questionId') || -1,
                 Text: $('#QuestionText').val(),
-                RelativeOrder: $('#CreateQuestions').data('relativeOrder') || $('.ee-preview').length,
+                RelativeOrder: $('#CreateQuestions').data('relativeOrder') || $('.ee-preview').length + 1,
                 ControlType: $('#DefineAnswerType').val(),
                 RevisingUser: CurrentContextInfo.UserId,
                 Answers: $.map($('#MultipleAnswer:visible li'), function (elem, i) {

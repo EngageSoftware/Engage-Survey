@@ -135,6 +135,9 @@
   <data name="BackHyperLink.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="BackHyperLink.ToolTip" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="CancelHyperLink.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>

@@ -13,7 +13,6 @@ namespace Engage.Dnn.Survey
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Web.Script.Services;
     using System.Web.Services;
@@ -77,26 +76,26 @@ namespace Engage.Dnn.Survey
             return Survey.LoadSurveys().ToList();
         }
 
-        ///// <summary>
-        ///// Reorders the questions for a given <see cref="Survey"/>.
-        ///// </summary>
-        ///// <param name="surveyId">The ID of the <see cref="Survey"/> to which the questions belong.</param>
-        ///// <param name="questionOrderMap">A <see cref="Dictionary{String,Int32}"/> mapping question IDs to relative order.</param>
-        //[WebMethod]
-        //public void ReorderQuestions(int surveyId, Dictionary<string, int> questionOrderMap)
-        //{
-        //    var dataContext = SurveyModelDataContext.Instance;
-        //    var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
+        /////// <summary>
+        /////// Reorders the questions for a given <see cref="Survey"/>.
+        /////// </summary>
+        /////// <param name="surveyId">The ID of the <see cref="Survey"/> to which the questions belong.</param>
+        /////// <param name="questionOrderMap">A <see cref="Dictionary{String,Int32}"/> mapping question IDs to relative order.</param>
+        ////[WebMethod]
+        ////public void ReorderQuestions(int surveyId, Dictionary<string, int> questionOrderMap)
+        ////{
+        ////    var dataContext = SurveyModelDataContext.Instance;
+        ////    var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
 
-        //    foreach (var questionIdOrderPair in questionOrderMap)
-        //    {
-        //        var questionId = int.Parse(questionIdOrderPair.Key, CultureInfo.InvariantCulture);
-        //        var relativeOrder = questionIdOrderPair.Value;
-        //        survey.Sections[0].Questions.Where(q => q.QuestionId == questionId).Single().RelativeOrder = relativeOrder;
-        //    }
+        ////    foreach (var questionIdOrderPair in questionOrderMap)
+        ////    {
+        ////        var questionId = int.Parse(questionIdOrderPair.Key, CultureInfo.InvariantCulture);
+        ////        var relativeOrder = questionIdOrderPair.Value;
+        ////        survey.Sections[0].Questions.Where(q => q.QuestionId == questionId).Single().RelativeOrder = relativeOrder;
+        ////    }
 
-        //    dataContext.SubmitChanges();
-        //}
+        ////    dataContext.SubmitChanges();
+        ////}
 
         /// <summary>
         /// Inserts or updates the given <paramref name="survey"/>.
@@ -186,7 +185,7 @@ namespace Engage.Dnn.Survey
                 }
 
                 answerToUpdate.Text = answer.Text;
-                answerToUpdate.RelativeOrder = answerOrder++;
+                answerToUpdate.RelativeOrder = ++answerOrder;
             }
 
             dataContext.SubmitChanges();

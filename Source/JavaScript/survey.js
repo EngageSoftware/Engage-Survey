@@ -306,20 +306,8 @@ jQuery(function ($) {
         }
     });
     
-    // delete question
-    $('.ee-pr-action-links .ee-delete').click(function (event) {
-        event.preventDefault();
-        
-        var $parentQuestionElement = $(this).parents('li.ee-preview');
-        var questionId = $parentQuestionElement.data('questionId');
-        
-        callWebMethod('DeleteQuestion', { questionId: questionId }, function() {
-            $parentQuestionElement.remove();
-        });
-    });
-
     // edit question
-    $('a.ee-edit').click(function(event) {
+    $('.ee-pr-action-links .ee-edit').click(function(event) {
         event.preventDefault();
         // get "parent" question preview list item
         var $questionLi = $(this).parents('li.ee-preview');
@@ -366,6 +354,25 @@ jQuery(function ($) {
         
     });
     
+    // copy question
+    $('.ee-pr-action-links .ee-save').click(function (event) {
+        event.preventDefault();
+        
+        
+    });
+    
+    // delete question
+    $('.ee-pr-action-links .ee-delete').click(function (event) {
+        event.preventDefault();
+        
+        var $parentQuestionElement = $(this).parents('li.ee-preview');
+        var questionId = $parentQuestionElement.data('questionId');
+        
+        callWebMethod('DeleteQuestion', { questionId: questionId }, function() {
+            $parentQuestionElement.remove();
+        });
+    });
+
     // change answer type
     $('#DefineAnswerType').change(function (event) {
         ShowAnswersInput(parseInt($(this).val(), 10));
@@ -400,7 +407,7 @@ jQuery(function ($) {
         }
     }
 
-  $('.ai-input input:first').blur(function() {
+    $('.ai-input input:first').blur(function() {
         if($(this).val()) {
             $('#SaveQuestion').parent().removeClass('disabled');
         }

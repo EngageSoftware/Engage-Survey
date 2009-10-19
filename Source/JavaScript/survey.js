@@ -238,8 +238,14 @@ jQuery(function ($) {
     // edit survey
     $('#EvalEdit').click(function (event) {
         event.preventDefault();
+        
+        //save current value to "previous value" data field for usage in the cancel link click event.
+        $('#EvalDescTextArea').parent().data('previousValue', $('#EvalDescTextArea').text());
+        $('#EvalTitleInput').parent().data('previousValue', $('#EvalTitleInput').text());
+        
         $('#EvalTitleInput').convertTo('input').removeClass('ee-input-pre');
         $('#EvalDescTextArea').convertTo('textarea').removeClass('ee-input-pre');
+        
         $('.ee-description').show();
         $('#EvalEdit').parent().hide();
         $('#EvalCancel').parent().show();
@@ -248,8 +254,14 @@ jQuery(function ($) {
     
     $('#EvalCancel').click(function (event) {
         event.preventDefault();
+        
+        //retrieve data values and reset the text boxes.
+        $('#EvalDescTextArea').val($('#EvalDescTextArea').parent().data('previousValue'));
+        $('#EvalTitleInput').val($('#EvalTitleInput').parent().data('previousValue'));
+        
         makeSurveyReadOnly();
         hideEditModeButtons();
+        
     });
         
     function makeSurveyReadOnly () {

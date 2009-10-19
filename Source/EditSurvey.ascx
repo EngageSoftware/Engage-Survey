@@ -16,6 +16,7 @@
             <li class="primary-btn" style="display:none;"><a href="#" title='<%=Localize("EditEvalHyperLink.ToolTip") %>' id="EvalEdit"><%=Localize("EditEvalHyperLink.Text")%></a></li>
             <li class="primary-btn" style="display:none;"><a href="#" title='<%=Localize("UpdateEvalHyperLink.ToolTip") %>' id="EvalUpdate"><%=Localize("UpdateEvalHyperLink.Text")%></a></li>
             <li class="secondary-btn" style="display:none;"><a href="#" title='<%=Localize("CancelHyperLink.ToolTip") %>' id="EvalCancel"><%=Localize("CancelHyperLink.Text")%></a></li>
+            <li class="secondary-btn"><a href="<%=DotNetNuke.Common.Globals.NavigateURL() %>" title='<%=Localize("BackHyperLink.ToolTip") %>' id="EvalBack"><%=Localize("BackHyperLink.Text")%></a></li>
         </ul>
     </fieldset>
     <fieldset class="ee-create-questions" id="CreateQuestions">
@@ -70,7 +71,7 @@
         </div>
         <ul class="ee-action-btns">
             <li class="primary-btn disabled"><a href="#" title='<%=Localize("SaveAndCreateNewQuestionHyperLink.ToolTip")%>' class="save-create-new" id="SaveQuestion"><%=Localize("SaveAndCreateNewQuestionHyperLink.Text")%></a></li>
-            <li class="secondary-btn"><a href="#" title='<%=Localize("BackHyperLink.ToolTip")%>' class="back"><%=Localize("BackHyperLink.Text")%></a></li>
+            <li class="secondary-btn"><a href="#" title='<%=Localize("CancelQuestionHyperLink.ToolTip")%>'><%=Localize("CancelQuestionHyperLink.Text")%></a></li>
         </ul>
     </fieldset>
     <fieldset id="PreviewArea" class="ee-preview-area">

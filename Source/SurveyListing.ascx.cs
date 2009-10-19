@@ -34,7 +34,6 @@ namespace Engage.Dnn.Survey
         {
             this.Load += this.Page_Load;
             this.NewSurveyButton.Click += this.NewSurveyButton_Click;
-            this.CancelButton.Click += this.CancelButton_Click;
             this.SurveyGrid.ItemDataBound += this.SurveyDataGrid_OnItemDataBound;
             this.FilterRadioButtonList.SelectedIndexChanged += this.FilterRadioButtonList_SelectedIndexChanged;
             base.OnInit(e);
@@ -97,17 +96,6 @@ namespace Engage.Dnn.Survey
         private string BuildPreviewUrl(int id, string key)
         {
             return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=ViewSurvey&" + key + "=" + id);
-        }
-
-        /// <summary>
-        /// Handles the <see cref="LinkButton.Click"/> event of the <see cref="CancelButton"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void CancelButton_Click(object sender, EventArgs e)
-        {
-            // TODO: Implement ReturnURL functionality.
-            this.Response.Redirect(Globals.NavigateURL());
         }
 
         /// <summary>

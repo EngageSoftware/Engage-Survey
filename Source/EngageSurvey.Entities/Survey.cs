@@ -106,6 +106,45 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Deletes the specified survey.
+        /// </summary>
+        /// <param name="surveyId">The id.</param>
+        public static void Delete(int? surveyId)
+        {
+            //linq query
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+
+            var answers = (from a in context.Answers
+                           join q in context.Questions on a.QuestionId equals q.QuestionId
+                           join s in context.Sections on q.SectionId equals s.SectionId
+                           join su in context.Surveys on s.SurveyId equals su.SurveyId
+                           where su.SurveyId == surveyId
+                           select a);
+
+            context.Answers.DeleteAllOnSubmit(answers);
+
+            var questions = (from q in context.Questions
+                             join s in context.Sections on q.SectionId equals s.SectionId
+                             join su in context.Surveys on s.SurveyId equals su.SurveyId
+                             where su.SurveyId == surveyId
+                             select q);
+
+            context.Questions.DeleteAllOnSubmit(questions);
+
+            var sections = (from s in context.Sections
+                            join su in context.Surveys on s.SurveyId equals su.SurveyId
+                            where su.SurveyId == surveyId
+                            select s);
+
+            context.Sections.DeleteAllOnSubmit(sections);
+
+            //lastly remove the survey itself
+            context.Surveys.DeleteOnSubmit(context.Surveys.Where(evaluation => evaluation.SurveyId == surveyId).Single());
+
+            context.SubmitChanges();
+        }
+
+        /// <summary>
         /// Gets the sections.
         /// </summary>
         /// <returns>List of ISections for this survey</returns>

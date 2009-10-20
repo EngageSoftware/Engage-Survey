@@ -14,6 +14,7 @@
                 <asp:Label ID="TextLabel" runat="server" CssClass="NormalBold" />
                 <asp:HyperLink ID="PreviewHyperLink" runat="server" ResourceKey="PreviewLink" />
                 <asp:HyperLink ID="EditHyperLink" runat="server" ResourceKey="EditLink" />
+                <asp:HyperLink ID="DeleteHyperLink" runat="server" ResourceKey="DeleteLink" />
             </li>
         </ItemTemplate>
         <FooterTemplate></ul></FooterTemplate>

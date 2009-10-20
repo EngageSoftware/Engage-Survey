@@ -123,6 +123,15 @@
   <data name="Completed Surveys.Text" xml:space="preserve">
     <value>Completed Surveys</value>
   </data>
+  <data name="DeleteCompletedSurvey.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this completed survey?</value>
+  </data>
+  <data name="DeleteLink.Text" xml:space="preserve">
+    <value>delete</value>
+  </data>
+  <data name="DeleteSurvey.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this survey?</value>
+  </data>
   <data name="EditLink.Text" xml:space="preserve">
     <value>edit</value>
   </data>

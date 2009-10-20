@@ -13,11 +13,11 @@ namespace Engage.Dnn.Survey
 {
     using System;
     using System.Globalization;
-    using System.Linq;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-    using DotNetNuke.Common;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
     using Engage.Survey;
     using Engage.Survey.Entities;
 
@@ -61,11 +61,14 @@ namespace Engage.Dnn.Survey
         /// <summary>
         /// Builds the URL to delete the given survey.
         /// </summary>
-        /// <param name="surveyId">The survey id.</param>
-        /// <returns>A URL which, when navigated to, deletes the survey with the given <paramref name="surveyId"/></returns>
-        private string BuildDeleteUrl(int surveyId)
+        /// <param name="id">The id.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>
+        /// A URL which, when navigated to, deletes the survey with the given <paramref name="id"/>
+        /// </returns>
+        private string BuildDeleteUrl(int id, string key)
         {
-            return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=EditSurvey&delete=1&surveyId=" + surveyId);
+            return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&delete=1&" + key +  "=" + id);
         }
 
         /// <summary>
@@ -129,12 +132,31 @@ namespace Engage.Dnn.Survey
             {
                 if (!this.Page.IsPostBack)
                 {
+                    if (Request.QueryString["delete"] != null)
+                    {
+                        DeleteItem();
+                    }
                     this.BindData(0);
                 }
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// <summary>
+        /// Deletes either a survey definition or a completed survey.
+        /// </summary>
+        private void DeleteItem()
+        {
+            if (ResponseHeaderId == null)
+            {
+                Survey.Delete(SurveyId);    
+            }
+            else
+            {
+                ReadonlySurvey.Delete(ResponseHeaderId);
             }
         }
 
@@ -158,13 +180,23 @@ namespace Engage.Dnn.Survey
                 var previewHyperLink = e.Item.FindControl("PreviewHyperLink") as HyperLink;
                 if (previewHyperLink != null)
                 {
+                    previewHyperLink.NavigateUrl = survey.IsReadonly ? this.BuildPreviewUrl(((ReadonlySurvey)survey).ResponseHeaderId, "responseheaderid") : this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
+                }
+
+                var deleteHyperLink = e.Item.FindControl("DeleteHyperLink") as HyperLink;
+                if (deleteHyperLink != null)
+                {
                     if (survey.IsReadonly)
                     {
-                        previewHyperLink.NavigateUrl = this.BuildPreviewUrl(((ReadonlySurvey)survey).ResponseHeaderId, "ResponseHeaderId");
+                        deleteHyperLink.NavigateUrl = this.BuildDeleteUrl(((ReadonlySurvey)survey).ResponseHeaderId, "responseheaderid");
+                        string deleteSurvey = Localization.GetString("DeleteCompletedSurvey.Text", LocalResourceFile);
+                        ClientAPI.AddButtonConfirm(deleteHyperLink, deleteSurvey);
                     }
                     else
                     {
-                        previewHyperLink.NavigateUrl = this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
+                        deleteHyperLink.NavigateUrl = this.BuildDeleteUrl(survey.SurveyId, "surveyId");
+                        string deleteSurvey = Localization.GetString("DeleteSurvey.Text", LocalResourceFile);
+                        ClientAPI.AddButtonConfirm(deleteHyperLink, deleteSurvey);
                     }
                 }
 
@@ -173,6 +205,46 @@ namespace Engage.Dnn.Survey
                 {
                     textLabel.Text = survey.Text;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the survey id fromm the QueryString if possible.
+        /// </summary>
+        /// <value>The survey id.</value>
+        private int? SurveyId
+        {
+            get
+            {
+                if (this.Request.QueryString["surveyId"] != null)
+                {
+                    int id;
+                    if (int.TryParse(this.Request.QueryString["surveyId"], NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
+                    {
+                        return id;
+                    }
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the response header id.
+        /// </summary>
+        /// <value>The response header id.</value>
+        private int? ResponseHeaderId
+        {
+            get
+            {
+                if (this.Request.QueryString["responseheaderId"] != null)
+                {
+                    int id;
+                    if (int.TryParse(this.Request.QueryString["responseheaderId"], NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
+                    {
+                        return id;
+                    }
+                }
+                return null;
             }
         }
     }

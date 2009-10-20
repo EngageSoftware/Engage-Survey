@@ -67,6 +67,31 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Deletes the specified completed survey responseheader and responses.
+        /// </summary>
+        /// <param name="responseHeaderId">The responseheaderId</param>
+        public static void Delete(int? responseHeaderId)
+        {
+            //linq query
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+
+            var responses = (from r in context.Responses
+                     join rh in context.ResponseHeaders on r.ResponseHeaderId equals rh.ResponseHeaderId
+                     where rh.ResponseHeaderId == responseHeaderId 
+                     select r);
+
+            context.Responses.DeleteAllOnSubmit(responses);
+
+            var responseHeader = (from rh in context.ResponseHeaders 
+                             where rh.ResponseHeaderId == responseHeaderId
+                             select rh).Single();
+
+            context.ResponseHeaders.DeleteOnSubmit(responseHeader);
+
+            context.SubmitChanges();
+        }
+
+        /// <summary>
         /// ResponseHeaderId
         /// </summary>
         public int ResponseHeaderId

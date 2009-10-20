@@ -15,7 +15,6 @@ namespace Engage.Survey.Entities
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
-    using Engage.Util;
     using Util;
 
     /// <summary>
@@ -53,7 +52,7 @@ namespace Engage.Survey.Entities
                 ISurvey survey = this.Survey;
                 if (survey != null)
                 {
-                    return Util.Utility.PrependFormatting(survey.SectionFormatOption, this.RelativeOrder);
+                    return Utility.PrependFormatting(survey.SectionFormatOption, this.RelativeOrder);
                 }
 
                 return string.Empty;
@@ -165,7 +164,7 @@ namespace Engage.Survey.Entities
                 Control control = Engage.Survey.Util.Utility.CreateWebControl(question, readOnly);
                 questionWrapDiv.Controls.Add(control);
 
-                if (string.IsNullOrEmpty(control.ID) == false)
+                if (string.IsNullOrEmpty(control.ID) == false && validationProvider != null)
                 {
                     if (question.IsRequired && question.ControlType != ControlType.Checkbox)
                     {

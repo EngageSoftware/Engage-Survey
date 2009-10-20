@@ -100,6 +100,16 @@ namespace Engage.Survey.UI
         public const string CssClassSubmitArea = "submit-area";
 
         /// <summary>
+        /// Marker for begin survey
+        /// </summary>
+        public const string BeginSurveyMarker = "<!--survey_begins_here-->";
+
+        /// <summary>
+        /// Marker for end survey.
+        /// </summary>
+        public const string EndSurveyMarker = "<!--survey_ends_here-->";
+
+        /// <summary>
         /// Raises the <see cref="SurveyCompleted"/> event.
         /// </summary>
         /// <param name="e">The <see cref="Engage.Survey.UI.SavedEventArgs"/> instance containing the event data.</param>
@@ -254,11 +264,11 @@ namespace Engage.Survey.UI
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
+            //Insert our begin marker for the survey control. We can parse this out easy later if needed.
+            this.Controls.Add(new Literal { Text = BeginSurveyMarker });
 
             HtmlGenericControl mainDiv = new HtmlGenericControl("DIV");
             mainDiv.Attributes["class"] = this.CssClass;
-
-            // this.table1.GridLines = GridLines.Both;
             this.Controls.Add(mainDiv);
 
             PlaceHolder ph = new PlaceHolder();
@@ -282,9 +292,12 @@ namespace Engage.Survey.UI
             // draw the survey
             this.CurrentSurvey.Render(ph, IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider());
 
+            //no need to include the submit button in html
             if (!IsReadOnly) this.RenderSubmitButton();
+
+            this.Controls.Add(new Literal { Text = EndSurveyMarker });
         }
-        
+
         /// <summary>
         /// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
         /// </summary>
@@ -371,7 +384,7 @@ namespace Engage.Survey.UI
             if (c != null)
             {
                 this.CaptureResponse(c);
-                this.CollectResponses(c);    
+                this.CollectResponses(c);
             }
         }
 
@@ -434,9 +447,9 @@ namespace Engage.Survey.UI
         {
             ////Save to database.
             int responseHeaderId = CurrentSurvey.Save(UserId);
-
+           
             //raise event so others can act on the SurveyId created.
-            this.OnSurveyCompleted(new SavedEventArgs(responseHeaderId));
+            this.OnSurveyCompleted(new SavedEventArgs(responseHeaderId, this.CurrentSurvey.SendNotification));
             
             this.Redirect();
         }
@@ -448,9 +461,21 @@ namespace Engage.Survey.UI
         /// Initializes a new instance of the <see cref="SavedEventArgs"/> class.
         /// </summary>
         /// <param name="responseHeaderId">The response header id.</param>
-        public SavedEventArgs(int responseHeaderId)
+        /// <param name="sendNotification">if set to <c>true</c> [send notification].</param>
+        public SavedEventArgs(int responseHeaderId, bool sendNotification)
         {
             this.ResponseHeaderId = responseHeaderId;
+            this.SendNotification = sendNotification;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [send notification].
+        /// </summary>
+        /// <value><c>true</c> if [send notification]; otherwise, <c>false</c>.</value>
+        public bool SendNotification
+        {
+            get;
+            set;
         }
 
         /// <summary>

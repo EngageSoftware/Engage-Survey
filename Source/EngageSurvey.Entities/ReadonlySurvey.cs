@@ -14,7 +14,6 @@ namespace Engage.Survey.Entities
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.UI.WebControls;
-    using Engage.Util;
     using Util;
 
     public class ReadonlySurvey: ISurvey
@@ -30,15 +29,16 @@ namespace Engage.Survey.Entities
             var survey = (from s in context.Responses
                           where s.ResponseHeaderId == responseHeaderId
 
-                          select new ReadonlySurvey
-                          {
-                              SurveyId = s.SurveyId,
-                              Text = s.SurveyText,
-                              ShowText = s.ShowSurveyText,
-                              TitleOption = s.TitleOption,
-                              QuestionFormatOption = s.QuestionFormatOption,
-                              SectionFormatOption = s.SectionFormatOption
-                          }).FirstOrDefault();
+                          select
+                                  new ReadonlySurvey
+                                      {
+                                              SurveyId = s.SurveyId,
+                                              Text = s.SurveyText,
+                                              ShowText = s.ShowSurveyText,
+                                              TitleOption = s.TitleOption,
+                                              QuestionFormatOption = s.QuestionFormatOption,
+                                              SectionFormatOption = s.SectionFormatOption
+                                      }).FirstOrDefault();
 
             survey.ResponseHeaderId = responseHeaderId;
             return survey;
@@ -137,7 +137,7 @@ namespace Engage.Survey.Entities
             get;
             set;
         }
-
+        
         /// <summary>
         /// Gets the sections.
         /// </summary>
@@ -270,6 +270,16 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [send notification].
+        /// </summary>
+        /// <value><c>true</c> if [send notification]; otherwise, <c>false</c>.</value>
+        public bool SendNotification
+        {
+            get { return false; }
+            set {}
+        }
+
+        /// <summary>
         /// Renders the survey from this survey.
         /// </summary>
         /// <param name="placeHolder">The place holder.</param>
@@ -348,7 +358,7 @@ namespace Engage.Survey.Entities
                 ISurvey survey = this.GetSurvey();
                 if (survey != null)
                 {
-                    return Util.Utility.PrependFormatting(survey.SectionFormatOption, this.RelativeOrder);
+                    return Utility.PrependFormatting(survey.SectionFormatOption, this.RelativeOrder);
                 }
 
                 return string.Empty;
@@ -542,7 +552,7 @@ namespace Engage.Survey.Entities
                 ISurvey survey = this.GetSection().GetSurvey();
                 if (survey != null)
                 {
-                    return Util.Utility.PrependFormatting(survey.QuestionFormatOption, this.RelativeOrder);
+                    return Utility.PrependFormatting(survey.QuestionFormatOption, this.RelativeOrder);
                 }
 
                 return string.Empty;

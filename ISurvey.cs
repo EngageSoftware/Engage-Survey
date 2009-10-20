@@ -97,6 +97,16 @@ namespace Engage.Survey
         string LogoURL { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [send notification].
+        /// </summary>
+        /// <value><c>true</c> if [send notification]; otherwise, <c>false</c>.</value>
+        bool SendNotification
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Renders the survey from this survey.
         /// </summary>
         /// <param name="ph">The place holder to render the survey.</param>

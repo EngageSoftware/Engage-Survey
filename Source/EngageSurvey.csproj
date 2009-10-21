@@ -44,6 +44,9 @@
     <DocumentationFile>..\..\bin\EngageSurvey.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BrandonHaynes.ModelAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="DotNetNuke, Version=4.4.1.25041, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\DotNetNuke.dll</HintPath>
@@ -235,6 +238,7 @@
     <Content Include="Licenses\EULA-Enterprise.htm" />
     <Content Include="Licenses\EULA-Professional.htm" />
     <Content Include="Licenses\EULA-Standard.htm" />
+    <Content Include="References\BrandonHaynes.ModelAdapter.dll" />
     <Content Include="References\Engage.Dnn.Framework.XML" />
     <Content Include="References\Engage.Framework.XML" />
     <Content Include="ReleaseNotes_3.0.0.htm" />

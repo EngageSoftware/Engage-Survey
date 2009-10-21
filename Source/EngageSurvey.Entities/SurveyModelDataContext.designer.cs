@@ -24,7 +24,7 @@ namespace Engage.Survey.Entities
 	
 	
 	[System.Data.Linq.Mapping.DatabaseAttribute(Name="campus_dnn2")]
-	public partial class SurveyModelDataContext : BrandonHynes.ModelAdapter.DotNetNukeDataContext
+	public partial class SurveyModelDataContext : BrandonHaynes.ModelAdapter.DotNetNukeDataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();

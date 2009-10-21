@@ -11,12 +11,37 @@
 
 namespace Engage.Dnn.Survey
 {
+    using System.IO;
     using System.Linq;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Packages;
 
     /// <summary>
     /// Registered with DNN to indicate which features this module supports
     /// </summary>
-    public class FeatureController
+    public class FeatureController : IUpgradeable
     {
+        /// <summary>
+        /// Called during the install and upgrade process for the module, once for each version of the module
+        /// </summary>
+        /// <param name="version">The version number.</param>
+        /// <returns>A status message</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#", Justification = "Interface was defined in VB, with incorrect naming convention")]
+        public string UpgradeModule(string version)
+        {
+            switch (version)
+            {
+                case "3.0.0":
+                    using (Stream xmlMergeManifest = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Engage.Dnn.Survey.Util.Net35.config"))
+                    {
+                        var configMerge = new XmlMerge(xmlMergeManifest, "3.0.0", "Engage: Survey");
+                        configMerge.UpdateConfigs();
+                    }
+
+                    return "Updated web.config to support .NET 3.5";
+                default:
+                    return string.Empty;
+            }
+        }
     }
 }

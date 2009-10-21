@@ -41,7 +41,7 @@ namespace Engage.Dnn.Survey
                         configMerge.UpdateConfig(configDocument);
                     }
 
-                    using (Stream bindingRedirectManifest = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Engage.Dnn.Survey.Util.Net35.BindingRedirect.config"))
+                    using (Stream bindingRedirectManifest = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Engage.Dnn.Survey.Util.Net35.bindingRedirect.config"))
                     {
                         var bindingRedirectMerge = new XmlMergeWithNamespaceSupport(bindingRedirectManifest);
                         bindingRedirectMerge.UpdateConfig(configDocument);

@@ -378,6 +378,7 @@ jQuery(function ($) {
 
             // enable "Save" button            
             $('#SaveQuestion').parent().removeClass('disabled');
+            $('#CancelQuestion').parent().show();
 
             //clone an existing element
             var $baseAnswerElement = $(".answer-inputs li:last").clone(true);
@@ -410,15 +411,25 @@ jQuery(function ($) {
     $('#DefineAnswerType').change(function (event) {
         ShowAnswersInput(parseInt($(this).val(), 10));
     });
+
+    // question textbox onblur
+    $('#QuestionText').blur(function (event) {
+        ShowAnswersInput(parseInt($('#DefineAnswerType').val(), 10));
+    });
     
     function ShowAnswersInput(questionType) {
-    
+
         $('#MultipleAnswer').hide();
         $('#ShortTextAnswer').hide();
         $('#LongTextAnswer').hide();
         $('.ee-define-answer .primary-btn').hide();
         $('#SaveQuestion').parent().addClass('disabled');
-            
+        $('#CancelQuestion').parent().hide();
+
+        if($('#QuestionText').val() || $('#DefineAnswerType :selected').val() > 0) {
+            $('#CancelQuestion').parent().show();
+        }
+
         switch (questionType) {
         case 2:
             // ControlType.SmallTextInputField
@@ -466,7 +477,13 @@ jQuery(function ($) {
             });
         }
     });
-    
+
+    // cancel question
+    $('#CancelQuestion').click(function(event) {
+        event.preventDefault();
+        resetCreateQuestionSection();
+    });
+
     function addQuestionPreview(questionId, questionText, questionType, answers) {
         var $questionElement, questionOrder = $('#CreateQuestions').data('relativeOrder');
         if (questionOrder) {
@@ -530,6 +547,7 @@ jQuery(function ($) {
         $('#ShortTextAnswer').hide();
         $('#LongTextAnswer').hide();
         $('#MultipleAnswer').hide();
+        $('#CancelQuestion').parent().hide();
         $('#AddNewQuestion').parent().hide();
         
         // only should have two answers by default

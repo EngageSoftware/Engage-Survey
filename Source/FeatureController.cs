@@ -13,6 +13,7 @@ namespace Engage.Dnn.Survey
 {
     using System.IO;
     using System.Linq;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Packages;
 
@@ -32,11 +33,21 @@ namespace Engage.Dnn.Survey
             switch (version)
             {
                 case "3.0.0":
-                    using (Stream xmlMergeManifest = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Engage.Dnn.Survey.Util.Net35.config"))
+                    var configDocument = Config.Load();
+
+                    using (Stream xmlMergeManifest = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Engage.Dnn.Survey.Util.Net35.withoutNamespaces.config"))
                     {
                         var configMerge = new XmlMerge(xmlMergeManifest, "3.0.0", "Engage: Survey");
-                        configMerge.UpdateConfigs();
+                        configMerge.UpdateConfig(configDocument);
                     }
+
+                    using (Stream bindingRedirectManifest = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Engage.Dnn.Survey.Util.Net35.BindingRedirect.config"))
+                    {
+                        var bindingRedirectMerge = new XmlMergeWithNamespaceSupport(bindingRedirectManifest);
+                        bindingRedirectMerge.UpdateConfig(configDocument);
+                    }
+
+                    Config.Save(configDocument);
 
                     return "Updated web.config to support .NET 3.5";
                 default:

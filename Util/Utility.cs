@@ -23,6 +23,11 @@ namespace Engage.Survey.Util
     public static class Utility
     {
         /// <summary>
+        /// Constant for a space.
+        /// </summary>
+        public const string EntityNbsp = "&nbsp;";
+
+        /// <summary>
         /// CSS Class to use when no survey tyepid is defined
         /// </summary>
         public const string CssClassNoSurveyDefined = "no-survey-defined";

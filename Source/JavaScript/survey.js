@@ -130,6 +130,15 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
 /*                        */
 /**************************/
 jQuery(function ($) {
+
+    $.validator.setDefaults({
+        rules: {
+            required: "required"
+        }
+    });
+
+    $('#Form').validate();
+
     $("#ee-previews, .answer-inputs").sortable({
         placeholder: 'ui-state-highlight'
     });
@@ -261,7 +270,9 @@ jQuery(function ($) {
         
         makeSurveyReadOnly();
         hideEditModeButtons();
-        
+
+        var validator = $('#Form').validate();
+        validator.resetForm();
     });
         
     function makeSurveyReadOnly () {
@@ -448,6 +459,9 @@ jQuery(function ($) {
             // multiple answer
             $('#MultipleAnswer').show();
             $('.ee-define-answer .primary-btn').show();
+            if ($('.ai-input input:first').val()) {
+                $('#SaveQuestion').parent().removeClass('disabled');
+            }
         }
     }
 
@@ -560,6 +574,9 @@ jQuery(function ($) {
         // clear out stored data values
         $('#CreateQuestions').removeData('questionId').removeData('relativeOrder')
             .find('#MultipleAnswer li').removeData('answerId');
+
+        var validator = $('#Form').validate();
+        validator.resetForm();
     }
     
     function getQuestionParameters () {

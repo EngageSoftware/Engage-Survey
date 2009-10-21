@@ -5,7 +5,7 @@
         <legend class="Head"><%=Localize("CreateNewLabel.Text")%></legend>
         <div class="ee-title">
             <span class="ee-label eval-title"><%=Localize("EvalTitleLabel.Text")%></span>
-            <span class="ee-input"><input class="NormalTextBox ee-required" id="EvalTitleInput" minlength="1" maxlength="256" /></span>
+            <span class="ee-input"><input class="NormalTextBox ee-required" id="EvalTitleInput" minlength="1" maxlength="256" name="required" /></span>
         </div>
         <div class="ee-description">
             <span class="ee-label eval-description"><%=Localize("EvalDescriptionLabel.Text")%></span>
@@ -23,7 +23,7 @@
         <legend class="Head"><%=Localize("CreateNewQuestionsLabel.Text")%></legend>
         <div class="ee-question">
             <span class="ee-label"><%=Localize("TypeQuestionLabel.Text")%></span>
-            <span class="ee-input"><textarea id="QuestionText" class="NormalTextBox ee-required" minlength="1" maxlength="256" cols="40" rows="4"></textarea></span>
+            <span class="ee-input"><textarea id="QuestionText" class="NormalTextBox ee-required" minlength="1" maxlength="256" cols="40" rows="4" name="required"></textarea></span>
         </div>
         <div class="ee-define-answer">
             <span class="ee-label"><%=Localize("DefineAnswerLabel.Text")%></span>
@@ -51,14 +51,14 @@
                         <li>
                             <span class="ai-label"><%=Localize("AnswerTitle.Text")%> <span class="answer-num">1</span></span>
                             <div class="ai-selected">
-                                <span class="ai-input"><input class="NormalTextBox" type="text" /></span>
+                                <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" /></span>
                                 <a href="#" title='<%=Localize("RemoveAnswerHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
                             </div>
                         </li>
                         <li>                        
                             <span class="ai-label"><%=Localize("AnswerTitle.Text")%> <span class="answer-num">2</span></span>
                             <div class="ai-selected">
-                                <span class="ai-input"><input class="NormalTextBox" type="text"/></span>
+                                <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" /></span>
                                 <a href="#" title='<%=Localize("RemoveAnswerHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
                             </div>
                         </li>

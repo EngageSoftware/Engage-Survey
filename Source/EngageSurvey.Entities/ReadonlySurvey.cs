@@ -12,7 +12,9 @@
 namespace Engage.Survey.Entities
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
     using Util;
 
@@ -317,6 +319,31 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Renders the survey from this survey.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        public void Render(Table table)
+        {
+            Debug.Assert(table != null, "table cannot be null");
+
+            // add the survey title
+            if (ShowText)
+            {
+                TableRow row = new TableRow();
+                table.Rows.Add(row);
+                TableCell cell = new TableCell();
+                row.Cells.Add(cell);
+                cell.Text = Text;
+                cell.CssClass = Utility.CssClassSurveyTitle;
+            }
+
+            foreach (ReadonlySection s in this.GetSections())
+            {
+                s.Render(table);
+            }            
+        }
+
+        /// <summary>
         /// Pres the save processing.
         /// </summary>
         /// <param name="control">The control.</param>
@@ -516,6 +543,65 @@ namespace Engage.Survey.Entities
         public void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
         {
             Section.RenderSection(this, placeHolder, readOnly, showRequiredNotation, validationProvider);
+        }
+
+        /// <summary>
+        /// Renders the readonly section in a table.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        public void Render(Table table)
+        {
+            TableRow row = new TableRow();
+            table.Rows.Add(row);
+
+            //cell for the section table
+            TableCell cell = new TableCell();
+            row.Cells.Add(cell);
+
+            //let's create a new table for this section
+            Table sectionTable = new Table { CssClass = Utility.CssClassSectionWrap };
+            cell.Controls.Add(sectionTable);
+
+            row = new TableRow();
+            sectionTable.Rows.Add(row);
+
+            //row for the section title
+            cell = new TableCell { ColumnSpan = 3, Text = this.FormattedText, CssClass = Utility.CssClassSectionTitle };
+            row.Cells.Add(cell);
+
+            foreach (IQuestion question in this.GetQuestions())
+            {
+                Control formCtrl = Utility.CreateWebControl(question, true);
+
+                row = new TableRow();
+                sectionTable.Rows.Add(row);
+
+                //required col
+                cell = new TableCell { Text = (question.IsRequired ? "*" : Utility.EntityNbsp), CssClass = Utility.CssClassRequired };
+                row.Cells.Add(cell);
+
+                //question
+                cell = new TableCell
+                           {
+                                   ColumnSpan = 2,
+                                   Text = question.FormattedText,
+                                   CssClass = (question.IsRequired ? Utility.CssClassRequired : Utility.CssClassQuestion)
+                           };
+                row.Cells.Add(cell);
+
+                row = new TableRow();
+                sectionTable.Rows.Add(row);
+
+                //spacer
+                cell = new TableCell { Text = Utility.EntityNbsp, Width = 10 };
+                row.Cells.Add(cell);
+
+                //answer
+                cell = new TableCell();
+                row.Cells.Add(cell);
+
+                cell.Controls.Add(formCtrl);
+            }
         }
 
         /// <summary>

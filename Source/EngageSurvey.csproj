@@ -158,7 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EngageSurvey.5.dnn" />
-    <None Include="Providers\DataProviders\SqlDataProvider\01.00.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\3.0.0.SqlDataProvider" />
     <None Include="EngageSurvey.Build" />
     <None Include="EngageSurvey.4.dnn" />
     <None Include="Providers\DataProviders\SqlDataProvider\SampleEvaluations.SqlDataProvider" />

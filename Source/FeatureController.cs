@@ -40,7 +40,7 @@ namespace Engage.Dnn.Survey
 
                     return "Updated web.config to support .NET 3.5";
                 default:
-                    return string.Empty;
+                    return "Module upgraded to version " + version;
             }
         }
     }

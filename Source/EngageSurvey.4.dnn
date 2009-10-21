@@ -43,7 +43,7 @@
           <name>Engage.Framework.dll</name>
         </file>
         <file>
-          <name>01.00.00.SqlDataProvider</name>
+          <name>3.0.0.SqlDataProvider</name>
         </file>
       </files>
     </folder>

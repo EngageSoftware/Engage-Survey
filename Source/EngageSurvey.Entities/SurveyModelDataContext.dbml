@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Database Name="campus_dnn2" Class="SurveyModelDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+<Database Name="campus_dnn2" Class="SurveyModelDataContext" BaseType="BrandonHynes.ModelAdapter.DotNetNukeDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Table Name="dbo.EngageSurvey_Question" Member="Questions">
     <Type Name="Question">
       <Column Name="QuestionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />

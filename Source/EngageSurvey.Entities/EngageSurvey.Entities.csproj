@@ -38,6 +38,9 @@
     <DocumentationFile>..\..\..\bin\EngageSurvey.Entities.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BrandonHaynes.ModelAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="DotNetNuke, Version=4.9.4.17, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
@@ -84,6 +87,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="References\BrandonHaynes.ModelAdapter.dll" />
     <Content Include="References\DotNetNuke.dll" />
     <Content Include="References\DotNetNuke.WebUtility.dll" />
     <Content Include="References\Engage.Framework.dll" />

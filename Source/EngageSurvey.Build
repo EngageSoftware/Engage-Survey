@@ -9,7 +9,7 @@
   <property name="ziplevel" value="1" if="${build}"/>
   <property name="project.name" value="Survey"/>
   <property name="solution.file" value="Engage${project.name}2008.sln"/>
-  <property name="references.directory" value="References"/>
+  <property name="references.directory" value="**/References"/>
   <property name="project.dll" value="${bin.directory}\Engage${project.name}.dll"/>
 
   <patternset id="content.fileset">

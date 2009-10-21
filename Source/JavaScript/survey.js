@@ -331,6 +331,7 @@ jQuery(function ($) {
 
         var $questionLi = $(this).closest('li.ee-preview');
         populateCreateQuestionSection($questionLi, true);
+        $('#SaveQuestion').text(CurrentContextInfo.UpdateQuestionButtonText).attr('title', CurrentContextInfo.UpdateQuestionToolTip);
     });
     
     // copy question
@@ -339,6 +340,7 @@ jQuery(function ($) {
         
         var $questionLi = $(this).closest('li.ee-preview');
         populateCreateQuestionSection($questionLi, false);
+        $('#SaveQuestion').text(CurrentContextInfo.SaveQuestionButtonText).attr('title', CurrentContextInfo.SaveQuestionToolTip);
     });
     
     // delete question
@@ -535,7 +537,7 @@ jQuery(function ($) {
         $('#MultipleAnswer li:gt(1)').remove();
         $('.ai-input input').val('');
         
-        $('#SaveQuestion').parent().addClass('disabled');
+        $('#SaveQuestion').text(CurrentContextInfo.SaveQuestionButtonText).attr('title', CurrentContextInfo.SaveQuestionToolTip).parent().addClass('disabled');
         
         // clear out stored data values
         $('#CreateQuestions').removeData('questionId').removeData('relativeOrder')

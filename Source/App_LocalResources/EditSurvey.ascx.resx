@@ -181,13 +181,13 @@
     <value>Edit</value>
   </data>
   <data name="EditEvalHyperLink.ToolTip" xml:space="preserve">
-    <value>Edit</value>
+    <value>Edit Survey</value>
   </data>
   <data name="EditQuestionHyperLink.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="EditQuestionHyperLink.ToolTip" xml:space="preserve">
-    <value>Edit this question</value>
+    <value>Edit Question</value>
   </data>
   <data name="EvalDescriptionLabel.Text" xml:space="preserve">
     <value>Description</value>
@@ -225,14 +225,14 @@
   <data name="SaveAllAnswersHyperLink.Text" xml:space="preserve">
     <value>Save All Answers</value>
   </data>
-  <data name="SaveAndCreateNewQuestionHyperLink.Text" xml:space="preserve">
-    <value>Save and Add New Question</value>
-  </data>
-  <data name="SaveAndCreateNewQuestionHyperLink.ToolTip" xml:space="preserve">
-    <value>Save and Create New</value>
-  </data>
   <data name="SaveAnswerHyperLink.Text" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="SaveQuestion.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveQuestion.ToolTip" xml:space="preserve">
+    <value>Save Question</value>
   </data>
   <data name="SelectAnswerTypeOption.Text" xml:space="preserve">
     <value>Select Answer Type</value>
@@ -266,5 +266,11 @@
   </data>
   <data name="UpdateEvalHyperLink.ToolTip" xml:space="preserve">
     <value>Update</value>
+  </data>
+  <data name="UpdateQuestion.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="UpdateQuestion.ToolTip" xml:space="preserve">
+    <value>Update Question</value>
   </data>
 </root>

@@ -70,7 +70,7 @@
             </div>
         </div>
         <ul class="ee-action-btns">
-            <li class="primary-btn disabled"><a href="#" title='<%=Localize("SaveAndCreateNewQuestionHyperLink.ToolTip")%>' class="save-create-new" id="SaveQuestion"><%=Localize("SaveAndCreateNewQuestionHyperLink.Text")%></a></li>
+            <li class="primary-btn disabled"><a href="#" title='<%=Localize("SaveQuestion.ToolTip")%>' class="save-create-new" id="SaveQuestion"><%=Localize("SaveQuestion.Text")%></a></li>
             <li class="secondary-btn"><a href="#" title='<%=Localize("CancelQuestionHyperLink.ToolTip")%>'><%=Localize("CancelQuestionHyperLink.Text")%></a></li>
         </ul>
     </fieldset>
@@ -101,6 +101,10 @@ var CurrentContextInfo = {
     WebMethodUrl: '<%= ResolveUrl("~/DesktopModules/EngageSurvey/Services.asmx") %>/',
     UserId: <%=UserId %>,
     Survey: <%=SerializedSurvey %>,
-    ErrorMessage: '<%=Localize("AjaxError.Text") %>'
+    ErrorMessage: '<%= Localize("AjaxError.Text") %>',
+    SaveQuestionButtonText: '<%= Localize("SaveQuestion.Text") %>',
+    SaveQuestionToolTip: '<%= Localize("SaveQuestion.ToolTip") %>',
+    UpdateQuestionButtonText: '<%= Localize("UpdateQuestion.Text") %>',
+    UpdateQuestionToolTip: '<%= Localize("UpdateQuestion.ToolTip") %>'
 };
 </script>

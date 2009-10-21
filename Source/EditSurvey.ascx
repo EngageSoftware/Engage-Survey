@@ -91,6 +91,9 @@
                     <span class="pv-answer"></span>
                 </div>
             </li>
+            <li class="ee-undo" style="display:none;">
+                <%=Localize("UndoQuestionDelete.Text") %> <a href="#" title='<%=Localize("UndoQuestionDeleteButton.ToolTip") %>'><%=Localize("UndoQuestionDeleteButton.Text") %></a>
+            </li>
         </ul>
     </fieldset>   
 </div>

@@ -139,7 +139,11 @@ jQuery(function ($) {
 
     $('#Form').validate();
 
-    $("#ee-previews, .answer-inputs").sortable({
+    $("#ee-previews").sortable({
+        items: 'li.ee-preview', 
+        placeholder: 'ui-state-highlight'
+    });
+    $(".answer-inputs").sortable({
         placeholder: 'ui-state-highlight'
     });
     ////$("#ee-previews, .answer-inputs").disableSelection();
@@ -359,10 +363,49 @@ jQuery(function ($) {
         event.preventDefault();
         
         var $parentQuestionElement = $(this).closest('li.ee-preview');
-        var questionId = $parentQuestionElement.data('questionId');
-        
-        callWebMethod('DeleteQuestion', { questionId: questionId }, function() {
-            $parentQuestionElement.remove();
+        $parentQuestionElement.fadeOut('slow', function () {
+            var deleteQuestionTimeoutHandle, 
+                $undoElement = $('.ee-undo').clone().show(),
+                undoHtml = $undoElement.html(),
+                
+                // it'll take a second to actually show the timer, so it shows up to the user as 10
+                undoTimeLimit = 11,
+                startTime = new Date();
+            
+            $undoElement.html(undoHtml.replace('{0}', '<span class="undo-limit"></span>'));
+            
+            $parentQuestionElement.before($undoElement);
+            
+            // set timer to delete question
+            deleteQuestionTimeoutHandle = setTimeout(function () {
+                var questionId = $parentQuestionElement.data('questionId');
+                callWebMethod('DeleteQuestion', { questionId: questionId }, function() {
+                    $parentQuestionElement.remove();
+                    $undoElement.remove();
+                });
+            }, undoTimeLimit * 1000);
+            
+            // update the time remaining until deleted
+            (function updateUnfoTimer() {
+                var currentTime = new Date(),
+                    msElapsed = currentTime.getTime() - startTime.getTime(),
+                    msLeft = (undoTimeLimit * 1000) - msElapsed,
+                    secondsLeft = parseInt(msLeft / 1000, 10);
+                $undoElement.find('span.undo-limit').text(secondsLeft.toString(10));
+                
+                if (secondsLeft > 0) {
+                    setTimeout(updateUnfoTimer, 300);
+                }
+            }());
+            
+            // undo button
+            $undoElement.find('a').click(function (event) {
+                event.preventDefault();
+                
+                clearTimeout(deleteQuestionTimeoutHandle);
+                $undoElement.remove();
+                $parentQuestionElement.show();
+            });
         });
     });
     

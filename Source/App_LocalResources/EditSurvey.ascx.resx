@@ -261,6 +261,15 @@
   <data name="TypeSectionTitleLabel.Text" xml:space="preserve">
     <value>Type Section Title</value>
   </data>
+  <data name="UndoQuestionDelete.Text" xml:space="preserve">
+    <value>This question will be deleted in {0}s</value>
+  </data>
+  <data name="UndoQuestionDeleteButton.Text" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="UndoQuestionDeleteButton.ToolTip" xml:space="preserve">
+    <value>Don't delete this question</value>
+  </data>
   <data name="UpdateEvalHyperLink.Text" xml:space="preserve">
     <value>Update</value>
   </data>

@@ -318,19 +318,21 @@ jQuery(function ($) {
     // remove answer
     $(".answer-inputs .ee-delete").click(function (event) {
         event.preventDefault();
-        
+
         var $answers = $(".answer-inputs li.answer-input")
         if ($answers.length > 1) {
+            
             var $parentAnswerElement = $(this).closest('li');
-            $parentAnswerElement.remove();
+            deleteWithUndo($parentAnswerElement);
             
             // have to run query again to get rid of the element we just removed
             $answers = $(".answer-inputs li.answer-input").each(function (i, elem) {
                 $(elem).find('.answer-num').text(i + 1);
             });
-        }
-        else {
-            $answers.find('.ee-delete').addClass('disabled');
+            
+            if ($answers.length < 2) {
+                $answers.find('.ee-delete').addClass('disabled');
+            }
         }
     });
     
@@ -389,7 +391,10 @@ jQuery(function ($) {
             // set timer to delete question
             deleteTimeoutHandle = setTimeout(function () {
                 $undoElement.remove();
-                deleteCallback();
+                
+                if (deleteCallback && typeof(deleteCallback) === 'function') {
+                    deleteCallback();
+                }
             }, undoTimeLimit * 1000);
             
             // update the time remaining until deleted

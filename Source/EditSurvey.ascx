@@ -63,7 +63,7 @@
                             </div>
                         </li>
                         <li class="ee-undo" style="display:none;">
-                            <%=Localize("UndoQuestionDelete.Text") %> <a href="#" title='<%=Localize("UndoQuestionDeleteButton.ToolTip") %>'><%=Localize("UndoQuestionDeleteButton.Text") %></a>
+                            <%=Localize("UndoAnswerDelete.Text") %> <a href="#" title='<%=Localize("UndoAnswerDeleteButton.ToolTip") %>'><%=Localize("UndoAnswerDeleteButton.Text") %></a>
                         </li>
                     </ul>
                     <ul class="ee-action-btns">

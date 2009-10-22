@@ -310,7 +310,7 @@ jQuery(function ($) {
         $answerNumberElement.text(answerNumber + 1);
         
         // clear out cloned textbox
-        $answerElement.find('input').val('');
+        $answerElement.find('input').val('').focus();
         
         $(".answer-inputs .ee-delete").removeClass('disabled')
     });
@@ -514,7 +514,8 @@ jQuery(function ($) {
             // multiple answer
             $('#MultipleAnswer').show();
             $('.ee-define-answer .primary-btn').show();
-            if ($('.ai-input input:first').val()) {
+            var $firstAnswer = $('.ai-input input:first').focus();
+            if ($firstAnswer.val()) {
                 $('#SaveQuestion').parent().removeClass('disabled');
             }
         }

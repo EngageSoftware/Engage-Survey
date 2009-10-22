@@ -1,5 +1,5 @@
-// <copyright file="SurveyControl.ascx.cs" company="Engage Software">
-// Engage: ContactUs - http://www.engagesoftware.com
+// <copyright file="SurveyControl.cs" company="Engage Software">
+// Engage: Survey
 // Copyright (c) 2004-2009
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
@@ -40,49 +40,9 @@ namespace Engage.Survey.UI
     public class SurveyControl : CompositeControl
     {
         /// <summary>
-        /// SaveEventHandler used for Save Completed event.
+        /// Marker for begin survey
         /// </summary>
-        public delegate void SaveEventHandler(object sender, SavedEventArgs e);
-
-        /// <summary>
-        /// Occurs when [survey completed].
-        /// </summary>
-        public event SaveEventHandler SurveyCompleted;
-
-        /// <summary>
-        /// CSS Class to use when no survey tyepid is defined
-        /// </summary>
-        public const string CssClassNoSurveyDefined = "no-survey-defined";
-
-        /// <summary>
-        /// CSS Class to use for survey title section
-        /// </summary>
-        public const string CssClassSurveyTitle = "survey-title";
-
-        /// <summary>
-        /// CSS Class to use for section title.
-        /// </summary>
-        public const string CssClassSectionTitle = "section-title";
-
-        /// <summary>
-        /// CSS Class to use for required elements.
-        /// </summary>
-        public const string CssClassRequired = "required";
-
-        /// <summary>
-        /// CSS Class to use for questions
-        /// </summary>
-        public const string CssClassQuestion = "question";
-
-        /// <summary>
-        /// CSS Class to use for section wrap
-        /// </summary>
-        public const string CssClassSectionWrap = "section-wrap";
-
-        /// <summary>
-        /// CSS Class to use for submit button
-        /// </summary>
-        public const string CssClassImageButtonSubmit = "submit-image";
+        public const string BeginSurveyMarker = "<!--survey_begins_here-->";
 
         /// <summary>
         /// CSS Class to use for horizontal answers
@@ -95,14 +55,44 @@ namespace Engage.Survey.UI
         public const string CssClassAnswerVertical = "answer-vertical";
 
         /// <summary>
+        /// CSS Class to use for submit button
+        /// </summary>
+        public const string CssClassImageButtonSubmit = "submit-image";
+
+        /// <summary>
+        /// CSS Class to use when no survey typeId is defined
+        /// </summary>
+        public const string CssClassNoSurveyDefined = "no-survey-defined";
+
+        /// <summary>
+        /// CSS Class to use for questions
+        /// </summary>
+        public const string CssClassQuestion = "question";
+
+        /// <summary>
+        /// CSS Class to use for required elements.
+        /// </summary>
+        public const string CssClassRequired = "required";
+
+        /// <summary>
+        /// CSS Class to use for section title.
+        /// </summary>
+        public const string CssClassSectionTitle = "section-title";
+
+        /// <summary>
+        /// CSS Class to use for section wrap
+        /// </summary>
+        public const string CssClassSectionWrap = "section-wrap";
+
+        /// <summary>
         /// CSS Class to use for submit area at bottom
         /// </summary>
         public const string CssClassSubmitArea = "submit-area";
 
         /// <summary>
-        /// Marker for begin survey
+        /// CSS Class to use for survey title section
         /// </summary>
-        public const string BeginSurveyMarker = "<!--survey_begins_here-->";
+        public const string CssClassSurveyTitle = "survey-title";
 
         /// <summary>
         /// Marker for end survey.
@@ -110,20 +100,51 @@ namespace Engage.Survey.UI
         public const string EndSurveyMarker = "<!--survey_ends_here-->";
 
         /// <summary>
-        /// Raises the <see cref="SurveyCompleted"/> event.
+        /// SaveEventHandler used for Save Completed event.
         /// </summary>
-        /// <param name="e">The <see cref="Engage.Survey.UI.SavedEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnSurveyCompleted(SavedEventArgs e)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SavedEventArgs"/> instance containing the event data.</param>
+        public delegate void SaveEventHandler(object sender, SavedEventArgs e);
+
+        /// <summary>
+        /// Occurs when the survey is completed.
+        /// </summary>
+        public event SaveEventHandler SurveyCompleted;
+
+        /// <summary>
+        /// Gets or sets the survey that is being rendered.
+        /// </summary>
+        /// <remarks>The <see cref="ISurvey.Save"/> method will be called when the Submit button is clicked.</remarks>
+        public ISurvey CurrentSurvey
         {
-            if (SurveyCompleted != null)
-                SurveyCompleted(this, e);
+            get;
+            set;
         }
 
         /// <summary>
-        /// The survey that is being rendered.
-        /// <remarks>The "Save" method will be called on ISurvey when the Submit button is clicked.</remarks>
+        /// Gets a value indicating whether this instance is read only.
         /// </summary>
-        public ISurvey CurrentSurvey
+        /// <value>
+        /// <c>true</c> if this instance is read only; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsReadOnly
+        {
+            get
+            {
+                return this.CurrentSurvey.IsReadonly;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [show required notation].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [show required notation]; otherwise, <c>false</c>.
+        /// </value>
+        [Bindable(true)]
+        [Category("Validation")]
+        [DefaultValue("")]
+        public bool ShowRequiredNotation
         {
             get;
             set;
@@ -132,7 +153,7 @@ namespace Engage.Survey.UI
         /// <summary>
         /// Gets or sets the user id.
         /// </summary>
-        /// <remarks>You can optionally set this property and it will be stored with the ResponseHeader record.</remarks>
+        /// <remarks>You can optionally set this property and it will be stored with the <c>ResponseHeader</c> record.</remarks>
         /// <value>The user id.</value>
         public int UserId
         {
@@ -141,17 +162,16 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is read only.
+        /// Gets or sets the validation provider.
         /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsReadOnly
+        /// <value>The validation provider.</value>
+        [Bindable(true)]
+        [Category("Validation")]
+        [DefaultValue("")]
+        public ValidationProviders ValidationProvider
         {
-            get
-            {
-                return this.CurrentSurvey.IsReadonly;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -170,10 +190,95 @@ namespace Engage.Survey.UI
             const string JQueryRegistrationKey = "jQuery Registration key";
             if (!page.ClientScript.IsClientScriptBlockRegistered(typeof(SurveyControl), JQueryRegistrationKey))
             {
-                string scriptReference = string.Format(CultureInfo.InvariantCulture, JavaScriptReferenceFormat, page.ClientScript.GetWebResourceUrl(typeof(SurveyControl), "Engage.Survey.JavaScript.jquery-1.2.6.min.js"));
+                string scriptReference = string.Format(
+                        CultureInfo.InvariantCulture, 
+                        JavaScriptReferenceFormat, 
+                        page.ClientScript.GetWebResourceUrl(typeof(SurveyControl), "Engage.Survey.JavaScript.jquery-1.2.6.min.js"));
                 page.Header.Controls.Add(new LiteralControl(scriptReference));
                 page.ClientScript.RegisterStartupScript(typeof(SurveyControl), JQueryRegistrationKey, "jQuery(function($){$.noConflict();});", true);
             }
+        }
+
+        /// <summary>
+        /// Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
+        /// </summary>
+        protected override void CreateChildControls()
+        {
+            this.Controls.Clear();
+
+            // Insert our begin marker for the survey control. We can parse this out easy later if needed.
+            this.Controls.Add(new Literal { Text = BeginSurveyMarker });
+
+            HtmlGenericControl mainDiv = new HtmlGenericControl("DIV");
+            mainDiv.Attributes["class"] = this.CssClass;
+            this.Controls.Add(mainDiv);
+
+            PlaceHolder ph = new PlaceHolder();
+            this.Controls.Add(ph);
+            if (this.CurrentSurvey == null)
+            {
+                HtmlGenericControl noSurveyDiv = new HtmlGenericControl("DIV");
+                noSurveyDiv.Attributes["class"] = CssClassNoSurveyDefined;
+
+                return;
+            }
+
+            string thanks = this.Context.Request.QueryString["thankyou"];
+            if (thanks == "true")
+            {
+                this.Visible = false;
+                return;
+            }
+
+            // Need to make validator construction mechanism as we create new implementations! hk
+            // draw the survey
+            this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider());
+
+            // no need to include the submit button in html
+            if (!this.IsReadOnly)
+            {
+                this.RenderSubmitButton();
+            }
+
+            this.Controls.Add(new Literal { Text = EndSurveyMarker });
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            AddJQueryReference(this.Page);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="SurveyCompleted"/> event.
+        /// </summary>
+        /// <param name="e">The <see cref="Engage.Survey.UI.SavedEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnSurveyCompleted(SavedEventArgs e)
+        {
+            if (this.SurveyCompleted != null)
+            {
+                this.SurveyCompleted(this, e);
+            }
+        }
+
+        /// <summary>
+        /// Writes the <see cref="T:System.Web.UI.WebControls.CompositeControl"/> content to the specified <see cref="T:System.Web.UI.HtmlTextWriter"/> object, for display on the client.
+        /// </summary>
+        /// <param name="writer">An <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
+        protected override void Render(HtmlTextWriter writer)
+        {
+            if (this.Page.ClientScript.IsStartupScriptRegistered("ValidatorOverrideScripts") == false)
+            {
+                const string ValidatorOverrideScripts = "<script src=\"/javascript/validators.js\" type=\"text/javascript\"></script>";
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ValidatorOverrideScripts", ValidatorOverrideScripts, false);
+            }
+
+            base.Render(writer);
         }
 
         /// <summary>
@@ -220,6 +325,7 @@ namespace Engage.Survey.UI
                     key = null;
                     return s;
                 }
+
                 key = cb.Attributes["RelationshipKey"];
                 return cb.Checked.ToString().ToLower();
             }
@@ -240,138 +346,48 @@ namespace Engage.Survey.UI
 
             key = null;
             return "Control Class: " + c.GetType() + " Value unknown";
-        }       
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [show required notation].
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if [show required notation]; otherwise, <c>false</c>.
-        /// </value>
-        [Bindable(true), Category("Validation"), DefaultValue("")]    
-        public bool ShowRequiredNotation { get; set; }
-
-        /// <summary>
-        /// Gets or sets the validation provider.
-        /// </summary>
-        /// <value>The validation provider.</value>
-        [Bindable(true), Category("Validation"), DefaultValue("")]
-        public ValidationProviders ValidationProvider { get; set; }
-        
-        /// <summary>
-        /// Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
-        /// </summary>
-        protected override void CreateChildControls()
-        {
-            this.Controls.Clear();
-            //Insert our begin marker for the survey control. We can parse this out easy later if needed.
-            this.Controls.Add(new Literal { Text = BeginSurveyMarker });
-
-            HtmlGenericControl mainDiv = new HtmlGenericControl("DIV");
-            mainDiv.Attributes["class"] = this.CssClass;
-            this.Controls.Add(mainDiv);
-
-            PlaceHolder ph = new PlaceHolder();
-            this.Controls.Add(ph);
-            if (this.CurrentSurvey == null)
-            {
-                HtmlGenericControl noSurveyDiv = new HtmlGenericControl("DIV");
-                noSurveyDiv.Attributes["class"] = CssClassNoSurveyDefined;
-
-                return;
-            }
-
-            string thanks = this.Context.Request.QueryString["thankyou"];
-            if (thanks == "true")
-            {
-                this.Visible = false;
-                return;
-            }
-
-            // Need to make validator construction mechanism as we create new implementations! hk
-            // draw the survey
-            this.CurrentSurvey.Render(ph, IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider());
-
-            //no need to include the submit button in html
-            if (!IsReadOnly) this.RenderSubmitButton();
-
-            this.Controls.Add(new Literal { Text = EndSurveyMarker });
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
+        /// Captures the response.
         /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
-        protected override void OnInit(EventArgs e)
+        /// <param name="c">The control to collect id and value from.</param>
+        private void CaptureResponse(Control c)
         {
-            base.OnInit(e);
-
-            AddJQueryReference(this.Page);
-        }
-
-        /// <summary>
-        /// Writes the <see cref="T:System.Web.UI.WebControls.CompositeControl"/> content to the specified <see cref="T:System.Web.UI.HtmlTextWriter"/> object, for display on the client.
-        /// </summary>
-        /// <param name="writer">An <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
-        protected override void Render(HtmlTextWriter writer)
-        {
-            if (this.Page.ClientScript.IsStartupScriptRegistered("ValidatorOverrideScripts") == false)
+            WebControl child = c as WebControl;
+            if (child != null)
             {
-                const string ValidatorOverrideScripts = "<script src=\"/javascript/validators.js\" type=\"text/javascript\"></script>";
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ValidatorOverrideScripts", ValidatorOverrideScripts, false);
-            }
-            
-            base.Render(writer);
-        }
-                       
-        /// <summary>
-        /// Renders the submit image.
-        /// </summary>
-        private void RenderSubmitButton()
-        {
-            HtmlGenericControl submitDiv = new HtmlGenericControl("DIV");
-            submitDiv.Attributes["class"] = CssClassSubmitArea;
-            this.Controls.Add(submitDiv);
+                string key = child.Attributes["RelationshipKey"];
+                if (key == null)
+                {
+                    return;
+                }
 
-            Button button = new Button
-                                {
-                                        ValidationGroup = "survey",
-                                        Text = "Submit",
-                                        ID = "btnSubmit",
-                                        CssClass = CssClassImageButtonSubmit
-                                };
+                Key relationshipKey = Key.ParseKeyFromString(key);
 
-            //add the handler for the button
-            button.Click += this.btnSubmit_Click;
-            submitDiv.Controls.Add(button);
-        }
+                ////find this attribute and update the value
+                foreach (ISection section in this.CurrentSurvey.GetSections())
+                {
+                    if (section.SectionId == relationshipKey.SectionId)
+                    {
+                        // have the correct section, get the question
+                        IQuestion question = section.GetQuestion(relationshipKey);
 
-        /// <summary>
-        /// Handles the Click event of the btnSubmit control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnSubmit_Click(object sender, EventArgs e)
-        {
-            this.Page.Validate();
-            if (this.Page.IsValid)
-            {
-                this.CollectResponses(this);
+                        string answerRelationshipKey;
+                        string value = GetValue(child, out answerRelationshipKey);
+                        if (value != null)
+                        {
+                            Key answerKey = Key.ParseKeyFromString(answerRelationshipKey);
+                            if (question.Responses == null)
+                            {
+                                question.Responses = new List<UserResponse>();
+                            }
 
-                this.WriteSurvey();
-            }
-        }
-
-        /// <summary>
-        /// Recursive method to collects the responses.
-        /// </summary>
-        /// <param name="c">The parent or child control.</param>
-        private void CollectResponses(Control c)
-        {
-            IEnumerator ie = c.Controls.GetEnumerator();
-            while (ie.MoveNext())
-            {
-                this.CollectResponse((Control)ie.Current);               
+                            question.Responses.Add(new UserResponse { RelationshipKey = answerKey, AnswerValue = value });
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -389,41 +405,18 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
-        /// Captures the response.
+        /// Recursive method to collects the responses.
         /// </summary>
-        /// <param name="c">The control to collect id and value from.</param>
-        private void CaptureResponse(Control c)
+        /// <param name="c">The parent or child control.</param>
+        private void CollectResponses(Control c)
         {
-            WebControl child = c as WebControl;
-            if (child != null)
+            IEnumerator ie = c.Controls.GetEnumerator();
+            while (ie.MoveNext())
             {
-                string key = child.Attributes["RelationshipKey"];
-                if (key == null) return;
-
-                Key relationshipKey = Key.ParseKeyFromString(key);
-
-                ////find this attribute and update the value
-                foreach (ISection section in this.CurrentSurvey.GetSections())
-                {
-                    if (section.SectionId == relationshipKey.SectionId)
-                    {
-                        // have the correct section, get the question
-                        IQuestion question = section.GetQuestion(relationshipKey);
-
-                        string answerRelationshipKey;
-                        string value = GetValue(child, out answerRelationshipKey);
-                        if (value != null)
-                        {
-                            Key answerKey = Key.ParseKeyFromString(answerRelationshipKey);
-                            if (question.Responses == null)  question.Responses = new List<UserResponse>();
-                            question.Responses.Add(new UserResponse { RelationshipKey = answerKey, AnswerValue = value });
-                            break;
-                        }
-                    }
-                }
+                this.CollectResponse((Control)ie.Current);
             }
         }
-        
+
         /// <summary>
         /// Redirects this instance.
         /// </summary>
@@ -431,8 +424,8 @@ namespace Engage.Survey.UI
         {
             if (this.CurrentSurvey.FinalMessageOption == FinalMessageOption.UseFinalMessage)
             {
-                this.Controls.Clear(); //remove everything.
-                this.Controls.Add(new Literal{Text = this.CurrentSurvey.FinalMessage});
+                this.Controls.Clear(); // remove everything.
+                this.Controls.Add(new Literal { Text = this.CurrentSurvey.FinalMessage });
             }
             else
             {
@@ -441,17 +434,49 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
+        /// Renders the submit image.
+        /// </summary>
+        private void RenderSubmitButton()
+        {
+            HtmlGenericControl submitDiv = new HtmlGenericControl("DIV");
+            submitDiv.Attributes["class"] = CssClassSubmitArea;
+            this.Controls.Add(submitDiv);
+
+            Button button = new Button { ValidationGroup = "survey", Text = "Submit", ID = "btnSubmit", CssClass = CssClassImageButtonSubmit };
+
+            // add the handler for the button
+            button.Click += this.btnSubmit_Click;
+            submitDiv.Controls.Add(button);
+        }
+
+        /// <summary>
         /// Stores the survey.
         /// </summary>
         private void WriteSurvey()
         {
             ////Save to database.
-            int responseHeaderId = CurrentSurvey.Save(UserId);
-           
-            //raise event so others can act on the SurveyId created.
+            int responseHeaderId = this.CurrentSurvey.Save(this.UserId);
+
+            // raise event so others can act on the SurveyId created.
             this.OnSurveyCompleted(new SavedEventArgs(responseHeaderId, this.CurrentSurvey.SendNotification));
-            
+
             this.Redirect();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnSubmit control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            this.Page.Validate();
+            if (this.Page.IsValid)
+            {
+                this.CollectResponses(this);
+
+                this.WriteSurvey();
+            }
         }
     }
 
@@ -469,20 +494,20 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [send notification].
+        /// Gets or sets the response id.
         /// </summary>
-        /// <value><c>true</c> if [send notification]; otherwise, <c>false</c>.</value>
-        public bool SendNotification
+        /// <value>The response id.</value>
+        public int ResponseHeaderId
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the response id.
+        /// Gets or sets a value indicating whether [send notification].
         /// </summary>
-        /// <value>The response id.</value>
-        public int ResponseHeaderId
+        /// <value><c>true</c> if [send notification]; otherwise, <c>false</c>.</value>
+        public bool SendNotification
         {
             get;
             set;

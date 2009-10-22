@@ -74,6 +74,7 @@ survey-title{font-weight: bold}
 			.pv-question{display:block;float:left;}
 			.pv-answer{clear:both;padding:5px 0 0 0;}
 			#engage-evaluation hr{border:none;border-top:1px #ccc solid;}
+			li.ee-undo{background:#FFF6BF;border-top:1px solid #FFD324;border-bottom:1px solid #FFD324;padding:5px 10px;}
 /*------ Survey Listing ------*/
 .survey-listing{}
 	.survey-listing h3{color:#000;font-size:18px;margin-bottom:0;}

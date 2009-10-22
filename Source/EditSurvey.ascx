@@ -101,7 +101,7 @@
 <% if (false) { %><script type="text/ecmascript" src="JavaScript/jquery-1.3.2.debug-vsdoc.js"></script><% } %>
 <script type="text/javascript">
 var CurrentContextInfo = {
-    WebMethodUrl: '<%= ResolveUrl("~/DesktopModules/EngageSurvey/Services.asmx") %>/',
+    WebMethodUrl: '<%= ResolveUrl("ClientService.asmx") %>/',
     UserId: <%=UserId %>,
     Survey: <%=SerializedSurvey %>,
     ErrorMessage: '<%= Localize("AjaxError.Text") %>',

@@ -1,4 +1,4 @@
-﻿// <copyright file="Services.asmx.cs" company="Engage Software">
+﻿// <copyright file="ClientService.asmx.cs" company="Engage Software">
 // Engage: Survey
 // Copyright (c) 2004-2009
 // by Engage Software ( http://www.engagesoftware.com )
@@ -13,19 +13,20 @@ namespace Engage.Dnn.Survey
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Script.Services;
     using System.Web.Services;
     using Engage.Survey.Entities;
 
     /// <summary>
-    /// Web Services for Engage: Survey
+    /// Web services used on the client
     /// </summary>
     [WebService(Namespace = "http://services.engagesoftware.com/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     [ScriptService]
-    public class Services : WebService
+    public class ClientService : WebService
     {
         /// <summary>
         /// Deletes the question.
@@ -45,57 +46,25 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Gets a completed survey.
+        /// Reorders the questions for a given <see cref="Survey"/>.
         /// </summary>
-        /// <param name="responseHeaderId">The response header id.</param>
-        /// <returns>A <see cref="ReadonlySurvey"/> instance</returns>
+        /// <param name="surveyId">The ID of the <see cref="Survey"/> to which the questions belong.</param>
+        /// <param name="questionOrderMap">A <see cref="Dictionary{TKey,TValue}"/> mapping question IDs to relative order.</param>
         [WebMethod]
-        public ReadonlySurvey GetCompletedSurvey(int responseHeaderId)
+        public void ReorderQuestions(int surveyId, Dictionary<string, int> questionOrderMap)
         {
-            return (ReadonlySurvey)ReadonlySurvey.LoadSurvey(responseHeaderId);
+            var dataContext = SurveyModelDataContext.Instance;
+            var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
+
+            foreach (var questionIdOrderPair in questionOrderMap)
+            {
+                var questionId = int.Parse(questionIdOrderPair.Key, CultureInfo.InvariantCulture);
+                var relativeOrder = questionIdOrderPair.Value;
+                survey.Sections[0].Questions.Where(q => q.QuestionId == questionId).Single().RelativeOrder = relativeOrder;
+            }
+
+            dataContext.SubmitChanges();
         }
-
-        /// <summary>
-        /// Gets the survey.
-        /// </summary>
-        /// <param name="surveyId">The survey id.</param>
-        /// <returns>A <see cref="Survey"/> instance</returns>
-        [WebMethod]
-        public Survey GetSurvey(int surveyId)
-        {
-            return Survey.LoadSurvey(surveyId);
-        }
-        
-        /// <summary>
-        /// Gets all surveys.
-        /// </summary>
-        /// <returns>A <see cref="List{Survey}"/> of all <see cref="Survey"/>s</returns>
-        [WebMethod]
-        public List<Survey> GetSurveys()
-        {
-            return Survey.LoadSurveys().ToList();
-        }
-
-        /////// <summary>
-        /////// Reorders the questions for a given <see cref="Survey"/>.
-        /////// </summary>
-        /////// <param name="surveyId">The ID of the <see cref="Survey"/> to which the questions belong.</param>
-        /////// <param name="questionOrderMap">A <see cref="Dictionary{String,Int32}"/> mapping question IDs to relative order.</param>
-        ////[WebMethod]
-        ////public void ReorderQuestions(int surveyId, Dictionary<string, int> questionOrderMap)
-        ////{
-        ////    var dataContext = SurveyModelDataContext.Instance;
-        ////    var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
-
-        ////    foreach (var questionIdOrderPair in questionOrderMap)
-        ////    {
-        ////        var questionId = int.Parse(questionIdOrderPair.Key, CultureInfo.InvariantCulture);
-        ////        var relativeOrder = questionIdOrderPair.Value;
-        ////        survey.Sections[0].Questions.Where(q => q.QuestionId == questionId).Single().RelativeOrder = relativeOrder;
-        ////    }
-
-        ////    dataContext.SubmitChanges();
-        ////}
 
         /// <summary>
         /// Inserts or updates the given <paramref name="survey"/>.
@@ -191,13 +160,13 @@ namespace Engage.Dnn.Survey
             dataContext.SubmitChanges();
 
             return new
-                       {
-                               questionToUpdate.QuestionId, 
-                               questionToUpdate.ControlType, 
-                               questionToUpdate.RelativeOrder, 
-                               questionToUpdate.Text,
-                               Answers = questionToUpdate.Answers.OrderBy(a => a.RelativeOrder).Select(a => new { a.AnswerId, a.RelativeOrder, a.Text })
-                       };
+            {
+                questionToUpdate.QuestionId,
+                questionToUpdate.ControlType,
+                questionToUpdate.RelativeOrder,
+                questionToUpdate.Text,
+                Answers = questionToUpdate.Answers.OrderBy(a => a.RelativeOrder).Select(a => new { a.AnswerId, a.RelativeOrder, a.Text })
+            };
         }
     }
 }

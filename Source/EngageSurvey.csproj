@@ -94,6 +94,10 @@
     <Content Include="Settings.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientService.asmx.cs">
+      <DependentUpon>ClientService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\GlobalNavigation.ascx.cs">
       <DependentUpon>GlobalNavigation.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -105,8 +109,8 @@
       <DependentUpon>EditSurvey.ascx</DependentUpon>
     </Compile>
     <Compile Include="FeatureController.cs" />
-    <Compile Include="Services.asmx.cs">
-      <DependentUpon>Services.asmx</DependentUpon>
+    <Compile Include="SurveyService.asmx.cs">
+      <DependentUpon>SurveyService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ThankYou.ascx.cs">
@@ -190,7 +194,7 @@
     <Content Include="References\DotNetNuke.WebUtility.dll" />
     <Content Include="References\Engage.Dnn.Framework.dll" />
     <Content Include="References\Engage.Framework.dll" />
-    <Content Include="Services.asmx" />
+    <Content Include="SurveyService.asmx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -220,6 +224,7 @@
     <None Include="JavaScript\jquery-1.3.2.debug-vsdoc.js" />
     <EmbeddedResource Include="Util\Net35.bindingRedirect.config" />
     <EmbeddedResource Include="Util\Net35.withoutNamespaces.config" />
+    <Content Include="ClientService.asmx" />
     <Content Include="Controls\App_LocalResources\GlobalNavigation.ascx.resx">
       <SubType>Designer</SubType>
     </Content>

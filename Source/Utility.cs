@@ -1,5 +1,5 @@
 // <copyright file="Utility.cs" company="Engage Software">
-// Engage: ContactUs - http://www.engagesoftware.com
+// Engage: Survey - http://www.engagesoftware.com
 // Copyright (c) 2004-2009
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
@@ -18,9 +18,6 @@ namespace Engage.Dnn.Survey
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     
-    /// <summary>
-    /// Summary description for Utility.
-    /// </summary>
     public static class Utility
     {
         /// <summary>
@@ -49,7 +46,7 @@ namespace Engage.Dnn.Survey
                 return Globals.NavigateURL(module.TabID);
             }
 
-            //either the freindly name is wrong or no modules defined. Maybe should throw exception instead?
+            // either the freindly name is wrong or no modules defined. Maybe should throw exception instead?
             return Globals.NavigateURL();
         }
 
@@ -68,7 +65,7 @@ namespace Engage.Dnn.Survey
                 url.Append(Framework.ModuleBase.ApplicationUrl);
                 url.Append("/DesktopModules/");
                 url.Append(Globals.GetDesktopModuleByName(DesktopModuleName).FolderName);
-                url.Append("/Services.asmx");
+                url.Append("/SurveyService.asmx");
             }
 
             return url.ToString();

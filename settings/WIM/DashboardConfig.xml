@@ -51,7 +51,7 @@
                 PollInterval="300" WorkItemTypes="Task" ActiveStates="Active" />
             <TeamActivities Enabled="true" UseGlobalPollInterval="false"
                 PollInterval="300" WorkItemTypes="Task" ActiveStates="Active" />
-            <RemainingWorkTrend Enabled="false" UseGlobalPollInterval="false"
+            <RemainingWorkTrend Enabled="true" UseGlobalPollInterval="false"
                 PollInterval="0" />
         </TaskDataProvider>
         <BugDataProvider>

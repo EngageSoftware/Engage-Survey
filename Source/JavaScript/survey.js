@@ -144,6 +144,7 @@ jQuery(function ($) {
         placeholder: 'ui-state-highlight'
     });
     $(".answer-inputs").sortable({
+        intems: 'li.answer-input',
         placeholder: 'ui-state-highlight'
     });
     ////$("#ee-previews, .answer-inputs").disableSelection();
@@ -165,7 +166,7 @@ jQuery(function ($) {
     
     // after reordering answers
     $('.answer-inputs').bind('sortupdate', function (event, ui) {
-        var $answerNumberElements = $(".answer-inputs li").find('.answer-num');
+        var $answerNumberElements = $(".answer-inputs li.answer-input").find('.answer-num');
         $answerNumberElements.each(function (i, elem) {
             $(elem).text(i + 1);
         });
@@ -301,7 +302,7 @@ jQuery(function ($) {
     $(".add-new").click(function (event) {
         event.preventDefault();
         
-        var $answerElement = $(".answer-inputs li:last").clone(true).appendTo('.answer-inputs');
+        var $answerElement = $(".answer-inputs li.answer-input:last").clone(true).appendTo('.answer-inputs');
         
         // increment answer number
         var $answerNumberElement = $answerElement.find('.answer-num');
@@ -318,13 +319,13 @@ jQuery(function ($) {
     $(".answer-inputs .ee-delete").click(function (event) {
         event.preventDefault();
         
-        var $answers = $(".answer-inputs li")
+        var $answers = $(".answer-inputs li.answer-input")
         if ($answers.length > 1) {
             var $parentAnswerElement = $(this).closest('li');
             $parentAnswerElement.remove();
             
             // have to run query again to get rid of the element we just removed
-            $answers = $(".answer-inputs li").each(function (i, elem) {
+            $answers = $(".answer-inputs li.answer-input").each(function (i, elem) {
                 $(elem).find('.answer-num').text(i + 1);
             });
         }
@@ -435,10 +436,10 @@ jQuery(function ($) {
             $('#CancelQuestion').parent().show();
 
             //clone an existing element
-            var $baseAnswerElement = $(".answer-inputs li:last").clone(true);
+            var $baseAnswerElement = $(".answer-inputs li.answer-input:last").clone(true);
             
             //wipe out all of the answers
-            $('.answer-inputs li').remove();
+            $('.answer-inputs li.answer-input').remove();
             
             //get each answer
             $questionLi.find('.pv-answer').find('input, option').each(function (i) {
@@ -609,14 +610,14 @@ jQuery(function ($) {
         
         // only should have two answers by default
         // TODO: Make sure there aren't less than two answers
-        $('#MultipleAnswer li:gt(1)').remove();
+        $('#MultipleAnswer li.answer-input:gt(1)').remove();
         $('.ai-input input').val('');
         
         $('#SaveQuestion').text(CurrentContextInfo.SaveQuestionButtonText).attr('title', CurrentContextInfo.SaveQuestionToolTip).parent().addClass('disabled');
         
         // clear out stored data values
         $('#CreateQuestions').removeData('questionId').removeData('relativeOrder')
-            .find('#MultipleAnswer li').removeData('answerId');
+            .find('#MultipleAnswer li.answer-input').removeData('answerId');
 
         var validator = $('#Form').validate();
         validator.resetForm();
@@ -631,7 +632,7 @@ jQuery(function ($) {
                 RelativeOrder: $('#CreateQuestions').data('relativeOrder') || $('.ee-preview').length + 1,
                 ControlType: $('#DefineAnswerType').val(),
                 RevisingUser: CurrentContextInfo.UserId,
-                Answers: $.map($('#MultipleAnswer:visible .answer-inputs li'), function (elem, i) {
+                Answers: $.map($('#MultipleAnswer:visible .answer-inputs li.answer-input'), function (elem, i) {
                     var $elem = $(elem);
                     return {
                         AnswerId: $elem.data('answerId') || -1,

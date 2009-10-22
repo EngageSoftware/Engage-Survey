@@ -48,19 +48,22 @@
                 </div>
                 <div class="ee-answer-inputs" id="MultipleAnswer" style="display:none;">
                     <ul class="answer-inputs">
-                        <li>
+                        <li class="answer-input">
                             <span class="ai-label"><%=Localize("AnswerTitle.Text")%> <span class="answer-num">1</span></span>
                             <div class="ai-selected">
                                 <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" /></span>
                                 <a href="#" title='<%=Localize("RemoveAnswerHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
                             </div>
                         </li>
-                        <li>                        
+                        <li class="answer-input">                        
                             <span class="ai-label"><%=Localize("AnswerTitle.Text")%> <span class="answer-num">2</span></span>
                             <div class="ai-selected">
                                 <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" /></span>
                                 <a href="#" title='<%=Localize("RemoveAnswerHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
                             </div>
+                        </li>
+                        <li class="ee-undo" style="display:none;">
+                            <%=Localize("UndoQuestionDelete.Text") %> <a href="#" title='<%=Localize("UndoQuestionDeleteButton.ToolTip") %>'><%=Localize("UndoQuestionDeleteButton.Text") %></a>
                         </li>
                     </ul>
                     <ul class="ee-action-btns">

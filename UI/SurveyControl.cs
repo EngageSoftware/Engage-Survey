@@ -175,31 +175,6 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
-        /// Adds a reference to jQuery 1.2.6 (minified) to the page.  If you can reference DNN 5.0 or higher, use the built-in methods to register jQuery, instead.
-        /// </summary>
-        /// <remarks>
-        /// Adds the reference to the head of the page, rather than using <see cref="ClientScriptManager.RegisterClientScriptResource"/>
-        /// thus "guaranteeing" that it will run before other scripts
-        /// that might not react well to losing their $ reference.
-        /// Also checks for duplicates, only adding the reference once regardless of how many times this method is called for the <paramref name="page"/>.
-        /// </remarks>
-        /// <param name="page">The page to which the reference will be added.</param>
-        public static void AddJQueryReference(Page page)
-        {
-            const string JavaScriptReferenceFormat = @"<script src='{0}' type='text/javascript'></script>";
-            const string JQueryRegistrationKey = "jQuery Registration key";
-            if (!page.ClientScript.IsClientScriptBlockRegistered(typeof(SurveyControl), JQueryRegistrationKey))
-            {
-                string scriptReference = string.Format(
-                        CultureInfo.InvariantCulture, 
-                        JavaScriptReferenceFormat, 
-                        page.ClientScript.GetWebResourceUrl(typeof(SurveyControl), "Engage.Survey.JavaScript.jquery-1.2.6.min.js"));
-                page.Header.Controls.Add(new LiteralControl(scriptReference));
-                page.ClientScript.RegisterStartupScript(typeof(SurveyControl), JQueryRegistrationKey, "jQuery(function($){$.noConflict();});", true);
-            }
-        }
-
-        /// <summary>
         /// Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
         /// </summary>
         protected override void CreateChildControls()
@@ -244,17 +219,6 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            AddJQueryReference(this.Page);
-        }
-
-        /// <summary>
         /// Raises the <see cref="SurveyCompleted"/> event.
         /// </summary>
         /// <param name="e">The <see cref="Engage.Survey.UI.SavedEventArgs"/> instance containing the event data.</param>
@@ -264,21 +228,6 @@ namespace Engage.Survey.UI
             {
                 this.SurveyCompleted(this, e);
             }
-        }
-
-        /// <summary>
-        /// Writes the <see cref="T:System.Web.UI.WebControls.CompositeControl"/> content to the specified <see cref="T:System.Web.UI.HtmlTextWriter"/> object, for display on the client.
-        /// </summary>
-        /// <param name="writer">An <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
-        protected override void Render(HtmlTextWriter writer)
-        {
-            if (this.Page.ClientScript.IsStartupScriptRegistered("ValidatorOverrideScripts") == false)
-            {
-                const string ValidatorOverrideScripts = "<script src=\"/javascript/validators.js\" type=\"text/javascript\"></script>";
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ValidatorOverrideScripts", ValidatorOverrideScripts, false);
-            }
-
-            base.Render(writer);
         }
 
         /// <summary>

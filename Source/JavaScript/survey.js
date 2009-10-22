@@ -364,9 +364,18 @@ jQuery(function ($) {
         event.preventDefault();
         
         var $parentQuestionElement = $(this).closest('li.ee-preview');
-        $parentQuestionElement.fadeOut('slow', function () {
-            var deleteQuestionTimeoutHandle, 
-                $undoElement = $('.ee-undo').clone().show(),
+        deleteWithUndo($parentQuestionElement, function () {
+            var questionId = $parentQuestionElement.data('questionId');
+            callWebMethod('DeleteQuestion', { questionId: questionId }, function() {
+                $parentQuestionElement.remove();
+            });
+        });
+    });
+    
+    function deleteWithUndo($element, deleteCallback) {
+        $element.fadeOut('slow', function () {
+            var deleteTimeoutHandle, 
+                $undoElement = $element.siblings('.ee-undo').eq(0).clone().show(),
                 undoHtml = $undoElement.html(),
                 
                 // it'll take a second to actually show the timer, so it shows up to the user as 10
@@ -375,15 +384,12 @@ jQuery(function ($) {
             
             $undoElement.html(undoHtml.replace('{0}', '<span class="undo-limit"></span>'));
             
-            $parentQuestionElement.before($undoElement);
+            $element.before($undoElement);
             
             // set timer to delete question
-            deleteQuestionTimeoutHandle = setTimeout(function () {
-                var questionId = $parentQuestionElement.data('questionId');
-                callWebMethod('DeleteQuestion', { questionId: questionId }, function() {
-                    $parentQuestionElement.remove();
-                    $undoElement.remove();
-                });
+            deleteTimeoutHandle = setTimeout(function () {
+                $undoElement.remove();
+                deleteCallback();
             }, undoTimeLimit * 1000);
             
             // update the time remaining until deleted
@@ -403,12 +409,12 @@ jQuery(function ($) {
             $undoElement.find('a').click(function (event) {
                 event.preventDefault();
                 
-                clearTimeout(deleteQuestionTimeoutHandle);
+                clearTimeout(deleteTimeoutHandle);
                 $undoElement.remove();
-                $parentQuestionElement.show();
+                $element.show();
             });
         });
-    });
+    }
     
     function populateCreateQuestionSection ($questionLi, setQuestionData) {
         resetCreateQuestionSection();

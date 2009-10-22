@@ -631,7 +631,7 @@ jQuery(function ($) {
                 RelativeOrder: $('#CreateQuestions').data('relativeOrder') || $('.ee-preview').length + 1,
                 ControlType: $('#DefineAnswerType').val(),
                 RevisingUser: CurrentContextInfo.UserId,
-                Answers: $.map($('#MultipleAnswer:visible li'), function (elem, i) {
+                Answers: $.map($('#MultipleAnswer:visible .answer-inputs li'), function (elem, i) {
                     var $elem = $(elem);
                     return {
                         AnswerId: $elem.data('answerId') || -1,

@@ -16,71 +16,21 @@ namespace Engage.Dnn.Survey
     using DotNetNuke.Entities.Modules.Communications;
     using DotNetNuke.Services.Exceptions;
     using Engage.Survey.Entities;
+    using Engage.Survey.UI;
 
     /// <summary>
     /// This control uses the Engage Survey Control to render a survey. It wires up an event to get in on the saving of a Survey and retrieves the ResponseId
-    /// back. It this is raised out to any listeners of this module via the DNN IModuleCommunicator interface.
+    /// back. It this is raised out to any listeners of this module via the DNN <see cref="IModuleCommunicator"/> interface.
     /// </summary>
     public partial class ViewSurvey : ModuleBase, IModuleCommunicator
     {
-        #region Event Handlers
-
         /// <summary>
-        /// Raises the <see cref="EventArgs"/> event.
+        /// Occurs when module communication is invoked.
         /// </summary>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            try
-            {
-                this.SurveyControl1.CurrentSurvey = this.ResponseHeaderId == null ? Survey.LoadSurvey(this.SurveyId.GetValueOrDefault()) : ReadonlySurvey.LoadSurvey(this.ResponseHeaderId.GetValueOrDefault());
-
-                SurveyControl1.SurveyCompleted += SurveyControl1_SurveyCompleted;
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
+        public event ModuleCommunicationEventHandler ModuleCommunication;
 
         /// <summary>
-        /// Handles the SurveyCompleted event of the SurveyControl1 control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="Engage.Survey.UI.SavedEventArgs"/> instance containing the event data.</param>
-        private void SurveyControl1_SurveyCompleted(object sender, Engage.Survey.UI.SavedEventArgs e)
-        {
-            if (ModuleCommunication != null)
-            {
-                ModuleCommunicationEventArgs args = new ModuleCommunicationEventArgs { Sender = "ViewSurvey", Target = "Any module", Text = "NewRecord", Value = e.ResponseHeaderId };
-                ModuleCommunication(this, args);
-            }
-        }
-
-        /// <summary>
-        /// Gets the survey id fromm the QueryString if possible.
-        /// </summary>
-        /// <value>The survey id.</value>
-        private int? SurveyId
-        {
-            get
-            {
-                if (this.Request.QueryString["surveyId"] != null)
-                {
-                    int id;
-                    if (int.TryParse(this.Request.QueryString["surveyId"], NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
-                    {
-                        return id;
-                    }
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the ResponseHeaderId fromm the QueryString if possible.
+        /// Gets the ResponseHeaderId from the QueryString if possible.
         /// </summary>
         /// <value>The survey id.</value>
         private int? ResponseHeaderId
@@ -95,15 +45,72 @@ namespace Engage.Dnn.Survey
                         return id;
                     }
                 }
+
                 return null;
             }
         }
-        #endregion
 
         /// <summary>
-        /// Occurs when module communication is invoked.
+        /// Gets the survey id from the QueryString if possible.
         /// </summary>
-        public event ModuleCommunicationEventHandler ModuleCommunication;
+        /// <value>The survey id.</value>
+        private int? SurveyId
+        {
+            get
+            {
+                if (this.Request.QueryString["surveyId"] != null)
+                {
+                    int id;
+                    if (int.TryParse(this.Request.QueryString["surveyId"], NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
+                    {
+                        return id;
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="EventArgs"/> event.
+        /// </summary>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            try
+            {
+                this.SurveyControl1.CurrentSurvey = this.ResponseHeaderId == null
+                                                            ? Survey.LoadSurvey(this.SurveyId.GetValueOrDefault())
+                                                            : ReadonlySurvey.LoadSurvey(this.ResponseHeaderId.Value);
+
+                this.SurveyControl1.SurveyCompleted += this.SurveyControl1_SurveyCompleted;
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="SurveyControl.SurveyCompleted"/> event of the <see cref="SurveyControl1"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SavedEventArgs"/> instance containing the event data.</param>
+        private void SurveyControl1_SurveyCompleted(object sender, SavedEventArgs e)
+        {
+            if (this.ModuleCommunication != null)
+            {
+                var args = new ModuleCommunicationEventArgs
+                                                        {
+                                                                Sender = "ViewSurvey", 
+                                                                Target = "Any module", 
+                                                                Text = "NewRecord", 
+                                                                Value = e.ResponseHeaderId
+                                                        };
+                this.ModuleCommunication(this, args);
+            }
+        }
     }
 }
-

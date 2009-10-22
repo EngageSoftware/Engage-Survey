@@ -37,16 +37,16 @@ namespace Engage.Dnn.Survey
         ////    return (ReadonlySurvey)ReadonlySurvey.LoadSurvey(responseHeaderId);
         ////}
 
-        /////// <summary>
-        /////// Gets the survey.
-        /////// </summary>
-        /////// <param name="surveyId">The survey id.</param>
-        /////// <returns>A <see cref="Survey"/> instance</returns>
-        ////[WebMethod]
-        ////public Survey GetSurvey(int surveyId)
-        ////{
-        ////    return Survey.LoadSurvey(surveyId);
-        ////}
+        /// <summary>
+        /// Gets the survey.
+        /// </summary>
+        /// <param name="surveyId">The survey id.</param>
+        /// <returns>A <see cref="Survey"/> instance</returns>
+        [WebMethod]
+        public Survey GetSurvey(int surveyId)
+        {
+            return Survey.LoadSurvey(surveyId);
+        }
         
         /// <summary>
         /// Gets all surveys.

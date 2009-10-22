@@ -12,9 +12,9 @@
         <ItemTemplate>
             <li class='<%# Container.ItemIndex % 2 == 0 ? "sl-item" : "sl-alt-item" %>'>
                 <asp:Label ID="TextLabel" runat="server" CssClass="NormalBold" />
-                <asp:HyperLink ID="PreviewHyperLink" runat="server" ResourceKey="PreviewLink" />
-                <asp:HyperLink ID="EditHyperLink" runat="server" ResourceKey="EditLink" />
-                <asp:HyperLink ID="DeleteHyperLink" runat="server" ResourceKey="DeleteLink" />
+                <asp:HyperLink ID="PreviewHyperLink" runat="server" ResourceKey="PreviewLink" CssClass="ee-copy" />
+                <asp:HyperLink ID="EditHyperLink" runat="server" ResourceKey="EditLink" CssClass="ee-edit" />
+                <asp:HyperLink ID="DeleteHyperLink" runat="server" ResourceKey="DeleteLink" CssClass="ee-delete" />
             </li>
         </ItemTemplate>
         <FooterTemplate></ul></FooterTemplate>

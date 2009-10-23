@@ -16,6 +16,7 @@ namespace Engage.Survey.UI
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Globalization;
+    using System.Linq;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -238,59 +239,46 @@ namespace Engage.Survey.UI
         /// <returns>The string value from the Text property.</returns>
         private static string GetValue(Control c, out string key)
         {
-            if (c is TextBox)
+            var textBox = c as TextBox;
+            if (textBox != null)
             {
-                TextBox tb = (TextBox)c;
                 key = null;
-                return tb.Text == string.Empty ? null : tb.Text;
+                return textBox.Text;
             }
 
-            if (c is DropDownList)
+            var list = c as ListControl;
+            if (list != null)
             {
-                DropDownList ddl = (DropDownList)c;
-                if (ddl.SelectedIndex == 0)
+                if ((list is DropDownList && list.SelectedIndex == 0) || list.SelectedItem == null)
                 {
                     key = null;
-                    return null;
+                    return string.Empty;
                 }
 
-                ListItem li = ddl.SelectedItem;
+                ListItem li = list.SelectedItem;
                 key = li.Attributes["RelationshipKey"];
                 return li.Value;
             }
 
-            if (c is CheckBox)
+            var checkBox = c as CheckBox;
+            if (checkBox != null)
             {
-                CheckBox cb = (CheckBox)c;
-                if (c is RadioButton)
+                var radioButton = checkBox as RadioButton;
+                if (radioButton != null)
                 {
-                    string s = cb.Attributes["attributevalue"];
+                    string s = radioButton.Attributes["attributevalue"];
                     if (s == null)
                     {
-                        key = cb.Attributes["RelationshipKey"];
-                        return cb.Checked ? cb.ID : null;
+                        key = radioButton.Attributes["RelationshipKey"];
+                        return radioButton.Checked ? radioButton.ID : null;
                     }
 
                     key = null;
                     return s;
                 }
 
-                key = cb.Attributes["RelationshipKey"];
-                return cb.Checked.ToString().ToLower();
-            }
-
-            if (c is CheckBoxList)
-            {
-                CheckBoxList cbl = (CheckBoxList)c;
-                key = cbl.SelectedItem.Attributes["RelationshipKey"];
-                return cbl.SelectedValue;
-            }
-
-            if (c is RadioButtonList)
-            {
-                RadioButtonList rbl = (RadioButtonList)c;
-                key = rbl.SelectedItem.Attributes["RelationshipKey"];
-                return rbl.SelectedValue;
+                key = checkBox.Attributes["RelationshipKey"];
+                return checkBox.Checked.ToString().ToLower();
             }
 
             key = null;
@@ -303,7 +291,7 @@ namespace Engage.Survey.UI
         /// <param name="c">The control to collect id and value from.</param>
         private void CaptureResponse(Control c)
         {
-            WebControl child = c as WebControl;
+            var child = c as WebControl;
             if (child != null)
             {
                 string key = child.Attributes["RelationshipKey"];
@@ -314,28 +302,20 @@ namespace Engage.Survey.UI
 
                 Key relationshipKey = Key.ParseKeyFromString(key);
 
-                ////find this attribute and update the value
-                foreach (ISection section in this.CurrentSurvey.GetSections())
+                var section = this.CurrentSurvey.GetSections().Where(s => s.SectionId == relationshipKey.SectionId).Single();
+                var question = section.GetQuestion(relationshipKey);
+
+                string answerRelationshipKey;
+                string value = GetValue(child, out answerRelationshipKey);
+                if (value != null)
                 {
-                    if (section.SectionId == relationshipKey.SectionId)
+                    if (question.Responses == null)
                     {
-                        // have the correct section, get the question
-                        IQuestion question = section.GetQuestion(relationshipKey);
-
-                        string answerRelationshipKey;
-                        string value = GetValue(child, out answerRelationshipKey);
-                        if (value != null)
-                        {
-                            Key answerKey = Key.ParseKeyFromString(answerRelationshipKey);
-                            if (question.Responses == null)
-                            {
-                                question.Responses = new List<UserResponse>();
-                            }
-
-                            question.Responses.Add(new UserResponse { RelationshipKey = answerKey, AnswerValue = value });
-                            break;
-                        }
+                        question.Responses = new List<UserResponse>();
                     }
+
+                    Key answerKey = Key.ParseKeyFromString(answerRelationshipKey);
+                    question.Responses.Add(new UserResponse { RelationshipKey = answerKey, AnswerValue = value });
                 }
             }
         }
@@ -359,10 +339,9 @@ namespace Engage.Survey.UI
         /// <param name="c">The parent or child control.</param>
         private void CollectResponses(Control c)
         {
-            IEnumerator ie = c.Controls.GetEnumerator();
-            while (ie.MoveNext())
+            foreach (Control childControl in c.Controls)
             {
-                this.CollectResponse((Control)ie.Current);
+                this.CollectResponse(childControl);
             }
         }
 

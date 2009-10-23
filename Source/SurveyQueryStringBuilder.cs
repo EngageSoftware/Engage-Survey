@@ -1,5 +1,5 @@
 // <copyright file="SurveyQueryStringBuilder.cs" company="Engage Software">
-// Engage: ContactUs - http://www.engagesoftware.com
+// Engage: Survey
 // Copyright (c) 2004-2009
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>

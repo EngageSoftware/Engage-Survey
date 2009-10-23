@@ -292,30 +292,34 @@ namespace Engage.Survey.Entities
                 {
                     if (question.GetAnswers().Count == 0)
                     {
-                        ////Open ended question.
+                        // Open ended question.
                         foreach (UserResponse response in question.Responses)
                         {
-                            WriteResponseEntry(responseHeaderId, section, question, null, response.AnswerValue);
+                            this.WriteResponseEntry(responseHeaderId, section, question, null, response.AnswerValue);
                         }
                     }
-                    foreach (IAnswer answer in question.GetAnswers())
+                    else
                     {
-                        if (question.Responses.Count == 1)
+                        foreach (IAnswer answer in question.GetAnswers())
                         {
-                            foreach (UserResponse response in question.Responses)
+                            if (question.Responses.Count == 1)
                             {
-                                string responseText = null;
-                                if (response.AnswerValue == answer.Text)
+                                foreach (UserResponse response in question.Responses)
                                 {
-                                    responseText = answer.Text;
+                                    string responseText = null;
+                                    if (response.AnswerValue == answer.Text)
+                                    {
+                                        responseText = answer.Text;
+                                    }
+
+                                    this.WriteResponseEntry(responseHeaderId, section, question, answer, responseText);
                                 }
-                                WriteResponseEntry(responseHeaderId, section, question, answer, responseText);
                             }
-                        }
-                        else
-                        {
-                            UserResponse response = question.FindResponse(answer);
-                            WriteResponseEntry(responseHeaderId, section, question, answer, response.AnswerValue);
+                            else
+                            {
+                                UserResponse response = question.FindResponse(answer);
+                                this.WriteResponseEntry(responseHeaderId, section, question, answer, response.AnswerValue);
+                            }
                         }
                     }
                 }
@@ -330,7 +334,14 @@ namespace Engage.Survey.Entities
         private static int CreateResponseHeader(int userId)
         {
             SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            ResponseHeader header = new ResponseHeader { CreatedBy = userId, RevisingUser = userId, UserId = userId, RevisionDate = DateTime.Now, CreationDate = DateTime.Now};
+            var header = new ResponseHeader
+                                        {
+                                                CreatedBy = userId,
+                                                RevisingUser = userId,
+                                                UserId = userId,
+                                                RevisionDate = DateTime.Now,
+                                                CreationDate = DateTime.Now
+                                        };
             context.ResponseHeaders.InsertOnSubmit(header);
             context.SubmitChanges();
 

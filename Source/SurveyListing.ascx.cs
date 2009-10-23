@@ -15,8 +15,8 @@ namespace Engage.Dnn.Survey
     using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
     using Engage.Survey;
     using Engage.Survey.Entities;
@@ -26,6 +26,12 @@ namespace Engage.Dnn.Survey
     /// </summary>
     public partial class SurveyListing : ModuleBase
     {
+        private enum ListingMode
+        {
+            Definition,
+            Completed
+        }
+
         /// <summary>
         /// Raises the <see cref="Control.Init"/> event.
         /// </summary>
@@ -42,10 +48,10 @@ namespace Engage.Dnn.Survey
         /// <summary>
         /// Binds the data.
         /// </summary>
-        /// <param name="index">The index.</param>
-        private void BindData(int index)
+        /// <param name="mode">The listing mode.</param>
+        private void BindData(ListingMode mode)
         {
-            if (index == 0)
+            if (mode == ListingMode.Definition)
             {
                 // bind to survey definitions
                 this.SurveyGrid.DataSource = Survey.LoadSurveys();
@@ -68,7 +74,7 @@ namespace Engage.Dnn.Survey
         /// </returns>
         private string BuildDeleteUrl(int id, string key)
         {
-            return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&delete=1&" + key +  "=" + id);
+            return BuildLinkUrl(this.ModuleId, string.Empty, "delete=1", key +  "=" + id);
         }
 
         /// <summary>
@@ -78,7 +84,7 @@ namespace Engage.Dnn.Survey
         /// <returns>A URL which takes the user to a page to edit the survey with the given <paramref name="surveyId"/></returns>
         private string BuildEditUrl(int surveyId)
         {
-            return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=EditSurvey&surveyId=" + surveyId);
+            return BuildLinkUrl(this.ModuleId, "EditSurvey", "surveyId=" + surveyId);
         }
 
         /// <summary>
@@ -87,7 +93,7 @@ namespace Engage.Dnn.Survey
         /// <returns>A URL which takes the user to a page to create a new survey</returns>
         private string BuildNewUrl()
         {
-            return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=EditSurvey");
+            return BuildLinkUrl(this.ModuleId, "EditSurvey");
         }
 
         /// <summary>
@@ -98,7 +104,7 @@ namespace Engage.Dnn.Survey
         /// <returns>A URL to a read-only preview of the survey with the given <paramref name="id"/></returns>
         private string BuildPreviewUrl(int id, string key)
         {
-            return this.BuildLinkUrl("&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&key=ViewSurvey&" + key + "=" + id);
+            return BuildLinkUrl(this.ModuleId, "ViewSurvey", key + "=" + id);
         }
 
         /// <summary>
@@ -108,7 +114,20 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void FilterRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.BindData(this.FilterRadioButtonList.SelectedIndex);
+            this.BindData(this.SelectedListingMode);
+        }
+
+        private ListingMode SelectedListingMode
+        {
+            get
+            {
+                if (Enum.IsDefined(typeof(ListingMode), this.FilterRadioButtonList.SelectedValue))
+                {
+                    return (ListingMode)Enum.Parse(typeof(ListingMode), this.FilterRadioButtonList.SelectedValue);
+                }
+
+                return ListingMode.Definition;
+            }
         }
 
         /// <summary>
@@ -134,8 +153,9 @@ namespace Engage.Dnn.Survey
                 {
                     if (Request.QueryString["delete"] != null)
                     {
-                        DeleteItem();
+                        this.DeleteItem();
                     }
+
                     this.BindData(0);
                 }
             }
@@ -150,13 +170,13 @@ namespace Engage.Dnn.Survey
         /// </summary>
         private void DeleteItem()
         {
-            if (ResponseHeaderId == null)
+            if (this.ResponseHeaderId == null)
             {
-                Survey.Delete(SurveyId);    
+                Survey.Delete(this.SurveyId);    
             }
             else
             {
-                ReadonlySurvey.Delete(ResponseHeaderId);
+                ReadonlySurvey.Delete(this.ResponseHeaderId);
             }
         }
 
@@ -170,33 +190,36 @@ namespace Engage.Dnn.Survey
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 var survey = (ISurvey)e.Item.DataItem;
+                var completedSurvey = survey as ReadonlySurvey;
+                var surveyIsComplete = completedSurvey != null;
+
                 var editHyperLink = e.Item.FindControl("EditHyperLink") as HyperLink;
                 if (editHyperLink != null)
                 {
                     editHyperLink.NavigateUrl = this.BuildEditUrl(survey.SurveyId);
-                    editHyperLink.Visible = !survey.IsReadonly;
+                    editHyperLink.Visible = !surveyIsComplete;
                 }
 
                 var previewHyperLink = e.Item.FindControl("ViewHyperLink") as HyperLink;
                 if (previewHyperLink != null)
                 {
-                    previewHyperLink.NavigateUrl = survey.IsReadonly ? this.BuildPreviewUrl(((ReadonlySurvey)survey).ResponseHeaderId, "responseheaderid") : this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
+                    previewHyperLink.NavigateUrl = surveyIsComplete
+                        ? this.BuildPreviewUrl(completedSurvey.ResponseHeaderId, "responseheaderid") 
+                        : this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
                 }
 
                 var deleteHyperLink = e.Item.FindControl("DeleteHyperLink") as HyperLink;
                 if (deleteHyperLink != null)
                 {
-                    if (survey.IsReadonly)
+                    if (surveyIsComplete)
                     {
-                        deleteHyperLink.NavigateUrl = this.BuildDeleteUrl(((ReadonlySurvey)survey).ResponseHeaderId, "responseheaderid");
-                        string deleteSurvey = Localization.GetString("DeleteCompletedSurvey.Text", LocalResourceFile);
-                        ClientAPI.AddButtonConfirm(deleteHyperLink, deleteSurvey);
+                        deleteHyperLink.NavigateUrl = this.BuildDeleteUrl(completedSurvey.ResponseHeaderId, "responseheaderid");
+                        ClientAPI.AddButtonConfirm(deleteHyperLink, this.Localize("DeleteCompletedSurvey.Text"));
                     }
                     else
                     {
                         deleteHyperLink.NavigateUrl = this.BuildDeleteUrl(survey.SurveyId, "surveyId");
-                        string deleteSurvey = Localization.GetString("DeleteSurvey.Text", LocalResourceFile);
-                        ClientAPI.AddButtonConfirm(deleteHyperLink, deleteSurvey);
+                        ClientAPI.AddButtonConfirm(deleteHyperLink, this.Localize("DeleteSurvey.Text"));
                     }
                 }
 
@@ -205,11 +228,44 @@ namespace Engage.Dnn.Survey
                 {
                     textLabel.Text = survey.Text;
                 }
+
+                var dateLabel = e.Item.FindControl("DateLabel") as Label;
+                var userLabel = e.Item.FindControl("UserLabel") as Label;
+                if (dateLabel != null)
+                {
+                    dateLabel.Visible = surveyIsComplete;
+                    if (surveyIsComplete)
+                    {
+                        dateLabel.Text = string.Format(CultureInfo.CurrentCulture, this.Localize("DateLabel.Format"), completedSurvey.CreationDate);
+                    }
+                }
+
+                if (userLabel != null)
+                {
+                    userLabel.Visible = surveyIsComplete;
+                    if (surveyIsComplete)
+                    {
+                        var surveyUser = completedSurvey.UserId.HasValue ? UserController.GetUser(this.PortalId, completedSurvey.UserId.Value, false) : null;
+                        if (surveyUser != null)
+                        {
+                            userLabel.Text = string.Format(
+                                    CultureInfo.CurrentCulture,
+                                    this.Localize("UserLabel.Format"),
+                                    surveyUser.DisplayName,
+                                    surveyUser.FirstName,
+                                    surveyUser.LastName);
+                        }
+                        else
+                        {
+                            userLabel.Text = this.Localize("AnonymousUser.Text");
+                        }
+                    }
+                }
             }
         }
 
         /// <summary>
-        /// Gets the survey id fromm the QueryString if possible.
+        /// Gets the survey id from the QueryString if possible.
         /// </summary>
         /// <value>The survey id.</value>
         private int? SurveyId

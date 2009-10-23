@@ -21,28 +21,6 @@ namespace Engage.Dnn.Survey
         {
             get { return Utility.DesktopModuleName; }
         }
-
-        /// <summary>
-        /// Builds the link URL.
-        /// </summary>
-        /// <param name="qsParameters">The qs parameters.</param>
-        /// <returns></returns>
-        public string BuildLinkUrl(string qsParameters)
-        {
-            return BuildLinkUrl(TabId, string.Empty, qsParameters);
-        }
-
-        /// <summary>
-        /// Builds the link URL.
-        /// </summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="controlKey">The control key.</param>
-        /// <param name="qsParameters">The qs parameters.</param>
-        /// <returns></returns>
-        public static string BuildLinkUrl(int tabId, string controlKey, string qsParameters)
-        {
-            return DotNetNuke.Common.Globals.NavigateURL(tabId, controlKey, qsParameters);
-        }
     }
 }
 

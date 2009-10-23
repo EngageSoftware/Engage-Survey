@@ -11,6 +11,7 @@
 
 namespace Engage.Survey.Entities
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
@@ -27,23 +28,7 @@ namespace Engage.Survey.Entities
         /// <returns></returns>
         public static ISurvey LoadSurvey(int responseHeaderId)
         {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            var survey = (from s in context.Responses
-                          where s.ResponseHeaderId == responseHeaderId
-
-                          select
-                                  new ReadonlySurvey
-                                      {
-                                              SurveyId = s.SurveyId,
-                                              Text = s.SurveyText,
-                                              ShowText = s.ShowSurveyText,
-                                              TitleOption = s.TitleOption,
-                                              QuestionFormatOption = s.QuestionFormatOption,
-                                              SectionFormatOption = s.SectionFormatOption
-                                      }).FirstOrDefault();
-
-            survey.ResponseHeaderId = responseHeaderId;
-            return survey;
+            return LoadSurveys().Where(s => s.ResponseHeaderId == responseHeaderId).SingleOrDefault();
         }
 
         /// <summary>
@@ -64,7 +49,9 @@ namespace Engage.Survey.Entities
                                 TitleOption = s.TitleOption,
                                 QuestionFormatOption = s.QuestionFormatOption,
                                 SectionFormatOption = s.SectionFormatOption,
-                                ResponseHeaderId = r.ResponseHeaderId
+                                ResponseHeaderId = r.ResponseHeaderId,
+                                CreationDate = r.CreationDate,
+                                UserId = r.UserId
                             }).Distinct();
         }
 
@@ -74,21 +61,14 @@ namespace Engage.Survey.Entities
         /// <param name="responseHeaderId">The responseheaderId</param>
         public static void Delete(int? responseHeaderId)
         {
-            //linq query
             SurveyModelDataContext context = SurveyModelDataContext.Instance;
-
-            var responses = (from r in context.Responses
-                     join rh in context.ResponseHeaders on r.ResponseHeaderId equals rh.ResponseHeaderId
-                     where rh.ResponseHeaderId == responseHeaderId 
-                     select r);
-
-            context.Responses.DeleteAllOnSubmit(responses);
 
             var responseHeader = (from rh in context.ResponseHeaders 
                              where rh.ResponseHeaderId == responseHeaderId
                              select rh).Single();
 
             context.ResponseHeaders.DeleteOnSubmit(responseHeader);
+            context.Responses.DeleteAllOnSubmit(responseHeader.Responses);
 
             context.SubmitChanges();
         }
@@ -97,6 +77,18 @@ namespace Engage.Survey.Entities
         /// ResponseHeaderId
         /// </summary>
         public int ResponseHeaderId
+        {
+            get;
+            set;
+        }
+
+        public int? UserId
+        {
+            get;
+            set;
+        }
+
+        public DateTime CreationDate
         {
             get;
             set;

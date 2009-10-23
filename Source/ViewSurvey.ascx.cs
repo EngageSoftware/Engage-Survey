@@ -81,6 +81,7 @@ namespace Engage.Dnn.Survey
 
             try
             {
+                this.SurveyControl1.UserId = this.UserId;
                 this.SurveyControl1.CurrentSurvey = this.ResponseHeaderId == null
                                                             ? Survey.LoadSurvey(this.SurveyId.GetValueOrDefault())
                                                             : ReadonlySurvey.LoadSurvey(this.ResponseHeaderId.Value);

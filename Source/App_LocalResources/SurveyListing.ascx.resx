@@ -141,10 +141,10 @@
   <data name="NewSurveyButton.Text" xml:space="preserve">
     <value>Add New Survey</value>
   </data>
-  <data name="PreviewLink.Text" xml:space="preserve">
-    <value>preview</value>
-  </data>
   <data name="Survey Definitions.Text" xml:space="preserve">
     <value>Survey Definitions</value>
+  </data>
+  <data name="ViewLink.Text" xml:space="preserve">
+    <value>view</value>
   </data>
 </root>

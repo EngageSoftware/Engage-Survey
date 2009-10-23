@@ -161,7 +161,7 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Handles the <see cref="DataGrid.ItemDataBound"/> event of the <see cref="SurveyGrid"/> control.
+        /// Handles the <see cref="Repeater.ItemDataBound"/> event of the <see cref="SurveyGrid"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="DataGridItemEventArgs"/> instance containing the event data.</param>
@@ -177,7 +177,7 @@ namespace Engage.Dnn.Survey
                     editHyperLink.Visible = !survey.IsReadonly;
                 }
 
-                var previewHyperLink = e.Item.FindControl("PreviewHyperLink") as HyperLink;
+                var previewHyperLink = e.Item.FindControl("ViewHyperLink") as HyperLink;
                 if (previewHyperLink != null)
                 {
                     previewHyperLink.NavigateUrl = survey.IsReadonly ? this.BuildPreviewUrl(((ReadonlySurvey)survey).ResponseHeaderId, "responseheaderid") : this.BuildPreviewUrl(survey.SurveyId, "SurveyId");

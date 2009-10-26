@@ -37,10 +37,10 @@ namespace Engage.Dnn.Survey
         {
             get
             {
-                if (this.Request.QueryString["responseheaderid"] != null)
+                if (this.Request.QueryString["responseHeaderId"] != null)
                 {
                     int id;
-                    if (int.TryParse(this.Request.QueryString["responseheaderid"], NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
+                    if (int.TryParse(this.Request.QueryString["responseHeaderId"], NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
                     {
                         return id;
                     }

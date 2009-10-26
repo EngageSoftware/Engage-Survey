@@ -23,12 +23,12 @@ namespace Engage.Dnn.Survey {
         protected global::Engage.Dnn.Survey.GlobalNavigation GlobalNavigation;
         
         /// <summary>
-        /// ControlsPlaceHolder control.
+        /// SubControlPlaceholder control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder ControlsPlaceHolder;
+        protected global::System.Web.UI.WebControls.PlaceHolder SubControlPlaceholder;
     }
 }

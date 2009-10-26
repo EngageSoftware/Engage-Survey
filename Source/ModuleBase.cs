@@ -11,6 +11,9 @@
 
 namespace Engage.Dnn.Survey
 {
+    /// <summary>
+    /// The base class for all module controls in this module
+    /// </summary>
     public class ModuleBase : Framework.ModuleBase
     {
         /// <summary>
@@ -20,6 +23,48 @@ namespace Engage.Dnn.Survey
         public override string DesktopModuleName
         {
             get { return Utility.DesktopModuleName; }
+        }
+
+        /// <summary>
+        /// Builds a URL for this ModuleId, loading the given <see cref="ControlKey"/>.
+        /// </summary>
+        /// <param name="moduleId">The module id of the module for which the control key is being used.</param>
+        /// <param name="controlKey">The control key to determine which control to load.</param>
+        /// <returns>
+        /// A URL with the given criteria
+        /// </returns>
+        protected string BuildLinkUrl(int moduleId, ControlKey controlKey)
+        {
+            return this.BuildLinkUrl(moduleId, controlKey.ToString());
+        }
+
+        /// <summary>
+        /// Builds a URL for this ModuleId, loading the given <see cref="ControlKey"/>, and using the given queryString parameters.
+        /// </summary>
+        /// <param name="moduleId">The module id of the module for which the control key is being used.</param>
+        /// <param name="controlKey">The control key to determine which control to load.</param>
+        /// <param name="queryStringParameters">Any other queryString parameters.</param>
+        /// <returns>
+        /// A URL with the given criteria
+        /// </returns>
+        protected string BuildLinkUrl(int moduleId, ControlKey controlKey, params string[] queryStringParameters)
+        {
+            return this.BuildLinkUrl(moduleId, controlKey.ToString(), queryStringParameters);
+        }
+
+        /// <summary>
+        /// Builds a URL for the given <paramref name="tabId"/>, using the given queryString parameters.
+        /// </summary>
+        /// <param name="tabId">The tab id of the page to navigate to.</param>
+        /// <param name="moduleId">The module id of the module for which the control key is being used.</param>
+        /// <param name="controlKey">The control key to determine which control to load.</param>
+        /// <param name="queryStringParameters">Any other queryString parameters.</param>
+        /// <returns>
+        /// A URL to the given <paramref name="tabId"/>, with the given queryString parameters
+        /// </returns>
+        protected string BuildLinkUrl(int tabId, int moduleId, ControlKey controlKey, params string[] queryStringParameters)
+        {
+            return this.BuildLinkUrl(tabId, moduleId, controlKey.ToString(), queryStringParameters);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Engage.Dnn.Survey
         /// <summary>
         /// The display that is used for unauthenticated users.
         /// </summary>
-        public static readonly Setting<string> DisplayType = new Setting<string>("DisplayType", SettingScope.TabModule, "SurveyListing");
+        public static readonly Setting<ControlKey> DisplayType = new Setting<ControlKey>("DisplayType", SettingScope.TabModule, ControlKey.SurveyListing);
 
         /// <summary>
         /// The SurveyTypeId for the survey to render.

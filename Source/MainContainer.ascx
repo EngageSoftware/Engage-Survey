@@ -2,5 +2,5 @@
 <%@ Register TagPrefix="engage" TagName="GlobalNav" Src="Controls/GlobalNavigation.ascx" %>
 <div style="clear:both;">
     <engage:GlobalNav ID="GlobalNavigation" runat="server" />
-    <asp:PlaceHolder id="ControlsPlaceHolder" runat="server" />
+    <asp:PlaceHolder id="SubControlPlaceholder" runat="server" />
 </div>

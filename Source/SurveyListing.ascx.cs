@@ -74,7 +74,7 @@ namespace Engage.Dnn.Survey
         /// </returns>
         private string BuildDeleteUrl(int id, string key)
         {
-            return BuildLinkUrl(this.ModuleId, string.Empty, "delete=1", key +  "=" + id);
+            return BuildLinkUrl(this.ModuleId, string.Empty, "delete=1", key + "=" + id);
         }
 
         /// <summary>
@@ -197,14 +197,14 @@ namespace Engage.Dnn.Survey
                 if (editHyperLink != null)
                 {
                     editHyperLink.NavigateUrl = this.BuildEditUrl(survey.SurveyId);
-                    editHyperLink.Visible = !surveyIsComplete;
+                    editHyperLink.Visible = !surveyIsComplete && this.IsEditable;
                 }
 
                 var previewHyperLink = e.Item.FindControl("ViewHyperLink") as HyperLink;
                 if (previewHyperLink != null)
                 {
                     previewHyperLink.NavigateUrl = surveyIsComplete
-                        ? this.BuildPreviewUrl(completedSurvey.ResponseHeaderId, "responseheaderid") 
+                        ? this.BuildPreviewUrl(completedSurvey.ResponseHeaderId, "responseHeaderId") 
                         : this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
                 }
 
@@ -213,7 +213,7 @@ namespace Engage.Dnn.Survey
                 {
                     if (surveyIsComplete)
                     {
-                        deleteHyperLink.NavigateUrl = this.BuildDeleteUrl(completedSurvey.ResponseHeaderId, "responseheaderid");
+                        deleteHyperLink.NavigateUrl = this.BuildDeleteUrl(completedSurvey.ResponseHeaderId, "responseHeaderId");
                         ClientAPI.AddButtonConfirm(deleteHyperLink, this.Localize("DeleteCompletedSurvey.Text"));
                     }
                     else

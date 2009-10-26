@@ -98,6 +98,7 @@
       <DependentUpon>ClientService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ControlKey.cs" />
     <Compile Include="Controls\GlobalNavigation.ascx.cs">
       <DependentUpon>GlobalNavigation.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

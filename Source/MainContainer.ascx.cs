@@ -12,36 +12,37 @@
 namespace Engage.Dnn.Survey
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Globalization;
     using System.IO;
+    using System.Web;
     using System.Web.UI;
-    using DotNetNuke.Entities.Modules.Actions;
-    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
+    using Framework;
 
     /// <summary>
     /// MainContainer for project.
     /// </summary>
     public partial class MainContainer : ModuleBase
     {
-        private static StringDictionary ControlKeys;
-        private string controlToLoad;
+        /// <summary>
+        /// The control key for the <see cref="DefaultSubControl"/>
+        /// </summary>
+        protected internal static readonly ControlKey DefaultControlKey = ControlKey.SurveyListing;
 
         /// <summary>
-        /// Gets the admin control keys.
+        /// The default sub-control to load when no control key is provided and no other default is set in the module settings
         /// </summary>
-        /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a property")]
-        public static StringDictionary GetAdminControlKeys()
-        {
-            if (ControlKeys == null)
-            {
-                FillControlKeys();
-            }
+        private static readonly SubControlInfo DefaultSubControl = new SubControlInfo("SurveyListing.ascx", false);
 
-            return ControlKeys;
-        }
+        /// <summary>
+        /// A dictionary mapping control keys to user controls
+        /// </summary>
+        private static readonly IDictionary<ControlKey, SubControlInfo> ControlKeys = FillControlKeys();
 
         /// <summary>
         /// Raises the <see cref="Control.Init"/> event.
@@ -51,70 +52,103 @@ namespace Engage.Dnn.Survey
         {
             base.OnInit(e);
 
-            this.ReadItemType();
-            this.LoadControlType();
+            SubControlInfo controlToLoad = this.GetControlToLoad();
+
+            if (!controlToLoad.RequiresEditPermission || PortalSecurity.HasNecessaryPermission(SecurityAccessLevel.Edit, this.PortalSettings, this.ModuleConfiguration, this.UserInfo))
+            {
+                this.LoadChildControl(controlToLoad);
+            }
+            else if (IsLoggedIn)
+            {
+                this.Response.Redirect(Globals.NavigateURL(this.TabId), true);
+            }
+            else
+            {
+                this.Response.Redirect(Dnn.Utility.GetLoginUrl(this.PortalSettings, this.Request), true);
+            }
 
             this.GlobalNavigation.ModuleConfiguration = this.ModuleConfiguration;
         }
 
-        private static void FillControlKeys()
+        /// <summary>
+        /// Fills <see cref="ControlKeys"/>.
+        /// </summary>
+        /// <returns>A dictionary mapping control keys to user controls.</returns>
+        private static IDictionary<ControlKey, SubControlInfo> FillControlKeys()
         {
-            ControlKeys = new StringDictionary
-                              {
-                                      { "ViewSurvey", "ViewSurvey.ascx" }, 
-                                      { "EditSurvey", "EditSurvey.ascx" }, 
-                                      { "SurveyListing", "SurveyListing.ascx" }, 
-                                      { "ThankYou", "ThankYou.ascx" }
-                              };
+            return new Dictionary<ControlKey, SubControlInfo>(6)
+                       {
+                               { DefaultControlKey, DefaultSubControl },
+                               { ControlKey.ViewSurvey, new SubControlInfo("ViewSurvey.ascx", false) },
+                               { ControlKey.EditSurvey, new SubControlInfo("EditSurvey.ascx", true) },
+                               { ControlKey.ThankYou, new SubControlInfo("ThankYou.ascx", false) }
+                       };
         }
 
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Code paths are easy to understand, test, and maintain")]
-        private void ReadItemType()
+        /// <summary>
+        /// Gets the control to load, based on the key (or lack thereof) that is passed on the querystring.
+        /// </summary>
+        /// <returns>A relative path to the control that should be loaded into this container</returns>
+        private SubControlInfo GetControlToLoad()
         {
-
-            StringDictionary returnDict = GetAdminControlKeys();
-            string keyParam = Request.Params["key"];
-
-            if (Util.Utility.HasValue(keyParam))
+            ControlKey? keyParameter = this.GetControlKey();
+            if (keyParameter.HasValue)
             {
-                this.controlToLoad = returnDict[keyParam.ToLower(CultureInfo.InvariantCulture)];
+                return ControlKeys[keyParameter.Value];
             }
-            else
+            
+            var displayType = ModuleSettings.DisplayType.GetValueAsEnumFor<ControlKey>(this);
+            if (displayType.HasValue && ControlKeys.ContainsKey(displayType.Value))
             {
-                // display unauthenticated version to user based on setting by administrator.
-                string displayType = ModuleSettings.DisplayType.GetValueAsStringFor(this);
-                if (!string.IsNullOrEmpty(displayType))
-                {
-                    this.controlToLoad = displayType + ".ascx";
-                }
-                else
-                {
-                    this.controlToLoad = "SurveyListing.ascx";
-                }
+                return ControlKeys[displayType.Value];
             }
+
+            return DefaultSubControl;
         }
 
-        private void LoadControlType()
+        /// <summary>
+        /// Gets the <see cref="HttpRequest.QueryString"/> control key for the current <see cref="Page.Request"/>.
+        /// </summary>
+        /// <returns>The <see cref="HttpRequest.QueryString"/> control key for the current <see cref="Page.Request"/></returns>
+        private ControlKey? GetControlKey()
+        {
+            string currentControlKey = this.GetCurrentControlKey();
+            if (!string.IsNullOrEmpty(currentControlKey))
+            {
+                try
+                {
+                    return (ControlKey)Enum.Parse(typeof(ControlKey), currentControlKey, true);
+                }
+                catch (ArgumentException)
+                {
+                }
+                catch (OverflowException)
+                {
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Loads the child control to be displayed in this container.
+        /// </summary>
+        /// <param name="controlToLoad">The control to load.</param>
+        private void LoadChildControl(SubControlInfo controlToLoad)
         {
             try
             {
-                if (this.controlToLoad == null)
-                {
-                    return;
-                }
-
-                var loadedControl = (ModuleBase)this.LoadControl(this.controlToLoad);
-                loadedControl.ModuleConfiguration = ModuleConfiguration;
-                loadedControl.ID = Path.GetFileNameWithoutExtension(this.controlToLoad);
-                this.ControlsPlaceHolder.Controls.Add(loadedControl);
-
+                var childControl = (PortalModuleBase)this.LoadControl(controlToLoad.ControlPath);
+                childControl.ModuleConfiguration = this.ModuleConfiguration;
+                childControl.ID = Path.GetFileNameWithoutExtension(controlToLoad.ControlPath);
+                this.SubControlPlaceholder.Controls.Add(childControl);
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
+
     }
 }
 

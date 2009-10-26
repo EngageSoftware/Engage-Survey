@@ -41,9 +41,9 @@ namespace Engage.Dnn.Survey
             {
                 if (Page.IsPostBack == false)
                 {
-                    var eventListing = new ListItem(Localization.GetString("SurveyListing", LocalResourceFile), "SurveyListing");
-                    var viewSurvey = new ListItem(Localization.GetString("ViewSurvey", LocalResourceFile), "ViewSurvey");
-                    var thanks = new ListItem(Localization.GetString("ThankYou", LocalResourceFile), "ThankYou");
+                    var eventListing = new ListItem(Localization.GetString(ControlKey.SurveyListing.ToString(), LocalResourceFile), ControlKey.SurveyListing.ToString());
+                    var viewSurvey = new ListItem(Localization.GetString(ControlKey.ViewSurvey.ToString(), LocalResourceFile), ControlKey.ViewSurvey.ToString());
+                    var thanks = new ListItem(Localization.GetString(ControlKey.ThankYou.ToString(), LocalResourceFile), ControlKey.ThankYou.ToString());
 
                     this.ListingDisplayDropDownList.Items.Add(eventListing);
                     this.ListingDisplayDropDownList.Items.Add(viewSurvey);
@@ -57,15 +57,6 @@ namespace Engage.Dnn.Survey
 
                     this.AllowMultipleCheckBox.Checked = Survey.ModuleSettings.AllowMultpleEntries.GetValueAsBooleanFor(this).Value;
                     this.ShowRequiredNotationCheckBox.Checked = Survey.ModuleSettings.ShowRequiredNotation.GetValueAsBooleanFor(this).Value;
-
-                    ////DataTable dt = Engage.Survey.Db.DbUtil.GetAssignedSurveys();
-
-                    ////// bind the survey's
-                    ////foreach (DataRow row in dt.Rows)
-                    ////{
-                    ////    ListItem li = new ListItem(ModuleBase.GetCleanTitle(row["SurveyTitle"].ToString()), row["ObjectTypeId"].ToString());
-                    ////    SurveyDropDownList.Items.Add(li);
-                    ////}
 
                     ListItem surveyTypeListItem = this.SurveyDropDownList.Items.FindByValue(Survey.ModuleSettings.SurveyTypeId.GetValueAsStringFor(this));
                     if (surveyTypeListItem != null)
@@ -82,15 +73,9 @@ namespace Engage.Dnn.Survey
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// UpdateSettings saves the modified settings to the Database
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public override void UpdateSettings()
         {
             if (Page.IsValid)

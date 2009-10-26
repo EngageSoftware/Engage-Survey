@@ -41,8 +41,8 @@ namespace Engage.Dnn.Survey
             this.Visible = this.IsEditable;
 
             this.HomeLink.NavigateUrl = Globals.NavigateURL();
-            this.AddNewLink.NavigateUrl = this.BuildLinkUrl(this.ModuleId, "EditSurvey");
-            this.ManageLink.NavigateUrl = this.BuildLinkUrl(this.ModuleId, "SurveyListing");
+            this.AddNewLink.NavigateUrl = this.BuildLinkUrl(this.ModuleId, ControlKey.EditSurvey);
+            this.ManageLink.NavigateUrl = this.BuildLinkUrl(this.ModuleId, ControlKey.SurveyListing);
             this.SettingsLink.NavigateUrl = Globals.NavigateURL(this.TabId, "Module", "ModuleId=" + this.ModuleId);
 
             this.HomeLink.ToolTip = Localization.GetString("HomeLink.ToolTip", this.LocalResourceFile);
@@ -50,7 +50,7 @@ namespace Engage.Dnn.Survey
             this.ManageLink.ToolTip = Localization.GetString("ManageLink.ToolTip", this.LocalResourceFile);
             this.SettingsLink.ToolTip = Localization.GetString("SettingsLink.ToolTip", this.LocalResourceFile);
 
-            this.ManageListItem.Visible = ModuleSettings.DisplayType.GetValueAsStringFor(this) != "SurveyListing";
+            this.ManageListItem.Visible = ModuleSettings.DisplayType.GetValueAsEnumFor<ControlKey>(this) != ControlKey.SurveyListing;
         }
     }
 }

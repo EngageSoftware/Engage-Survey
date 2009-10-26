@@ -25,7 +25,6 @@ namespace Engage.Survey.Entities
             : this()
         {
             this.CreatedBy = this.RevisingUser = revisingUser;
-            this.CreationDate = this.RevisionDate = DateTime.Now;
         }
 
         /// <summary>

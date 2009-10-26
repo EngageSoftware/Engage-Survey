@@ -11,7 +11,6 @@
 
 namespace Engage.Survey.Entities
 {
-    using System;
     using System.Collections.Generic;
     using Util;
 
@@ -25,7 +24,6 @@ namespace Engage.Survey.Entities
             : this()
         {
             this.CreatedBy = this.RevisingUser = revisingUser;
-            this.CreationDate = this.RevisionDate = DateTime.Now;
         }
 
         /// <summary>
@@ -126,7 +124,7 @@ namespace Engage.Survey.Entities
         /// Gets a value indicating whether this instance is boolean.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if this instance is boolean; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance is boolean; otherwise, <c>false</c>.
         /// </value>
         public bool IsBoolean
         {

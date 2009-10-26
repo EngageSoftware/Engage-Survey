@@ -596,13 +596,13 @@ jQuery(function ($) {
         case 3:
             // ControlType.VerticalOptionsButtons
             $.each(answers, function(i, answer) {
-                $answerDiv.append("<label><input type='radio' name='" + questionId + "' />" + answer.Text + "</label>").data('answerId', answer.AnswerId);
+                $("<label><input type='radio' name='" + questionId + "' />" + answer.Text + "</label>").appendTo($answerDiv).find('input').data('answerId', answer.AnswerId);
             });
             break;
         case 6:
             // ControlType.Checkbox
             $.each(answers, function(i, answer) {
-                $answerDiv.append("<label><input type='checkbox' />" + answer.Text + "</label>").data('answerId', answer.AnswerId);
+                $("<label><input type='checkbox' />" + answer.Text + "</label>").appendTo($answerDiv).find('input').data('answerId', answer.AnswerId);
             });
             break;
         default:

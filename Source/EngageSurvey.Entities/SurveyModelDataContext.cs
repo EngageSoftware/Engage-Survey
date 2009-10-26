@@ -11,6 +11,7 @@
 
 namespace Engage.Survey.Entities
 {
+    using System;
     using System.Data.Linq;
     using System.Linq;
 
@@ -42,5 +43,93 @@ namespace Engage.Survey.Entities
             loadOptions.AssociateWith<Question>(question => question.Answers.OrderBy(answer => answer.RelativeOrder));
             this.LoadOptions = loadOptions;
         }
+
+// ReSharper disable UnusedMember.Local
+
+        /// <summary>
+        /// Called when a new <see cref="Answer"/> is inserted.
+        /// </summary>
+        /// <param name="instance">The new <see cref="Answer"/> instance.</param>
+        partial void InsertAnswer(Answer instance)
+        {
+            instance.CreationDate = DateTime.Now;
+            instance.RevisionDate = DateTime.Now;
+            this.ExecuteDynamicInsert(instance);
+        }
+
+        /// <summary>
+        /// Called when a new <see cref="Question"/> is inserted.
+        /// </summary>
+        /// <param name="instance">The new <see cref="Question"/> instance.</param>
+        partial void InsertQuestion(Question instance)
+        {
+            instance.CreationDate = DateTime.Now;
+            instance.RevisionDate = DateTime.Now;
+            this.ExecuteDynamicInsert(instance);
+        }
+
+        /// <summary>
+        /// Called when a new <see cref="Section"/> is inserted.
+        /// </summary>
+        /// <param name="instance">The new <see cref="Section"/> instance.</param>
+        partial void InsertSection(Section instance)
+        {
+            instance.CreationDate = DateTime.Now;
+            instance.RevisionDate = DateTime.Now;
+            this.ExecuteDynamicInsert(instance);
+        }
+
+        /// <summary>
+        /// Called when a new <see cref="Survey"/> is inserted.
+        /// </summary>
+        /// <param name="instance">The new <see cref="Survey"/> instance.</param>
+        partial void InsertSurvey(Survey instance)
+        {
+            instance.CreationDate = DateTime.Now;
+            instance.RevisionDate = DateTime.Now;
+            this.ExecuteDynamicInsert(instance);
+        }
+
+        /// <summary>
+        /// Called when an existing <see cref="Answer"/> is updated.
+        /// </summary>
+        /// <param name="instance">The existing <see cref="Answer"/> instance.</param>
+        partial void UpdateAnswer(Answer instance)
+        {
+            instance.RevisionDate = DateTime.Now;
+            this.ExecuteDynamicUpdate(instance);
+        }
+
+        /// <summary>
+        /// Called when an existing <see cref="Question"/> is updated.
+        /// </summary>
+        /// <param name="instance">The existing <see cref="Question"/> instance.</param>
+        partial void UpdateQuestion(Question instance)
+        {
+            instance.RevisionDate = DateTime.Now;
+            this.ExecuteDynamicUpdate(instance);
+        }
+
+        /// <summary>
+        /// Called when an existing <see cref="Section"/> is updated.
+        /// </summary>
+        /// <param name="instance">The existing <see cref="Section"/> instance.</param>
+        partial void UpdateSection(Section instance)
+        {
+            instance.RevisionDate = DateTime.Now;
+            this.ExecuteDynamicUpdate(instance);
+        }
+
+        /// <summary>
+        /// Called when an existing <see cref="Survey"/> is updated.
+        /// </summary>
+        /// <param name="instance">The existing <see cref="Survey"/> instance.</param>
+        partial void UpdateSurvey(Survey instance)
+        {
+            instance.RevisionDate = DateTime.Now;
+            this.ExecuteDynamicUpdate(instance);
+        }
+
+// ReSharper restore UnusedMember.Local
     }
 }

@@ -33,12 +33,9 @@ namespace Engage.Survey.Entities
             : this()
         {
             var now = DateTime.Now;
-            this.CreationDate = this.RevisionDate = now;
             this.CreatedBy = this.RevisingUser = revisingUser;
             this.Sections.Add(new Section
                                   {
-                                          CreationDate = now,
-                                          RevisionDate = now,
                                           CreatedBy = revisingUser,
                                           RevisingUser = revisingUser
                                   });

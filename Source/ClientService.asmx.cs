@@ -80,7 +80,6 @@ namespace Engage.Dnn.Survey
             {
                 surveyToUpdate = dataContext.Surveys.Where(s => s.SurveyId == survey.SurveyId).Single();
                 surveyToUpdate.RevisingUser = surveyToUpdate.Sections[0].RevisingUser = survey.RevisingUser;
-                surveyToUpdate.RevisionDate = surveyToUpdate.Sections[0].RevisionDate = DateTime.Now;
             }
             else
             {
@@ -107,7 +106,6 @@ namespace Engage.Dnn.Survey
         [WebMethod]
         public object UpdateQuestion(int surveyId, Question question)
         {
-            var now = DateTime.Now;
             var dataContext = SurveyModelDataContext.Instance;
             var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
             Question questionToUpdate;
@@ -115,7 +113,6 @@ namespace Engage.Dnn.Survey
             {
                 questionToUpdate = survey.Sections.First().Questions.Where(q => q.QuestionId == question.QuestionId).Single();
                 questionToUpdate.RevisingUser = question.RevisingUser;
-                questionToUpdate.RevisionDate = now;
             }
             else
             {
@@ -145,7 +142,6 @@ namespace Engage.Dnn.Survey
                     var lambdaAnswer = answer;
                     answerToUpdate = questionToUpdate.Answers.Where(a => a.AnswerId == lambdaAnswer.AnswerId).Single();
                     answerToUpdate.RevisingUser = question.RevisingUser;
-                    answerToUpdate.RevisionDate = now;
                 }
                 else
                 {

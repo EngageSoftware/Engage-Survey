@@ -264,6 +264,7 @@ jQuery(function ($) {
         $('#EvalEdit').parent().hide();
         $('#EvalCancel').parent().show();
         $('#EvalUpdate').parent().show();
+        $('#Form').validate();
     });
     
     $('#EvalCancel').click(function (event) {

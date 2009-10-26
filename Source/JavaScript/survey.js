@@ -134,10 +134,11 @@ jQuery(function ($) {
     $.validator.setDefaults({
         rules: {
             required: "required"
-        }
+        },
+        onsubmit: false
     });
 
-    $('#Form').validate();
+    var validator = $('#Form').validate();
 
     $("#ee-previews").sortable({
         items: 'li.ee-preview', 
@@ -183,7 +184,7 @@ jQuery(function ($) {
     $('#EvalNew').click(function (event) {
         event.preventDefault();
         
-        if($('#Form').validate().form()) {
+        if(validator.form()) {
             updateSurvey(function () {
                 $('.ee-create-questions').show(); 
             });
@@ -194,7 +195,7 @@ jQuery(function ($) {
     $('#EvalUpdate').click(function (event) {
         event.preventDefault();
         
-        if($('#Form').validate().form()) {
+        if(validator.form()) {
             updateSurvey(function () {
                 hideEditModeButtons();
             });
@@ -253,7 +254,7 @@ jQuery(function ($) {
     $('#EvalEdit').click(function (event) {
         event.preventDefault();
         
-        //save current value to "previous value" data field for usage in the cancel link click event.
+        // save current value to "previous value" data field for usage in the cancel link click event.
         $('#EvalDescTextArea').parent().data('previousValue', $('#EvalDescTextArea').text());
         $('#EvalTitleInput').parent().data('previousValue', $('#EvalTitleInput').text());
         
@@ -264,20 +265,19 @@ jQuery(function ($) {
         $('#EvalEdit').parent().hide();
         $('#EvalCancel').parent().show();
         $('#EvalUpdate').parent().show();
-        $('#Form').validate();
+        validator = $('#Form').validate();
     });
     
     $('#EvalCancel').click(function (event) {
         event.preventDefault();
         
-        //retrieve data values and reset the text boxes.
+        // retrieve data values and reset the text boxes.
         $('#EvalDescTextArea').val($('#EvalDescTextArea').parent().data('previousValue'));
         $('#EvalTitleInput').val($('#EvalTitleInput').parent().data('previousValue'));
         
         makeSurveyReadOnly();
         hideEditModeButtons();
 
-        var validator = $('#Form').validate();
         validator.resetForm();
     });
         
@@ -523,7 +523,7 @@ jQuery(function ($) {
     }
 
     $('.ai-input input:first').blur(function() {
-        if($(this).val()) {
+        if($(this).val() !== '') {
             $('#SaveQuestion').parent().removeClass('disabled');
         }
         else {
@@ -535,9 +535,10 @@ jQuery(function ($) {
     $('#SaveQuestion').click(function(event) {
         event.preventDefault();
 
-        if($('#SaveQuestion').parent().hasClass('disabled') === false &&
-           $('#Form').validate().form() &&
-           $('#Form').validate().element('#QuestionText')) {
+        validator = $('#Form').validate();
+        if (!$('#SaveQuestion').parent().hasClass('disabled') &&
+           $('#QuestionText').valid() &&
+           $('.ai-input input').valid()) {
             
             callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
                 $('#PreviewArea').show();
@@ -632,7 +633,6 @@ jQuery(function ($) {
         $('#CreateQuestions').removeData('questionId').removeData('relativeOrder')
             .find('#MultipleAnswer li.answer-input').removeData('answerId');
 
-        var validator = $('#Form').validate();
         validator.resetForm();
     }
     

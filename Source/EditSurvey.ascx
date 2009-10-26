@@ -51,14 +51,14 @@
                         <li class="answer-input">
                             <span class="ai-label"><%=Localize("AnswerTitle.Text")%> <span class="answer-num">1</span></span>
                             <div class="ai-selected">
-                                <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" /></span>
+                                <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" name="required" /></span>
                                 <a href="#" title='<%=Localize("RemoveAnswerHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
                             </div>
                         </li>
                         <li class="answer-input">                        
                             <span class="ai-label"><%=Localize("AnswerTitle.Text")%> <span class="answer-num">2</span></span>
                             <div class="ai-selected">
-                                <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" /></span>
+                                <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" name="required" /></span>
                                 <a href="#" title='<%=Localize("RemoveAnswerHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
                             </div>
                         </li>

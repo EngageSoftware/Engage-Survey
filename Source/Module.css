@@ -62,6 +62,7 @@ survey-title{font-weight: bold}
 					#engage-evaluation .ee-answer-inputs li.primary-btn a{font-size:12px;}
 					#engage-evaluation ul.answer-inputs a.ee-delete{padding-left:10px;}
 						.ai-label{font-weight:bold;}
+						.ai-input{position:relative;}
 					#ShortTextAnswer, #LongTextAnswer{padding-left:10px;}
 			ul#ee-previews{display:block;margin:0;padding:0;list-style:none;overflow:hidden;}
 				ul#ee-previews li.ee-preview{cursor:pointer;padding:10px 15px;margin:10px;display:block;overflow:hidden;list-style:none;background:#f8f8f8 url(images/drag-icn.gif) no-repeat 15px 15px;border-right:1px #ccc solid;border-bottom:1px #ccc solid;}

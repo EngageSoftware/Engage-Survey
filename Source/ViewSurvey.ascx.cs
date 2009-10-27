@@ -15,6 +15,7 @@ namespace Engage.Dnn.Survey
     using System.Globalization;
     using DotNetNuke.Entities.Modules.Communications;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
     using Engage.Survey.Entities;
     using Engage.Survey.UI;
 
@@ -87,13 +88,16 @@ namespace Engage.Dnn.Survey
                                                             : ReadonlySurvey.LoadSurvey(this.ResponseHeaderId.Value);
 
                 this.SurveyControl1.SurveyCompleted += this.SurveyControl1_SurveyCompleted;
+
+                this.SurveyControl1.BackButtonText = this.Localize("BackButton.Text", LocalResourceFile);
+                this.SurveyControl1.SubmitButtonText = this.Localize("SubmitButton.Text", LocalResourceFile);
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
+        
         /// <summary>
         /// Handles the <see cref="SurveyControl.SurveyCompleted"/> event of the <see cref="SurveyControl1"/> control.
         /// </summary>

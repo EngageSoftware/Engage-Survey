@@ -17,11 +17,12 @@ survey-title{font-weight: bold}
     fieldset.ee-create-new, fieldset.ee-create-questions, fieldset.ee-preview-area{border:none;padding:0 0 15px 0;margin:0;}
         #engage-evaluation legend{padding:0 0 5px 0;}
         #engage-evaluation legend.Head{color:#6f4719;font-family:"Lucida Grande", Lucida Sans Unicode, Helvetica, Arial, Sans-Serif;font-size:20px;letter-spacing:-1px;}
-        #engage-evaluation div{clear:both;overflow:hidden;padding-bottom:8px;}
+        #engage-evaluation div{clear:both;padding-bottom:8px;}
         #engage-evaluation .ee-label{display:block;float:left;text-align:right;width:100px;font-weight:bold;padding-right:10px;padding-top:5px;font-family: Helvetica, Arial, Sans-Serif;}
         #engage-evaluation .ee-input{display:block;float:left;background:#ebf5fc;padding:3px 5px;position:relative;font-family: Helvetica, Arial, Sans-Serif;}
             #engage-evaluation input.NormalTextBox, #engage-evaluation textarea.NormalTextBox, #engage-evaluation select.NormalTextBox{border:1px #cbcbcb solid;width:300px;padding:8px;font-family: Helvetica, Arial, Sans-Serif;}
-			label.error{display:block;position:absolute;top:10%;left:310px;padding:5px 20px;background: url(images/validator-bg.gif) left no-repeat;color:#ebc6c6;min-width:140px;font-weight:bold;}
+			label.error{display:block;position:absolute;top:10%;left:310px;padding:5px 20px;background: url(images/validator-bg.gif) left no-repeat;color:#ebc6c6;min-width:140px;font-weight:bold;;font-family: Helvetica, Arial, Sans-Serif;}
+				span.ai-input label.error{top:-5px;left:270px;}
         #engage-evaluation a.ee-edit, #engage-evaluation a.ee-copy, #engage-evaluation a.ee-delete{color:#007b00;padding:4px;text-decoration:underline;font-weight:bold;}
         #engage-evaluation a.ee-edit{color:#0063dd;padding:0;}
         #engage-evaluation a.ee-delete{color:#dd001a;padding:0;}
@@ -39,7 +40,7 @@ survey-title{font-weight: bold}
                 ul.ee-action-btns li.primary-btn a:hover, ul.answer-inputs li.primary-btn a:hover{text-decoration:none;}
             ul.ee-action-btns li.primary-btn, ul.answer-inputs li.primary-btn{background: url(images/btn-bg.gif) repeat-x bottom;border:1px #f17b4d solid;display:block;float:left;}
             ul.ee-action-btns li.primary-btn:hover, ul.answer-inputs li.primary-btn:hover{text-decoration:none;background: url(images/btn-bg-on.gif) repeat-x bottom;}
-                ul.ee-action-btns li.secondary-btn a{line-height:34px;padding-left:10px;color:#9e7261;font-weight:bold;font-size:16px;text-decoration:underline;font-family: Helvetica, Arial, Sans-Serif;}
+                ul.ee-action-btns li.secondary-btn a{line-height:34px;padding-left:15px;color:#9e7261;font-weight:bold;font-size:16px;text-decoration:underline;font-family: Helvetica, Arial, Sans-Serif;line-height:28px;}
                 ul.ee-action-btns li.secondary-btn a:hover{color:#000;text-decoration:none;}
             ul.ee-action-btns li.disabled, ul.ee-action-btns li.disabled:hover{border:1px #b2b2b2 solid;background: url(images/btn-bg.gif) repeat-x bottom;}
                 ul.ee-action-btns li.disabled a{color:#b6b6b6;}
@@ -51,9 +52,9 @@ survey-title{font-weight: bold}
         .ee-define-answers{}
             #engage-evaluation .define-answer{float:left;display:block;clear:none;}
             .define-answer .ee-input{margin-bottom:10px;}
-            .ee-answer-inputs{background:#eee;width:420px;border-bottom:1px #c4cbb2 solid;border-right:1px #cfcfcf solid;clear:both;overflow:hidden;}
-				ul.answer-inputs{margin:10px 0 0 0;padding:10px;list-style:none;clear:both;overflow:hidden;}
-					ul.answer-inputs li{list-style:none;padding:5px 0 5px 10px;background: url(images/drag-icn.gif) no-repeat 360px 30px;border:1px #eee solid;}
+            .ee-answer-inputs{background:#eee;width:420px;border-bottom:1px #c4cbb2 solid;border-right:1px #cfcfcf solid;clear:both;}
+				ul.answer-inputs{margin:10px 0 0 0;padding:10px;list-style:none;clear:both;}
+					ul.answer-inputs li{list-style:none;padding:5px 0 5px 10px;background: url(images/drag-icn.gif) no-repeat 360px 25px;border:1px #eee solid;}
 						ul.answer-inputs li:hover{border-color:#fff #ccc #ccc #fff;border-style:solid;border-width:1px;}
 						ul.answer-inputs li.ui-state-highlight{background:none;}
 					#engage-evaluation .answer-inputs input.NormalTextBox, #engage-evaluation .answer-inputs textarea.NormalTextBox, #engage-evaluation .answer-inputs select.NormalTextBox{border:1px #cbcbcb solid;width:320px;padding:5px;}

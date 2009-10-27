@@ -45,16 +45,6 @@ namespace Engage.Survey.UI
         public const string BeginSurveyMarker = "<!--survey_begins_here-->";
 
         /// <summary>
-        /// CSS Class to use for horizontal answers
-        /// </summary>
-        public const string CssClassAnswerHorizontal = "answer-horizontal";
-
-        /// <summary>
-        /// CSS Class to use for horizontal answers
-        /// </summary>
-        public const string CssClassAnswerVertical = "answer-vertical";
-
-        /// <summary>
         /// CSS Class to use for submit button
         /// </summary>
         public const string CssClassSubmitButton = "submit-button";
@@ -65,39 +55,24 @@ namespace Engage.Survey.UI
         public const string CssClassBackButton = "back-button";
 
         /// <summary>
+        /// CSS class used for styling thankyou verbaige.
+        /// </summary>
+        public const string CssClassThankYou = "thankyou-label";
+
+        /// <summary>
+        /// CSS class used for styling thankyou verbaige.
+        /// </summary>
+        public const string CssClassThankYouWrap = "thankyou-wrap";
+
+        /// <summary>
         /// CSS Class to use when no survey typeId is defined
         /// </summary>
         public const string CssClassNoSurveyDefined = "no-survey-defined";
-
-        /// <summary>
-        /// CSS Class to use for questions
-        /// </summary>
-        public const string CssClassQuestion = "question";
-
-        /// <summary>
-        /// CSS Class to use for required elements.
-        /// </summary>
-        public const string CssClassRequired = "required";
-
-        /// <summary>
-        /// CSS Class to use for section title.
-        /// </summary>
-        public const string CssClassSectionTitle = "section-title";
-
-        /// <summary>
-        /// CSS Class to use for section wrap
-        /// </summary>
-        public const string CssClassSectionWrap = "section-wrap";
-
+        
         /// <summary>
         /// CSS Class to use for submit area at bottom
         /// </summary>
-        public const string CssClassSubmitArea = "submit-area";
-
-        /// <summary>
-        /// CSS Class to use for survey title section
-        /// </summary>
-        public const string CssClassSurveyTitle = "survey-title";
+        public const string CssClassButtonsArea = "buttons-area";
 
         /// <summary>
         /// Marker for end survey.
@@ -386,8 +361,18 @@ namespace Engage.Survey.UI
             if (this.CurrentSurvey.FinalMessageOption == FinalMessageOption.UseFinalMessage)
             {
                 this.Controls.Clear(); // remove everything.
-                this.Controls.Add(new Literal { Text = this.CurrentSurvey.FinalMessage });
-                this.RenderBackButton(null);
+
+                var thankYouDiv = new HtmlGenericControl("DIV");
+                thankYouDiv.Attributes["class"] = CssClassThankYouWrap;
+                this.Controls.Add(thankYouDiv);
+
+                thankYouDiv.Controls.Add(new Label { Text = this.CurrentSurvey.FinalMessage, CssClass = CssClassThankYou});
+
+                var submitDiv = new HtmlGenericControl("DIV");
+                submitDiv.Attributes["class"] = CssClassButtonsArea;
+                this.Controls.Add(submitDiv);
+
+                this.RenderBackButton(submitDiv);
             }
             else
             {
@@ -401,7 +386,7 @@ namespace Engage.Survey.UI
         private void RenderSubmitButton()
         {
             var submitDiv = new HtmlGenericControl("DIV");
-            submitDiv.Attributes["class"] = CssClassSubmitArea;
+            submitDiv.Attributes["class"] = CssClassButtonsArea;
             this.Controls.Add(submitDiv);
 
             this.RenderBackButton(submitDiv); 
@@ -416,15 +401,8 @@ namespace Engage.Survey.UI
         /// <summary>
         /// Renders the back button.
         /// </summary>
-        private void RenderBackButton(HtmlGenericControl submitDiv)
+        private void RenderBackButton(Control submitDiv)
         {
-            if (submitDiv == null)
-            {
-                submitDiv = new HtmlGenericControl("DIV");
-                submitDiv.Attributes["class"] = CssClassSubmitArea;
-                this.Controls.Add(submitDiv);
-            }
-
             var button = new Button { Text = BackButtonText, ID = "BackButton", CssClass = CssClassBackButton };
             button.Click += BackButton_Click;
             submitDiv.Controls.Add(button);

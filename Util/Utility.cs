@@ -26,21 +26,11 @@ namespace Engage.Survey.Util
         /// Constant for a space.
         /// </summary>
         public const string EntityNbsp = "&nbsp;";
-
-        /// <summary>
-        /// CSS Class to use when no survey tyepid is defined
-        /// </summary>
-        public const string CssClassNoSurveyDefined = "no-survey-defined";
-
+        
         /// <summary>
         /// CSS Class to use for survey title section
         /// </summary>
         public const string CssClassSurveyTitle = "survey-title";
-
-        /// <summary>
-        /// CSS Class to use for submit button
-        /// </summary>
-        public const string CssClassImageButtonSubmit = "submit-image";
 
         /// <summary>
         /// CSS Class to use for horizontal answers
@@ -51,11 +41,6 @@ namespace Engage.Survey.Util
         /// CSS Class to use for horizontal answers
         /// </summary>
         public const string CssClassAnswerVertical = "answer-vertical";
-
-        /// <summary>
-        /// CSS Class to use for submit area at bottom
-        /// </summary>
-        public const string CssClassSubmitArea = "submit-area";
 
         /// <summary>
         /// CSS Class to use for section wrap

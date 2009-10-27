@@ -156,6 +156,35 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [back button text].
+        /// </summary>
+        /// <value><c>true</c> if [back button text]; otherwise, <c>false</c>.</value>
+        [DefaultValue("Back")]
+        [Browsable(true)]
+        [Description("Set the text that appears on the button.")]
+        [Category("")]
+        public string BackButtonText
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [submit button text].
+        /// </summary>
+        /// <value><c>true</c> if [submit button text]; otherwise, <c>false</c>.</value>
+        [DefaultValue("Submit")]
+        [Browsable(true)]
+        [Description("Set the text that appears on the button.")]
+        [Category("")]
+        public string SubmitButtonText
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
         /// Gets or sets the user id.
         /// </summary>
         /// <remarks>You can optionally set this property and it will be stored with the <c>ResponseHeader</c> record.</remarks>
@@ -377,7 +406,7 @@ namespace Engage.Survey.UI
 
             this.RenderBackButton(submitDiv); 
 
-            var button = new Button { ValidationGroup = "survey", Text = "Submit", ID = "SubmitButton", CssClass = CssClassSubmitButton };
+            var button = new Button { ValidationGroup = "survey", Text = SubmitButtonText, ID = "SubmitButton", CssClass = CssClassSubmitButton };
 
             // add the handler for the button
             button.Click += this.SubmitButton_Click;
@@ -396,7 +425,7 @@ namespace Engage.Survey.UI
                 this.Controls.Add(submitDiv);
             }
 
-            var button = new Button { Text = "Back", ID = "BackButton", CssClass = CssClassBackButton };
+            var button = new Button { Text = BackButtonText, ID = "BackButton", CssClass = CssClassBackButton };
             button.Click += BackButton_Click;
             submitDiv.Controls.Add(button);
         }

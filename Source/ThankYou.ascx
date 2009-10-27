@@ -2,7 +2,6 @@
 <style type="text/css">
     @import url(<%=ApplicationUrl%><%=DesktopModuleFolderName%>Module.css);
 </style>
-
-<div>
+<div class="em-success">
     <asp:Label ID="ThankYouLabel" runat="server" CssClass="Normal"></asp:Label>
 </div>

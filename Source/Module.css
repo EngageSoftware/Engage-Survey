@@ -18,9 +18,9 @@ survey-title{font-weight: bold}
         #engage-evaluation legend{padding:0 0 5px 0;}
         #engage-evaluation legend.Head{color:#6f4719;font-family:"Lucida Grande", Lucida Sans Unicode, Helvetica, Arial, Sans-Serif;font-size:20px;letter-spacing:-1px;}
         #engage-evaluation div{clear:both;overflow:hidden;padding-bottom:8px;}
-        #engage-evaluation .ee-label{display:block;float:left;text-align:right;width:100px;font-weight:bold;padding-right:10px;padding-top:5px;}
-        #engage-evaluation .ee-input{display:block;float:left;background:#ebf5fc;padding:3px 5px;position:relative;}
-            #engage-evaluation input.NormalTextBox, #engage-evaluation textarea.NormalTextBox, #engage-evaluation select.NormalTextBox{border:1px #cbcbcb solid;width:300px;padding:8px;}
+        #engage-evaluation .ee-label{display:block;float:left;text-align:right;width:100px;font-weight:bold;padding-right:10px;padding-top:5px;font-family: Helvetica, Arial, Sans-Serif;}
+        #engage-evaluation .ee-input{display:block;float:left;background:#ebf5fc;padding:3px 5px;position:relative;font-family: Helvetica, Arial, Sans-Serif;}
+            #engage-evaluation input.NormalTextBox, #engage-evaluation textarea.NormalTextBox, #engage-evaluation select.NormalTextBox{border:1px #cbcbcb solid;width:300px;padding:8px;font-family: Helvetica, Arial, Sans-Serif;}
 			label.error{display:block;position:absolute;top:10%;left:310px;padding:5px 20px;background: url(images/validator-bg.gif) left no-repeat;color:#ebc6c6;min-width:140px;font-weight:bold;}
         #engage-evaluation a.ee-edit, #engage-evaluation a.ee-copy, #engage-evaluation a.ee-delete{color:#007b00;padding:4px;text-decoration:underline;font-weight:bold;}
         #engage-evaluation a.ee-edit{color:#0063dd;padding:0;}
@@ -35,11 +35,11 @@ survey-title{font-weight: bold}
             .ee-input-pre{display:block;width:300px;}
         ul.ee-action-btns, ul.ee-pr-action-links{clear:both;padding:10px 15px 15px 110px;list-style:none;margin:0;}
             ul.ee-action-btns li{padding:0;list-style:none;margin:0;}
-                ul.ee-action-btns li.primary-btn a, ul.answer-inputs li.primary-btn a{color:#df3f00;font-weight:bold;font-size:16px;text-shadow:1px 1px 1px #fff;display:block;padding:3px 15px;}
+                ul.ee-action-btns li.primary-btn a, ul.answer-inputs li.primary-btn a{color:#df3f00;font-weight:bold;font-size:16px;text-shadow:1px 1px 1px #fff;display:block;padding:3px 15px;font-family: Helvetica, Arial, Sans-Serif;}
                 ul.ee-action-btns li.primary-btn a:hover, ul.answer-inputs li.primary-btn a:hover{text-decoration:none;}
             ul.ee-action-btns li.primary-btn, ul.answer-inputs li.primary-btn{background: url(images/btn-bg.gif) repeat-x bottom;border:1px #f17b4d solid;display:block;float:left;}
             ul.ee-action-btns li.primary-btn:hover, ul.answer-inputs li.primary-btn:hover{text-decoration:none;background: url(images/btn-bg-on.gif) repeat-x bottom;}
-                ul.ee-action-btns li.secondary-btn a{line-height:34px;padding-left:10px;color:#9e7261;font-weight:bold;font-size:16px;text-decoration:underline;}
+                ul.ee-action-btns li.secondary-btn a{line-height:34px;padding-left:10px;color:#9e7261;font-weight:bold;font-size:16px;text-decoration:underline;font-family: Helvetica, Arial, Sans-Serif;}
                 ul.ee-action-btns li.secondary-btn a:hover{color:#000;text-decoration:none;}
             ul.ee-action-btns li.disabled, ul.ee-action-btns li.disabled:hover{border:1px #b2b2b2 solid;background: url(images/btn-bg.gif) repeat-x bottom;}
                 ul.ee-action-btns li.disabled a{color:#b6b6b6;}
@@ -78,14 +78,17 @@ survey-title{font-weight: bold}
 			li.ee-undo{background:#FFF6BF;border-top:1px solid #FFD324;border-bottom:1px solid #FFD324;padding:5px 10px;}
 /*------ Survey Listing ------*/
 .survey-listing{}
-	.survey-listing h3{color:#000;font-size:18px;margin-bottom:0;}
+	.survey-listing h3{color:#000;font-size:18px;margin-bottom:0;font-family:"Lucida Sans Unicode", Helvetica, Arial, Sans-Serif;}
 		#survey-filters{clear:both;overflow:hidden;}
 		#survey-filters table{float:right;}
 	.survey-listing td{padding:5px 10px;}
 	ul.sl-repeater{margin:0;padding:0;border-top:1px solid #D4DFE1;}
 		ul.sl-repeater li{list-style:none;padding:10px;margin:0;display:block;clear:both;overflow:hidden;}
-		ul.sl-repeater li span{display:block;width:350px;float:left;}
-		ul.sl-repeater li a{display:block;float:left;padding:2px 15px;text-transform:capitalize;font-weight:bold;margin:0 5px;border-color:#fff #c8d6e1 #c8d6e1 #fff;border-style:solid;border-width:1px;}
+		ul.sl-repeater li span.sl-repeater-data{display:block;width:50%;float:left;}
+			span.sl-repeater-data span, ul.sl-repeater li span.sl-repeater-actions{display:block;font-family: Helvetica, Arial, Sans-Serif;}
+			span.sl-repeater-data .sl-title{font-size:14px;padding-bottom:5px;}
+			span.sl-repeater-data .sl-user{font-weight:bold;color:#444;}
+		ul.sl-repeater li a{display:block;float:left;padding:2px 15px;text-transform:capitalize;font-weight:bold;margin:0 5px;border-color:#fff #c8d6e1 #c8d6e1 #fff;border-style:solid;border-width:1px;font-family: Helvetica, Arial, Sans-Serif;}
 			ul.sl-repeater li.sl-item a:hover{background:#fff;}
 			ul.sl-repeater li.sl-alt-item a:hover{background:#F2F6F9;}
 		ul.sl-repeater li.sl-item, ul.sl-repeater li.sl-alt-item{background:#F2F6F9;border:1px solid #D4DFE1;border-top:none;}
@@ -94,9 +97,11 @@ survey-title{font-weight: bold}
 /*============ Global Navigation ============*/
 ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px #e4bbab solid;border-bottom:1px #e4bbab solid;padding:10px 15px;margin:0 0 15px 0;}
 	ul.em-global-nav li{display:block;float:left;padding:5px 25px 5px 0;}
-		ul.em-global-nav li a{padding-left:25px;color:#df3f00;text-decoration:underline;font-weight:bold;font-size:14px;}
+		ul.em-global-nav li a{padding-left:25px;color:#df3f00;text-decoration:underline;font-weight:bold;font-size:14px;font-family:Helvetica, Arial, Sans-Serif;}
 		ul.em-global-nav li a:hover{text-decoration:none;color:#000;}
 	ul.em-global-nav li.egn-home{background: url(images/em-home-icn.gif) left no-repeat;}
 	ul.em-global-nav li.egn-add-new{background: url(images/em-add-icn.gif) left no-repeat;}
 	ul.em-global-nav li.egn-manage{background: url(images/em-manage-icn.gif) left no-repeat;}
 	ul.em-global-nav li.egn-settings{background: url(images/em-settings-icn.gif) left no-repeat;}
+/*============ Global Navigation ============*/
+.em-success{border:1px #95c277 solid;background:#f5ffea;}

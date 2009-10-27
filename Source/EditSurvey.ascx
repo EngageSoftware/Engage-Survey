@@ -100,7 +100,6 @@
         </ul>
     </fieldset>   
 </div>
-
 <% if (false) { %><script type="text/ecmascript" src="JavaScript/jquery-1.3.2.debug-vsdoc.js"></script><% } %>
 <script type="text/javascript">
 var CurrentContextInfo = {

@@ -105,4 +105,4 @@ ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px 
 	ul.em-global-nav li.egn-manage{background: url(images/em-manage-icn.gif) left no-repeat;}
 	ul.em-global-nav li.egn-settings{background: url(images/em-settings-icn.gif) left no-repeat;}
 /*============ Global Navigation ============*/
-.em-success{border:1px #95c277 solid;background:#f5ffea;}
+.em-success{border:2px #95c277 solid;background:#f5ffea;padding:8px 15px;}

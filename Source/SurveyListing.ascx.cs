@@ -13,6 +13,7 @@ namespace Engage.Dnn.Survey
 {
     using System;
     using System.Globalization;
+    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
     using DotNetNuke.Entities.Users;
@@ -104,7 +105,7 @@ namespace Engage.Dnn.Survey
         /// <returns>A URL to a read-only preview of the survey with the given <paramref name="id"/></returns>
         private string BuildPreviewUrl(int id, string key)
         {
-            return BuildLinkUrl(this.ModuleId, "ViewSurvey", key + "=" + id);
+            return BuildLinkUrl(this.ModuleId, "ViewSurvey", key + "=" + id + "&returnurl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl));
         }
 
         /// <summary>

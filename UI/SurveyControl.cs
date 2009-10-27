@@ -223,6 +223,16 @@ namespace Engage.Survey.UI
             {
                 this.RenderSubmitButton();
             }
+            else
+            {
+                ///we need to provide a back button.
+                var submitDiv = new HtmlGenericControl("DIV");
+                submitDiv.Attributes["class"] = CssClassButtonsArea;
+                this.Controls.Add(submitDiv);
+
+                this.RenderBackButton(submitDiv); 
+
+            }
 
             this.Controls.Add(new Literal { Text = EndSurveyMarker });
         }

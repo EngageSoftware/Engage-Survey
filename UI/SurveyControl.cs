@@ -12,11 +12,10 @@
 namespace Engage.Survey.UI
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Globalization;
     using System.Linq;
+    using System.Web;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -58,7 +57,12 @@ namespace Engage.Survey.UI
         /// <summary>
         /// CSS Class to use for submit button
         /// </summary>
-        public const string CssClassImageButtonSubmit = "submit-image";
+        public const string CssClassSubmitButton = "submit-button";
+
+        /// <summary>
+        /// CSS Class to use for submit button
+        /// </summary>
+        public const string CssClassBackButton = "back-button";
 
         /// <summary>
         /// CSS Class to use when no survey typeId is defined
@@ -185,15 +189,15 @@ namespace Engage.Survey.UI
             // Insert our begin marker for the survey control. We can parse this out easy later if needed.
             this.Controls.Add(new Literal { Text = BeginSurveyMarker });
 
-            HtmlGenericControl mainDiv = new HtmlGenericControl("DIV");
+            var mainDiv = new HtmlGenericControl("DIV");
             mainDiv.Attributes["class"] = this.CssClass;
             this.Controls.Add(mainDiv);
 
-            PlaceHolder ph = new PlaceHolder();
+            var ph = new PlaceHolder();
             this.Controls.Add(ph);
             if (this.CurrentSurvey == null)
             {
-                HtmlGenericControl noSurveyDiv = new HtmlGenericControl("DIV");
+                var noSurveyDiv = new HtmlGenericControl("DIV");
                 noSurveyDiv.Attributes["class"] = CssClassNoSurveyDefined;
 
                 return;
@@ -354,6 +358,7 @@ namespace Engage.Survey.UI
             {
                 this.Controls.Clear(); // remove everything.
                 this.Controls.Add(new Literal { Text = this.CurrentSurvey.FinalMessage });
+                this.RenderBackButton(null);
             }
             else
             {
@@ -362,18 +367,37 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
-        /// Renders the submit image.
+        /// Renders the submit button.
         /// </summary>
         private void RenderSubmitButton()
         {
-            HtmlGenericControl submitDiv = new HtmlGenericControl("DIV");
+            var submitDiv = new HtmlGenericControl("DIV");
             submitDiv.Attributes["class"] = CssClassSubmitArea;
             this.Controls.Add(submitDiv);
 
-            Button button = new Button { ValidationGroup = "survey", Text = "Submit", ID = "btnSubmit", CssClass = CssClassImageButtonSubmit };
+            this.RenderBackButton(submitDiv); 
+
+            var button = new Button { ValidationGroup = "survey", Text = "Submit", ID = "SubmitButton", CssClass = CssClassSubmitButton };
 
             // add the handler for the button
-            button.Click += this.btnSubmit_Click;
+            button.Click += this.SubmitButton_Click;
+            submitDiv.Controls.Add(button);
+        }
+
+        /// <summary>
+        /// Renders the back button.
+        /// </summary>
+        private void RenderBackButton(HtmlGenericControl submitDiv)
+        {
+            if (submitDiv == null)
+            {
+                submitDiv = new HtmlGenericControl("DIV");
+                submitDiv.Attributes["class"] = CssClassSubmitArea;
+                this.Controls.Add(submitDiv);
+            }
+
+            var button = new Button { Text = "Back", ID = "BackButton", CssClass = CssClassBackButton };
+            button.Click += BackButton_Click;
             submitDiv.Controls.Add(button);
         }
 
@@ -392,11 +416,11 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
-        /// Handles the Click event of the btnSubmit control.
+        /// Handles the Click event of the submit button control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnSubmit_Click(object sender, EventArgs e)
+        private void SubmitButton_Click(object sender, EventArgs e)
         {
             this.Page.Validate();
             if (this.Page.IsValid)
@@ -404,6 +428,28 @@ namespace Engage.Survey.UI
                 this.CollectResponses(this);
 
                 this.WriteSurvey();
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the back button control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private static void BackButton_Click(object sender, EventArgs e)
+        {
+            HttpContext.Current.Response.Redirect(ReturnUrl, true);
+        }
+
+        /// <summary>
+        /// Gets the return URL if on the querystring.
+        /// </summary>
+        /// <value>The return URL.</value>
+        private static string ReturnUrl
+        {
+            get
+            {
+                return HttpContext.Current.Request.QueryString["returnurl"] ?? String.Empty;
             }
         }
     }

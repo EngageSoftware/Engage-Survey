@@ -8,7 +8,7 @@ survey-title{font-weight: bold}
 		.answer-horizontal,	.answer-vertical, .answer-vertical span{display:block;}
 	.error-message{background:url(images/inline-validator-bg.png) no-repeat right;padding:2px 4px;color:#fff !important;font-weight:bold;}
 		.error-text{color:#fff !important;font-weight:bold;}
-	.submit-area{padding-top:20px;}
+	.buttons-area{padding-top:20px;}
 	.limit-reached{background:url(images/inline-validator-bg.png) no-repeat left;width:180px;color:#fff;font-weight:bold;}
 
 /*============ Engage Evaluation ============*/

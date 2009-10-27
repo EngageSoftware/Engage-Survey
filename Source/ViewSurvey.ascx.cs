@@ -15,7 +15,6 @@ namespace Engage.Dnn.Survey
     using System.Globalization;
     using DotNetNuke.Entities.Modules.Communications;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
     using Engage.Survey.Entities;
     using Engage.Survey.UI;
 

@@ -288,7 +288,7 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		[Column(Storage="_IsRequired", DbType="Bit NOT NULL")]
+		[Column(Storage="_IsRequired", DbType="Bit NOT NULL", IsDbGenerated=true)]
 		[DataMember(Order=5)]
 		public bool IsRequired
 		{

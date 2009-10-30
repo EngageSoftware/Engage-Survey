@@ -6,7 +6,7 @@
       <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Text" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="ShowText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsRequired" AutoSync="Never" Type="System.Boolean" DbType="Bit NOT NULL" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="RequiredMessage" Type="System.String" DbType="NChar(256)" CanBeNull="true" />
       <Column Name="RelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SelectionLimit" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />

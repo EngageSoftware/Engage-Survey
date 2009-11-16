@@ -14,6 +14,7 @@ namespace Engage.Dnn.Survey
     using System;
     using System.Web.UI;
     using DotNetNuke.Common;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
     /// <summary>
@@ -38,7 +39,8 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void Page_Load(object sender, EventArgs e)
         {
-            this.Visible = this.IsEditable;
+            this.Visible = this.IsAdmin;
+            this.SettingsLink.Visible = TabPermissionController.HasTabPermission("EDIT");
 
             this.HomeLink.NavigateUrl = Globals.NavigateURL();
             this.AddNewLink.NavigateUrl = this.BuildLinkUrl(this.ModuleId, ControlKey.EditSurvey);

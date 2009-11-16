@@ -43,6 +43,8 @@ namespace Engage.Dnn.Survey
             this.NewSurveyButton.Click += this.NewSurveyButton_Click;
             this.SurveyGrid.ItemDataBound += this.SurveyDataGrid_OnItemDataBound;
             this.FilterRadioButtonList.SelectedIndexChanged += this.FilterRadioButtonList_SelectedIndexChanged;
+            this.FilterRadioButtonList.Visible = this.IsAdmin;
+            this.NewSurveyButton.Visible = this.IsAdmin;
             base.OnInit(e);
         }
 
@@ -222,6 +224,7 @@ namespace Engage.Dnn.Survey
                         deleteHyperLink.NavigateUrl = this.BuildDeleteUrl(survey.SurveyId, "surveyId");
                         ClientAPI.AddButtonConfirm(deleteHyperLink, this.Localize("DeleteSurvey.Text"));
                     }
+                    deleteHyperLink.Visible = this.IsAdmin;
                 }
 
                 var textLabel = e.Item.FindControl("TextLabel") as Label;

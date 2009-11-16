@@ -88,7 +88,9 @@ namespace Engage.Dnn.Survey
             }
 
             surveyToUpdate.Text = survey.Text;
+            surveyToUpdate.ShowText = true;
             surveyToUpdate.Sections.First().Text = survey.Sections.First().Text;
+            surveyToUpdate.Sections.First().ShowText = true;
 
             dataContext.SubmitChanges();
 

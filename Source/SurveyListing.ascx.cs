@@ -103,7 +103,7 @@ namespace Engage.Dnn.Survey
         /// Build the URL to the read-only preview of the given survey.
         /// </summary>
         /// <param name="id">The id of the survey or response.</param>
-        /// <param name="key">"SurveyId" or "ResponseHeaderId"</param>
+        /// <param name="key">Survey Id or Response Header Id</param>
         /// <returns>A URL to a read-only preview of the survey with the given <paramref name="id"/></returns>
         private string BuildPreviewUrl(int id, string key)
         {
@@ -203,10 +203,11 @@ namespace Engage.Dnn.Survey
                     editHyperLink.Visible = !surveyIsComplete && this.IsEditable;
                 }
 
-                var previewHyperLink = e.Item.FindControl("ViewHyperLink") as HyperLink;
-                if (previewHyperLink != null)
+                var textHyperLink = e.Item.FindControl("TextHyperLink") as HyperLink;
+                if (textHyperLink != null)
                 {
-                    previewHyperLink.NavigateUrl = surveyIsComplete
+                    textHyperLink.Text = survey.Text;
+                    textHyperLink.NavigateUrl = surveyIsComplete
                         ? this.BuildPreviewUrl(completedSurvey.ResponseHeaderId, "responseHeaderId") 
                         : this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
                 }
@@ -227,21 +228,12 @@ namespace Engage.Dnn.Survey
                     deleteHyperLink.Visible = this.IsAdmin;
                 }
 
-                var textLabel = e.Item.FindControl("TextLabel") as Label;
-                if (textLabel != null)
-                {
-                    textLabel.Text = survey.Text;
-                }
-
                 var dateLabel = e.Item.FindControl("DateLabel") as Label;
                 var userLabel = e.Item.FindControl("UserLabel") as Label;
                 if (dateLabel != null)
                 {
-                    dateLabel.Visible = surveyIsComplete;
-                    if (surveyIsComplete)
-                    {
-                        dateLabel.Text = string.Format(CultureInfo.CurrentCulture, this.Localize("DateLabel.Format"), completedSurvey.CreationDate);
-                    }
+                    
+                    dateLabel.Text = surveyIsComplete ? string.Format(CultureInfo.CurrentCulture, this.Localize("DateLabel.Format"), completedSurvey.CreationDate) : survey.GetSections()[0].Text;
                 }
 
                 if (userLabel != null)

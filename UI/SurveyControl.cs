@@ -399,13 +399,13 @@ namespace Engage.Survey.UI
             submitDiv.Attributes["class"] = CssClassButtonsArea;
             this.Controls.Add(submitDiv);
 
-            this.RenderBackButton(submitDiv); 
-
             var button = new Button { ValidationGroup = "survey", Text = SubmitButtonText, ID = "SubmitButton", CssClass = CssClassSubmitButton };
 
             // add the handler for the button
             button.Click += this.SubmitButton_Click;
             submitDiv.Controls.Add(button);
+            
+            this.RenderBackButton(submitDiv); 
         }
 
         /// <summary>

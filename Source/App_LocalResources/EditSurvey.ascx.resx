@@ -211,7 +211,7 @@
     <value>Multiple Answer (Checkboxes)</value>
   </data>
   <data name="PreviewAreaLabel.Text" xml:space="preserve">
-    <value>Preview</value>
+    <value>Questions</value>
   </data>
   <data name="QuestionTitle.Text" xml:space="preserve">
     <value>Question</value>

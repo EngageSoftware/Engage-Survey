@@ -77,7 +77,7 @@ namespace Engage.Dnn.Survey
         /// </returns>
         private string BuildDeleteUrl(int id, string key)
         {
-            return BuildLinkUrl(this.ModuleId, string.Empty, "delete=1", key + "=" + id);
+            return BuildLinkUrl(this.ModuleId, "SurveyListing", "delete=1", key + "=" + id);
         }
 
         /// <summary>

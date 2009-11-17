@@ -1,18 +1,19 @@
-survey-title{font-weight: bold}
+.survey-title{font-weight:bold;font-size:18px;}
 .section-wrap{clear:both;}
 	.section-wrap div{padding-top:10px;}
-	h3.section-title{}
+	h3.section-title{font-size:14px;margin:0;font-weight:bold;color:#666;}
 	.question-wrap{padding:0 0 10px 0;}
 		.question{display:block;font-weight:bold;padding:0 0 2px 0;}
-			.ee-required{}
+			.ee-required-label{font-size:26px;line-height:0;color:#f00;padding-right:5px;}
+			.section-wrap span.question span.required{font-size:20px;line-height:0;color:#f00;padding-left:5px;}
 		.answer-horizontal,	.answer-vertical, .answer-vertical span{display:block;}
 	.error-message{background:url(images/inline-validator-bg.png) no-repeat right;padding:2px 4px;color:#fff !important;font-weight:bold;}
 		.error-text{color:#fff !important;font-weight:bold;}
 	.buttons-area{padding-top:20px;}
 	.limit-reached{background:url(images/inline-validator-bg.png) no-repeat left;width:180px;color:#fff;font-weight:bold;}
-
 /*============ Engage Evaluation ============*/
 #engage-evaluation{}
+	p.ee-note{text-align:right;font-family:"Lucida Grande", Lucida Sans Unicode, Helvetica, Arial, Sans-Serif;font-style:italic;}
     fieldset.ee-create-questions, fieldset.ee-preview-area{display:none;}
     fieldset.ee-create-new, fieldset.ee-create-questions, fieldset.ee-preview-area{border:none;padding:0 0 15px 0;margin:0;}
         #engage-evaluation legend{padding:0 0 5px 0;}
@@ -62,7 +63,7 @@ survey-title{font-weight: bold}
 					#engage-evaluation .ee-answer-inputs ul.ee-action-btns{padding:0 10px 15px 20px;overflow:hidden}
 					#engage-evaluation .ee-answer-inputs li.primary-btn a{font-size:12px;}
 					#engage-evaluation ul.answer-inputs a.ee-delete{padding-left:10px;}
-						.ai-label{font-weight:bold;}
+						.ai-label{font-weight:bold;display:block;padding:5px 0;}
 						.ai-input{position:relative;}
 					#ShortTextAnswer, #LongTextAnswer{padding-left:10px;}
 			ul#ee-previews{display:block;margin:0;padding:0;list-style:none;overflow:hidden;}
@@ -107,4 +108,4 @@ ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px 
 	ul.em-global-nav li.egn-manage{background: url(images/em-manage-icn.gif) left no-repeat;}
 	ul.em-global-nav li.egn-settings{background: url(images/em-settings-icn.gif) left no-repeat;}
 /*============ Global Navigation ============*/
-.em-success{border:2px #95c277 solid;background:#f5ffea;padding:8px 15px;}
+.em-success, .thankyou-wrap{border:2px #95c277 solid;background:#f5ffea;padding:8px 15px;-moz-border-radius:5px;-webkit-border-radius:5px;}

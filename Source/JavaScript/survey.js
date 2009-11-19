@@ -535,10 +535,12 @@ jQuery(function ($) {
     $('#SaveQuestion').click(function(event) {
         event.preventDefault();
 
+        var questionType = $('#DefineAnswerType :selected').val(),
+            questionIsMultipleChoice = questionType > 2; 
         validator = $('#Form').validate();
         if (!$('#SaveQuestion').parent().hasClass('disabled') &&
            $('#QuestionText').valid() &&
-           $('.ai-input input').valid()) {
+           (!questionIsMultipleChoice || $('.ai-input input').valid())) {
             
             callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
                 $('#PreviewArea').show();

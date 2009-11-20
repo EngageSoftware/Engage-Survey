@@ -208,19 +208,19 @@ jQuery(function ($) {
             url: CurrentContextInfo.WebMethodUrl + methodName,
             data: JSON.stringify(parameters),
             contentType: "application/json; charset=utf-8",
-            dataFilter: function(data) {
+            dataFilter: function (data) {
                 var msg = eval('(' + data + ')');
                 if (msg.hasOwnProperty('d'))
                     return msg.d;
                 else
                     return msg;
             },
-            success: function(msg) { 
+            success: function (msg) { 
                 if (typeof(callback) === 'function') {
                     callback(msg);
                 }
             },
-            error: function(/*XMLHttpRequest, textStatus, errorThrown*/) { 
+            error: function (/*XMLHttpRequest, textStatus, errorThrown*/) { 
                 // TODO provide a more friendly error message
                 alert(CurrentContextInfo.ErrorMessage); 
             }
@@ -228,7 +228,7 @@ jQuery(function ($) {
     }
     
     function updateSurvey(callback) {
-        callWebMethod('UpdateSurvey', getSurveyParameters(), function(surveyId) {
+        callWebMethod('UpdateSurvey', getSurveyParameters(), function (surveyId) {
             $('.ee-create-new').data('surveyId', surveyId); 
             makeSurveyReadOnly();
             if (typeof(callback) === 'function') {
@@ -324,7 +324,7 @@ jQuery(function ($) {
         if ($answers.length > 1) {
             
             var $parentAnswerElement = $(this).closest('li');
-            deleteWithUndo($parentAnswerElement, false, function afterFadeOut() {
+            deleteWithUndo($parentAnswerElement, false, function afterFadeOut () {
                 $answers = $(".answer-inputs li.answer-input:visible").each(function (i, elem) {
                     $(elem).find('.answer-num').text(i + 1);
                 });
@@ -332,7 +332,7 @@ jQuery(function ($) {
                 if ($answers.length < 2) {
                     $answers.find('.ee-delete').addClass('disabled');
                 }
-            }, null, function afterUndo() {
+            }, null, function afterUndo () {
                 $(".answer-inputs li.answer-input:visible").each(function (i, elem) {
                     $(elem).find('.answer-num').text(i + 1);
                 });
@@ -348,7 +348,7 @@ jQuery(function ($) {
     });
     
     // edit question
-    $('.ee-pr-action-links .ee-edit').click(function(event) {
+    $('.ee-pr-action-links .ee-edit').click(function (event) {
         event.preventDefault();
 
         var $questionLi = $(this).closest('li.ee-preview');
@@ -370,7 +370,7 @@ jQuery(function ($) {
         event.preventDefault();
         
         var $parentQuestionElement = $(this).closest('li.ee-preview');
-        deleteWithUndo($parentQuestionElement, true, null, function deleteCallback() {
+        deleteWithUndo($parentQuestionElement, true, null, function deleteCallback () {
             var questionId = $parentQuestionElement.data('questionId');
             callWebMethod('DeleteQuestion', { questionId: questionId }, function () {
                 $parentQuestionElement.remove();
@@ -405,7 +405,7 @@ jQuery(function ($) {
 	            }, undoTimeLimit * 1000);
 	            
 	            // update the time remaining until deleted
-	            (function updateUndoTimer() {
+	            (function updateUndoTimer () {
 	                var currentTime = new Date(),
 	                    msElapsed = currentTime.getTime() - startTime.getTime(),
 	                    msLeft = (undoTimeLimit * 1000) - msElapsed,
@@ -533,7 +533,7 @@ jQuery(function ($) {
         }
     }
 
-    $('.ai-input input:first').blur(function() {
+    $('.ai-input input:first').blur(function () {
         if($(this).val() !== '') {
             $('#SaveQuestion').parent().removeClass('disabled');
         }
@@ -543,7 +543,7 @@ jQuery(function ($) {
     });
     
     // save questions
-    $('#SaveQuestion').click(function(event) {
+    $('#SaveQuestion').click(function (event) {
         event.preventDefault();
 
         var questionType = $('#DefineAnswerType :selected').val(),
@@ -570,7 +570,7 @@ jQuery(function ($) {
     });
 
     // cancel question
-    $('#CancelQuestion').click(function(event) {
+    $('#CancelQuestion').click(function (event) {
         event.preventDefault();
         resetCreateQuestionSection();
     });
@@ -610,19 +610,19 @@ jQuery(function ($) {
             // ControlType.DropDownChoices
             var $dropDown = $("<select class='NormalTextBox dropdown-prev'></select>")
             $answerDiv.append($dropDown);
-            $.each(answers, function(i, answer) {
+            $.each(answers, function (i, answer) {
                 $("<option>" + answer.Text + "</option>").appendTo($dropDown).data('answerId', answer.AnswerId);
             });
             break;
         case 3:
             // ControlType.VerticalOptionsButtons
-            $.each(answers, function(i, answer) {
+            $.each(answers, function (i, answer) {
                 $("<label><input type='radio' name='" + questionId + "' />" + answer.Text + "</label>").appendTo($answerDiv).find('input').data('answerId', answer.AnswerId);
             });
             break;
         case 6:
             // ControlType.Checkbox
-            $.each(answers, function(i, answer) {
+            $.each(answers, function (i, answer) {
                 $("<label><input type='checkbox' />" + answer.Text + "</label>").appendTo($answerDiv).find('input').data('answerId', answer.AnswerId);
             });
             break;

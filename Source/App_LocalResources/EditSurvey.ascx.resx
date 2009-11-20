@@ -262,7 +262,7 @@
     <value>Type Section Title</value>
   </data>
   <data name="UndoAnswerDelete.Text" xml:space="preserve">
-    <value>This answer will be removed in {0}s</value>
+    <value>This answer has been removed.</value>
   </data>
   <data name="UndoAnswerDeleteButton.Text" xml:space="preserve">
     <value>Undo</value>

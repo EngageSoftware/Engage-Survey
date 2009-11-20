@@ -27,6 +27,7 @@
         #engage-evaluation a.ee-edit, #engage-evaluation a.ee-copy, #engage-evaluation a.ee-delete{color:#007b00;padding:4px;text-decoration:underline;font-weight:bold;}
         #engage-evaluation a.ee-edit{color:#0063dd;padding:0;}
         #engage-evaluation a.ee-delete{color:#dd001a;padding:0;}
+            #engage-evaluation a.ee-delete.disabled{color:#b6b6b6;}
         a.ee-edit, a.ee-edit:link, a.ee-edit:active, a.ee-edit:visited{color:#0063dd;}
         a.ee-copy, a.ee-copy:link, a.ee-copy:active, a.ee-copy:visited {color:#007b00;}
         a.ee-delete, a.ee-delete:link, a.ee-delete:active, a.ee-delete:visited{color:#dd001a;}
@@ -44,7 +45,7 @@
                 ul.ee-action-btns li.secondary-btn a{line-height:34px;padding-left:15px;color:#9e7261;font-weight:bold;font-size:16px;text-decoration:underline;font-family: Helvetica, Arial, Sans-Serif;line-height:28px;}
                 ul.ee-action-btns li.secondary-btn a:hover{color:#000;text-decoration:none;}
             ul.ee-action-btns li.disabled, ul.ee-action-btns li.disabled:hover{border:1px #b2b2b2 solid;background: url(images/btn-bg.gif) repeat-x bottom;}
-                ul.ee-action-btns li.disabled a{color:#b6b6b6;}
+                ul.ee-action-btns li.disabled a {color:#b6b6b6;}
 		.survey-listing ul{padding:15px 0 0 0;}
         .ee-create-questions{}
             .ee-question .ee-label{}

@@ -167,7 +167,7 @@ jQuery(function ($) {
     
     // after reordering answers
     $('.answer-inputs').bind('sortupdate', function (event, ui) {
-        var $answerNumberElements = $(".answer-inputs li.answer-input").find('.answer-num');
+        var $answerNumberElements = $(".answer-inputs li.answer-input:visible").find('.answer-num');
         $answerNumberElements.each(function (i, elem) {
             $(elem).text(i + 1);
         });
@@ -303,7 +303,7 @@ jQuery(function ($) {
     $(".add-new").click(function (event) {
         event.preventDefault();
         
-        var $answerElement = $(".answer-inputs li.answer-input:last").clone(true).appendTo('.answer-inputs');
+        var $answerElement = $(".answer-inputs li.answer-input:visible:last").clone(true).appendTo('.answer-inputs');
         
         // increment answer number
         var $answerNumberElement = $answerElement.find('.answer-num');
@@ -320,20 +320,23 @@ jQuery(function ($) {
     $(".answer-inputs .ee-delete").click(function (event) {
         event.preventDefault();
 
-        var $answers = $(".answer-inputs li.answer-input")
+        var $answers = $(".answer-inputs li.answer-input:visible")
         if ($answers.length > 1) {
             
             var $parentAnswerElement = $(this).closest('li');
-            deleteWithUndo($parentAnswerElement);
-            
-            // have to run query again to get rid of the element we just removed
-            $answers = $(".answer-inputs li.answer-input").each(function (i, elem) {
-                $(elem).find('.answer-num').text(i + 1);
+            deleteWithUndo($parentAnswerElement, false, function afterFadeOut() {
+                $answers = $(".answer-inputs li.answer-input:visible").each(function (i, elem) {
+                    $(elem).find('.answer-num').text(i + 1);
+                });
+                
+                if ($answers.length < 2) {
+                    $answers.find('.ee-delete').addClass('disabled');
+                }
+            }, null, function afterUndo() {
+                $(".answer-inputs li.answer-input:visible").each(function (i, elem) {
+                    $(elem).find('.answer-num').text(i + 1);
+                });
             });
-            
-            if ($answers.length < 2) {
-                $answers.find('.ee-delete').addClass('disabled');
-            }
         }
     });
     
@@ -367,50 +370,54 @@ jQuery(function ($) {
         event.preventDefault();
         
         var $parentQuestionElement = $(this).closest('li.ee-preview');
-        deleteWithUndo($parentQuestionElement, function () {
+        deleteWithUndo($parentQuestionElement, true, null, function deleteCallback() {
             var questionId = $parentQuestionElement.data('questionId');
-            callWebMethod('DeleteQuestion', { questionId: questionId }, function() {
+            callWebMethod('DeleteQuestion', { questionId: questionId }, function () {
                 $parentQuestionElement.remove();
             });
         });
     });
     
-    function deleteWithUndo($element, deleteCallback) {
+    function deleteWithUndo($element, withTimer, afterFadeOut, deleteCallback, afterUndo) {
         $element.fadeOut('slow', function () {
             var deleteTimeoutHandle, 
                 $undoElement = $element.siblings('.ee-undo').eq(0).clone().show(),
                 undoHtml = $undoElement.html(),
-                
-                // it'll take a second to actually show the timer, so it shows up to the user as 10
-                undoTimeLimit = 11,
+                undoTimeLimit = 11, // it'll take a second to actually show the timer, so it shows up to the user as 10
                 startTime = new Date();
+                
+            if ($.isFunction(afterFadeOut)) {
+                afterFadeOut();
+            }
             
             $undoElement.html(undoHtml.replace('{0}', '<span class="undo-limit"></span>'));
             
             $element.before($undoElement);
             
             // set timer to delete question
-            deleteTimeoutHandle = setTimeout(function () {
-                $undoElement.remove();
-                
-                if (deleteCallback && typeof(deleteCallback) === 'function') {
-                    deleteCallback();
-                }
-            }, undoTimeLimit * 1000);
-            
-            // update the time remaining until deleted
-            (function updateUnfoTimer() {
-                var currentTime = new Date(),
-                    msElapsed = currentTime.getTime() - startTime.getTime(),
-                    msLeft = (undoTimeLimit * 1000) - msElapsed,
-                    secondsLeft = parseInt(msLeft / 1000, 10);
-                $undoElement.find('span.undo-limit').text(secondsLeft.toString(10));
-                
-                if (secondsLeft > 0) {
-                    setTimeout(updateUnfoTimer, 300);
-                }
-            }());
-            
+			if (withTimer) {
+	            deleteTimeoutHandle = setTimeout(function () {
+	                $undoElement.remove();
+	                
+	                if ($.isFunction(deleteCallback)) {
+	                    deleteCallback();
+	                }
+	            }, undoTimeLimit * 1000);
+	            
+	            // update the time remaining until deleted
+	            (function updateUndoTimer() {
+	                var currentTime = new Date(),
+	                    msElapsed = currentTime.getTime() - startTime.getTime(),
+	                    msLeft = (undoTimeLimit * 1000) - msElapsed,
+	                    secondsLeft = parseInt(msLeft / 1000, 10);
+	                $undoElement.find('span.undo-limit').text(secondsLeft.toString(10));
+	                
+	                if (secondsLeft > 0) {
+	                    setTimeout(updateUndoTimer, 300);
+	                }
+	            }());
+            }
+			
             // undo button
             $undoElement.find('a').click(function (event) {
                 event.preventDefault();
@@ -418,6 +425,10 @@ jQuery(function ($) {
                 clearTimeout(deleteTimeoutHandle);
                 $undoElement.remove();
                 $element.show();
+                
+                if ($.isFunction(afterUndo)) {
+                    afterUndo();
+                }
             });
         });
     }
@@ -537,6 +548,12 @@ jQuery(function ($) {
 
         var questionType = $('#DefineAnswerType :selected').val(),
             questionIsMultipleChoice = questionType > 2; 
+        
+        // delete removed answers and related undo messages
+        $('li.answer-input:not(:visible)')
+            .add('.answer-inputs li.ee-undo:visible')
+            .remove();
+        
         validator = $('#Form').validate();
         if (!$('#SaveQuestion').parent().hasClass('disabled') &&
            $('#QuestionText').valid() &&

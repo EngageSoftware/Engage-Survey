@@ -1,4 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="false" CodeBehind="EditSurvey.ascx.cs" Inherits="Engage.Dnn.Survey.EditSurvey" %>
+<%@ Import Namespace="DotNetNuke.UI.Utilities"%>
 <%@ Import Namespace="Engage.Survey.Util"%>
 <div id="engage-evaluation">
     <p class="ee-note"><strong>Note:</strong> (*) denotes required fields</p>
@@ -107,10 +108,11 @@ var CurrentContextInfo = {
     WebMethodUrl: '<%= ResolveUrl("ClientService.asmx") %>/',
     UserId: <%=UserId %>,
     Survey: <%=SerializedSurvey %>,
-    ErrorMessage: '<%= Localize("AjaxError.Text") %>',
-    SaveQuestionButtonText: '<%= Localize("SaveQuestion.Text") %>',
-    SaveQuestionToolTip: '<%= Localize("SaveQuestion.ToolTip") %>',
-    UpdateQuestionButtonText: '<%= Localize("UpdateQuestion.Text") %>',
-    UpdateQuestionToolTip: '<%= Localize("UpdateQuestion.ToolTip") %>'
+    ErrorMessage: '<%= ClientAPI.GetSafeJSString(Localize("AjaxError.Text")) %>',
+    SaveQuestionButtonText: '<%= ClientAPI.GetSafeJSString(Localize("SaveQuestion.Text")) %>',
+    SaveQuestionToolTip: '<%= ClientAPI.GetSafeJSString(Localize("SaveQuestion.ToolTip")) %>',
+    UpdateQuestionButtonText: '<%= ClientAPI.GetSafeJSString(Localize("UpdateQuestion.Text")) %>',
+    UpdateQuestionToolTip: '<%= ClientAPI.GetSafeJSString(Localize("UpdateQuestion.ToolTip")) %>',
+    ProgressText: '<%= ClientAPI.GetSafeJSString(Localize("ProgressText.Text")) %>'
 };
 </script>

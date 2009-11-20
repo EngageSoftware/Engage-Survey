@@ -54,7 +54,7 @@
         .ee-define-answers{}
             #engage-evaluation .define-answer{float:left;display:block;clear:none;}
             .define-answer .ee-input{margin-bottom:10px;}
-            .ee-answer-inputs{background:#eee;width:420px;border-bottom:1px #c4cbb2 solid;border-right:1px #cfcfcf solid;clear:both;}
+            .ee-answer-inputs{background:#eee;width:410px;border-bottom:1px #c4cbb2 solid;border-right:1px #cfcfcf solid;clear:both;}
 				ul.answer-inputs{margin:10px 0 0 0;padding:10px;list-style:none;clear:both;}
 					ul.answer-inputs li{list-style:none;padding:5px 0 5px 10px;/*background: url(images/drag-icn.gif) no-repeat 360px 25px;*/border:1px #eee solid;}
 						ul.answer-inputs li:hover{border-color:#fff #ccc #ccc #fff;border-style:solid;border-width:1px;cursor:move;}

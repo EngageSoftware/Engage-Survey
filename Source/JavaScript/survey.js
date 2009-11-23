@@ -343,7 +343,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                 }, null, function afterUndo () {
                     $(".answer-inputs li.answer-input:visible").each(function (i, elem) {
                         $(elem).find('.answer-num').text(i + 1);
-                    });
+                    }).find('.ee-delete').removeClass('disabled');
                 });
             }
         });

@@ -683,7 +683,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             hideEditModeButtons();
             $('.ee-create-questions').show(); 
             
-            if (CurrentContextInfo.Survey.Sections[0].Questions) {
+            if (CurrentContextInfo.Survey.Sections[0].Questions.length) {
                 $('#PreviewArea').show();
                 
                 $.each(CurrentContextInfo.Survey.Sections[0].Questions, function (i, question) {

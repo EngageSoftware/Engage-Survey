@@ -64,7 +64,7 @@
                                 <a href="#" title='<%=Localize("RemoveAnswerHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
                             </div>
                         </li>
-                        <li class="ee-undo" style="display:none;">
+                        <li class="ee-undo template" style="display:none;">
                             <%=Localize("UndoAnswerDelete.Text") %> <a href="#" title='<%=Localize("UndoAnswerDeleteButton.ToolTip") %>'><%=Localize("UndoAnswerDeleteButton.Text") %></a>
                         </li>
                     </ul>

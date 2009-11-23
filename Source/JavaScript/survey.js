@@ -389,7 +389,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
         function deleteWithUndo($element, withTimer, afterFadeOut, deleteCallback, afterUndo) {
             $element.fadeOut('slow', function () {
                 var deleteTimeoutHandle, 
-                    $undoElement = $element.siblings('.ee-undo').eq(0).clone().show(),
+                    $undoElement = $element.siblings('.ee-undo').eq(0).clone().show().removeClass('template'),
                     undoHtml = $undoElement.html(),
                     undoTimeLimit = 11, // it'll take a second to actually show the timer, so it shows up to the user as 10
                     startTime = new Date();
@@ -548,11 +548,6 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             var questionType = $('#DefineAnswerType :selected').val(),
                 questionIsMultipleChoice = questionType > 2; 
             
-            // delete removed answers and related undo messages
-            $('li.answer-input:not(:visible)')
-                .add('.answer-inputs li.ee-undo:visible')
-                .remove();
-            
             validator = $('#Form').validate();
             if ($('#QuestionText').valid() &&
                (!questionIsMultipleChoice || $('.ai-input input').valid())) {
@@ -640,6 +635,11 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             $('#CancelQuestion').parent().hide();
             $('#AddNewQuestion').parent().hide();
             
+            // remove all remove answers and related undo messages
+            $('#MultipleAnswer:visible li.answer-input:not(:visible)')
+                .add('.answer-inputs li.ee-undo:not(.template)')
+                .remove();
+
             // only should have two answers by default
             // TODO: Make sure there aren't less than two answers
             $('#MultipleAnswer li.answer-input:gt(1)').remove();

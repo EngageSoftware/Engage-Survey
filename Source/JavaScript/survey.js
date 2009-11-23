@@ -462,8 +462,6 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             
             if (questionType != 2 && questionType != 1 && questionType != 0) { // Not SmallTextInputField or LargeTextInputField or ControlType.None
 
-                // enable "Save" button            
-                $('#SaveQuestion').parent();
                 $('#CancelQuestion').parent().show();
 
                 //clone an existing element

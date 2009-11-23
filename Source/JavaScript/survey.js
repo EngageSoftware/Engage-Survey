@@ -463,7 +463,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             if (questionType != 2 && questionType != 1 && questionType != 0) { // Not SmallTextInputField or LargeTextInputField or ControlType.None
 
                 // enable "Save" button            
-                $('#SaveQuestion').parent().removeClass('disabled');
+                $('#SaveQuestion').parent();
                 $('#CancelQuestion').parent().show();
 
                 //clone an existing element
@@ -504,57 +504,48 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
         });
         
         function ShowAnswersInput(questionType) {
-
-            $('#MultipleAnswer').hide();
-            $('#ShortTextAnswer').hide();
-            $('#LongTextAnswer').hide();
-            $('.ee-define-answer .primary-btn').hide();
-            $('#SaveQuestion').parent().addClass('disabled');
-            $('#CancelQuestion').parent().hide();
+            var $multipleAnswer = $('#MultipleAnswer'),
+                $shortTextAnswer = $('#ShortTextAnswer'),
+                $longAnswerText = $('#LongTextAnswer'),
+                $addAnswerButton = $('.ee-define-answer .primary-btn'),
+                $saveQuestionButtonWrap = $('#SaveQuestion').parent(),
+                $cancelButtonWrap = $('#CancelQuestion').parent();
+                
+            $multipleAnswer.hide();
+            $shortTextAnswer.hide();
+            $longAnswerText.hide();
+            $addAnswerButton.hide();
+            $cancelButtonWrap.hide();
+            $saveQuestionButtonWrap.removeClass('disabled');
 
             if($('#QuestionText').val() || $('#DefineAnswerType :selected').val() > 0) {
-                $('#CancelQuestion').parent().show();
+                $cancelButtonWrap.show();
             }
 
             switch (questionType) {
             case 2:
                 // ControlType.SmallTextInputField
-                $('#ShortTextAnswer').show();
-                $('#SaveQuestion').parent().removeClass('disabled');
+                $shortTextAnswer.show();
                 break;
             case 1:
                 // ControlType.LargeTextInputField
-                $('#LongTextAnswer').show();
-                $('#SaveQuestion').parent().removeClass('disabled');
+                $longAnswerText.show();
                 break;
             case 0:
                 // ControlType.None
+                $saveQuestionButtonWrap.addClass('disabled');
                 break;
             default: 
                 // multiple answer
-                $('#MultipleAnswer').show();
-                $('.ee-define-answer .primary-btn').show();
-                var $firstAnswer = $('.ai-input input:first').focus();
-                if ($firstAnswer.val()) {
-                    $('#SaveQuestion').parent().removeClass('disabled');
-                }
+                $multipleAnswer.show();
+                $addAnswerButton.show();
             }
         }
 
-        $('.ai-input input:first').blur(function () {
-            if($(this).val() !== '') {
-                $('#SaveQuestion').parent().removeClass('disabled');
-            }
-            else {
-                $('#SaveQuestion').parent().addClass('disabled');
-            }
-        });
-        
         // save questions
         $('#SaveQuestion').click(function (event) {
             event.preventDefault();
             
-            $(this).text(CurrentContextInfo.ProgressText);
 
             var questionType = $('#DefineAnswerType :selected').val(),
                 questionIsMultipleChoice = questionType > 2; 
@@ -569,6 +560,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                $('#QuestionText').valid() &&
                (!questionIsMultipleChoice || $('.ai-input input').valid())) {
                 
+                $(this).text(CurrentContextInfo.ProgressText).parent().addClass('disabled');
                 callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
                     $('#PreviewArea').show();
                     

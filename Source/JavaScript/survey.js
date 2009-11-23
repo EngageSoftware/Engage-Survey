@@ -224,7 +224,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                         return msg;
                 },
                 success: function (msg) { 
-                    if (typeof(callback) === 'function') {
+                    if ($.isFunction(callback)) {
                         callback(msg);
                     }
                 },
@@ -239,7 +239,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             callWebMethod('UpdateSurvey', getSurveyParameters(), function (surveyId) {
                 $('.ee-create-new').data('surveyId', surveyId); 
                 makeSurveyReadOnly();
-                if (typeof(callback) === 'function') {
+                if ($.isFunction(callback)) {
                     callback(surveyId);
                 }
             });

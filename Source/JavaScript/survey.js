@@ -183,8 +183,13 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             event.preventDefault();
             
             if(validator.form()) {
+                var $this = $(this),
+                    originalText = $this.text();
+
+                $this.text(CurrentContextInfo.ProgressText);                
                 updateSurvey(function () {
-                    $('.ee-create-questions').show(); 
+                    $('.ee-create-questions').show();
+                    $this.text(originalText);
                 });
             }
         });
@@ -194,8 +199,13 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             event.preventDefault();
             
             if(validator.form()) {
+                var $this = $(this),
+                    originalText = $this.text();
+                
+                $this.text(CurrentContextInfo.ProgressText);
                 updateSurvey(function () {
                     hideEditModeButtons();
+                    $this.text(originalText);
                 });
             }
         });
@@ -543,6 +553,8 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
         // save questions
         $('#SaveQuestion').click(function (event) {
             event.preventDefault();
+            
+            $(this).text(CurrentContextInfo.ProgressText);
 
             var questionType = $('#DefineAnswerType :selected').val(),
                 questionIsMultipleChoice = questionType > 2; 

@@ -641,8 +641,15 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                 .remove();
 
             // only should have two answers by default
-            // TODO: Make sure there aren't less than two answers
             $('#MultipleAnswer li.answer-input:gt(1)').remove();
+            var $defaultAnswers = $('#MultipleAnswer li.answer-input');
+            if ($defaultAnswers.length === 1) {
+                // if there's only one question, it has the 'disabled' class
+                $defaultAnswers.find('.ee-delete').removeClass('disabled');
+                
+                $defaultAnswers.clone(true).insertAfter($defaultAnswers).find('.answer-num').text(2);
+            }
+            
             $('.ai-input input').val('');
             
             $('#SaveQuestion').text(CurrentContextInfo.SaveQuestionButtonText).attr('title', CurrentContextInfo.SaveQuestionToolTip).parent().addClass('disabled');

@@ -122,575 +122,574 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
 		else throw "jQuery.convertTo() Parse Error: The " + name + " tag '" + tag + "' is not a valid HTML tag. This plug-in only supports conversion of valid HTML tags.";
 	}
 
-})(jQuery);
-
 /**************************/
 /*                        */
 /*     Engage: Survey     */
 /*                        */
 /**************************/
-jQuery(function ($) {
+    $(function () {
 
-    $.validator.setDefaults({
-        rules: {
-            required: "required"
-        },
-        onsubmit: false
-    });
-
-    var validator = $('#Form').validate();
-
-    $("#ee-previews").sortable({
-        items: 'li.ee-preview', 
-        placeholder: 'ui-state-highlight'
-    });
-    $(".answer-inputs").sortable({
-        intems: 'li.answer-input',
-        placeholder: 'ui-state-highlight'
-    });
-    ////$("#ee-previews, .answer-inputs").disableSelection();
-    
-    // after reordering questions
-    $('#ee-previews').bind('sortupdate', function (event, ui) {
-        var questionOrderMap = {};
-        $('#ee-previews li.ee-preview:visible').each(function (i, elem) {
-            questionOrderMap[$(elem).data('questionId')] = i + 1;
-        });
-        
-        var parameters = {
-            surveyId: $('.ee-create-new').data('surveyId'),
-            questionOrderMap: questionOrderMap
-        };
-        
-        callWebMethod('ReorderQuestions', parameters);
-    });
-    
-    // after reordering answers
-    $('.answer-inputs').bind('sortupdate', function (event, ui) {
-        var $answerNumberElements = $(".answer-inputs li.answer-input:visible").find('.answer-num');
-        $answerNumberElements.each(function (i, elem) {
-            $(elem).text(i + 1);
-        });
-    });
-    
-    // Add selection style back to the inputs, since our CSS is removing or hiding the native style
-    $("#engage-evaluation :input").focus(function () {
-        $(this).addClass("focus");
-    }).blur(function () {
-        $(this).removeClass("focus");
-    });
-
-    // save new survey
-    $('#EvalNew').click(function (event) {
-        event.preventDefault();
-        
-        if(validator.form()) {
-            updateSurvey(function () {
-                $('.ee-create-questions').show(); 
-            });
-        }
-    });
-    
-    // update existing survey
-    $('#EvalUpdate').click(function (event) {
-        event.preventDefault();
-        
-        if(validator.form()) {
-            updateSurvey(function () {
-                hideEditModeButtons();
-            });
-        }
-    });
-    
-    function callWebMethod (methodName, parameters, callback) {
-        jQuery.ajax({
-            type: "POST",
-            url: CurrentContextInfo.WebMethodUrl + methodName,
-            data: JSON.stringify(parameters),
-            contentType: "application/json; charset=utf-8",
-            dataFilter: function (data) {
-                var msg = eval('(' + data + ')');
-                if (msg.hasOwnProperty('d'))
-                    return msg.d;
-                else
-                    return msg;
+        $.validator.setDefaults({
+            rules: {
+                required: "required"
             },
-            success: function (msg) { 
+            onsubmit: false
+        });
+
+        var validator = $('#Form').validate();
+
+        $("#ee-previews").sortable({
+            items: 'li.ee-preview', 
+            placeholder: 'ui-state-highlight'
+        });
+        $(".answer-inputs").sortable({
+            intems: 'li.answer-input',
+            placeholder: 'ui-state-highlight'
+        });
+        ////$("#ee-previews, .answer-inputs").disableSelection();
+        
+        // after reordering questions
+        $('#ee-previews').bind('sortupdate', function (event, ui) {
+            var questionOrderMap = {};
+            $('#ee-previews li.ee-preview:visible').each(function (i, elem) {
+                questionOrderMap[$(elem).data('questionId')] = i + 1;
+            });
+            
+            var parameters = {
+                surveyId: $('.ee-create-new').data('surveyId'),
+                questionOrderMap: questionOrderMap
+            };
+            
+            callWebMethod('ReorderQuestions', parameters);
+        });
+        
+        // after reordering answers
+        $('.answer-inputs').bind('sortupdate', function (event, ui) {
+            var $answerNumberElements = $(".answer-inputs li.answer-input:visible").find('.answer-num');
+            $answerNumberElements.each(function (i, elem) {
+                $(elem).text(i + 1);
+            });
+        });
+        
+        // Add selection style back to the inputs, since our CSS is removing or hiding the native style
+        $("#engage-evaluation :input").focus(function () {
+            $(this).addClass("focus");
+        }).blur(function () {
+            $(this).removeClass("focus");
+        });
+
+        // save new survey
+        $('#EvalNew').click(function (event) {
+            event.preventDefault();
+            
+            if(validator.form()) {
+                updateSurvey(function () {
+                    $('.ee-create-questions').show(); 
+                });
+            }
+        });
+        
+        // update existing survey
+        $('#EvalUpdate').click(function (event) {
+            event.preventDefault();
+            
+            if(validator.form()) {
+                updateSurvey(function () {
+                    hideEditModeButtons();
+                });
+            }
+        });
+        
+        function callWebMethod (methodName, parameters, callback) {
+            jQuery.ajax({
+                type: "POST",
+                url: CurrentContextInfo.WebMethodUrl + methodName,
+                data: JSON.stringify(parameters),
+                contentType: "application/json; charset=utf-8",
+                dataFilter: function (data) {
+                    var msg = eval('(' + data + ')');
+                    if (msg.hasOwnProperty('d'))
+                        return msg.d;
+                    else
+                        return msg;
+                },
+                success: function (msg) { 
+                    if (typeof(callback) === 'function') {
+                        callback(msg);
+                    }
+                },
+                error: function (/*XMLHttpRequest, textStatus, errorThrown*/) { 
+                    // TODO provide a more friendly error message
+                    alert(CurrentContextInfo.ErrorMessage); 
+                }
+            });
+        }
+        
+        function updateSurvey(callback) {
+            callWebMethod('UpdateSurvey', getSurveyParameters(), function (surveyId) {
+                $('.ee-create-new').data('surveyId', surveyId); 
+                makeSurveyReadOnly();
                 if (typeof(callback) === 'function') {
-                    callback(msg);
+                    callback(surveyId);
                 }
-            },
-            error: function (/*XMLHttpRequest, textStatus, errorThrown*/) { 
-                // TODO provide a more friendly error message
-                alert(CurrentContextInfo.ErrorMessage); 
-            }
-        });
-    }
-    
-    function updateSurvey(callback) {
-        callWebMethod('UpdateSurvey', getSurveyParameters(), function (surveyId) {
-            $('.ee-create-new').data('surveyId', surveyId); 
-            makeSurveyReadOnly();
-            if (typeof(callback) === 'function') {
-                callback(surveyId);
-            }
-        });
-    }
-    
-    function getSurveyParameters () {
-        return {
-            survey : {
-                SurveyId: $('.ee-create-new').data('surveyId') || -1,
-                Text: $('#EvalTitleInput').val(),
-                RevisingUser: CurrentContextInfo.UserId,
-                Sections: [{
-                    Text: $('#EvalDescTextArea').val()
-                }]
-            }
-        };
-    }
-    
-    // edit survey
-    $('#EvalEdit').click(function (event) {
-        event.preventDefault();
+            });
+        }
         
-        // save current value to "previous value" data field for usage in the cancel link click event.
-        $('#EvalDescTextArea').parent().data('previousValue', $('#EvalDescTextArea').text());
-        $('#EvalTitleInput').parent().data('previousValue', $('#EvalTitleInput').text());
+        function getSurveyParameters () {
+            return {
+                survey : {
+                    SurveyId: $('.ee-create-new').data('surveyId') || -1,
+                    Text: $('#EvalTitleInput').val(),
+                    RevisingUser: CurrentContextInfo.UserId,
+                    Sections: [{
+                        Text: $('#EvalDescTextArea').val()
+                    }]
+                }
+            };
+        }
         
-        $('#EvalTitleInput').convertTo('input').removeClass('ee-input-pre');
-        $('#EvalDescTextArea').convertTo('textarea').removeClass('ee-input-pre');
-        
-        $('.ee-description').show();
-        $('#EvalEdit').parent().hide();
-        $('#EvalCancel').parent().show();
-        $('#EvalUpdate').parent().show();
-        validator = $('#Form').validate();
-    });
-    
-    $('#EvalCancel').click(function (event) {
-        event.preventDefault();
-        
-        // retrieve data values and reset the text boxes.
-        $('#EvalDescTextArea').val($('#EvalDescTextArea').parent().data('previousValue'));
-        $('#EvalTitleInput').val($('#EvalTitleInput').parent().data('previousValue'));
-        
-        makeSurveyReadOnly();
-        hideEditModeButtons();
-
-        validator.resetForm();
-    });
-        
-    function makeSurveyReadOnly () {
-        if ($('#EvalDescTextArea').val()) {
-            $('#EvalDescTextArea').convertTo('span').addClass('ee-input-pre');
+        // edit survey
+        $('#EvalEdit').click(function (event) {
+            event.preventDefault();
+            
+            // save current value to "previous value" data field for usage in the cancel link click event.
+            $('#EvalDescTextArea').parent().data('previousValue', $('#EvalDescTextArea').text());
+            $('#EvalTitleInput').parent().data('previousValue', $('#EvalTitleInput').text());
+            
+            $('#EvalTitleInput').convertTo('input').removeClass('ee-input-pre');
+            $('#EvalDescTextArea').convertTo('textarea').removeClass('ee-input-pre');
+            
             $('.ee-description').show();
-        }
-        else {
-            $('.ee-description').hide();
-        }
-        $('#EvalTitleInput').convertTo('span').addClass('ee-input-pre');
-        $('#EvalNew').parent().hide();
-        $('#EvalEdit').parent().show();
-    }
-
-    function hideEditModeButtons () {
-        $('#EvalUpdate').parent().hide();
-        $('#EvalCancel').parent().hide();
-    }
-    
-    // add answer
-    $(".add-new").click(function (event) {
-        event.preventDefault();
+            $('#EvalEdit').parent().hide();
+            $('#EvalCancel').parent().show();
+            $('#EvalUpdate').parent().show();
+            validator = $('#Form').validate();
+        });
         
-        var $answerElement = $(".answer-inputs li.answer-input:visible:last").clone(true).appendTo('.answer-inputs');
-        
-        // increment answer number
-        var $answerNumberElement = $answerElement.find('.answer-num');
-        var answerNumber = parseInt($answerNumberElement.text(), 10);
-        $answerNumberElement.text(answerNumber + 1);
-        
-        // clear out cloned textbox
-        $answerElement.find('input').val('').focus();
-        
-        $(".answer-inputs .ee-delete").removeClass('disabled')
-    });
-    
-    // remove answer
-    $(".answer-inputs .ee-delete").click(function (event) {
-        event.preventDefault();
-
-        var $answers = $(".answer-inputs li.answer-input:visible")
-        if ($answers.length > 1) {
+        $('#EvalCancel').click(function (event) {
+            event.preventDefault();
             
-            var $parentAnswerElement = $(this).closest('li');
-            deleteWithUndo($parentAnswerElement, false, function afterFadeOut () {
-                $answers = $(".answer-inputs li.answer-input:visible").each(function (i, elem) {
-                    $(elem).find('.answer-num').text(i + 1);
-                });
-                
-                if ($answers.length < 2) {
-                    $answers.find('.ee-delete').addClass('disabled');
-                }
-            }, null, function afterUndo () {
-                $(".answer-inputs li.answer-input:visible").each(function (i, elem) {
-                    $(elem).find('.answer-num').text(i + 1);
-                });
-            });
-        }
-    });
-    
-    // cancel question create/edit
-    $('.ee-action-btns .back').click(function (event) {
-        event.preventDefault();
-        
-        resetCreateQuestionSection();
-    });
-    
-    // edit question
-    $('.ee-pr-action-links .ee-edit').click(function (event) {
-        event.preventDefault();
+            // retrieve data values and reset the text boxes.
+            $('#EvalDescTextArea').val($('#EvalDescTextArea').parent().data('previousValue'));
+            $('#EvalTitleInput').val($('#EvalTitleInput').parent().data('previousValue'));
+            
+            makeSurveyReadOnly();
+            hideEditModeButtons();
 
-        var $questionLi = $(this).closest('li.ee-preview');
-        populateCreateQuestionSection($questionLi, true);
-        $('#SaveQuestion').text(CurrentContextInfo.UpdateQuestionButtonText).attr('title', CurrentContextInfo.UpdateQuestionToolTip);
-    });
-    
-    // copy question
-    $('.ee-pr-action-links .ee-copy').click(function (event) {
-        event.preventDefault();
+            validator.resetForm();
+        });
+            
+        function makeSurveyReadOnly () {
+            if ($('#EvalDescTextArea').val()) {
+                $('#EvalDescTextArea').convertTo('span').addClass('ee-input-pre');
+                $('.ee-description').show();
+            }
+            else {
+                $('.ee-description').hide();
+            }
+            $('#EvalTitleInput').convertTo('span').addClass('ee-input-pre');
+            $('#EvalNew').parent().hide();
+            $('#EvalEdit').parent().show();
+        }
+
+        function hideEditModeButtons () {
+            $('#EvalUpdate').parent().hide();
+            $('#EvalCancel').parent().hide();
+        }
         
-        var $questionLi = $(this).closest('li.ee-preview');
-        populateCreateQuestionSection($questionLi, false);
-        $('#SaveQuestion').text(CurrentContextInfo.SaveQuestionButtonText).attr('title', CurrentContextInfo.SaveQuestionToolTip);
-    });
-    
-    // delete question
-    $('.ee-pr-action-links .ee-delete').click(function (event) {
-        event.preventDefault();
+        // add answer
+        $(".add-new").click(function (event) {
+            event.preventDefault();
+            
+            var $answerElement = $(".answer-inputs li.answer-input:visible:last").clone(true).appendTo('.answer-inputs');
+            
+            // increment answer number
+            var $answerNumberElement = $answerElement.find('.answer-num');
+            var answerNumber = parseInt($answerNumberElement.text(), 10);
+            $answerNumberElement.text(answerNumber + 1);
+            
+            // clear out cloned textbox
+            $answerElement.find('input').val('').focus();
+            
+            $(".answer-inputs .ee-delete").removeClass('disabled')
+        });
         
-        var $parentQuestionElement = $(this).closest('li.ee-preview');
-        deleteWithUndo($parentQuestionElement, true, null, function deleteCallback () {
-            var questionId = $parentQuestionElement.data('questionId');
-            callWebMethod('DeleteQuestion', { questionId: questionId }, function () {
-                $parentQuestionElement.remove();
+        // remove answer
+        $(".answer-inputs .ee-delete").click(function (event) {
+            event.preventDefault();
+
+            var $answers = $(".answer-inputs li.answer-input:visible")
+            if ($answers.length > 1) {
+                
+                var $parentAnswerElement = $(this).closest('li');
+                deleteWithUndo($parentAnswerElement, false, function afterFadeOut () {
+                    $answers = $(".answer-inputs li.answer-input:visible").each(function (i, elem) {
+                        $(elem).find('.answer-num').text(i + 1);
+                    });
+                    
+                    if ($answers.length < 2) {
+                        $answers.find('.ee-delete').addClass('disabled');
+                    }
+                }, null, function afterUndo () {
+                    $(".answer-inputs li.answer-input:visible").each(function (i, elem) {
+                        $(elem).find('.answer-num').text(i + 1);
+                    });
+                });
+            }
+        });
+        
+        // cancel question create/edit
+        $('.ee-action-btns .back').click(function (event) {
+            event.preventDefault();
+            
+            resetCreateQuestionSection();
+        });
+        
+        // edit question
+        $('.ee-pr-action-links .ee-edit').click(function (event) {
+            event.preventDefault();
+
+            var $questionLi = $(this).closest('li.ee-preview');
+            populateCreateQuestionSection($questionLi, true);
+            $('#SaveQuestion').text(CurrentContextInfo.UpdateQuestionButtonText).attr('title', CurrentContextInfo.UpdateQuestionToolTip);
+        });
+        
+        // copy question
+        $('.ee-pr-action-links .ee-copy').click(function (event) {
+            event.preventDefault();
+            
+            var $questionLi = $(this).closest('li.ee-preview');
+            populateCreateQuestionSection($questionLi, false);
+            $('#SaveQuestion').text(CurrentContextInfo.SaveQuestionButtonText).attr('title', CurrentContextInfo.SaveQuestionToolTip);
+        });
+        
+        // delete question
+        $('.ee-pr-action-links .ee-delete').click(function (event) {
+            event.preventDefault();
+            
+            var $parentQuestionElement = $(this).closest('li.ee-preview');
+            deleteWithUndo($parentQuestionElement, true, null, function deleteCallback () {
+                var questionId = $parentQuestionElement.data('questionId');
+                callWebMethod('DeleteQuestion', { questionId: questionId }, function () {
+                    $parentQuestionElement.remove();
+                });
             });
         });
-    });
-    
-    function deleteWithUndo($element, withTimer, afterFadeOut, deleteCallback, afterUndo) {
-        $element.fadeOut('slow', function () {
-            var deleteTimeoutHandle, 
-                $undoElement = $element.siblings('.ee-undo').eq(0).clone().show(),
-                undoHtml = $undoElement.html(),
-                undoTimeLimit = 11, // it'll take a second to actually show the timer, so it shows up to the user as 10
-                startTime = new Date();
-                
-            if ($.isFunction(afterFadeOut)) {
-                afterFadeOut();
-            }
-            
-            $undoElement.html(undoHtml.replace('{0}', '<span class="undo-limit"></span>'));
-            
-            $element.before($undoElement);
-            
-            // set timer to delete question
-			if (withTimer) {
-	            deleteTimeoutHandle = setTimeout(function () {
-	                $undoElement.remove();
-	                
-	                if ($.isFunction(deleteCallback)) {
-	                    deleteCallback();
-	                }
-	            }, undoTimeLimit * 1000);
-	            
-	            // update the time remaining until deleted
-	            (function updateUndoTimer () {
-	                var currentTime = new Date(),
-	                    msElapsed = currentTime.getTime() - startTime.getTime(),
-	                    msLeft = (undoTimeLimit * 1000) - msElapsed,
-	                    secondsLeft = parseInt(msLeft / 1000, 10);
-	                $undoElement.find('span.undo-limit').text(secondsLeft.toString(10));
-	                
-	                if (secondsLeft > 0) {
-	                    setTimeout(updateUndoTimer, 300);
-	                }
-	            }());
-            }
-			
-            // undo button
-            $undoElement.find('a').click(function (event) {
-                event.preventDefault();
-                
-                clearTimeout(deleteTimeoutHandle);
-                $undoElement.remove();
-                $element.show();
-                
-                if ($.isFunction(afterUndo)) {
-                    afterUndo();
+        
+        function deleteWithUndo($element, withTimer, afterFadeOut, deleteCallback, afterUndo) {
+            $element.fadeOut('slow', function () {
+                var deleteTimeoutHandle, 
+                    $undoElement = $element.siblings('.ee-undo').eq(0).clone().show(),
+                    undoHtml = $undoElement.html(),
+                    undoTimeLimit = 11, // it'll take a second to actually show the timer, so it shows up to the user as 10
+                    startTime = new Date();
+                    
+                if ($.isFunction(afterFadeOut)) {
+                    afterFadeOut();
                 }
+                
+                $undoElement.html(undoHtml.replace('{0}', '<span class="undo-limit"></span>'));
+                
+                $element.before($undoElement);
+                
+                // set timer to delete question
+			    if (withTimer) {
+	                deleteTimeoutHandle = setTimeout(function () {
+	                    $undoElement.remove();
+    	                
+	                    if ($.isFunction(deleteCallback)) {
+	                        deleteCallback();
+	                    }
+	                }, undoTimeLimit * 1000);
+    	            
+	                // update the time remaining until deleted
+	                (function updateUndoTimer () {
+	                    var currentTime = new Date(),
+	                        msElapsed = currentTime.getTime() - startTime.getTime(),
+	                        msLeft = (undoTimeLimit * 1000) - msElapsed,
+	                        secondsLeft = parseInt(msLeft / 1000, 10);
+	                    $undoElement.find('span.undo-limit').text(secondsLeft.toString(10));
+    	                
+	                    if (secondsLeft > 0) {
+	                        setTimeout(updateUndoTimer, 300);
+	                    }
+	                }());
+                }
+    			
+                // undo button
+                $undoElement.find('a').click(function (event) {
+                    event.preventDefault();
+                    
+                    clearTimeout(deleteTimeoutHandle);
+                    $undoElement.remove();
+                    $element.show();
+                    
+                    if ($.isFunction(afterUndo)) {
+                        afterUndo();
+                    }
+                });
             });
+        }
+        
+        function populateCreateQuestionSection ($questionLi, setQuestionData) {
+            resetCreateQuestionSection();
+                    
+            var questionType = $questionLi.data('questionType');
+            var questionId = $questionLi.data('questionId');
+            
+            // set the "edit" question text based on the "preview" question text
+            $('#QuestionText').val($questionLi.children('.pv-question').text());
+            
+            if (setQuestionData) {
+                // set the question id on the "edit" section based on the question id in the "preview" section
+                $('#CreateQuestions').data('questionId', questionId).data('relativeOrder', $('#ee-previews li.ee-preview').index($questionLi) + 1);
+            }
+            
+            // set the "edit" answer type based on the "preview" answer type
+            $('#DefineAnswerType').val(questionType);
+            
+            ShowAnswersInput(questionType);
+            
+            if (questionType != 2 && questionType != 1 && questionType != 0) { // Not SmallTextInputField or LargeTextInputField or ControlType.None
+
+                // enable "Save" button            
+                $('#SaveQuestion').parent().removeClass('disabled');
+                $('#CancelQuestion').parent().show();
+
+                //clone an existing element
+                var $baseAnswerElement = $(".answer-inputs li.answer-input:last").clone(true);
+                
+                //wipe out all of the answers
+                $('.answer-inputs li.answer-input').remove();
+                
+                //get each answer
+                $questionLi.find('.pv-answer').find('input, option').each(function (i) {
+                
+                    var $answerElement = $baseAnswerElement.clone(true);
+                
+                    // increment answer number
+                    var $answerNumberElement = $answerElement.find('.answer-num').text(i + 1);
+
+                    // update cloned textbox's value
+                    $answerElement.find('input').val($(this).text() || $(this).parent().text());
+                    
+                    //append answer LI to UL and set the answer id
+                    $answerElement.appendTo('.answer-inputs');
+                    
+                    if (setQuestionData) {
+                        $answerElement.data('answerId', $(this).data('answerId'));
+                    }
+                });
+            }
+        }
+
+        // change answer type
+        $('#DefineAnswerType').change(function (event) {
+            ShowAnswersInput(parseInt($(this).val(), 10));
         });
-    }
-    
-    function populateCreateQuestionSection ($questionLi, setQuestionData) {
-        resetCreateQuestionSection();
-                
-        var questionType = $questionLi.data('questionType');
-        var questionId = $questionLi.data('questionId');
-        
-        // set the "edit" question text based on the "preview" question text
-        $('#QuestionText').val($questionLi.children('.pv-question').text());
-        
-        if (setQuestionData) {
-            // set the question id on the "edit" section based on the question id in the "preview" section
-            $('#CreateQuestions').data('questionId', questionId).data('relativeOrder', $('#ee-previews li.ee-preview').index($questionLi) + 1);
-        }
-        
-        // set the "edit" answer type based on the "preview" answer type
-        $('#DefineAnswerType').val(questionType);
-        
-        ShowAnswersInput(questionType);
-        
-        if (questionType != 2 && questionType != 1 && questionType != 0) { // Not SmallTextInputField or LargeTextInputField or ControlType.None
 
-            // enable "Save" button            
-            $('#SaveQuestion').parent().removeClass('disabled');
-            $('#CancelQuestion').parent().show();
+        // question textbox onblur
+        $('#QuestionText').blur(function (event) {
+            ShowAnswersInput(parseInt($('#DefineAnswerType').val(), 10));
+        });
+        
+        function ShowAnswersInput(questionType) {
 
-            //clone an existing element
-            var $baseAnswerElement = $(".answer-inputs li.answer-input:last").clone(true);
-            
-            //wipe out all of the answers
-            $('.answer-inputs li.answer-input').remove();
-            
-            //get each answer
-            $questionLi.find('.pv-answer').find('input, option').each(function (i) {
-            
-                var $answerElement = $baseAnswerElement.clone(true);
-            
-                // increment answer number
-                var $answerNumberElement = $answerElement.find('.answer-num').text(i + 1);
+            $('#MultipleAnswer').hide();
+            $('#ShortTextAnswer').hide();
+            $('#LongTextAnswer').hide();
+            $('.ee-define-answer .primary-btn').hide();
+            $('#SaveQuestion').parent().addClass('disabled');
+            $('#CancelQuestion').parent().hide();
 
-                // update cloned textbox's value
-                $answerElement.find('input').val($(this).text() || $(this).parent().text());
-                
-                //append answer LI to UL and set the answer id
-                $answerElement.appendTo('.answer-inputs');
-                
-                if (setQuestionData) {
-                    $answerElement.data('answerId', $(this).data('answerId'));
+            if($('#QuestionText').val() || $('#DefineAnswerType :selected').val() > 0) {
+                $('#CancelQuestion').parent().show();
+            }
+
+            switch (questionType) {
+            case 2:
+                // ControlType.SmallTextInputField
+                $('#ShortTextAnswer').show();
+                $('#SaveQuestion').parent().removeClass('disabled');
+                break;
+            case 1:
+                // ControlType.LargeTextInputField
+                $('#LongTextAnswer').show();
+                $('#SaveQuestion').parent().removeClass('disabled');
+                break;
+            case 0:
+                // ControlType.None
+                break;
+            default: 
+                // multiple answer
+                $('#MultipleAnswer').show();
+                $('.ee-define-answer .primary-btn').show();
+                var $firstAnswer = $('.ai-input input:first').focus();
+                if ($firstAnswer.val()) {
+                    $('#SaveQuestion').parent().removeClass('disabled');
                 }
-            });
-        }
-    }
-
-    // change answer type
-    $('#DefineAnswerType').change(function (event) {
-        ShowAnswersInput(parseInt($(this).val(), 10));
-    });
-
-    // question textbox onblur
-    $('#QuestionText').blur(function (event) {
-        ShowAnswersInput(parseInt($('#DefineAnswerType').val(), 10));
-    });
-    
-    function ShowAnswersInput(questionType) {
-
-        $('#MultipleAnswer').hide();
-        $('#ShortTextAnswer').hide();
-        $('#LongTextAnswer').hide();
-        $('.ee-define-answer .primary-btn').hide();
-        $('#SaveQuestion').parent().addClass('disabled');
-        $('#CancelQuestion').parent().hide();
-
-        if($('#QuestionText').val() || $('#DefineAnswerType :selected').val() > 0) {
-            $('#CancelQuestion').parent().show();
+            }
         }
 
-        switch (questionType) {
-        case 2:
-            // ControlType.SmallTextInputField
-            $('#ShortTextAnswer').show();
-            $('#SaveQuestion').parent().removeClass('disabled');
-            break;
-        case 1:
-            // ControlType.LargeTextInputField
-            $('#LongTextAnswer').show();
-            $('#SaveQuestion').parent().removeClass('disabled');
-            break;
-        case 0:
-            // ControlType.None
-            break;
-        default: 
-            // multiple answer
-            $('#MultipleAnswer').show();
-            $('.ee-define-answer .primary-btn').show();
-            var $firstAnswer = $('.ai-input input:first').focus();
-            if ($firstAnswer.val()) {
+        $('.ai-input input:first').blur(function () {
+            if($(this).val() !== '') {
                 $('#SaveQuestion').parent().removeClass('disabled');
             }
-        }
-    }
-
-    $('.ai-input input:first').blur(function () {
-        if($(this).val() !== '') {
-            $('#SaveQuestion').parent().removeClass('disabled');
-        }
-        else {
-            $('#SaveQuestion').parent().addClass('disabled');
-        }
-    });
-    
-    // save questions
-    $('#SaveQuestion').click(function (event) {
-        event.preventDefault();
-
-        var questionType = $('#DefineAnswerType :selected').val(),
-            questionIsMultipleChoice = questionType > 2; 
+            else {
+                $('#SaveQuestion').parent().addClass('disabled');
+            }
+        });
         
-        // delete removed answers and related undo messages
-        $('li.answer-input:not(:visible)')
-            .add('.answer-inputs li.ee-undo:visible')
-            .remove();
-        
-        validator = $('#Form').validate();
-        if (!$('#SaveQuestion').parent().hasClass('disabled') &&
-           $('#QuestionText').valid() &&
-           (!questionIsMultipleChoice || $('.ai-input input').valid())) {
+        // save questions
+        $('#SaveQuestion').click(function (event) {
+            event.preventDefault();
+
+            var questionType = $('#DefineAnswerType :selected').val(),
+                questionIsMultipleChoice = questionType > 2; 
             
-            callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
+            // delete removed answers and related undo messages
+            $('li.answer-input:not(:visible)')
+                .add('.answer-inputs li.ee-undo:visible')
+                .remove();
+            
+            validator = $('#Form').validate();
+            if (!$('#SaveQuestion').parent().hasClass('disabled') &&
+               $('#QuestionText').valid() &&
+               (!questionIsMultipleChoice || $('.ai-input input').valid())) {
+                
+                callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
+                    $('#PreviewArea').show();
+                    
+                    addQuestionPreview(question.QuestionId, $('#QuestionText').val(), parseInt($('#DefineAnswerType :selected').val(), 10), question.Answers);
+                        
+                    resetCreateQuestionSection();
+                });
+            }
+        });
+
+        // cancel question
+        $('#CancelQuestion').click(function (event) {
+            event.preventDefault();
+            resetCreateQuestionSection();
+        });
+
+        function addQuestionPreview(questionId, questionText, questionType, answers) {
+            var $questionElement, questionOrder = $('#CreateQuestions').data('relativeOrder');
+            if (questionOrder) {
+                $questionElement = $('.ee-preview').eq(questionOrder - 1);
+            }
+            else {
+                $questionElement = $('.ee-preview:last');
+                
+                // if this is the first question, just use the hidden element
+                // otherwise, clone that element and replace its values
+                if ($questionElement.data('questionId')) {
+                    $questionElement = $questionElement.clone(true);
+                    $('#ee-previews').append($questionElement);
+                }
+            }
+            
+            // update the new question preview
+            $questionElement.find('.pv-question').text(questionText).show();
+            $questionElement.show().data('questionId', questionId).data('questionType', questionType);
+            
+            // update the preview with answer values
+            var $answerDiv = $questionElement.find('.pv-answer').empty();
+            switch (questionType) {
+            case 2:
+                // ControlType.SmallTextInputField
+                $answerDiv.html("<input type='text' class='NormalTextBox' />");
+                break;
+            case 1:
+                // ControlType.LargeTextInputField
+                $answerDiv.html("<textarea class='NormalTextBox' />");
+                break;
+            case 5:
+                // ControlType.DropDownChoices
+                var $dropDown = $("<select class='NormalTextBox dropdown-prev'></select>")
+                $answerDiv.append($dropDown);
+                $.each(answers, function (i, answer) {
+                    $("<option>" + answer.Text + "</option>").appendTo($dropDown).data('answerId', answer.AnswerId);
+                });
+                break;
+            case 3:
+                // ControlType.VerticalOptionsButtons
+                $.each(answers, function (i, answer) {
+                    $("<label><input type='radio' name='" + questionId + "' />" + answer.Text + "</label>").appendTo($answerDiv).find('input').data('answerId', answer.AnswerId);
+                });
+                break;
+            case 6:
+                // ControlType.Checkbox
+                $.each(answers, function (i, answer) {
+                    $("<label><input type='checkbox' />" + answer.Text + "</label>").appendTo($answerDiv).find('input').data('answerId', answer.AnswerId);
+                });
+                break;
+            default:
+                alert("todo: implement validation, shouldn't be able to add a question if you have 'select answer type' selected in the drop down.");
+            }
+        }
+
+        function resetCreateQuestionSection() {
+            // reset the "create question" section
+            $('#QuestionText').val('');
+            $('#DefineAnswerType').find('option:first').attr('selected', true);
+            $('#ShortTextAnswer').hide();
+            $('#LongTextAnswer').hide();
+            $('#MultipleAnswer').hide();
+            $('#CancelQuestion').parent().hide();
+            $('#AddNewQuestion').parent().hide();
+            
+            // only should have two answers by default
+            // TODO: Make sure there aren't less than two answers
+            $('#MultipleAnswer li.answer-input:gt(1)').remove();
+            $('.ai-input input').val('');
+            
+            $('#SaveQuestion').text(CurrentContextInfo.SaveQuestionButtonText).attr('title', CurrentContextInfo.SaveQuestionToolTip).parent().addClass('disabled');
+            
+            // clear out stored data values
+            $('#CreateQuestions').removeData('questionId').removeData('relativeOrder')
+                .find('#MultipleAnswer li.answer-input').removeData('answerId');
+
+            validator.resetForm();
+        }
+        
+        function getQuestionParameters () {
+            return {
+                surveyId: $('.ee-create-new').data('surveyId') || -1,
+                question: {
+                    QuestionId: $('#CreateQuestions').data('questionId') || -1,
+                    Text: $('#QuestionText').val(),
+                    RelativeOrder: $('#CreateQuestions').data('relativeOrder') || $('.ee-preview').length + 1,
+                    ControlType: $('#DefineAnswerType').val(),
+                    RevisingUser: CurrentContextInfo.UserId,
+                    Answers: $.map($('#MultipleAnswer:visible .answer-inputs li.answer-input'), function (elem, i) {
+                        var $elem = $(elem);
+                        return {
+                            AnswerId: $elem.data('answerId') || -1,
+                            Text: $elem.find(':input').val()
+                        };
+                    })
+                }
+            };
+        }
+
+        // Load survey to edit
+        if (CurrentContextInfo.Survey) {
+            $('.ee-create-new').data('surveyId', CurrentContextInfo.Survey.SurveyId);
+            $('#EvalTitleInput').val(CurrentContextInfo.Survey.Text);
+            $('#EvalDescTextArea').val(CurrentContextInfo.Survey.Sections[0].Text)
+            
+            makeSurveyReadOnly();
+            hideEditModeButtons();
+            $('.ee-create-questions').show(); 
+            
+            if (CurrentContextInfo.Survey.Sections[0].Questions) {
                 $('#PreviewArea').show();
                 
-                addQuestionPreview(question.QuestionId, $('#QuestionText').val(), parseInt($('#DefineAnswerType :selected').val(), 10), question.Answers);
-                    
-                resetCreateQuestionSection();
-            });
-        }
-    });
-
-    // cancel question
-    $('#CancelQuestion').click(function (event) {
-        event.preventDefault();
-        resetCreateQuestionSection();
-    });
-
-    function addQuestionPreview(questionId, questionText, questionType, answers) {
-        var $questionElement, questionOrder = $('#CreateQuestions').data('relativeOrder');
-        if (questionOrder) {
-            $questionElement = $('.ee-preview').eq(questionOrder - 1);
-        }
-        else {
-            $questionElement = $('.ee-preview:last');
-            
-            // if this is the first question, just use the hidden element
-            // otherwise, clone that element and replace its values
-            if ($questionElement.data('questionId')) {
-                $questionElement = $questionElement.clone(true);
-                $('#ee-previews').append($questionElement);
+                $.each(CurrentContextInfo.Survey.Sections[0].Questions, function (i, question) {
+                    addQuestionPreview(question.QuestionId, question.Text, question.ControlType, question.Answers);
+                });
             }
         }
-        
-        // update the new question preview
-        $questionElement.find('.pv-question').text(questionText).show();
-        $questionElement.show().data('questionId', questionId).data('questionType', questionType);
-        
-        // update the preview with answer values
-        var $answerDiv = $questionElement.find('.pv-answer').empty();
-        switch (questionType) {
-        case 2:
-            // ControlType.SmallTextInputField
-            $answerDiv.html("<input type='text' class='NormalTextBox' />");
-            break;
-        case 1:
-            // ControlType.LargeTextInputField
-            $answerDiv.html("<textarea class='NormalTextBox' />");
-            break;
-        case 5:
-            // ControlType.DropDownChoices
-            var $dropDown = $("<select class='NormalTextBox dropdown-prev'></select>")
-            $answerDiv.append($dropDown);
-            $.each(answers, function (i, answer) {
-                $("<option>" + answer.Text + "</option>").appendTo($dropDown).data('answerId', answer.AnswerId);
-            });
-            break;
-        case 3:
-            // ControlType.VerticalOptionsButtons
-            $.each(answers, function (i, answer) {
-                $("<label><input type='radio' name='" + questionId + "' />" + answer.Text + "</label>").appendTo($answerDiv).find('input').data('answerId', answer.AnswerId);
-            });
-            break;
-        case 6:
-            // ControlType.Checkbox
-            $.each(answers, function (i, answer) {
-                $("<label><input type='checkbox' />" + answer.Text + "</label>").appendTo($answerDiv).find('input').data('answerId', answer.AnswerId);
-            });
-            break;
-        default:
-            alert("todo: implement validation, shouldn't be able to add a question if you have 'select answer type' selected in the drop down.");
-        }
-    }
-
-    function resetCreateQuestionSection() {
-        // reset the "create question" section
-        $('#QuestionText').val('');
-        $('#DefineAnswerType').find('option:first').attr('selected', true);
-        $('#ShortTextAnswer').hide();
-        $('#LongTextAnswer').hide();
-        $('#MultipleAnswer').hide();
-        $('#CancelQuestion').parent().hide();
-        $('#AddNewQuestion').parent().hide();
-        
-        // only should have two answers by default
-        // TODO: Make sure there aren't less than two answers
-        $('#MultipleAnswer li.answer-input:gt(1)').remove();
-        $('.ai-input input').val('');
-        
-        $('#SaveQuestion').text(CurrentContextInfo.SaveQuestionButtonText).attr('title', CurrentContextInfo.SaveQuestionToolTip).parent().addClass('disabled');
-        
-        // clear out stored data values
-        $('#CreateQuestions').removeData('questionId').removeData('relativeOrder')
-            .find('#MultipleAnswer li.answer-input').removeData('answerId');
-
-        validator.resetForm();
-    }
-    
-    function getQuestionParameters () {
-        return {
-            surveyId: $('.ee-create-new').data('surveyId') || -1,
-            question: {
-                QuestionId: $('#CreateQuestions').data('questionId') || -1,
-                Text: $('#QuestionText').val(),
-                RelativeOrder: $('#CreateQuestions').data('relativeOrder') || $('.ee-preview').length + 1,
-                ControlType: $('#DefineAnswerType').val(),
-                RevisingUser: CurrentContextInfo.UserId,
-                Answers: $.map($('#MultipleAnswer:visible .answer-inputs li.answer-input'), function (elem, i) {
-                    var $elem = $(elem);
-                    return {
-                        AnswerId: $elem.data('answerId') || -1,
-                        Text: $elem.find(':input').val()
-                    };
-                })
-            }
-        };
-    }
-
-    // Load survey to edit
-    if (CurrentContextInfo.Survey) {
-        $('.ee-create-new').data('surveyId', CurrentContextInfo.Survey.SurveyId);
-        $('#EvalTitleInput').val(CurrentContextInfo.Survey.Text);
-        $('#EvalDescTextArea').val(CurrentContextInfo.Survey.Sections[0].Text)
-        
-        makeSurveyReadOnly();
-        hideEditModeButtons();
-        $('.ee-create-questions').show(); 
-        
-        if (CurrentContextInfo.Survey.Sections[0].Questions) {
-            $('#PreviewArea').show();
-            
-            $.each(CurrentContextInfo.Survey.Sections[0].Questions, function (i, question) {
-                addQuestionPreview(question.QuestionId, question.Text, question.ControlType, question.Answers);
-            });
-        }
-    }
-});
+    });
+})(jQuery);

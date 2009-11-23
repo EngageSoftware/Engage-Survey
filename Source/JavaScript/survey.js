@@ -662,7 +662,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                     RelativeOrder: $('#CreateQuestions').data('relativeOrder') || $('.ee-preview').length + 1,
                     ControlType: $('#DefineAnswerType').val(),
                     RevisingUser: CurrentContextInfo.UserId,
-                    Answers: $.map($('#MultipleAnswer:visible .answer-inputs li.answer-input'), function (elem, i) {
+                    Answers: $.map($('#MultipleAnswer:visible .answer-inputs li.answer-input:visible'), function (elem, i) {
                         var $elem = $(elem);
                         return {
                             AnswerId: $elem.data('answerId') || -1,

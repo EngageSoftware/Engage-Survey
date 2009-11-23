@@ -14,10 +14,10 @@
             <span class="ee-input"><textarea id="EvalDescTextArea" class="NormalTextBox" maxlength="256" cols="40" rows="4"></textarea></span>
         </div>
         <ul class="ee-action-btns">
-            <li class="primary-btn"><a href="#" title='<%=Localize("CreateNewEvalHyperLink.ToolTip") %>' id="EvalNew" class="create-new"><%=Localize("CreateNewEvalHyperLink.Text")%></a></li>
-            <li class="primary-btn" style="display:none;"><a href="#" title='<%=Localize("EditEvalHyperLink.ToolTip") %>' id="EvalEdit"><%=Localize("EditEvalHyperLink.Text")%></a></li>
-            <li class="primary-btn" style="display:none;"><a href="#" title='<%=Localize("UpdateEvalHyperLink.ToolTip") %>' id="EvalUpdate"><%=Localize("UpdateEvalHyperLink.Text")%></a></li>
-            <li class="secondary-btn" style="display:none;"><a href="#" title='<%=Localize("CancelHyperLink.ToolTip") %>' id="EvalCancel"><%=Localize("CancelHyperLink.Text")%></a></li>
+            <li class="primary-btn"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("CreateNewEvalHyperLink.ToolTip")) %>" id="EvalNew" class="create-new"><%=Localize("CreateNewEvalHyperLink.Text")%></a></li>
+            <li class="primary-btn" style="display:none;"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("EditEvalHyperLink.ToolTip")) %>" id="EvalEdit"><%=Localize("EditEvalHyperLink.Text")%></a></li>
+            <li class="primary-btn" style="display:none;"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("UpdateEvalHyperLink.ToolTip")) %>" id="EvalUpdate"><%=Localize("UpdateEvalHyperLink.Text")%></a></li>
+            <li class="secondary-btn" style="display:none;"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("CancelHyperLink.ToolTip")) %>" id="EvalCancel"><%=Localize("CancelHyperLink.Text")%></a></li>
 <%--            <li class="secondary-btn"><a href="<%=DotNetNuke.Common.Globals.NavigateURL() %>" title='<%=Localize("BackHyperLink.ToolTip") %>' id="EvalBack"><%=Localize("BackHyperLink.Text")%></a></li>
 --%>        </ul>
     </fieldset>
@@ -42,11 +42,11 @@
                 </span>
                 <div id="ShortTextAnswer" style="display:none;" class="ee-answer-inputs">
                     <p><%=Localize("ShortAnswerPreview.Text") %></p>
-                    <img src='<%=ResolveUrl("images/short-answer-input.gif")%>' alt='<%=Localize("ShortAnswerPreviewImage.AltText") %>' title='<%=Localize("ShortAnswerPreviewImage.ToolTip") %>' />
+                    <img src='<%=ResolveUrl("images/short-answer-input.gif")%>' alt="<%=HttpUtility.HtmlAttributeEncode(Localize("ShortAnswerPreviewImage.AltText")) %>" title="<%=HttpUtility.HtmlAttributeEncode(Localize("ShortAnswerPreviewImage.ToolTip")) %>" />
                 </div>
                 <div id="LongTextAnswer" style="display:none;" class="ee-answer-inputs">
                     <p><%=Localize("LongAnswerPreview.Text") %></p>
-                    <img src='<%=ResolveUrl("images/long-answer-input.gif")%>' alt='<%=Localize("LongAnswerPreviewImage.AltText") %>' title='<%=Localize("LongAnswerPreviewImage.ToolTip") %>' />
+                    <img src='<%=ResolveUrl("images/long-answer-input.gif")%>' alt="<%=HttpUtility.HtmlAttributeEncode(Localize("LongAnswerPreviewImage.AltText")) %>" title="<%=HttpUtility.HtmlAttributeEncode(Localize("LongAnswerPreviewImage.ToolTip")) %>" />
                 </div>
                 <div class="ee-answer-inputs" id="MultipleAnswer" style="display:none;">
                     <ul class="answer-inputs">
@@ -54,29 +54,29 @@
                             <span class="ai-label"><span class="ee-required-label">*</span><%=Localize("AnswerTitle.Text")%> <span class="answer-num">1</span></span>
                             <div class="ai-selected">
                                 <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" name="required" /></span>
-                                <a href="#" title='<%=Localize("RemoveAnswerHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
+                                <a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("RemoveAnswerHyperLink.ToolTip"))%>" class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
                             </div>
                         </li>
                         <li class="answer-input">                        
                             <span class="ai-label"><span class="ee-required-label">*</span><%=Localize("AnswerTitle.Text")%> <span class="answer-num">2</span></span>
                             <div class="ai-selected">
                                 <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" name="required" /></span>
-                                <a href="#" title='<%=Localize("RemoveAnswerHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
+                                <a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("RemoveAnswerHyperLink.ToolTip"))%>" class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
                             </div>
                         </li>
                         <li class="ee-undo template" style="display:none;">
-                            <%=Localize("UndoAnswerDelete.Text") %> <a href="#" title='<%=Localize("UndoAnswerDeleteButton.ToolTip") %>'><%=Localize("UndoAnswerDeleteButton.Text") %></a>
+                            <%=Localize("UndoAnswerDelete.Text") %> <a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("UndoAnswerDeleteButton.ToolTip")) %>"><%=Localize("UndoAnswerDeleteButton.Text") %></a>
                         </li>
                     </ul>
                     <ul class="ee-action-btns">
-                        <li class="primary-btn" style="display:none;"><a href="#" title='<%=Localize("AddNewAnswerHyperLink.ToolTip")%>' class="add-new" id="AddNewQuestion"><%=Localize("AddNewAnswerHyperLink.Text")%></a></li>
+                        <li class="primary-btn" style="display:none;"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("AddNewAnswerHyperLink.ToolTip"))%>" class="add-new" id="AddNewQuestion"><%=Localize("AddNewAnswerHyperLink.Text")%></a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <ul class="ee-action-btns">
-            <li class="primary-btn disabled"><a href="#" title='<%=Localize("SaveQuestion.ToolTip")%>' class="save-create-new" id="SaveQuestion"><%=Localize("SaveQuestion.Text")%></a></li>
-            <li class="secondary-btn" style="display:none;"><a href="#" id="CancelQuestion" title='<%=Localize("CancelQuestionHyperLink.ToolTip")%>'><%=Localize("CancelQuestionHyperLink.Text")%></a></li>
+            <li class="primary-btn disabled"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("SaveQuestion.ToolTip"))%>" class="save-create-new" id="SaveQuestion"><%=Localize("SaveQuestion.Text")%></a></li>
+            <li class="secondary-btn" style="display:none;"><a href="#" id="CancelQuestion" title="<%=HttpUtility.HtmlAttributeEncode(Localize("CancelQuestionHyperLink.ToolTip"))%>"><%=Localize("CancelQuestionHyperLink.Text")%></a></li>
         </ul>
     </fieldset>
     <fieldset id="PreviewArea" class="ee-preview-area">
@@ -85,9 +85,9 @@
         <ul id="ee-previews">
             <li class="ee-preview">
                 <ul class="ee-pr-action-links">
-                    <li><a href="#" title='<%=Localize("EditQuestionHyperLink.ToolTip")%>' class="ee-edit"><%=Localize("EditQuestionHyperLink.Text")%></a></li>
-                    <li><a href="#" title='<%=Localize("CopyQuestionHyperLink.ToolTip")%>' class="ee-copy"><%=Localize("CopyQuestionHyperLink.Text")%></a></li>
-                    <li><a href="#" title='<%=Localize("DeleteQuestionHyperLink.ToolTip")%>' class="ee-delete"><%=Localize("DeleteQuestionHyperLink.Text")%></a></li>
+                    <li><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("EditQuestionHyperLink.ToolTip"))%>" class="ee-edit"><%=Localize("EditQuestionHyperLink.Text")%></a></li>
+                    <li><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("CopyQuestionHyperLink.ToolTip"))%>" class="ee-copy"><%=Localize("CopyQuestionHyperLink.Text")%></a></li>
+                    <li><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("DeleteQuestionHyperLink.ToolTip"))%>" class="ee-delete"><%=Localize("DeleteQuestionHyperLink.Text")%></a></li>
                 </ul>
                 <span class="ee-label pv-question-label"><%=Localize("QuestionTitle.Text")%></span>
                 <span class="pv-question"></span>
@@ -97,7 +97,7 @@
                 </div>
             </li>
             <li class="ee-undo" style="display:none;">
-                <%=Localize("UndoQuestionDelete.Text") %> <a href="#" title='<%=Localize("UndoQuestionDeleteButton.ToolTip") %>'><%=Localize("UndoQuestionDeleteButton.Text") %></a>
+                <%=Localize("UndoQuestionDelete.Text") %> <a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("UndoQuestionDeleteButton.ToolTip")) %>"><%=Localize("UndoQuestionDeleteButton.Text") %></a>
             </li>
         </ul>
     </fieldset>   

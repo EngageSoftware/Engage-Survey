@@ -544,7 +544,6 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
         $('#SaveQuestion').click(function (event) {
             event.preventDefault();
             
-
             var questionType = $('#DefineAnswerType :selected').val(),
                 questionIsMultipleChoice = questionType > 2; 
             

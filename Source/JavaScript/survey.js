@@ -554,8 +554,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                 .remove();
             
             validator = $('#Form').validate();
-            if (!$('#SaveQuestion').parent().hasClass('disabled') &&
-               $('#QuestionText').valid() &&
+            if ($('#QuestionText').valid() &&
                (!questionIsMultipleChoice || $('.ai-input input').valid())) {
                 
                 $(this).text(CurrentContextInfo.ProgressText).parent().addClass('disabled');

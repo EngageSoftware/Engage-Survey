@@ -400,6 +400,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                 
                 $undoElement.html(undoHtml.replace('{0}', '<span class="undo-limit"></span>'));
                 
+                $element.addClass('deleted');
                 $element.before($undoElement);
                 
                 // set timer to delete question
@@ -432,7 +433,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                     
                     clearTimeout(deleteTimeoutHandle);
                     $undoElement.remove();
-                    $element.show();
+                    $element.show().removeClass('deleted');
                     
                     if ($.isFunction(afterUndo)) {
                         afterUndo();
@@ -635,7 +636,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             $('#AddNewQuestion').parent().hide();
             
             // remove all remove answers and related undo messages
-            $('#MultipleAnswer:visible li.answer-input:not(:visible)')
+            $('#MultipleAnswer li.answer-input.deleted')
                 .add('.answer-inputs li.ee-undo:not(.template)')
                 .remove();
 

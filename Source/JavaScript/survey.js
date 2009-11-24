@@ -202,10 +202,10 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             if ($('#EvalDescTextArea').val()) {
                 makeElementReadonly($('#EvalDescTextArea'));
                 
-                $('.ee-description').show();
+                $('.ee-description').slideDown(AnimationSpeed);
             }
             else {
-                $('.ee-description').hide();
+                $('.ee-description').slideUp(AnimationSpeed);
             }
             
             makeElementReadonly($('#EvalTitleInput'));

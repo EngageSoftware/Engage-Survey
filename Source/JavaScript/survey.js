@@ -52,7 +52,6 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             placeholder: 'ui-state-highlight'
         });
         $(".answer-inputs").sortable({
-            intems: 'li.answer-input',
             placeholder: 'ui-state-highlight'
         });
         ////$("#ee-previews, .answer-inputs").disableSelection();

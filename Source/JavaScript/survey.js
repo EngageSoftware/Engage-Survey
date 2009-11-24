@@ -96,6 +96,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
 
                 $this.text(CurrentContextInfo.ProgressText);                
                 updateSurvey(function () {
+                    $('#EvalNew').parent().fadeOut(AnimationSpeed, function () { makeSurveyReadOnly(); });
                     $('.ee-create-questions').show();
                     $this.text(originalText);
                 });
@@ -112,7 +113,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                 
                 $this.text(CurrentContextInfo.ProgressText);
                 updateSurvey(function () {
-                    hideEditModeButtons();
+                    hideEditModeButtons(function () { makeSurveyReadOnly(); });
                     $this.text(originalText);
                 });
             }
@@ -146,7 +147,6 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
         function updateSurvey(callback) {
             callWebMethod('UpdateSurvey', getSurveyParameters(), function (surveyId) {
                 $('.ee-create-new').data('surveyId', surveyId); 
-                makeSurveyReadOnly();
                 if ($.isFunction(callback)) {
                     callback(surveyId);
                 }
@@ -178,9 +178,11 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             makeLabelEditable($('#EvalDescTextArea'), $('<textarea/>'));
             
             $('.ee-description').show();
-            $('#EvalEdit').parent().hide();
-            $('#EvalCancel').parent().show();
-            $('#EvalUpdate').parent().show();
+            $('#EvalEdit').parent().fadeOut(AnimationSpeed, function () {
+                $('#EvalCancel').parent().fadeIn(AnimationSpeed);
+                $('#EvalUpdate').parent().fadeIn(AnimationSpeed);
+            });
+            
             validator = $('#Form').validate();
         });
         
@@ -191,8 +193,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             $('#EvalDescTextArea').val($('#EvalDescTextArea').parent().data('previousValue'));
             $('#EvalTitleInput').val($('#EvalTitleInput').parent().data('previousValue'));
             
-            makeSurveyReadOnly();
-            hideEditModeButtons();
+            hideEditModeButtons(function () { makeSurveyReadOnly(); });
 
             validator.resetForm();
         });
@@ -209,8 +210,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             
             makeElementReadonly($('#EvalTitleInput'));
                 
-            $('#EvalNew').parent().hide();
-            $('#EvalEdit').parent().show();
+            $('#EvalEdit').parent().fadeIn(AnimationSpeed);
         }
         
         function makeElementReadonly($element) {
@@ -254,9 +254,9 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             }).removeClass('ee-input-pre');
         }
 
-        function hideEditModeButtons () {
-            $('#EvalUpdate').parent().hide();
-            $('#EvalCancel').parent().hide();
+        function hideEditModeButtons (callback) {
+            $('#EvalUpdate').parent().fadeOut(AnimationSpeed);
+            $('#EvalCancel').parent().fadeOut(AnimationSpeed, callback);
         }
         
         // add answer
@@ -639,6 +639,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             $('#EvalTitleInput').val(CurrentContextInfo.Survey.Text);
             $('#EvalDescTextArea').val(CurrentContextInfo.Survey.Sections[0].Text)
             
+            $('#EvalNew').parent().hide();
             makeSurveyReadOnly();
             hideEditModeButtons();
             $('.ee-create-questions').show(); 

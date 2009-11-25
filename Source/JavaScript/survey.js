@@ -263,7 +263,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
         $(".add-new").click(function (event) {
             event.preventDefault();
             
-            var $answerElement = $(".answer-inputs li.answer-input:visible:last").clone(true).appendTo('.answer-inputs');
+            var $answerElement = $(".answer-inputs li.answer-input:visible:last").clone(true).hide().appendTo('.answer-inputs').slideDown(AnimationSpeed);
             
             // increment answer number
             var $answerNumberElement = $answerElement.find('.answer-num');

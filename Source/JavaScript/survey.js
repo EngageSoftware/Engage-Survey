@@ -45,7 +45,8 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
         });
 
         var validator = $('#Form').validate(),
-            AnimationSpeed = 'normal';
+            AnimationSpeed = 'normal',
+            pendingQuestionDeleteCallbacks = [];
 
         $("#ee-previews").sortable({
             items: 'li.ee-preview', 
@@ -338,7 +339,8 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                     $undoElement = $element.siblings('.ee-undo').eq(0).clone().show().removeClass('template'),
                     undoHtml = $undoElement.html(),
                     undoTimeLimit = 11, // it'll take a second to actually show the timer, so it shows up to the user as 10
-                    startTime = new Date();
+                    startTime = new Date(),
+                    deleteTimeoutCallback;
                     
                 if ($.isFunction(afterFadeOut)) {
                     afterFadeOut();
@@ -353,13 +355,19 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                 
                 // set timer to delete question
 			    if (withTimer) {
-	                deleteTimeoutHandle = setTimeout(function () {
+			        deleteTimeoutCallback = function () {
 	                    $undoElement.remove();
+	                    
+	                    // remove this callback from the list
+	                    pendingQuestionDeleteCallbacks.splice(pendingQuestionDeleteCallbacks.indexOf(deleteTimeoutCallback), 1);
     	                
 	                    if ($.isFunction(deleteCallback)) {
 	                        deleteCallback();
 	                    }
-	                }, undoTimeLimit * 1000);
+	                };
+			        
+			        pendingQuestionDeleteCallbacks.push(deleteTimeoutCallback);
+	                deleteTimeoutHandle = setTimeout(deleteTimeoutCallback, undoTimeLimit * 1000);
     	            
 	                // update the time remaining until deleted
 	                (function updateUndoTimer () {
@@ -381,6 +389,9 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                     
                     clearTimeout(deleteTimeoutHandle);
                     
+                	// remove this callback from the list
+                    pendingQuestionDeleteCallbacks.splice(pendingQuestionDeleteCallbacks.indexOf(deleteTimeoutCallback), 1);
+                    
                     $undoElement.fadeOut(AnimationSpeed, function() {
                         $element.removeClass('deleted').fadeIn(AnimationSpeed);
                         $undoElement.remove();
@@ -392,6 +403,15 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                 });
             });
         }
+        
+        $(window).unload(function () {
+            // when the user leaves the page, finish any pending question deletions
+            $.each(pendingQuestionDeleteCallbacks, function (i, deleteQuestionFunction) {
+                if ($.isFunction(deleteQuestionFunction)) {
+                    deleteQuestionFunction();
+                }
+            });
+        });
         
         function populateCreateQuestionSection ($questionLi, setQuestionData) {
             resetCreateQuestionSection();

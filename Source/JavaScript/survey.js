@@ -273,7 +273,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             // clear out cloned textbox
             $answerElement.find('input').val('').focus();
             
-            $(".answer-inputs .ee-delete").removeClass('disabled')
+            $(".answer-inputs .ee-delete").removeClass('disabled');
         });
         
         // remove answer
@@ -298,13 +298,6 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                     }).find('.ee-delete').removeClass('disabled');
                 });
             }
-        });
-        
-        // cancel question create/edit
-        $('.ee-action-btns .back').click(function (event) {
-            event.preventDefault();
-            
-            resetCreateQuestionSection();
         });
         
         // edit question
@@ -600,11 +593,11 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
             // reset the "create question" section
             $('#QuestionText').val('');
             $('#DefineAnswerType').find('option:first').attr('selected', true);
-            $('#ShortTextAnswer').hide();
-            $('#LongTextAnswer').hide();
-            $('#MultipleAnswer').hide();
-            $('#CancelQuestion').parent().hide();
-            $('#AddNewQuestion').parent().hide();
+            $('#ShortTextAnswer').slideUp(AnimationSpeed);
+            $('#LongTextAnswer').slideUp(AnimationSpeed);
+            $('#MultipleAnswer').slideUp(AnimationSpeed);
+            $('#CancelQuestion').parent().fadeOut(AnimationSpeed);
+            $('#AddNewQuestion').parent().fadeOut(AnimationSpeed);
             
             // remove all remove answers and related undo messages
             $('#MultipleAnswer li.answer-input.deleted')

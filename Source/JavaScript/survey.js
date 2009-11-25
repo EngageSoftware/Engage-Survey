@@ -518,7 +518,7 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                 
                 $(this).text(CurrentContextInfo.ProgressText).parent().addClass('disabled');
                 callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
-                    $('#PreviewArea').show();
+                    $('#PreviewArea').slideDown(AnimationSpeed);
                     
                     addQuestionPreview(question.QuestionId, $('#QuestionText').val(), parseInt($('#DefineAnswerType :selected').val(), 10), question.Answers);
                         

@@ -386,8 +386,11 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                     event.preventDefault();
                     
                     clearTimeout(deleteTimeoutHandle);
-                    $undoElement.remove();
-                    $element.show().removeClass('deleted');
+                    
+                    $undoElement.fadeOut(AnimationSpeed, function() {
+                        $element.removeClass('deleted').fadeIn(AnimationSpeed);
+                        $undoElement.remove();
+                    });
                     
                     if ($.isFunction(afterUndo)) {
                         afterUndo();

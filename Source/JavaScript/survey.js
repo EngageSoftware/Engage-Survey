@@ -228,13 +228,13 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                     .text($this.val())
                     .hide()
                     .insertAfter($this)
-                    .slideDown(AnimationSpeed);
+                    .fadeIn(AnimationSpeed);
                 $this.remove();
             }).addClass('ee-input-pre');
         }
         
         function makeLabelEditable($element, $newElement) {
-            $element.slideUp(AnimationSpeed, function () {
+            $element.fadeOut(AnimationSpeed, function () {
                 var $this = $(this);
                 $newElement
                     .attr({

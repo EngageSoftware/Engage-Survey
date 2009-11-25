@@ -462,34 +462,48 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                 $saveQuestionButtonWrap = $('#SaveQuestion').parent(),
                 $cancelButtonWrap = $('#CancelQuestion').parent();
                 
-            $multipleAnswer.hide();
-            $shortTextAnswer.hide();
-            $longAnswerText.hide();
-            $addAnswerButton.hide();
-            $cancelButtonWrap.hide();
             $saveQuestionButtonWrap.removeClass('disabled');
 
             if($('#QuestionText').val() || $('#DefineAnswerType :selected').val() > 0) {
-                $cancelButtonWrap.show();
+                $cancelButtonWrap.fadeIn(AnimationSpeed);
+            }
+            else {
+                $cancelButtonWrap.fadeOut(AnimationSpeed);
             }
 
             switch (questionType) {
+            case 0:
+                // ControlType.None
+                $longAnswerText.slideUp(AnimationSpeed);
+                $shortTextAnswer.slideUp(AnimationSpeed);
+                $multipleAnswer.slideUp(AnimationSpeed);
+                $addAnswerButton.slideUp(AnimationSpeed);
+                
+                $saveQuestionButtonWrap.addClass('disabled');
+                break;
             case 2:
                 // ControlType.SmallTextInputField
-                $shortTextAnswer.show();
+                $multipleAnswer.slideUp(AnimationSpeed);
+                $longAnswerText.slideUp(AnimationSpeed);
+                $addAnswerButton.fadeOut(AnimationSpeed, function () {
+                    $shortTextAnswer.slideDown(AnimationSpeed);
+                });
                 break;
             case 1:
                 // ControlType.LargeTextInputField
-                $longAnswerText.show();
-                break;
-            case 0:
-                // ControlType.None
-                $saveQuestionButtonWrap.addClass('disabled');
+                $shortTextAnswer.slideUp(AnimationSpeed);
+                $multipleAnswer.slideUp(AnimationSpeed);
+                $addAnswerButton.fadeOut(AnimationSpeed, function () {
+                    $longAnswerText.slideDown(AnimationSpeed);
+                });
                 break;
             default: 
                 // multiple answer
-                $multipleAnswer.show();
-                $addAnswerButton.show();
+                $longAnswerText.slideUp(AnimationSpeed);
+                $shortTextAnswer.slideUp(AnimationSpeed, function () {
+                    $multipleAnswer.slideDown(AnimationSpeed);
+                    $addAnswerButton.fadeIn(AnimationSpeed);
+                });
             }
         }
 

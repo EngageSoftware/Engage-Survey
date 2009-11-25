@@ -355,6 +355,8 @@ jQuery.ui||(function(c){var i=c.fn.remove,d=c.browser.mozilla&&(parseFloat(c.bro
                 $element.addClass('deleted');
                 $element.before($undoElement);
                 
+                $undoElement.hide().fadeIn(AnimationSpeed);
+                
                 // set timer to delete question
 			    if (withTimer) {
 	                deleteTimeoutHandle = setTimeout(function () {

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{678A96B6-1980-4B66-BB4C-8821CBD6DA13}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -233,6 +233,7 @@
     </Content>
     <EmbeddedResource Include="JavaScript\survey.js" />
     <Content Include="Controls\GlobalNavigation.ascx" />
+    <Content Include="ReleaseNotes_3.0.1.htm" />
     <Content Include="images\drag-icn.gif" />
     <Content Include="images\em-add-icn.gif" />
     <Content Include="images\em-home-icn.gif" />
@@ -276,6 +277,9 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

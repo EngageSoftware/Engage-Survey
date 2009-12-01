@@ -80,7 +80,7 @@
               <version>3.0.1</version>
             </assembly>
             <assembly>
-              <name>EngageSurvey.Entites.dll</name>
+              <name>EngageSurvey.Entities.dll</name>
               <version>3.0.1</version>
             </assembly>
             <assembly>

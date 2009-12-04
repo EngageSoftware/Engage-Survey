@@ -77,11 +77,11 @@
             </assembly>
             <assembly>
               <name>Engage.Survey.dll</name>
-              <version>3.0.1</version>
+              <version>3.0.2</version>
             </assembly>
             <assembly>
               <name>EngageSurvey.Entities.dll</name>
-              <version>3.0.1</version>
+              <version>3.0.2</version>
             </assembly>
             <assembly>
               <name>Engage.Framework.dll</name>

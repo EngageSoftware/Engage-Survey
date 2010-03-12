@@ -46,11 +46,12 @@
   </patternset>
 
   <target name="build" description="Builds the solution" if="${build}">
-    <solution configuration="${project.config}" solutionfile="${solution.file}">
-      <assemblyfolders>
-        <include name="${references.directory}"/>
-      </assemblyfolders>
-    </solution>
+    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
+      <arg value="${solution.file}" />
+      <arg value="/p:Configuration=${project.config}" />
+      <arg value="/p:Platform=&quot;Any CPU&quot;" />
+      <arg value="/m" /> <!-- multicore -->
+    </exec>
   </target>
   <target name="get-version" depends="build" description="Sets the project.version property to the first three numbers from the version of the main assembly for this module">
     <property name="version" value="${assemblyname::get-version(assembly::get-name(assembly::load-from-file(project.dll)))}" />

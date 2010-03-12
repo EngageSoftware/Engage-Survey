@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AllowMultipleLabel.Help" xml:space="preserve">
-    <value>Specify whether you want the same person to submit a survey more than once.</value>
+    <value>Specify whether you want to allow the same person to submit a survey more than once.</value>
   </data>
   <data name="AllowMultipleLabel.Text" xml:space="preserve">
     <value>Allow more than one survey submission</value>
@@ -127,7 +127,7 @@
     <value>Show Required Notation (*)</value>
   </data>
   <data name="ShowRequiredNotationLabel.Help" xml:space="preserve">
-    <value>Turn on/off the required notation (*)</value>
+    <value>Choose whether to display asterisks (*) by required questions</value>
   </data>
   <data name="ChooseDisplayType.Help" xml:space="preserve">
     <value>Select the view for this instance of the module.</value>
@@ -161,5 +161,8 @@
   </data>
   <data name="ThankYou.Text" xml:space="preserve">
     <value>Thank You</value>
+  </data>
+  <data name="ChooseDisplayTypeLabel.Help" xml:space="preserve">
+    <value>Choose this module's function.  Each module can display a list of the available surveys (the default), it can display a specific survey, or it can display the "Thank You" message for when the user is finished taking a survey.</value>
   </data>
 </root>

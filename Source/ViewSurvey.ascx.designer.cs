@@ -14,12 +14,12 @@ namespace Engage.Dnn.Survey {
     public partial class ViewSurvey {
         
         /// <summary>
-        /// SurveyControl1 control.
+        /// SurveyControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Engage.Survey.UI.SurveyControl SurveyControl1;
+        protected global::Engage.Survey.UI.SurveyControl SurveyControl;
     }
 }

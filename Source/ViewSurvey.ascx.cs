@@ -81,15 +81,15 @@ namespace Engage.Dnn.Survey
 
             try
             {
-                this.SurveyControl1.UserId = this.UserId;
-                this.SurveyControl1.CurrentSurvey = this.ResponseHeaderId == null
+                this.SurveyControl.UserId = this.UserId;
+                this.SurveyControl.CurrentSurvey = this.ResponseHeaderId == null
                                                             ? Survey.LoadSurvey(this.SurveyId.GetValueOrDefault())
                                                             : ReadonlySurvey.LoadSurvey(this.ResponseHeaderId.Value);
 
-                this.SurveyControl1.SurveyCompleted += this.SurveyControl1_SurveyCompleted;
+                this.SurveyControl.SurveyCompleted += this.SurveyControl1_SurveyCompleted;
 
-                this.SurveyControl1.BackButtonText = this.Localize("BackButton.Text", LocalResourceFile);
-                this.SurveyControl1.SubmitButtonText = this.Localize("SubmitButton.Text", LocalResourceFile);
+                this.SurveyControl.BackButtonText = this.Localize("BackButton.Text", LocalResourceFile);
+                this.SurveyControl.SubmitButtonText = this.Localize("SubmitButton.Text", LocalResourceFile);
             }
             catch (Exception exc)
             {
@@ -98,7 +98,7 @@ namespace Engage.Dnn.Survey
         }
         
         /// <summary>
-        /// Handles the <see cref="SurveyControl.SurveyCompleted"/> event of the <see cref="SurveyControl1"/> control.
+        /// Handles the <see cref="Engage.Survey.UI.SurveyControl.SurveyCompleted"/> event of the <see cref="SurveyControl"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SavedEventArgs"/> instance containing the event data.</param>

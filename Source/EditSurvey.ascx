@@ -2,7 +2,7 @@
 <%@ Import Namespace="DotNetNuke.UI.Utilities"%>
 <%@ Import Namespace="Engage.Survey.Util"%>
 <div id="engage-evaluation">
-    <p class="ee-note"><strong>Note:</strong> (*) denotes required fields</p>
+    <p class="ee-note"><%=Localize("RequiredNote.Text")%></p>
     <fieldset class="ee-create-new">
         <legend class="Head"><%=Localize("CreateNewLabel.Text")%></legend>
         <div class="ee-title">

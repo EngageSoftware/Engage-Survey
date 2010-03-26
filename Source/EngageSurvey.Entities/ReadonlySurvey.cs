@@ -139,7 +139,7 @@ namespace Engage.Survey.Entities
         /// <value>
         /// 	<c>true</c> if this instance is readonly; otherwise, <c>false</c>.
         /// </value>
-        public bool IsReadonly
+        public bool IsReadOnly
         {
             get
             {

@@ -30,48 +30,23 @@ namespace Engage.Survey.Entities
         /// </summary>
         /// <param name="revisingUser">The revising user.</param>
         public Survey(int revisingUser)
-            : this()
+                : this()
         {
-            var now = DateTime.Now;
             this.CreatedBy = this.RevisingUser = revisingUser;
-            this.Sections.Add(new Section
-                                  {
-                                          CreatedBy = revisingUser,
-                                          RevisingUser = revisingUser
-                                  });
+            this.Sections.Add(new Section { CreatedBy = revisingUser, RevisingUser = revisingUser });
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance is readonly.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is readonly; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsReadonly
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns the formatting for the element plus the the unformatted text together. Used primarily by
+        /// Gets the formatting for the element plus the the unformatted text together. Used primarily by
         /// the Web and Windows viewers only. 
         /// </summary>
         /// <value></value>
         public string FormattedText
         {
-            get { return this.ShowText ? (this.Formatting + this.UnformattedText) : string.Empty; }
-        }
-
-        /// <summary>
-        /// Gets or sets only the text value of Text attribute for the survey element.
-        /// </summary>
-        /// <value></value>
-        public string UnformattedText
-        {
-            get { return this.Text; }
+            get
+            {
+                return this.ShowText ? (this.Formatting + this.UnformattedText) : string.Empty;
+            }
         }
 
         /// <summary>
@@ -80,100 +55,24 @@ namespace Engage.Survey.Entities
         /// <value></value>
         public string Formatting
         {
-            get	 { return string.Empty; }
-        }
-
-        /// <summary>
-        /// Loads the survey.
-        /// </summary>
-        /// <param name="surveyId">The survey id.</param>
-        /// <returns></returns>
-        public static Survey LoadSurvey(int surveyId)
-        {
-            return SurveyModelDataContext.Instance.Surveys.FirstOrDefault(s => s.SurveyId == surveyId);
-        }
-
-        /// <summary>
-        /// Loads the surveys.
-        /// </summary>
-        /// <returns></returns>
-        public static IQueryable<Survey> LoadSurveys()
-        {
-            return SurveyModelDataContext.Instance.Surveys;
-        }
-
-        /// <summary>
-        /// Deletes the specified survey.
-        /// </summary>
-        /// <param name="surveyId">The id.</param>
-        public static void Delete(int? surveyId)
-        {
-            //linq query
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-
-            var answers = (from a in context.Answers
-                           join q in context.Questions on a.QuestionId equals q.QuestionId
-                           join s in context.Sections on q.SectionId equals s.SectionId
-                           join su in context.Surveys on s.SurveyId equals su.SurveyId
-                           where su.SurveyId == surveyId
-                           select a);
-
-            context.Answers.DeleteAllOnSubmit(answers);
-
-            var questions = (from q in context.Questions
-                             join s in context.Sections on q.SectionId equals s.SectionId
-                             join su in context.Surveys on s.SurveyId equals su.SurveyId
-                             where su.SurveyId == surveyId
-                             select q);
-
-            context.Questions.DeleteAllOnSubmit(questions);
-
-            var sections = (from s in context.Sections
-                            join su in context.Surveys on s.SurveyId equals su.SurveyId
-                            where su.SurveyId == surveyId
-                            select s);
-
-            context.Sections.DeleteAllOnSubmit(sections);
-
-            //lastly remove the survey itself
-            context.Surveys.DeleteOnSubmit(context.Surveys.Where(evaluation => evaluation.SurveyId == surveyId).Single());
-
-            context.SubmitChanges();
-        }
-
-        /// <summary>
-        /// Gets the sections.
-        /// </summary>
-        /// <returns>List of ISections for this survey</returns>
-        public List<ISection> GetSections()
-        {
-            var sections = new List<ISection>();
-            
-            foreach (var section in Sections)
+            get
             {
-                sections.Add(section);
+                return string.Empty;
             }
-
-            sections.Sort(new Section.RelativeOrderComparer());
-            return sections;
         }
 
         /// <summary>
-        /// Gets the section.
+        /// Gets a value indicating whether this instance is read-only.
         /// </summary>
-        /// <param name="sectionId">The section id.</param>
-        /// <returns></returns>
-        public ISection GetSection(string sectionId)
+        /// <value>
+        /// <c>true</c> if this instance is read-only; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsReadOnly
         {
-            foreach (ISection section in this.GetSections())
+            get
             {
-                if (section.SectionId.ToString() == sectionId)
-                {
-                    return section;
-                }
+                return false;
             }
-
-            return null;
         }
 
         /// <summary>
@@ -182,20 +81,83 @@ namespace Engage.Survey.Entities
         /// <value><c>true</c> if [send notification]; otherwise, <c>false</c>.</value>
         public bool SendNotification
         {
-            get { return true; }
-            set {}
+            get
+            {
+                return true;
+            }
+
+            set
+            {
+            }
         }
 
         /// <summary>
-        /// Renders the survey from this survey.
+        /// Gets only the text value of Text attribute for the survey element.
         /// </summary>
-        /// <param name="placeHolder">The place holder.</param>
-        /// <param name="readOnly">if set to <c>true</c> [read only].</param>
-        /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
-        /// <param name="validationProvider">The validation provider.</param>
-        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        /// <value></value>
+        public string UnformattedText
         {
-            RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider);
+            get
+            {
+                return this.Text;
+            }
+        }
+
+        /// <summary>
+        /// Deletes the specified survey.
+        /// </summary>
+        /// <param name="surveyId">The ID of the survey to delete.</param>
+        public static void Delete(int? surveyId)
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+
+            var answers = from a in context.Answers
+                          join q in context.Questions on a.QuestionId equals q.QuestionId
+                          join s in context.Sections on q.SectionId equals s.SectionId
+                          join su in context.Surveys on s.SurveyId equals su.SurveyId
+                          where su.SurveyId == surveyId
+                          select a;
+
+            context.Answers.DeleteAllOnSubmit(answers);
+
+            var questions = from q in context.Questions
+                            join s in context.Sections on q.SectionId equals s.SectionId
+                            join su in context.Surveys on s.SurveyId equals su.SurveyId
+                            where su.SurveyId == surveyId
+                            select q;
+
+            context.Questions.DeleteAllOnSubmit(questions);
+
+            var sections = from s in context.Sections
+                           join su in context.Surveys on s.SurveyId equals su.SurveyId
+                           where su.SurveyId == surveyId
+                           select s;
+
+            context.Sections.DeleteAllOnSubmit(sections);
+
+            // lastly remove the survey itself
+            context.Surveys.DeleteOnSubmit(context.Surveys.Where(evaluation => evaluation.SurveyId == surveyId).Single());
+
+            context.SubmitChanges();
+        }
+
+        /// <summary>
+        /// Loads the survey.
+        /// </summary>
+        /// <param name="surveyId">The survey id.</param>
+        /// <returns>The survey with the given ID, or <c>null</c> if no survey exists with the given ID</returns>
+        public static Survey LoadSurvey(int surveyId)
+        {
+            return SurveyModelDataContext.Instance.Surveys.SingleOrDefault(s => s.SurveyId == surveyId);
+        }
+
+        /// <summary>
+        /// Loads all the surveys.
+        /// </summary>
+        /// <returns>A sequence of all <see cref="Survey"/> instances</returns>
+        public static IQueryable<Survey> LoadSurveys()
+        {
+            return SurveyModelDataContext.Instance.Surveys;
         }
 
         /// <summary>
@@ -214,7 +176,7 @@ namespace Engage.Survey.Entities
             // add the survey title
             if (survey.ShowText)
             {
-                HtmlGenericControl titleDiv = new HtmlGenericControl("DIV");
+                var titleDiv = new HtmlGenericControl("DIV");
                 titleDiv.Attributes["class"] = Utility.CssClassSurveyTitle;
                 titleDiv.InnerText = survey.Text;
                 placeHolder.Controls.Add(titleDiv);
@@ -225,6 +187,33 @@ namespace Engage.Survey.Entities
             {
                 s.Render(placeHolder, readOnly, showRequiredNotation, validationProvider);
             }
+        }
+
+        /// <summary>
+        /// Gets the section.
+        /// </summary>
+        /// <param name="sectionId">The section ID.</param>
+        /// <returns>The <see cref="ISection"/> with the given ID, or <c>null</c> if no section exists with the given ID</returns>
+        public ISection GetSection(string sectionId)
+        {
+            return this.GetSections().FirstOrDefault(section => section.SectionId.ToString() == sectionId);
+        }
+
+        /// <summary>
+        /// Gets the sections for this instance.
+        /// </summary>
+        /// <returns>List of <see cref="ISection"/> instances for this survey</returns>
+        public List<ISection> GetSections()
+        {
+            var sections = new List<ISection>();
+
+            foreach (var section in this.Sections)
+            {
+                sections.Add(section);
+            }
+
+            sections.Sort(new Section.RelativeOrderComparer());
+            return sections;
         }
 
         /// <summary>
@@ -254,15 +243,46 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Renders the survey from this survey.
+        /// </summary>
+        /// <param name="placeHolder">The place holder.</param>
+        /// <param name="readOnly">if set to <c>true</c> [read only].</param>
+        /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
+        /// <param name="validationProvider">The validation provider.</param>
+        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        {
+            RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider);
+        }
+
+        /// <summary>
         /// Saves this instance.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="userId">The ID of the user saving this instance</param>
+        /// <returns>The ID of the created <see cref="ResponseHeader"/></returns>
         public int Save(int userId)
         {
             int responseHeaderId = CreateResponseHeader(userId);
             this.WriteResponses(responseHeaderId);
 
             return responseHeaderId;
+        }
+
+        /// <summary>
+        /// Creates the response header.
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        /// <returns>The ID of the created <see cref="ResponseHeader"/></returns>
+        private static int CreateResponseHeader(int userId)
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            var header = new ResponseHeader
+                             {
+                                 CreatedBy = userId, RevisingUser = userId, UserId = userId, RevisionDate = DateTime.Now, CreationDate = DateTime.Now 
+                             };
+            context.ResponseHeaders.InsertOnSubmit(header);
+            context.SubmitChanges();
+
+            return header.ResponseHeaderId;
         }
 
         /// <summary>
@@ -275,6 +295,56 @@ namespace Engage.Survey.Entities
             this.SectionFormatOption = ElementFormatOption.None;
             this.QuestionFormatOption = ElementFormatOption.None;
             this.TitleOption = TitleOption.FirstPageOnly;
+        }
+
+        /// <summary>
+        /// Writes the response entry.
+        /// </summary>
+        /// <param name="responseHeaderId">The response header id.</param>
+        /// <param name="section">The section.</param>
+        /// <param name="question">The question.</param>
+        /// <param name="answer">The answer.</param>
+        /// <param name="responseText">The response text.</param>
+        private void WriteResponseEntry(int responseHeaderId, ISection section, IQuestion question, IAnswer answer, string responseText)
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            var response = new Response
+                             {
+                                     SurveyId = this.SurveyId, 
+                                     SurveyText = this.Text, 
+                                     ShowSurveyText = this.ShowText, 
+                                     TitleOption = this.TitleOption, 
+                                     SectionText = section.Text, 
+                                     SectionRelativeOrder = section.RelativeOrder, 
+                                     ShowSectionText = false, 
+                                     ResponseHeaderId = responseHeaderId, 
+                                     SectionId = section.SectionId
+                             };
+            response.SectionRelativeOrder = section.RelativeOrder;
+            response.SectionFormatOption = this.SectionFormatOption;
+            response.QuestionId = question.QuestionId;
+            response.QuestionText = question.Text;
+            response.QuestionRelativeOrder = question.RelativeOrder;
+            response.QuestionFormatOption = this.QuestionFormatOption;
+            response.ControlType = question.ControlType;
+            if (answer != null)
+            {
+                response.AnswerId = answer.AnswerId;
+                response.AnswerText = answer.Text;
+                response.AnswerRelativeOrder = answer.RelativeOrder;
+                response.AnswerIsCorrect = answer.IsCorrect;
+            }
+
+            response.UserResponse = responseText;
+            response.CreatedBy = 1;
+            response.CreationDate = DateTime.Now;
+            response.RevisingUser = 1;
+            response.RevisionDate = DateTime.Now;
+
+            context.Responses.InsertOnSubmit(response);
+            context.SubmitChanges();
+
+            Debug.WriteLine(response.ResponseId);
         }
 
         /// <summary>
@@ -321,77 +391,6 @@ namespace Engage.Survey.Entities
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Creates the response header.
-        /// </summary>
-        /// <param name="userId">The user id.</param>
-        /// <returns></returns>
-        private static int CreateResponseHeader(int userId)
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            var header = new ResponseHeader
-                                        {
-                                                CreatedBy = userId,
-                                                RevisingUser = userId,
-                                                UserId = userId,
-                                                RevisionDate = DateTime.Now,
-                                                CreationDate = DateTime.Now
-                                        };
-            context.ResponseHeaders.InsertOnSubmit(header);
-            context.SubmitChanges();
-
-            return header.ResponseHeaderId;
-        }
-
-        /// <summary>
-        /// Writes the response entry.
-        /// </summary>
-        /// <param name="responseHeaderId">The response header id.</param>
-        /// <param name="section">The section.</param>
-        /// <param name="question">The question.</param>
-        /// <param name="answer">The answer.</param>
-        /// <param name="responseText">The response text.</param>
-        private void WriteResponseEntry(int responseHeaderId, ISection section, IQuestion question, IAnswer answer, string responseText)
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            Response r = new Response
-                             {
-                                     SurveyId = this.SurveyId,
-                                     SurveyText = this.Text,
-                                     ShowSurveyText = this.ShowText,
-                                     TitleOption = this.TitleOption,
-                                     SectionText = section.Text,
-                                     SectionRelativeOrder = section.RelativeOrder,
-                                     ShowSectionText = false,
-                                     ResponseHeaderId = responseHeaderId,
-                                     SectionId = section.SectionId
-                             };
-            r.SectionRelativeOrder = section.RelativeOrder;
-            r.SectionFormatOption = this.SectionFormatOption; 
-            r.QuestionId = question.QuestionId;
-            r.QuestionText = question.Text;
-            r.QuestionRelativeOrder = question.RelativeOrder;
-            r.QuestionFormatOption = this.QuestionFormatOption;
-            r.ControlType = question.ControlType;
-            if (answer != null)
-            {
-                r.AnswerId = answer.AnswerId;
-                r.AnswerText = answer.Text;
-                r.AnswerRelativeOrder = answer.RelativeOrder;
-                r.AnswerIsCorrect = answer.IsCorrect;
-            }
-            r.UserResponse = responseText;
-            r.CreatedBy = 1;
-            r.CreationDate = DateTime.Now;
-            r.RevisingUser = 1;
-            r.RevisionDate = DateTime.Now;
-
-            context.Responses.InsertOnSubmit(r);
-            context.SubmitChanges();
-
-            Debug.WriteLine(r.ResponseId);
         }
     }
 }

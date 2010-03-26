@@ -13,13 +13,21 @@ namespace Engage.Survey.Entities
 {
     using System;
     using System.Data.Linq;
+    using System.Globalization;
     using System.Linq;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Localization;
 
     /// <summary>
     /// SurveyModelDataContext class
     /// </summary>
     public partial class SurveyModelDataContext
     {
+        /// <summary>
+        /// The path to the resource file in which localized content for this class exists
+        /// </summary>
+        public static readonly string SharedResourceFile = "~/DesktopModules/EngageSurvey/App_LocalResources/SharedResources.resx";
+
         /// <summary>
         /// Gets an instance of the <see cref="DataContext"/>.
         /// </summary>
@@ -28,8 +36,20 @@ namespace Engage.Survey.Entities
         {
             get
             {
-                return new SurveyModelDataContext(DotNetNuke.Common.Utilities.Config.GetConnectionString());
+                return new SurveyModelDataContext(Config.GetConnectionString());
             }
+        }
+
+        /// <summary>
+        /// Updates the given <see cref="Question"/> <paramref name="instance"/>'s <see cref="Question.RequiredMessage"/>.
+        /// </summary>
+        /// <param name="instance">The <see cref="Question"/> instance to update.</param>
+        private static void UpdateQuestionRequiredMessage(Question instance)
+        {
+            instance.RequiredMessage = string.Format(
+                    CultureInfo.CurrentCulture, 
+                    Localization.GetString("Required Question.Format", SharedResourceFile),
+                    instance.Text);
         }
 
         /// <summary>
@@ -65,6 +85,9 @@ namespace Engage.Survey.Entities
         {
             instance.CreationDate = DateTime.Now;
             instance.RevisionDate = DateTime.Now;
+
+            UpdateQuestionRequiredMessage(instance);
+
             this.ExecuteDynamicInsert(instance);
         }
 
@@ -107,6 +130,9 @@ namespace Engage.Survey.Entities
         partial void UpdateQuestion(Question instance)
         {
             instance.RevisionDate = DateTime.Now;
+
+            UpdateQuestionRequiredMessage(instance);
+
             this.ExecuteDynamicUpdate(instance);
         }
 

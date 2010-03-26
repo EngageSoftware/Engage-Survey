@@ -290,7 +290,7 @@ namespace Engage.Survey.Entities
         /// </summary>
         partial void OnCreated()
         {
-            this.FinalMessage = Localization.GetString("Survey Complete.Text", "~/DesktopModules/EngageSurvey/App_LocalResources/SharedResources.resx");
+            this.FinalMessage = Localization.GetString("Survey Complete.Text", SurveyModelDataContext.SharedResourceFile);
             this.FinalMessageOption = FinalMessageOption.UseFinalMessage;
             this.SectionFormatOption = ElementFormatOption.None;
             this.QuestionFormatOption = ElementFormatOption.None;

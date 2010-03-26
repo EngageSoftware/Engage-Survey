@@ -27,7 +27,7 @@ namespace Engage.Survey
         /// <value>
         /// 	<c>true</c> if this instance is readonly; otherwise, <c>false</c>.
         /// </value>
-        bool IsReadonly { get; }
+        bool IsReadOnly { get; }
 
         /// <summary>
         /// Gets or sets the survey id.

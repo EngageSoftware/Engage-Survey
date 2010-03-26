@@ -111,7 +111,7 @@ namespace Engage.Survey.UI
         {
             get
             {
-                return this.CurrentSurvey.IsReadonly;
+                return this.CurrentSurvey.IsReadOnly;
             }
         }
 

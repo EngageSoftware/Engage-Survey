@@ -18,7 +18,6 @@
                 </span>
                 <span class="sl-repeater-actions">
                     <asp:HyperLink ID="EditHyperLink" runat="server" ResourceKey="EditLink" CssClass="ee-edit" />
-                    <asp:HyperLink ID="DeleteHyperLink" runat="server" ResourceKey="DeleteLink" CssClass="ee-delete" />
                 </span>
             </li>
         </ItemTemplate>

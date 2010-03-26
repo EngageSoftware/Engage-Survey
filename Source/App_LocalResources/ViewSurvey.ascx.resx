@@ -120,11 +120,17 @@
   <data name="BackButton.Text" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="ConfirmDelete.Text" xml:space="preserve">
+    <value>Are you sure that you want to delete this user response?</value>
+  </data>
   <data name="ControlTitle.Text" xml:space="preserve">
     <value>View Survey</value>
   </data>
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>View Survey</value>
+  </data>
+  <data name="DeleteButton.Text" xml:space="preserve">
+    <value>Delete</value>
   </data>
   <data name="SubmitButton.Text" xml:space="preserve">
     <value>Submit</value>

@@ -18,8 +18,8 @@
             <li class="primary-btn" style="display:none;"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("EditEvalHyperLink.ToolTip")) %>" id="EvalEdit"><%=Localize("EditEvalHyperLink.Text")%></a></li>
             <li class="primary-btn" style="display:none;"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("UpdateEvalHyperLink.ToolTip")) %>" id="EvalUpdate"><%=Localize("UpdateEvalHyperLink.Text")%></a></li>
             <li class="secondary-btn" style="display:none;"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("CancelHyperLink.ToolTip")) %>" id="EvalCancel"><%=Localize("CancelHyperLink.Text")%></a></li>
-<%--            <li class="secondary-btn"><a href="<%=DotNetNuke.Common.Globals.NavigateURL() %>" title='<%=Localize("BackHyperLink.ToolTip") %>' id="EvalBack"><%=Localize("BackHyperLink.Text")%></a></li>
---%>        </ul>
+            <li class="secondary-btn" style="display:none;"><a href="#" title='<%=HttpUtility.HtmlAttributeEncode(Localize("DeleteHyperLink.ToolTip")) %>' id="EvalDelete"><%=Localize("DeleteHyperLink.Text")%></a></li>
+        </ul>
     </fieldset>
     <fieldset class="ee-create-questions" id="CreateQuestions">
         <legend class="Head"><%=Localize("CreateNewQuestionsLabel.Text")%></legend>
@@ -106,6 +106,10 @@
         </ul>
     </fieldset>   
 </div>
+<span class="ee-undo template" style="display:none;">
+    <%=Localize("UndoSurveyDelete.Text") %> <a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("UndoSurveyDeleteButton.ToolTip")) %>"><%=Localize("UndoSurveyDeleteButton.Text") %></a>
+</span>
+
 <% if (false) { %><script type="text/ecmascript" src="JavaScript/jquery-1.3.2.debug-vsdoc.js"></script><% } %>
 <script type="text/javascript">
 var CurrentContextInfo = {

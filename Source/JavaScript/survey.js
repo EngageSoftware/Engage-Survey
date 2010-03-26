@@ -226,6 +226,16 @@ if (!Array.prototype.indexOf) {
 
             validator.resetForm();
         });
+
+        $('#EvalDelete').click(function (event) {
+            event.preventDefault();
+
+            deleteWithUndo($('#engage-evaluation'), true, null, function deleteCallback () { 
+                callWebMethod('DeleteSurvey', { surveyId: $('.ee-create-new').data('surveyId') }, function () {
+                    window.location = $('.egn-home a').attr('href');
+                });
+            });
+        });
             
         function makeSurveyReadOnly () {
             if ($('#EvalDescTextArea').val()) {
@@ -240,6 +250,7 @@ if (!Array.prototype.indexOf) {
             makeElementReadonly($('#EvalTitleInput'));
                 
             $('#EvalEdit').parent().fadeIn(AnimationSpeed);
+            $('#EvalDelete').parent().fadeIn(AnimationSpeed);
         }
         
         function makeElementReadonly($element) {

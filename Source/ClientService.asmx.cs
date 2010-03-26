@@ -9,9 +9,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
+// TODO: Authentication...
 namespace Engage.Dnn.Survey
 {
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
@@ -41,6 +41,27 @@ namespace Engage.Dnn.Survey
 
             dataContext.Answers.DeleteAllOnSubmit(question.Answers);
             dataContext.Questions.DeleteOnSubmit(question);
+
+            dataContext.SubmitChanges();
+        }
+
+        /// <summary>
+        /// Deletes the survey.
+        /// </summary>
+        /// <param name="surveyId">The survey ID.</param>
+        [WebMethod]
+        public void DeleteSurvey(int surveyId)
+        {
+            var dataContext = SurveyModelDataContext.Instance;
+
+            var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
+
+            dataContext.Surveys.DeleteOnSubmit(survey);
+            dataContext.Sections.DeleteAllOnSubmit(survey.Sections);
+            var questions = survey.Sections.SelectMany(section => section.Questions);
+            dataContext.Questions.DeleteAllOnSubmit(questions);
+            var answers = questions.SelectMany(question => question.Answers);
+            dataContext.Answers.DeleteAllOnSubmit(answers);
 
             dataContext.SubmitChanges();
         }

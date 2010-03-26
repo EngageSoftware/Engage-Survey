@@ -18,7 +18,6 @@ namespace Engage.Dnn.Survey
     using System.Web.UI.WebControls;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.UI.Utilities;
     using Engage.Survey;
     using Engage.Survey.Entities;
 
@@ -65,19 +64,6 @@ namespace Engage.Dnn.Survey
             }
 
             this.SurveyGrid.DataBind();
-        }
-
-        /// <summary>
-        /// Builds the URL to delete the given survey.
-        /// </summary>
-        /// <param name="id">The id.</param>
-        /// <param name="key">The key.</param>
-        /// <returns>
-        /// A URL which, when navigated to, deletes the survey with the given <paramref name="id"/>
-        /// </returns>
-        private string BuildDeleteUrl(int id, string key)
-        {
-            return BuildLinkUrl(this.ModuleId, "SurveyListing", "delete=1", key + "=" + id);
         }
 
         /// <summary>
@@ -154,32 +140,12 @@ namespace Engage.Dnn.Survey
             {
                 if (!this.Page.IsPostBack)
                 {
-                    if (Request.QueryString["delete"] != null)
-                    {
-                        this.DeleteItem();
-                    }
-
                     this.BindData(0);
                 }
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// <summary>
-        /// Deletes either a survey definition or a completed survey.
-        /// </summary>
-        private void DeleteItem()
-        {
-            if (this.ResponseHeaderId == null)
-            {
-                Survey.Delete(this.SurveyId);    
-            }
-            else
-            {
-                ReadonlySurvey.Delete(this.ResponseHeaderId);
             }
         }
 
@@ -210,22 +176,6 @@ namespace Engage.Dnn.Survey
                     textHyperLink.NavigateUrl = surveyIsComplete
                         ? this.BuildPreviewUrl(completedSurvey.ResponseHeaderId, "responseHeaderId") 
                         : this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
-                }
-
-                var deleteHyperLink = e.Item.FindControl("DeleteHyperLink") as HyperLink;
-                if (deleteHyperLink != null)
-                {
-                    if (surveyIsComplete)
-                    {
-                        deleteHyperLink.NavigateUrl = this.BuildDeleteUrl(completedSurvey.ResponseHeaderId, "responseHeaderId");
-                        ClientAPI.AddButtonConfirm(deleteHyperLink, this.Localize("DeleteCompletedSurvey.Text"));
-                    }
-                    else
-                    {
-                        deleteHyperLink.NavigateUrl = this.BuildDeleteUrl(survey.SurveyId, "surveyId");
-                        ClientAPI.AddButtonConfirm(deleteHyperLink, this.Localize("DeleteSurvey.Text"));
-                    }
-                    deleteHyperLink.Visible = this.IsAdmin;
                 }
 
                 var dateLabel = e.Item.FindControl("DateLabel") as Label;

@@ -171,6 +171,12 @@
   <data name="DefineAnswerLabel.Text" xml:space="preserve">
     <value>Answer</value>
   </data>
+  <data name="DeleteHyperLink.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteHyperLink.ToolTip" xml:space="preserve">
+    <value>Delete Survey</value>
+  </data>
   <data name="DeleteQuestionHyperLink.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -287,6 +293,15 @@
   </data>
   <data name="UndoQuestionDeleteButton.ToolTip" xml:space="preserve">
     <value>Don't delete this question</value>
+  </data>
+  <data name="UndoSurveyDelete.Text" xml:space="preserve">
+    <value>This survey will be deleted in {0}s</value>
+  </data>
+  <data name="UndoSurveyDeleteButton.Text" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="UndoSurveyDeleteButton.ToolTip" xml:space="preserve">
+    <value>Don't delete this survey</value>
   </data>
   <data name="UpdateEvalHyperLink.Text" xml:space="preserve">
     <value>Update</value>

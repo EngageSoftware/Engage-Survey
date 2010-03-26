@@ -13,8 +13,10 @@ namespace Engage.Dnn.Survey
 {
     using System;
     using System.Globalization;
+    using System.Web.UI.WebControls;
     using DotNetNuke.Entities.Modules.Communications;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.UI.Utilities;
     using Engage.Survey.Entities;
     using Engage.Survey.UI;
 
@@ -90,11 +92,27 @@ namespace Engage.Dnn.Survey
 
                 this.SurveyControl.BackButtonText = this.Localize("BackButton.Text", LocalResourceFile);
                 this.SurveyControl.SubmitButtonText = this.Localize("SubmitButton.Text", LocalResourceFile);
+
+                // allow module editors to delete user responses
+                this.DeleteResponseButton.Click += this.DeleteResponseButton_Click;
+                this.DeleteResponseButton.Visible = this.IsEditable && this.ResponseHeaderId != null;
+                ClientAPI.AddButtonConfirm(this.DeleteResponseButton, Localize("ConfirmDelete.Text"));
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Button.Click"/> event of the <see cref="DeleteResponseButton"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void DeleteResponseButton_Click(object sender, EventArgs e)
+        {
+            ReadonlySurvey.Delete(this.ResponseHeaderId);
+            this.Response.Redirect(this.BuildLinkUrl(this.TabId));
         }
         
         /// <summary>

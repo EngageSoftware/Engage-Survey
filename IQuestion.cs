@@ -93,7 +93,7 @@ namespace Engage.Survey
         /// Gets the answer choice.
         /// </summary>
         /// <param name="key">The key.</param>
-        IAnswer GetAnswers(Key key);
+        IAnswer GetAnswer(Key key);
 
         /// <summary>
         /// Finds the response.

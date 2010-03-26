@@ -166,6 +166,7 @@ namespace Engage.Survey.Entities
 
                 if (string.IsNullOrEmpty(control.ID) == false && validationProvider != null)
                 {
+                    // TODO: Localize error messages
                     if (question.IsRequired && question.ControlType != ControlType.Checkbox)
                     {
                         validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.RequiredField, "error-message", questionWrapDiv, control.ID, question.UnformattedText + " is required.", "survey", 1, 0);

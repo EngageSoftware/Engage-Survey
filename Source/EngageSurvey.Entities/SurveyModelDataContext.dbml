@@ -23,7 +23,7 @@
     <Type Name="Section">
       <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="SurveyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Text" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="ShowText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="RelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="RevisingUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />

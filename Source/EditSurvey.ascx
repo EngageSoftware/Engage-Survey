@@ -11,7 +11,7 @@
         </div>
         <div class="ee-description">
             <span class="ee-label eval-description"><%=Localize("EvalDescriptionLabel.Text")%></span>
-            <span class="ee-input"><textarea id="EvalDescTextArea" class="NormalTextBox" maxlength="256" cols="40" rows="4"></textarea></span>
+            <span class="ee-input"><textarea id="EvalDescTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
         </div>
         <ul class="ee-action-btns">
             <li class="primary-btn"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("CreateNewEvalHyperLink.ToolTip")) %>" id="EvalNew" class="create-new"><%=Localize("CreateNewEvalHyperLink.Text")%></a></li>

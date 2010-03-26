@@ -48,6 +48,9 @@
         <file>
           <name>3.0.0.SqlDataProvider</name>
         </file>
+        <file>
+          <name>3.1.0.SqlDataProvider</name>
+        </file>
       </files>
     </folder>
   </folders>

@@ -1,0 +1,4 @@
+﻿ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Section]
+    ALTER COLUMN Text NVarChar(MAX) NOT NULL
+GO
+

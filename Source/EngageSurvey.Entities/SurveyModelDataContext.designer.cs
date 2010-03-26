@@ -697,7 +697,7 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		[Column(Storage="_Text", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[Column(Storage="_Text", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=3)]
 		public string Text
 		{

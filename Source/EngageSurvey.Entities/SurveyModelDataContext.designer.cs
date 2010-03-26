@@ -288,7 +288,7 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		[Column(Storage="_IsRequired", DbType="Bit NOT NULL", IsDbGenerated=true)]
+		[Column(Storage="_IsRequired", DbType="Bit NOT NULL")]
 		[DataMember(Order=5)]
 		public bool IsRequired
 		{
@@ -2252,7 +2252,7 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
-		[Column(Storage="_SectionText", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		[Column(Storage="_SectionText", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
 		[DataMember(Order=8)]
 		public string SectionText
 		{

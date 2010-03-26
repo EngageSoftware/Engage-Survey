@@ -123,6 +123,7 @@ namespace Engage.Dnn.Survey
             }
 
             questionToUpdate.Text = question.Text;
+            questionToUpdate.IsRequired = question.IsRequired;
             questionToUpdate.RelativeOrder = question.RelativeOrder;
             questionToUpdate.ControlType = question.ControlType;
 
@@ -163,6 +164,7 @@ namespace Engage.Dnn.Survey
                 questionToUpdate.ControlType,
                 questionToUpdate.RelativeOrder,
                 questionToUpdate.Text,
+                questionToUpdate.IsRequired,
                 Answers = questionToUpdate.Answers.OrderBy(a => a.RelativeOrder).Select(a => new { a.AnswerId, a.RelativeOrder, a.Text })
             };
         }

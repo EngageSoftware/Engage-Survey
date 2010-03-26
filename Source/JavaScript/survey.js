@@ -446,8 +446,9 @@ if (!Array.prototype.indexOf) {
             var questionType = $questionLi.data('questionType');
             var questionId = $questionLi.data('questionId');
             
-            // set the "edit" question text based on the "preview" question text
+            // set the "edit" question text and required-nedd based on the "preview" question text and required-ness
             $('#QuestionText').val($questionLi.children('.pv-question').text());
+            $('#QuestionRequiredCheckBox').attr('checked', $questionLi.children('.ee-required-label').text() === '*');
             
             if (setQuestionData) {
                 // set the question id on the "edit" section based on the question id in the "preview" section
@@ -568,7 +569,7 @@ if (!Array.prototype.indexOf) {
                 callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
                     $('#PreviewArea').slideDown(AnimationSpeed);
                     
-                    addQuestionPreview(question.QuestionId, $('#QuestionText').val(), parseInt($('#DefineAnswerType :selected').val(), 10), question.Answers);
+                    addQuestionPreview(question.QuestionId, $('#QuestionText').val(), $('#QuestionRequiredCheckBox').is(':checked'), parseInt($('#DefineAnswerType :selected').val(), 10), question.Answers);
                         
                     resetCreateQuestionSection();
                 });
@@ -581,7 +582,7 @@ if (!Array.prototype.indexOf) {
             resetCreateQuestionSection();
         });
 
-        function addQuestionPreview(questionId, questionText, questionType, answers) {
+        function addQuestionPreview(questionId, questionText, isRequired, questionType, answers) {
             var $questionElement, questionOrder = $('#CreateQuestions').data('relativeOrder');
             if (questionOrder) {
                 $questionElement = $('.ee-preview').eq(questionOrder - 1);
@@ -599,6 +600,7 @@ if (!Array.prototype.indexOf) {
             
             // update the new question preview
             $questionElement.find('.pv-question').text(questionText).show();
+            $questionElement.find('.ee-required-label').text(isRequired ? '*' : '').show();
             $questionElement.show().data('questionId', questionId).data('questionType', questionType);
             
             // update the preview with answer values
@@ -640,6 +642,7 @@ if (!Array.prototype.indexOf) {
         function resetCreateQuestionSection() {
             // reset the "create question" section
             $('#QuestionText').val('');
+            $('#QuestionRequiredCheckBox').attr('checked', true);
             $('#DefineAnswerType').find('option:first').attr('selected', true);
             $('#ShortTextAnswer').slideUp(AnimationSpeed);
             $('#LongTextAnswer').slideUp(AnimationSpeed);
@@ -679,6 +682,7 @@ if (!Array.prototype.indexOf) {
                 question: {
                     QuestionId: $('#CreateQuestions').data('questionId') || -1,
                     Text: $('#QuestionText').val(),
+                    IsRequired: $('#QuestionRequiredCheckBox').is(':checked'),
                     RelativeOrder: $('#CreateQuestions').data('relativeOrder') || $('.ee-preview').length + 1,
                     ControlType: $('#DefineAnswerType').val(),
                     RevisingUser: CurrentContextInfo.UserId,
@@ -708,7 +712,7 @@ if (!Array.prototype.indexOf) {
                 $('#PreviewArea').show();
                 
                 $.each(CurrentContextInfo.Survey.Sections[0].Questions, function (i, question) {
-                    addQuestionPreview(question.QuestionId, question.Text, question.ControlType, question.Answers);
+                    addQuestionPreview(question.QuestionId, question.Text, question.IsRequired, question.ControlType, question.Answers);
                 });
             }
         }

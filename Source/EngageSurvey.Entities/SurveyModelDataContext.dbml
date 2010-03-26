@@ -6,7 +6,7 @@
       <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Text" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="ShowText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsRequired" AutoSync="Never" Type="System.Boolean" DbType="Bit NOT NULL" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IsRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="RequiredMessage" Type="System.String" DbType="NChar(256)" CanBeNull="true" />
       <Column Name="RelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SelectionLimit" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -87,7 +87,7 @@
       <Column Name="ShowSurveyText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="TitleOption" Type="global::Engage.Survey.Util.TitleOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="SectionText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="SectionText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="SectionRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ShowSectionText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="QuestionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />

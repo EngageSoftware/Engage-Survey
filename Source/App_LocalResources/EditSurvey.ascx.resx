@@ -216,6 +216,9 @@
   <data name="ProgressText.Text" xml:space="preserve">
     <value>Saving...</value>
   </data>
+  <data name="QuestionRequiredLabel.Text" xml:space="preserve">
+    <value>Required?</value>
+  </data>
   <data name="QuestionTitle.Text" xml:space="preserve">
     <value>Question</value>
   </data>

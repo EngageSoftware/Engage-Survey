@@ -27,6 +27,10 @@
             <span class="ee-label"><span class="ee-required-label">*</span><%=Localize("TypeQuestionLabel.Text")%></span>
             <span class="ee-input"><textarea id="QuestionText" class="NormalTextBox ee-required" minlength="1" maxlength="256" cols="40" rows="4" name="required"></textarea></span>
         </div>
+        <div class="ee-question-required">
+            <span class="ee-label"><span class="ee-required-label">*</span><%=Localize("QuestionRequiredLabel.Text")%></span>
+            <span class="ee-input"><input type="checkbox" id="QuestionRequiredCheckBox" class="ee-required" checked="checked" /></span>
+        </div>
         <div class="ee-define-answer">
             <span class="ee-label"><span class="ee-required-label">*</span><%=Localize("DefineAnswerLabel.Text")%></span>
             <div class="define-answer">
@@ -90,7 +94,7 @@
                     <li><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("DeleteQuestionHyperLink.ToolTip"))%>" class="ee-delete"><%=Localize("DeleteQuestionHyperLink.Text")%></a></li>
                 </ul>
                 <span class="ee-label pv-question-label"><%=Localize("QuestionTitle.Text")%></span>
-                <span class="pv-question"></span>
+                <span class="pv-question"></span><span class="ee-required-label"></span>
                 <div>
                     <span class="ee-label pv-answer-label"><%=Localize("AnswerTitle.Text")%></span>
                     <span class="pv-answer"></span>

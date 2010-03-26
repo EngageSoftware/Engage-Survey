@@ -79,7 +79,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Compares answers based on their <see cref="Answer.RelativeOrder"/>
+        /// Compares <see cref="Answer"/> instances based on their <see cref="Answer.RelativeOrder"/>
         /// </summary>
         internal class RelativeOrderComparer : IComparer<IAnswer>
         {

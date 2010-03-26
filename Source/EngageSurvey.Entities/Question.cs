@@ -12,8 +12,13 @@
 namespace Engage.Survey.Entities
 {
     using System.Collections.Generic;
+    using System.Linq;
+    using UI;
     using Util;
 
+    /// <summary>
+    /// A question within a survey <see cref="Section"/>
+    /// </summary>
     public partial class Question : IQuestion
     {
         /// <summary>
@@ -21,13 +26,66 @@ namespace Engage.Survey.Entities
         /// </summary>
         /// <param name="revisingUser">The revising user.</param>
         public Question(int revisingUser)
-            : this()
+                : this()
         {
             this.CreatedBy = this.RevisingUser = revisingUser;
         }
 
         /// <summary>
-        /// Gets the rendering key used by the SurveyControl to uniquely identify this element.
+        /// Gets or sets the comments for a Question. Questions can optionally have a "Allow Comments" on each of them in a future phase.
+        /// </summary>
+        /// <value>The comments.</value>
+        public string Comments
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the formatting for the element plus the the unformatted text together. Used primarily by
+        /// the Web and Windows viewers only.
+        /// </summary>
+        public string FormattedText
+        {
+            get
+            {
+                return this.Formatting + this.UnformattedText;
+            }
+        }
+
+        /// <summary>
+        /// Gets the formatting that will be used to prefix the unformatted text for the survey element.
+        /// </summary>
+        public string Formatting
+        {
+            get
+            {
+                ISurvey survey = this.Section.Survey;
+                if (survey != null)
+                {
+                    return Utility.PrependFormatting(survey.QuestionFormatOption, this.RelativeOrder);
+                }
+
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is boolean.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is boolean; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsBoolean
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the rendering key used by the <see cref="SurveyControl"/> to uniquely identify this element.
         /// </summary>
         /// <value>The rendering key.</value>
         public Key RelationshipKey
@@ -49,69 +107,45 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Gets the answer choice.
+        /// Gets only the text value of Text attribute for the survey element.
         /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns></returns>
-        public IAnswer GetAnswers(Key key)
+        public string UnformattedText
         {
-            foreach (IAnswer answer in this.GetAnswers())
+            get
             {
-                if (answer.AnswerId == key.AnswerId)
-                {
-                    return answer;
-                }
+                return this.Text;
             }
-            return null;
         }
 
         /// <summary>
         /// Finds the response.
         /// </summary>
         /// <param name="answer">The answer.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="UserResponse"/> with the given answer, or <c>null</c> if no such response exists</returns>
         public UserResponse FindResponse(IAnswer answer)
         {
-            foreach (UserResponse r in Responses)
-            {
-                if (r.RelationshipKey.Equals(answer.RelationshipKey))
-                {
-                    return r;
-                }
-            }
-            return null;
+            return this.Responses.FirstOrDefault(r => r.RelationshipKey.Equals(answer.RelationshipKey));
         }
 
         /// <summary>
-        /// Gets or sets the comments for a Question. Questions can optionally have a "Allow Comments" on each of them in a future phase.
+        /// Gets the answer choice.
         /// </summary>
-        /// <value>The comments.</value>
-        public string Comments
+        /// <param name="key">The key by which to find with answer (i.e. a key with an <see cref="Key.AnswerId"/> that is the answer ID of the answer to get).</param>
+        /// <returns>The answer with the same answer ID as the given <paramref name="key"/></returns>
+        public IAnswer GetAnswer(Key key)
         {
-            get;
-            set;
+            return this.GetAnswers().SingleOrDefault(answer => answer.AnswerId == key.AnswerId);
         }
 
         /// <summary>
-        /// Gets the section.
+        /// Gets the answer choices for this question.
         /// </summary>
-        /// <returns></returns>
-        /// <value>The section.</value>
-        public ISection GetSection()
-        {
-            return this.Section; 
-        }
-
-        /// <summary>
-        /// Gets the answer choices.
-        /// </summary>
-        /// <returns></returns>
-        /// <value>The answer choices.</value>
+        /// <returns>The list of all answers for this question</returns>
         public List<IAnswer> GetAnswers()
         {
-            List<IAnswer> answers = new List<IAnswer>();
+            var answers = new List<IAnswer>();
 
-            foreach (Answer a in Answers)
+            foreach (Answer a in this.Answers)
             {
                 answers.Add(a);
             }
@@ -121,100 +155,69 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance is boolean.
+        /// Gets the section.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is boolean; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsBoolean
+        /// <returns>The <see cref="Section"/> in which this question lives</returns>
+        public ISection GetSection()
         {
-            get
-            {
-                return false;
-            }
-        }
-        
-        /// <summary>
-        /// Returns the formatting for the element plus the the unformatted text together. Used primarily by
-        /// the Web and Windows viewers only.
-        /// </summary>
-        /// <value></value>
-        public string FormattedText
-        {
-            get {return this.Formatting + this.UnformattedText;}
+            return this.Section;
         }
 
         /// <summary>
-        /// Returns only the text value of Text attribute for the survey element.
-        /// </summary>
-        /// <value></value>
-        public string UnformattedText
-        {
-            get { return this.Text; }
-        }
-
-        /// <summary>
-        /// Returns the formatting that will be used to prefix the unformatted text for the survey element.
-        /// </summary>
-        /// <value></value>
-        public string Formatting
-        {
-            get
-            {
-                ISurvey survey = this.Section.Survey;
-                if (survey != null)
-                {
-                    return Util.Utility.PrependFormatting(survey.QuestionFormatOption, this.RelativeOrder);
-                }
-
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// RelativeOrderComparer
+        /// Compares <see cref="Question"/> instances based on their <see cref="Question.RelativeOrder"/>
         /// </summary>
         internal class RelativeOrderComparer : IComparer<IQuestion>
         {
+            /// <summary>
+            /// Whether the sorting is descending or ascending
+            /// </summary>
             private readonly bool descending = true;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RelativeOrderComparer"/> class.
+            /// </summary>
             public RelativeOrderComparer()
             {
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RelativeOrderComparer"/> class.
+            /// </summary>
+            /// <param name="descending">if set to <c>true</c> sorts by descending relative order; otherwise, ascending.</param>
             public RelativeOrderComparer(bool descending)
             {
                 this.descending = descending;
             }
 
-            #region IComparer Members
-
             /// <summary>
             /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
             /// </summary>
+            /// <param name="x">The first object to compare.</param>
+            /// <param name="y">The second object to compare.</param>
             /// <returns>
-            /// Value 
-            ///                     Condition 
-            ///                     Less than zero
-            ///                 <paramref name="x"/> is less than <paramref name="y"/>.
-            ///                     Zero
-            ///                 <paramref name="x"/> equals <paramref name="y"/>.
-            ///                     Greater than zero
-            ///                 <paramref name="x"/> is greater than <paramref name="y"/>.
+            /// Value
+            /// Condition
+            /// Less than zero
+            /// <paramref name="x"/> is less than <paramref name="y"/>.
+            /// Zero
+            /// <paramref name="x"/> equals <paramref name="y"/>.
+            /// Greater than zero
+            /// <paramref name="x"/> is greater than <paramref name="y"/>.
             /// </returns>
-            /// <param name="x">The first object to compare.
-            ///                 </param><param name="y">The second object to compare.
-            ///                 </param>
             public int Compare(IQuestion x, IQuestion y)
             {
-                if (x == null || y == null) return 0;
+                if (x == null || y == null)
+                {
+                    return 0;
+                }
 
                 if (this.descending)
+                {
                     return x.RelativeOrder.CompareTo(y.RelativeOrder);
+                }
+
                 return y.RelativeOrder.CompareTo(x.RelativeOrder);
             }
-
-            #endregion
         }
     }
 }

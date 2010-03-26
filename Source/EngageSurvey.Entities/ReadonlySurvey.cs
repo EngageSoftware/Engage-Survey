@@ -840,7 +840,7 @@ namespace Engage.Survey.Entities
         /// Gets the answer choice.
         /// </summary>
         /// <param name="key">The key.</param>
-        public IAnswer GetAnswers(Key key)
+        public IAnswer GetAnswer(Key key)
         {
             foreach (IAnswer answer in this.GetAnswers())
             {

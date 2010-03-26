@@ -10,7 +10,7 @@ using System.Web.UI;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Engage Software")]
 [assembly: AssemblyProduct("Engage.Dnn.Survey")]
-[assembly: AssemblyCopyright("Engage Software Copyright ©  2009")]
+[assembly: AssemblyCopyright("Engage Software Copyright ©  2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -88,6 +88,10 @@
     <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Telerik.Web.UI, Version=2009.3.1103.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="EditSurvey.ascx" />
@@ -236,6 +240,9 @@
     </Content>
     <EmbeddedResource Include="JavaScript\survey.js" />
     <Content Include="Controls\GlobalNavigation.ascx" />
+    <Content Include="References\Telerik.Web.Design.dll" />
+    <Content Include="References\Telerik.Web.UI.dll" />
+    <Content Include="References\Telerik.Web.UI.xml" />
     <Content Include="ReleaseNotes_3.0.2.htm" />
     <Content Include="ReleaseNotes_3.0.1.htm" />
     <Content Include="images\drag-icn.gif" />

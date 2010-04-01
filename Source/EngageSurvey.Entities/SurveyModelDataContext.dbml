@@ -75,6 +75,10 @@
       <Column Name="RevisionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NULL" CanBeNull="true" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime NULL" CanBeNull="true" />
+      <Column Name="PreStartMessage" Type="System.String" DbType="NVarChar(MAX) NULL" CanBeNull="true" />
+      <Column Name="PostEndMessage" Type="System.String" DbType="NVarChar(MAX) NULL" CanBeNull="true" />
       <Association Name="Survey_Section" Member="Sections" ThisKey="SurveyId" OtherKey="SurveyId" Type="Section" />
     </Type>
   </Table>

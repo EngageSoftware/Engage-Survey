@@ -1561,6 +1561,14 @@ namespace Engage.Survey.Entities
 		
 		private System.DateTime _CreationDate;
 		
+		private System.Nullable<System.DateTime> _StartDate;
+		
+		private System.Nullable<System.DateTime> _EndDate;
+		
+		private string _PreStartMessage;
+		
+		private string _PostEndMessage;
+		
 		private EntitySet<Section> _Sections;
 		
 		private bool serializing;
@@ -1597,6 +1605,14 @@ namespace Engage.Survey.Entities
     partial void OnCreatedByChanged();
     partial void OnCreationDateChanging(System.DateTime value);
     partial void OnCreationDateChanged();
+    partial void OnStartDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnStartDateChanged();
+    partial void OnEndDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnEndDateChanged();
+    partial void OnPreStartMessageChanging(string value);
+    partial void OnPreStartMessageChanged();
+    partial void OnPostEndMessageChanging(string value);
+    partial void OnPostEndMessageChanged();
     #endregion
 		
 		public Survey()
@@ -1898,8 +1914,92 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
+		[Column(Storage="_StartDate", DbType="DateTime NULL")]
+		[DataMember(Order=15)]
+		public System.Nullable<System.DateTime> StartDate
+		{
+			get
+			{
+				return this._StartDate;
+			}
+			set
+			{
+				if ((this._StartDate != value))
+				{
+					this.OnStartDateChanging(value);
+					this.SendPropertyChanging();
+					this._StartDate = value;
+					this.SendPropertyChanged("StartDate");
+					this.OnStartDateChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_EndDate", DbType="DateTime NULL")]
+		[DataMember(Order=16)]
+		public System.Nullable<System.DateTime> EndDate
+		{
+			get
+			{
+				return this._EndDate;
+			}
+			set
+			{
+				if ((this._EndDate != value))
+				{
+					this.OnEndDateChanging(value);
+					this.SendPropertyChanging();
+					this._EndDate = value;
+					this.SendPropertyChanged("EndDate");
+					this.OnEndDateChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PreStartMessage", DbType="NVarChar(MAX) NULL")]
+		[DataMember(Order=17)]
+		public string PreStartMessage
+		{
+			get
+			{
+				return this._PreStartMessage;
+			}
+			set
+			{
+				if ((this._PreStartMessage != value))
+				{
+					this.OnPreStartMessageChanging(value);
+					this.SendPropertyChanging();
+					this._PreStartMessage = value;
+					this.SendPropertyChanged("PreStartMessage");
+					this.OnPreStartMessageChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PostEndMessage", DbType="NVarChar(MAX) NULL")]
+		[DataMember(Order=18)]
+		public string PostEndMessage
+		{
+			get
+			{
+				return this._PostEndMessage;
+			}
+			set
+			{
+				if ((this._PostEndMessage != value))
+				{
+					this.OnPostEndMessageChanging(value);
+					this.SendPropertyChanging();
+					this._PostEndMessage = value;
+					this.SendPropertyChanged("PostEndMessage");
+					this.OnPostEndMessageChanged();
+				}
+			}
+		}
+		
 		[Association(Name="Survey_Section", Storage="_Sections", ThisKey="SurveyId", OtherKey="SurveyId")]
-		[DataMember(Order=15, EmitDefaultValue=false)]
+		[DataMember(Order=19, EmitDefaultValue=false)]
 		public EntitySet<Section> Sections
 		{
 			get

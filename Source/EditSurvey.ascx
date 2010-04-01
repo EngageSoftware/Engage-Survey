@@ -1,4 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="false" CodeBehind="EditSurvey.ascx.cs" Inherits="Engage.Dnn.Survey.EditSurvey" %>
+<%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <%@ Import Namespace="DotNetNuke.UI.Utilities"%>
 <%@ Import Namespace="Engage.Survey.Util"%>
 <div id="engage-evaluation">
@@ -13,6 +14,25 @@
             <span class="ee-label eval-description"><%=Localize("EvalDescriptionLabel.Text")%></span>
             <span class="ee-input"><textarea id="EvalDescTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
         </div>
+        <fieldset class="ee-timeframe ee-collapsed">
+            <legend><%=Localize("EvalTimeframeLabel.Text")%></legend>
+            <div class="ee-start-date">
+                <span class="ee-label eval-start-date"><%=Localize("EvalStartDateLabel.Text")%></span>
+                <span class="ee-input"><telerik:RadDateTimePicker runat="server" Calendar-ShowRowHeaders="false" Skin="Simple" /></span>
+            </div>
+            <div class="ee-pre-start">
+                <span class="ee-label eval-pre-start"><%=Localize("EvalPreStartLabel.Text")%></span>
+                <span class="ee-input"><textarea id="EvalPreStartTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
+            </div>
+            <div class="ee-end-date">
+                <span class="ee-label eval-end-date"><%=Localize("EvalEndDateLabel.Text")%></span>
+                <span class="ee-input"><telerik:RadDateTimePicker runat="server" Calendar-ShowRowHeaders="false" Skin="Simple" /></span>
+            </div>
+            <div class="ee-post-end">
+                <span class="ee-label eval-post-end"><%=Localize("EvalPostEndLabel.Text")%></span>
+                <span class="ee-input"><textarea id="EvalPostEndTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
+            </div>
+        </fieldset>
         <ul class="ee-action-btns">
             <li class="primary-btn"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("CreateNewEvalHyperLink.ToolTip")) %>" id="EvalNew" class="create-new"><%=Localize("CreateNewEvalHyperLink.Text")%></a></li>
             <li class="primary-btn" style="display:none;"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("EditEvalHyperLink.ToolTip")) %>" id="EvalEdit"><%=Localize("EditEvalHyperLink.Text")%></a></li>

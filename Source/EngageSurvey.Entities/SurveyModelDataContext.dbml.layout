@@ -40,10 +40,10 @@
         <elementListCompartment Id="69e731c2-546a-408e-a5c8-c5318ed7a26c" absoluteBounds="0.765, 9.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="2dd9bfb5-9f4e-4c94-ba10-1486011bfd8e" absoluteBounds="0.75, 1.125, 2, 3.5016097005208326">
+    <classShape Id="2dd9bfb5-9f4e-4c94-ba10-1486011bfd8e" absoluteBounds="0.75, 1.125, 2, 4.2708154296875">
       <DataClassMoniker Name="/SurveyModelDataContext/Survey" />
       <nestedChildShapes>
-        <elementListCompartment Id="b6ab0200-0473-49a3-8823-26e507eff58b" absoluteBounds="0.765, 1.585, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="b6ab0200-0473-49a3-8823-26e507eff58b" absoluteBounds="0.765, 1.585, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="051de9a2-6b9e-4675-bc63-528c794bbca9" absoluteBounds="3.5, 6.875, 2, 5.8092268880208335">
@@ -52,7 +52,7 @@
         <elementListCompartment Id="9fcb8688-b19f-41c1-9046-2bf15c0818c4" absoluteBounds="3.515, 7.335, 1.9700000000000002, 5.249226888020833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 2.89505126953125); (3.5 : 2.89505126953125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 2.89505126953125); (3.5 : 2.89505126953125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/SurveyModelDataContext/Survey/Survey_Section" />
       <nodes>
         <classShapeMoniker Id="2dd9bfb5-9f4e-4c94-ba10-1486011bfd8e" />

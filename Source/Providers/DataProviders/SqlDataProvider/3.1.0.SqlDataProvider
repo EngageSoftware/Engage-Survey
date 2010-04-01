@@ -4,3 +4,21 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response]
     ALTER COLUMN SectionText NVarChar(MAX) NOT NULL
 GO
 
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'StartDate' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD StartDate DateTime NULL
+    
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'EndDate' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD EndDate DateTime NULL
+    
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'PreStartMessage' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD PreStartMessage NVarChar(MAX) NULL
+    
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'PostEndMessage' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD PostEndMessage NVarChar(MAX) NULL
+GO
+
+

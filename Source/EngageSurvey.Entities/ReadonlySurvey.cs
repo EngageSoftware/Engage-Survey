@@ -19,63 +19,8 @@ namespace Engage.Survey.Entities
     using System.Web.UI.WebControls;
     using Util;
 
-    public class ReadonlySurvey: ISurvey
+    public class ReadonlySurvey : ISurvey
     {
-        /// <summary>
-        /// Loads a completed survey using the ResponseHeaderId for the User/Survey.
-        /// </summary>
-        /// <param name="responseHeaderId">The response header id.</param>
-        /// <returns></returns>
-        public static ISurvey LoadSurvey(int responseHeaderId)
-        {
-            return LoadSurveys().Where(s => s.ResponseHeaderId == responseHeaderId).SingleOrDefault();
-        }
-
-        /// <summary>
-        /// Loads all completed surveys.
-        /// </summary>
-        /// <returns></returns>
-        public static IQueryable<ReadonlySurvey> LoadSurveys()
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return (from s in context.Responses
-                    join r in context.ResponseHeaders on s.ResponseHeaderId equals r.ResponseHeaderId
-                    select
-                            new ReadonlySurvey
-                            {
-                                SurveyId = s.SurveyId,
-                                Text = s.SurveyText,
-                                ShowText = s.ShowSurveyText,
-                                TitleOption = s.TitleOption,
-                                QuestionFormatOption = s.QuestionFormatOption,
-                                SectionFormatOption = s.SectionFormatOption,
-                                ResponseHeaderId = r.ResponseHeaderId,
-                                CreationDate = r.CreationDate,
-                                UserId = r.UserId
-                            }).Distinct();
-        }
-
-        /// <summary>
-        /// Deletes the specified completed survey responseheader and responses.
-        /// </summary>
-        /// <param name="responseHeaderId">The responseheaderId</param>
-        public static void Delete(int? responseHeaderId)
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-
-            var responseHeader = (from rh in context.ResponseHeaders 
-                             where rh.ResponseHeaderId == responseHeaderId
-                             select rh).Single();
-
-            context.ResponseHeaders.DeleteOnSubmit(responseHeader);
-            context.Responses.DeleteAllOnSubmit(responseHeader.Responses);
-
-            context.SubmitChanges();
-        }
-
-        /// <summary>
-        /// ResponseHeaderId
-        /// </summary>
         public int ResponseHeaderId
         {
             get;
@@ -95,7 +40,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Returns the formatting for the element plus the the unformatted text together. Used primarily by
+        /// Gets the formatting for the element plus the the unformatted text together. Used primarily by
         /// the Web and Windows viewers only. 
         /// </summary>
         /// <value></value>
@@ -105,7 +50,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Gets or sets only the text value of Text attribute for the survey element.
+        /// Gets only the text value of Text attribute for the survey element.
         /// </summary>
         /// <value></value>
         public string UnformattedText
@@ -120,7 +65,6 @@ namespace Engage.Survey.Entities
         public string Formatting
         {
             get { return string.Empty; }
-
         }
 
         /// <summary>
@@ -134,10 +78,10 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance is readonly.
+        /// Gets a value indicating whether this instance is read-only.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if this instance is readonly; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance is read-only; otherwise, <c>false</c>.
         /// </value>
         public bool IsReadOnly
         {
@@ -155,51 +99,6 @@ namespace Engage.Survey.Entities
         {
             get;
             set;
-        }
-        
-        /// <summary>
-        /// Gets the sections.
-        /// </summary>
-        /// <returns>List of ISections for this survey</returns>
-        public List<ISection> GetSections()
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            var results = (from s in context.Responses
-                          where s.ResponseHeaderId == this.ResponseHeaderId && s.SurveyId == this.SurveyId
-                          select new ReadonlySection {
-                                  SurveyId = s.SurveyId,
-                                  SectionId = s.SectionId,
-                                  Text = s.SectionText,
-                                  ShowText = s.ShowSectionText,
-                                  RelativeOrder = s.SectionRelativeOrder,
-                                  ResponseHeaderId = s.ResponseHeaderId
-                              }).Distinct();
-            List<ISection> sections = new List<ISection>();
-            foreach (ReadonlySection s in results)
-            {
-                sections.Add(s);
-            }
-            
-            sections.Sort(new Section.RelativeOrderComparer());
-            return sections;
-        }
-
-        /// <summary>
-        /// Gets the section.
-        /// </summary>
-        /// <param name="sectionId">The section id.</param>
-        /// <returns>An ISection using the sectionId.</returns>
-        public ISection GetSection(string sectionId)
-        {
-            foreach (ISection section in this.GetSections())
-            {
-                if (section.SectionId.ToString() == sectionId)
-                {
-                    return section;
-                }
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -295,7 +194,105 @@ namespace Engage.Survey.Entities
         public bool SendNotification
         {
             get { return false; }
-            set {}
+            set { }
+        }
+
+        /// <summary>
+        /// Loads a completed survey using the <see cref="ResponseHeader"/> ID for the User/Survey.
+        /// </summary>
+        /// <param name="responseHeaderId">The <see cref="ResponseHeader"/> ID.</param>
+        /// <returns>The survey with the given ID</returns>
+        public static ISurvey LoadSurvey(int responseHeaderId)
+        {
+            return LoadSurveys().Where(s => s.ResponseHeaderId == responseHeaderId).SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Loads all completed surveys.
+        /// </summary>
+        /// <returns></returns>
+        public static IQueryable<ReadonlySurvey> LoadSurveys()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return (from s in context.Responses
+                    join r in context.ResponseHeaders on s.ResponseHeaderId equals r.ResponseHeaderId
+                    select
+                            new ReadonlySurvey
+                                {
+                                        SurveyId = s.SurveyId,
+                                        Text = s.SurveyText,
+                                        ShowText = s.ShowSurveyText,
+                                        TitleOption = s.TitleOption,
+                                        QuestionFormatOption = s.QuestionFormatOption,
+                                        SectionFormatOption = s.SectionFormatOption,
+                                        ResponseHeaderId = r.ResponseHeaderId,
+                                        CreationDate = r.CreationDate,
+                                        UserId = r.UserId
+                                }).Distinct();
+        }
+
+        /// <summary>
+        /// Deletes the specified completed survey <see cref="ResponseHeader"/> and responses.
+        /// </summary>
+        /// <param name="responseHeaderId">The <see cref="ResponseHeader"/> ID</param>
+        public static void Delete(int? responseHeaderId)
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+
+            var responseHeader = (from rh in context.ResponseHeaders 
+                                  where rh.ResponseHeaderId == responseHeaderId
+                                  select rh).Single();
+
+            context.ResponseHeaders.DeleteOnSubmit(responseHeader);
+            context.Responses.DeleteAllOnSubmit(responseHeader.Responses);
+
+            context.SubmitChanges();
+        }
+
+        /// <summary>
+        /// Gets the sections.
+        /// </summary>
+        /// <returns>List of ISections for this survey</returns>
+        public List<ISection> GetSections()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            var results = (from s in context.Responses
+                           where s.ResponseHeaderId == this.ResponseHeaderId && s.SurveyId == this.SurveyId
+                           select new ReadonlySection
+                                       {
+                                               SurveyId = s.SurveyId,
+                                               SectionId = s.SectionId,
+                                               Text = s.SectionText,
+                                               ShowText = s.ShowSectionText,
+                                               RelativeOrder = s.SectionRelativeOrder,
+                                               ResponseHeaderId = s.ResponseHeaderId
+                                       }).Distinct();
+            var sections = new List<ISection>();
+            foreach (ReadonlySection s in results)
+            {
+                sections.Add(s);
+            }
+
+            sections.Sort(new Section.RelativeOrderComparer());
+            return sections;
+        }
+
+        /// <summary>
+        /// Gets the section.
+        /// </summary>
+        /// <param name="sectionId">The section id.</param>
+        /// <returns>An <see cref="ISection"/> using the section ID.</returns>
+        public ISection GetSection(string sectionId)
+        {
+            foreach (ISection section in this.GetSections())
+            {
+                if (section.SectionId.ToString() == sectionId)
+                {
+                    return section;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -319,13 +316,13 @@ namespace Engage.Survey.Entities
             Debug.Assert(table != null, "table cannot be null");
 
             // add the survey title
-            if (ShowText)
+            if (this.ShowText)
             {
-                TableRow row = new TableRow();
+                var row = new TableRow();
                 table.Rows.Add(row);
-                TableCell cell = new TableCell();
+                var cell = new TableCell();
                 row.Cells.Add(cell);
-                cell.Text = Text;
+                cell.Text = this.Text;
                 cell.CssClass = Utility.CssClassSurveyTitle;
             }
 
@@ -354,7 +351,8 @@ namespace Engage.Survey.Entities
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="userId">The ID of the user saving this instance</param>
+        /// <returns>The ID of the created <c>ResponseHeader</c>, or <c>0</c> if nothing was saved</returns>
         public int Save(int userId)
         {
             return 0;
@@ -363,9 +361,6 @@ namespace Engage.Survey.Entities
 
     public class ReadonlySection : ISection
     {
-        /// <summary>
-        /// ResponseHeaderId
-        /// </summary>
         public int ResponseHeaderId
         {
             get;
@@ -373,7 +368,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Returns the formatting for the element plus the the unformatted text together. Used primarily by
+        /// Gets the formatting for the element plus the the unformatted text together. Used primarily by
         /// the Web and Windows viewers only. 
         /// </summary>
         /// <value></value>
@@ -383,7 +378,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Returns only the text value of Text attribute for the survey element.
+        /// Gets only the text value of Text attribute for the survey element.
         /// </summary>
         /// <value></value>
         public string UnformattedText
@@ -392,7 +387,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Returns the formatting that will be used to prefix the unformatted text for the survey element.
+        /// Gets the formatting that will be used to prefix the unformatted text for the survey element.
         /// </summary>
         /// <value></value>
         public string Formatting
@@ -417,72 +412,6 @@ namespace Engage.Survey.Entities
         {
             get;
             set;
-        }
-
-        /// <summary>
-        /// Gets the survey.
-        /// </summary>
-        /// <returns></returns>
-        public ISurvey GetSurvey()
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return context.Surveys.FirstOrDefault(s => s.SurveyId == this.SurveyId);
-        }
-
-        /// <summary>
-        /// Gets the questions.
-        /// </summary>
-        /// <returns>Array of IQuestions</returns>
-        public List<IQuestion> GetQuestions()
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            var results = (from s in context.Responses
-                           where s.ResponseHeaderId == this.ResponseHeaderId && s.SectionId == this.SectionId
-                           select
-                                   new ReadonlyQuestion {
-                                               QuestionId = s.QuestionId,
-                                               Text = s.QuestionText,
-                                               Comments = s.Comments,
-                                               RelativeOrder = s.QuestionRelativeOrder,
-                                               ControlType = s.ControlType,
-                                               SectionId = s.SectionId,
-                                               ResponseHeaderId = s.ResponseHeaderId
-                                       }).Distinct();
-
-            List<IQuestion> questions = new List<IQuestion>();
-            foreach (ReadonlyQuestion q in results)
-            {
-                if (q.GetAnswers().Count == 0)
-                {
-                    //Special case, these are open ended questions with no rows in the asnwer table. LargeTextInputField or SmallTextInputField
-                    q.Responses = new List<UserResponse>();
-                    //fetch the open ended response since we can't include in distinct list above.
-                    ReadonlyQuestion question = q;
-                    var result = (context.Responses.Where(r => r.ResponseHeaderId == this.ResponseHeaderId && r.QuestionId == question.QuestionId)).FirstOrDefault();
-                    UserResponse response = new UserResponse { RelationshipKey = q.RelationshipKey, AnswerValue = result.UserResponse };
-                    q.Responses.Add(response);    
-                }
-                questions.Add(q);
-            }
-            questions.Sort(new Question.RelativeOrderComparer());
-            return questions;
-        }
-
-        /// <summary>
-        /// Gets the question.
-        /// </summary>
-        /// <param name="key">The key name.</param>
-        /// <returns>An IQuestion using the passed key.</returns>
-        public IQuestion GetQuestion(Key key)
-        {
-            foreach (IQuestion question in this.GetQuestions())
-            {
-                if (question.QuestionId == key.QuestionId)
-                {
-                    return question;
-                }
-            }
-            return null;
         }
 
         /// <summary>
@@ -526,7 +455,77 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Renders the specified ph.
+        /// Gets the survey.
+        /// </summary>
+        /// <returns></returns>
+        public ISurvey GetSurvey()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return context.Surveys.FirstOrDefault(s => s.SurveyId == this.SurveyId);
+        }
+
+        /// <summary>
+        /// Gets the questions.
+        /// </summary>
+        /// <returns>Array of IQuestions</returns>
+        public List<IQuestion> GetQuestions()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            var results = (from s in context.Responses
+                           where s.ResponseHeaderId == this.ResponseHeaderId && s.SectionId == this.SectionId
+                           select new ReadonlyQuestion 
+                           {
+                                   QuestionId = s.QuestionId,
+                                   Text = s.QuestionText,
+                                   Comments = s.Comments,
+                                   RelativeOrder = s.QuestionRelativeOrder,
+                                   ControlType = s.ControlType,
+                                   SectionId = s.SectionId,
+                                   ResponseHeaderId = s.ResponseHeaderId
+                           }).Distinct();
+
+            var questions = new List<IQuestion>();
+            foreach (ReadonlyQuestion q in results)
+            {
+                if (q.GetAnswers().Count == 0)
+                {
+                    // Special case, these are open ended questions with no rows in the asnwer table. LargeTextInputField or SmallTextInputField
+                    q.Responses = new List<UserResponse>();
+
+                    // fetch the open ended response since we can't include in distinct list above.
+                    ReadonlyQuestion question = q;
+                    var result = context.Responses.Where(r => r.ResponseHeaderId == this.ResponseHeaderId && r.QuestionId == question.QuestionId).FirstOrDefault();
+                    var response = new UserResponse { RelationshipKey = q.RelationshipKey, AnswerValue = result.UserResponse };
+                    q.Responses.Add(response);    
+                }
+
+                questions.Add(q);
+            }
+
+            questions.Sort(new Question.RelativeOrderComparer());
+            return questions;
+        }
+
+        /// <summary>
+        /// Gets the question.
+        /// </summary>
+        /// <param name="key">The key name.</param>
+        /// <returns>An <see cref="IQuestion"/> using the passed key.</returns>
+        public IQuestion GetQuestion(Key key)
+        {
+            foreach (IQuestion question in this.GetQuestions())
+            {
+                if (question.QuestionId == key.QuestionId)
+                {
+                    return question;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Renders this survey section instance.
         /// </summary>
         /// <param name="placeHolder">The place holder.</param>
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
@@ -538,61 +537,61 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Renders the readonly section in a table.
+        /// Renders the read-only section in a table.
         /// </summary>
         /// <param name="table">The table.</param>
         public void Render(Table table)
         {
-            TableRow row = new TableRow();
+            var row = new TableRow();
             table.Rows.Add(row);
 
-            //cell for the section table
-            TableCell cell = new TableCell();
+            // cell for the section table
+            var cell = new TableCell();
             row.Cells.Add(cell);
 
-            //let's create a new table for this section
-            Table sectionTable = new Table { CssClass = Utility.CssClassSectionWrap };
+            // let's create a new table for this section
+            var sectionTable = new Table { CssClass = Utility.CssClassSectionWrap };
             cell.Controls.Add(sectionTable);
 
             row = new TableRow();
             sectionTable.Rows.Add(row);
 
-            //row for the section title
+            // row for the section title
             cell = new TableCell { ColumnSpan = 3, Text = this.FormattedText, CssClass = Utility.CssClassSectionTitle };
             row.Cells.Add(cell);
 
             foreach (IQuestion question in this.GetQuestions())
             {
-                Control formCtrl = Utility.CreateWebControl(question, true);
+                Control formControl = Utility.CreateWebControl(question, true);
 
                 row = new TableRow();
                 sectionTable.Rows.Add(row);
 
-                //required col
-                cell = new TableCell { Text = (question.IsRequired ? "*" : Utility.EntityNbsp), CssClass = Utility.CssClassRequired };
+                // required col
+                cell = new TableCell { Text = question.IsRequired ? "*" : Utility.EntityNbsp, CssClass = Utility.CssClassRequired };
                 row.Cells.Add(cell);
 
-                //question
+                // question
                 cell = new TableCell
                            {
                                    ColumnSpan = 2,
                                    Text = question.FormattedText,
-                                   CssClass = (question.IsRequired ? Utility.CssClassRequired : Utility.CssClassQuestion)
+                                   CssClass = question.IsRequired ? Utility.CssClassRequired : Utility.CssClassQuestion
                            };
                 row.Cells.Add(cell);
 
                 row = new TableRow();
                 sectionTable.Rows.Add(row);
 
-                //spacer
+                // spacer
                 cell = new TableCell { Text = Utility.EntityNbsp, Width = 10 };
                 row.Cells.Add(cell);
 
-                //answer
+                // answer
                 cell = new TableCell();
                 row.Cells.Add(cell);
 
-                cell.Controls.Add(formCtrl);
+                cell.Controls.Add(formControl);
             }
         }
 
@@ -615,9 +614,6 @@ namespace Engage.Survey.Entities
 
     public class ReadonlyQuestion : IQuestion
     {
-        /// <summary>
-        /// ResponseHeaderId
-        /// </summary>
         public int ResponseHeaderId
         {
             get;
@@ -625,8 +621,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// <summary>
-        /// Returns the formatting for the element plus the the unformatted text together. Used primarily by
+        /// Gets the formatting for the element plus the the unformatted text together. Used primarily by
         /// the Web and Windows viewers only.
         /// </summary>
         /// <value></value>
@@ -636,7 +631,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Returns only the text value of Text attribute for the survey element.
+        /// Gets only the text value of Text attribute for the survey element.
         /// </summary>
         /// <value></value>
         public string UnformattedText
@@ -645,7 +640,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Returns the formatting that will be used to prefix the unformatted text for the survey element.
+        /// Gets the formatting that will be used to prefix the unformatted text for the survey element.
         /// </summary>
         /// <value></value>
         public string Formatting
@@ -683,68 +678,10 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Gets the section.
-        /// </summary>
-        /// <value>The section.</value>
-        public ISection GetSection()
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return (from s in context.Responses
-                           where s.ResponseHeaderId == this.ResponseHeaderId && s.SectionId == this.SectionId
-                           select
-                                   new ReadonlySection
-                                       {
-                                               SurveyId = s.SurveyId,
-                                               SectionId = s.SectionId,
-                                               Text = s.SectionText,
-                                               ShowText = s.ShowSectionText,
-                                               RelativeOrder = s.SectionRelativeOrder,
-                                               ResponseHeaderId = s.ResponseHeaderId
-                                       }).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the answer choices.
-        /// </summary>
-        /// <value>The answer choices.</value>
-        public List<IAnswer> GetAnswers()
-        {
-
-            //Initialize the responses
-            this.Responses = new List<UserResponse>();
-
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            var results = (from s in context.Responses
-                           where s.ResponseHeaderId == this.ResponseHeaderId && s.QuestionId == this.QuestionId
-                           select
-                                   new ReadonlyAnswer {
-                                               AnswerId = s.AnswerId.GetValueOrDefault(0),
-                                               Text = s.AnswerText,
-                                               RelativeOrder = s.AnswerRelativeOrder.GetValueOrDefault(0),
-                                               IsCorrect = s.AnswerIsCorrect.GetValueOrDefault(false),
-                                               SectionId = s.SectionId,
-                                               QuestionId = s.QuestionId,
-                                               ResponseHeaderId = s.ResponseHeaderId,
-                                               AnswerValue =  s.UserResponse
-                                       }).Distinct();
-
-            List<IAnswer> answers = new List<IAnswer>();
-            foreach (ReadonlyAnswer a in results)
-            {
-                //while we are here, load the UserResponse.
-                UserResponse response = new UserResponse { RelationshipKey = a.RelationshipKey, AnswerValue = a.AnswerValue };
-                this.Responses.Add(response);    
-                answers.Add(a);
-            }
-            answers.Sort(new Answer.RelativeOrderComparer());
-            return answers;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is boolean.
+        /// Gets or sets a value indicating whether this instance is boolean.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if this instance is boolean; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance is boolean; otherwise, <c>false</c>.
         /// </value>
         public bool IsBoolean
         {
@@ -753,7 +690,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Gets the rendering key used by the SurveyControl to uniquely identify this element.
+        /// Gets the rendering key used by the <c>SurveyControl</c> to uniquely identify this element.
         /// </summary>
         /// <value>The rendering key.</value>
         public Key RelationshipKey
@@ -775,10 +712,10 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance is required.
+        /// Gets or sets a value indicating whether this instance is required.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if this instance is required; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance is required; otherwise, <c>false</c>.
         /// </value>
         public bool IsRequired
         {
@@ -837,9 +774,28 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Finds the response.
+        /// </summary>
+        /// <param name="answer">The answer.</param>
+        /// <returns></returns>
+        public UserResponse FindResponse(IAnswer answer)
+        {
+            foreach (UserResponse r in this.Responses)
+            {
+                if (r.RelationshipKey.Equals(answer.RelationshipKey))
+                {
+                    return r;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets the answer choice.
         /// </summary>
         /// <param name="key">The key.</param>
+        /// <returns></returns>
         public IAnswer GetAnswer(Key key)
         {
             foreach (IAnswer answer in this.GetAnswers())
@@ -849,24 +805,66 @@ namespace Engage.Survey.Entities
                     return answer;
                 }
             }
+
             return null;
         }
 
         /// <summary>
-        /// Finds the response.
+        /// Gets the answer choices.
         /// </summary>
-        /// <param name="answer">The answer.</param>
-        /// <returns></returns>
-        public UserResponse FindResponse(IAnswer answer)
+        /// <value>The answer choices.</value>
+        public List<IAnswer> GetAnswers()
         {
-            foreach (UserResponse r in Responses)
+            // Initialize the responses
+            this.Responses = new List<UserResponse>();
+
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            var results = (from s in context.Responses
+                           where s.ResponseHeaderId == this.ResponseHeaderId && s.QuestionId == this.QuestionId
+                           select new ReadonlyAnswer 
+                           {
+                                AnswerId = s.AnswerId.GetValueOrDefault(0),
+                                Text = s.AnswerText,
+                                RelativeOrder = s.AnswerRelativeOrder.GetValueOrDefault(0),
+                                IsCorrect = s.AnswerIsCorrect.GetValueOrDefault(false),
+                                SectionId = s.SectionId,
+                                QuestionId = s.QuestionId,
+                                ResponseHeaderId = s.ResponseHeaderId,
+                                AnswerValue = s.UserResponse
+                           }).Distinct();
+
+            var answers = new List<IAnswer>();
+            foreach (ReadonlyAnswer a in results)
             {
-                if (r.RelationshipKey.Equals(answer.RelationshipKey))
-                {
-                    return r;
-                }
+                // while we are here, load the UserResponse.
+                var response = new UserResponse { RelationshipKey = a.RelationshipKey, AnswerValue = a.AnswerValue };
+                this.Responses.Add(response);    
+                answers.Add(a);
             }
-            return null;
+
+            answers.Sort(new Answer.RelativeOrderComparer());
+            return answers;
+        }
+
+        /// <summary>
+        /// Gets the section.
+        /// </summary>
+        /// <value>The section.</value>
+        public ISection GetSection()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return (from s in context.Responses
+                    where s.ResponseHeaderId == this.ResponseHeaderId && s.SectionId == this.SectionId
+                    select
+                            new ReadonlySection
+                                {
+                                        SurveyId = s.SurveyId,
+                                        SectionId = s.SectionId,
+                                        Text = s.SectionText,
+                                        ShowText = s.ShowSectionText,
+                                        RelativeOrder = s.SectionRelativeOrder,
+                                        ResponseHeaderId = s.ResponseHeaderId
+                                }).FirstOrDefault();
         }
     }
 
@@ -883,7 +881,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Returns the formatting for the element plus the the unformatted text together. Used primarily by
+        /// Gets the formatting for the element plus the the unformatted text together. Used primarily by
         /// the Web and Windows viewers only.
         /// </summary>
         /// <value></value>
@@ -893,7 +891,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Returns only the text value of Text attribute for the survey element.
+        /// Gets only the text value of Text attribute for the survey element.
         /// </summary>
         /// <value></value>
         public string UnformattedText
@@ -902,7 +900,7 @@ namespace Engage.Survey.Entities
         }
         
         /// <summary>
-        /// Returns the formatting that will be used to prefix the unformatted text for the survey element.
+        /// Gets the formatting that will be used to prefix the unformatted text for the survey element.
         /// </summary>
         /// <value></value>
         public string Formatting
@@ -911,30 +909,6 @@ namespace Engage.Survey.Entities
             {
                 return string.Empty;
             }
-        }
-
-        /// <summary>
-        /// Gets the question for this answer.
-        /// </summary>
-        /// <returns></returns>
-// ReSharper disable UnusedMember.Local
-        private IQuestion GetQuestion()
-// ReSharper restore UnusedMember.Local
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            return (from s in context.Responses
-                           where s.ResponseHeaderId == this.ResponseHeaderId && s.QuestionId == this.QuestionId
-                           select
-                                   new ReadonlyQuestion
-                                   {
-                                       QuestionId = s.QuestionId,
-                                       Text = s.QuestionText,
-                                       Comments = s.Comments,
-                                       RelativeOrder = s.QuestionRelativeOrder,
-                                       ControlType = s.ControlType,
-                                       SectionId = s.SectionId,
-                                       ResponseHeaderId = s.ResponseHeaderId
-                                   }).FirstOrDefault();
         }
 
         /// <summary>
@@ -952,16 +926,6 @@ namespace Engage.Survey.Entities
         /// </summary>
         /// <value>The answer id.</value>
         public int AnswerId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the answer value. This is used internally to hold the response by the user.
-        /// </summary>
-        /// <value>The answer value.</value>
-        internal string AnswerValue
         {
             get;
             set;
@@ -991,7 +955,7 @@ namespace Engage.Survey.Entities
         /// Gets or sets a value indicating whether this instance is correct.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if this instance is correct; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance is correct; otherwise, <c>false</c>.
         /// </value>
         public bool IsCorrect
         {
@@ -1000,7 +964,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Gets the rendering key used by the SurveyControl to uniquely identify this element.
+        /// Gets the rendering key used by the <c>SurveyControl</c> to uniquely identify this element.
         /// </summary>
         /// <value>The rendering key.</value>
         public Key RelationshipKey
@@ -1023,5 +987,41 @@ namespace Engage.Survey.Entities
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets the answer value. This is used internally to hold the response by the user.
+        /// </summary>
+        /// <value>The answer value.</value>
+        internal string AnswerValue
+        {
+            get;
+            set;
+        }
+
+        // ReSharper disable UnusedMember.Local
+
+        /// <summary>
+        /// Gets the question for this answer.
+        /// </summary>
+        /// <returns></returns>
+        private IQuestion GetQuestion()
+        {
+            SurveyModelDataContext context = SurveyModelDataContext.Instance;
+            return (from s in context.Responses
+                    where s.ResponseHeaderId == this.ResponseHeaderId && s.QuestionId == this.QuestionId
+                    select
+                            new ReadonlyQuestion
+                                {
+                                        QuestionId = s.QuestionId,
+                                        Text = s.QuestionText,
+                                        Comments = s.Comments,
+                                        RelativeOrder = s.QuestionRelativeOrder,
+                                        ControlType = s.ControlType,
+                                        SectionId = s.SectionId,
+                                        ResponseHeaderId = s.ResponseHeaderId
+                                }).FirstOrDefault();
+        }
+
+// ReSharper restore UnusedMember.Local
     }
 }

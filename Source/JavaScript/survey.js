@@ -73,9 +73,11 @@ if (!Array.prototype.indexOf) {
 
         var validator = $('#Form').validate(),
             AnimationSpeed = 'normal',
-            pendingQuestionDeleteCallbacks = [];
-        
-        $('legend a', '.ee-collapsed, .ee-expanded').click(function (event) {
+            pendingQuestionDeleteCallbacks = [],
+            startDatePicker = $find($('.ee-start-date .RadPicker input').attr('id')),
+            endDatePicker = $find($('.ee-end-date .RadPicker input').attr('id'));
+                   
+        $('.ee-collapsed legend a, .ee-expanded legend a').click(function (event) {
             event.preventDefault();
             
             var $collapsableSectionWrap = $(this).closest('.ee-collapsed, .ee-expanded'),
@@ -198,6 +200,10 @@ if (!Array.prototype.indexOf) {
                 survey : {
                     SurveyId: $('.ee-create-new').data('surveyId') || -1,
                     Text: $('#EvalTitleInput').val(),
+					StartDate: startDatePicker.get_selectedDate(),
+					PreStartMessage: $('#EvalPreStartTextArea').val(),
+					EndDate: endDatePicker.get_selectedDate(),
+					PostEndMessage: $('#EvalPostEndTextArea').val(),
                     RevisingUser: CurrentContextInfo.UserId,
                     Sections: [{
                         Text: $('#EvalDescTextArea').val()
@@ -211,13 +217,21 @@ if (!Array.prototype.indexOf) {
             event.preventDefault();
             
             // save current value to "previous value" data field for usage in the cancel link click event.
-            $('#EvalDescTextArea').parent().data('previousValue', $('#EvalDescTextArea').text());
-            $('#EvalTitleInput').parent().data('previousValue', $('#EvalTitleInput').text());
+            storePreviousValue($('#EvalTitleInput'));
+            storePreviousValue($('#EvalDescTextArea'));
+            storePreviousValue($('.ee-start-date .RadPicker'), startDatePicker.get_selectedDate());
+            storePreviousValue($('#EvalPreStartTextArea'));
+            storePreviousValue($('.ee-end-date .RadPicker'), endDatePicker.get_selectedDate());
+            storePreviousValue($('#EvalPostEndTextArea'));
             
             makeLabelEditable($('#EvalTitleInput'), $('<input type="text"/>'));
             makeLabelEditable($('#EvalDescTextArea'), $('<textarea/>'));
+            makeDatePickerEditable(startDatePicker);
+            makeLabelEditable($('#EvalPreStartTextArea'), $('<textarea/>'));
+            makeDatePickerEditable(endDatePicker);
+            makeLabelEditable($('#EvalPostEndTextArea'), $('<textarea/>'));
             
-            $('.ee-description').show();
+            $('.ee-create-new .ee-optional').show();
             $('#EvalEdit').parent().fadeOut(AnimationSpeed, function () {
                 $('#EvalCancel').parent().fadeIn(AnimationSpeed);
                 $('#EvalUpdate').parent().fadeIn(AnimationSpeed);
@@ -230,8 +244,12 @@ if (!Array.prototype.indexOf) {
             event.preventDefault();
             
             // retrieve data values and reset the text boxes.
-            $('#EvalDescTextArea').val($('#EvalDescTextArea').parent().data('previousValue'));
-            $('#EvalTitleInput').val($('#EvalTitleInput').parent().data('previousValue'));
+            resetToPreviousValue($('#EvalTitleInput'));
+            resetToPreviousValue($('#EvalDescTextArea'));
+            resetDatePickerToPreviousValue(startDatePicker);
+            resetToPreviousValue($('#EvalPreStartTextArea'));
+            resetDatePickerToPreviousValue(endDatePicker);
+            resetToPreviousValue($('#EvalPostEndTextArea'));
             
             hideEditModeButtons(function () { makeSurveyReadOnly(); });
 
@@ -247,21 +265,56 @@ if (!Array.prototype.indexOf) {
                 });
             });
         });
+        
+        function storePreviousValue ($input, value) {
+            $input.parent().data('previousValue', value || $input.text());
+        }
+        
+        function resetToPreviousValue ($input) {
+            $input.val($input.parent().data('previousValue'));
+        }
+            
+        function resetDatePickerToPreviousValue (datePicker) {
+            datePicker.set_selectedDate($(datePicker.get_element()).closest('.RadPicker').parent().data('previousValue'));
+        }
             
         function makeSurveyReadOnly () {
-            if ($('#EvalDescTextArea').val()) {
-                makeElementReadonly($('#EvalDescTextArea'));
-                
-                $('.ee-description').slideDown(AnimationSpeed);
-            }
-            else {
-                $('.ee-description').slideUp(AnimationSpeed);
-            }
-            
+            var timeframeSectionHasAnyValue,
+                timeframeElementHasValue;
             makeElementReadonly($('#EvalTitleInput'));
-                
+            makeOptionalElementReadonly($('#EvalDescTextArea'), $('.ee-description'));
+            
+            timeframeElementHasValue = makeOptionalElementReadonly(startDatePicker, $('.ee-start-date'), startDatePicker.get_selectedDate(), makeDatePickerReadonly)
+            timeframeSectionHasAnyValue = timeframeElementHasValue;
+            timeframeElementHasValue = makeOptionalElementReadonly($('#EvalPreStartTextArea'), $('.ee-pre-start'))
+            timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || timeframeElementHasValue;
+            timeframeElementHasValue = makeOptionalElementReadonly(endDatePicker, $('.ee-end-date'), endDatePicker.get_selectedDate(), makeDatePickerReadonly)
+            timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || timeframeElementHasValue;
+            timeframeElementHasValue = makeOptionalElementReadonly($('#EvalPostEndTextArea'), $('.ee-post-end'))
+            timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || timeframeElementHasValue;
+            
+            $('.ee-timeframe.ee-expanded legend a').click();
+            if (!timeframeSectionHasAnyValue) {
+                $('.ee-timeframe').slideUp(AnimationSpeed);
+            }
+                            
             $('#EvalEdit').parent().fadeIn(AnimationSpeed);
             $('#EvalDelete').parent().fadeIn(AnimationSpeed);
+        }
+        
+        function makeOptionalElementReadonly ($element, $wrappingSection, value, makeReadonlyFunction) {
+            value = value || ($.isFunction($element.val) ? $element.val() : null);
+            if (value) {
+                makeReadonlyFunction = makeReadonlyFunction || makeElementReadonly
+                makeReadonlyFunction($element);
+                
+                $wrappingSection.slideDown(AnimationSpeed);
+                
+                return true;
+            }
+            else {
+                $wrappingSection.slideUp(AnimationSpeed);
+            }
         }
         
         function makeElementReadonly($element) {
@@ -276,6 +329,7 @@ if (!Array.prototype.indexOf) {
                     .data('maxlength', $this.attr('maxlength') || '')
                     .data('rows', $this.attr('rows') || '')
                     .data('cols', $this.attr('cols') || '')
+                    .addClass('ee-input-pre')
                     .text($this.val())
                     .hide()
                     .insertAfter($this)
@@ -303,6 +357,36 @@ if (!Array.prototype.indexOf) {
                     .slideDown(AnimationSpeed);
                 $this.remove();
             }).removeClass('ee-input-pre');
+        }
+        
+        function makeDatePickerReadonly(datePicker) {
+            var $inputWrap = $(datePicker.get_element()).closest('.ee-input'),
+                $datePickerElement = $inputWrap.find('.RadPicker'),
+                $dateLabel = $inputWrap.find('.ee-input-pre');
+
+            if ($dateLabel.length === 0) {
+                $dateLabel = $('<span />').addClass('ee-date-pre').insertAfter($datePickerElement);
+            }
+            
+            $datePickerElement.slideUp(AnimationSpeed, function () {
+                var dateInput = datePicker.get_dateInput();
+                $dateLabel
+                    .text(dateInput.get_dateFormatInfo().FormatDate(datePicker.get_selectedDate(), dateInput.get_displayDateFormat()))
+                    .hide()
+                    .fadeIn(AnimationSpeed);
+                    
+                $datePickerElement.hide();
+            });
+        }
+        
+        function makeDatePickerEditable(datePicker) {
+            var $inputWrap = $(datePicker.get_element()).closest('.ee-input'),
+                $datePickerElement = $inputWrap.find('.RadPicker'),
+                $dateLabel = $inputWrap.find('.ee-date-pre');
+
+            $dateLabel.slideUp(AnimationSpeed, function () {
+                $datePickerElement.fadeIn(AnimationSpeed);
+            });
         }
 
         function hideEditModeButtons (callback) {
@@ -718,12 +802,25 @@ if (!Array.prototype.indexOf) {
                 }
             };
         }
+        
+        function parseDateString(dateValue) {
+            if (dateValue) {
+                return new Date(parseInt(dateValue.replace("/Date(", "").replace(")/", ""), 10));
+            }
+            
+            return null;
+        }
 
         // Load survey to edit
         if (CurrentContextInfo.Survey) {
             $('.ee-create-new').data('surveyId', CurrentContextInfo.Survey.SurveyId);
             $('#EvalTitleInput').val(CurrentContextInfo.Survey.Text);
-            $('#EvalDescTextArea').val(CurrentContextInfo.Survey.Sections[0].Text)
+            $('#EvalDescTextArea').val(CurrentContextInfo.Survey.Sections[0].Text);
+            startDatePicker.set_selectedDate(parseDateString(CurrentContextInfo.Survey.StartDate));
+            $('#EvalPreStartTextArea').val(CurrentContextInfo.Survey.PreStartMessage);
+            endDatePicker.set_selectedDate(parseDateString(CurrentContextInfo.Survey.EndDate));
+            $('#EvalPostEndTextArea').val(CurrentContextInfo.Survey.PostEndMessage);
+            
             
             $('#EvalNew').parent().hide();
             makeSurveyReadOnly();

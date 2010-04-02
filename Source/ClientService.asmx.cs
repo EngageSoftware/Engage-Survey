@@ -110,6 +110,10 @@ namespace Engage.Dnn.Survey
 
             surveyToUpdate.Text = survey.Text;
             surveyToUpdate.ShowText = true;
+            surveyToUpdate.StartDate = survey.StartDate;
+            surveyToUpdate.PreStartMessage = survey.PreStartMessage;
+            surveyToUpdate.EndDate = survey.EndDate;
+            surveyToUpdate.PostEndMessage = survey.PostEndMessage;
             surveyToUpdate.Sections.First().Text = survey.Sections.First().Text;
             surveyToUpdate.Sections.First().ShowText = true;
 

@@ -10,26 +10,26 @@
             <span class="ee-label eval-title"><span class="ee-required-label">*</span><%=Localize("EvalTitleLabel.Text")%></span>
             <span class="ee-input"><input class="NormalTextBox ee-required" id="EvalTitleInput" minlength="1" maxlength="256" name="required" /></span>
         </div>
-        <div class="ee-description">
+        <div class="ee-description ee-optional">
             <span class="ee-label eval-description"><%=Localize("EvalDescriptionLabel.Text")%></span>
             <span class="ee-input"><textarea id="EvalDescTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
         </div>
-        <fieldset class="ee-timeframe ee-collapsed">
-            <legend><a href="#"><%=Localize("EvalTimeframeLabel.Text")%></a></legend>
+        <fieldset class="ee-timeframe ee-collapsed ee-optional">
+            <legend><a href="#" class="CommandButton"><%=Localize("EvalTimeframeLabel.Text")%></a></legend>
             <div class="ee-collapsable">
-                <div class="ee-start-date">
+                <div class="ee-start-date ee-optional">
                     <span class="ee-label eval-start-date"><%=Localize("EvalStartDateLabel.Text")%></span>
                     <span class="ee-input"><telerik:RadDateTimePicker runat="server" Calendar-ShowRowHeaders="false" Skin="Simple" /></span>
                 </div>
-                <div class="ee-pre-start">
+                <div class="ee-pre-start ee-optional">
                     <span class="ee-label eval-pre-start"><%=Localize("EvalPreStartLabel.Text")%></span>
                     <span class="ee-input"><textarea id="EvalPreStartTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
                 </div>
-                <div class="ee-end-date">
+                <div class="ee-end-date ee-optional">
                     <span class="ee-label eval-end-date"><%=Localize("EvalEndDateLabel.Text")%></span>
                     <span class="ee-input"><telerik:RadDateTimePicker runat="server" Calendar-ShowRowHeaders="false" Skin="Simple" /></span>
                 </div>
-                <div class="ee-post-end">
+                <div class="ee-post-end ee-optional">
                     <span class="ee-label eval-post-end"><%=Localize("EvalPostEndLabel.Text")%></span>
                     <span class="ee-input"><textarea id="EvalPostEndTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
                 </div>

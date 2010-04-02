@@ -86,6 +86,9 @@
 			.ee-expanded legend a {background-image:url(images/collapse.gif);}
 			.ee-collapsed .ee-collapsable {display:none;}
 			.ee-expanded .ee-collapsable {display:block;}
+			
+			#engage-evaluation fieldset.ee-optional {border:none 0; padding:0;}
+			#engage-evaluation fieldset.ee-optional legend {padding-left:100px;}
 /*------ Survey Listing ------*/
 .survey-listing{}
 	.survey-listing h3{color:#000;font-size:18px;margin-bottom:0;font-family:"Lucida Sans Unicode", Helvetica, Arial, Sans-Serif;}

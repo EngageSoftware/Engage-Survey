@@ -11,6 +11,7 @@
 
 namespace Engage.Survey
 {
+    using System;
     using System.Collections.Generic;
     using System.Web.UI.WebControls;
     using Util;
@@ -87,6 +88,46 @@ namespace Engage.Survey
         /// </summary>
         /// <value><c>true</c> if [send notification]; otherwise, <c>false</c>.</value>
         bool SendNotification
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the date and time on which the survey is first available.
+        /// </summary>
+        /// <value>The start date for the survey.</value>
+        DateTime? StartDate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the date and time on which the survey expires, i.e. is no longer available to be taken.
+        /// </summary>
+        /// <value>The end date for the survey.</value>
+        DateTime? EndDate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the message to display when the user tries to access a survey which has not yet started.
+        /// </summary>
+        /// <value>The message to display before this survey's <see cref="StartDate"/>.</value>
+        string PreStartMessage
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the message to display when the user tries to access a survey which has expired.
+        /// </summary>
+        /// <value>The message to display after this survey's <see cref="EndDate"/>.</value>
+        string PostEndMessage
         {
             get;
             set;

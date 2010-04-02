@@ -55,12 +55,12 @@ namespace Engage.Survey.UI
         public const string CssClassBackButton = "back-button";
 
         /// <summary>
-        /// CSS class used for styling thankyou verbaige.
+        /// CSS class used for styling thank you verbiage.
         /// </summary>
         public const string CssClassThankYou = "thankyou-label";
 
         /// <summary>
-        /// CSS class used for styling thankyou verbaige.
+        /// CSS class used for styling thank you verbiage.
         /// </summary>
         public const string CssClassThankYouWrap = "thankyou-wrap";
 
@@ -158,7 +158,6 @@ namespace Engage.Survey.UI
             set;
         }
 
-
         /// <summary>
         /// Gets or sets the user id.
         /// </summary>
@@ -181,6 +180,18 @@ namespace Engage.Survey.UI
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets the return URL if on the querystring.
+        /// </summary>
+        /// <value>The return URL.</value>
+        private static string ReturnUrl
+        {
+            get
+            {
+                return HttpContext.Current.Request.QueryString["returnurl"] ?? String.Empty;
+            }
         }
 
         /// <summary>
@@ -214,27 +225,38 @@ namespace Engage.Survey.UI
                 return;
             }
 
-            // Need to make validator construction mechanism as we create new implementations! hk
-            // draw the survey
-            this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider());
-
-            // no need to include the submit button in html
-            if (!this.IsReadOnly)
+            // TODO: switch to UTC dates
+            if (this.CurrentSurvey.StartDate > DateTime.Now)
             {
-                this.RenderSubmitButton();
+                ph.Controls.Add(new Literal { Text = HttpUtility.HtmlEncode(this.CurrentSurvey.PreStartMessage) });
+            }
+            else if (this.CurrentSurvey.EndDate <= DateTime.Now)
+            {
+                ph.Controls.Add(new Literal { Text = HttpUtility.HtmlEncode(this.CurrentSurvey.PostEndMessage) });
             }
             else
             {
-                ///we need to provide a back button.
-                var submitDiv = new HtmlGenericControl("DIV");
-                submitDiv.Attributes["class"] = CssClassButtonsArea;
-                this.Controls.Add(submitDiv);
+                // Need to make validator construction mechanism as we create new implementations! hk
+                // draw the survey
+                this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider());
 
-                this.RenderBackButton(submitDiv); 
+                // no need to include the submit button in html
+                if (!this.IsReadOnly)
+                {
+                    this.RenderSubmitButton();
+                }
+                else
+                {
+                    // we need to provide a back button.
+                    var submitDiv = new HtmlGenericControl("DIV");
+                    submitDiv.Attributes["class"] = CssClassButtonsArea;
+                    this.Controls.Add(submitDiv);
 
+                    this.RenderBackButton(submitDiv);
+                }
+
+                this.Controls.Add(new Literal { Text = EndSurveyMarker });
             }
-
-            this.Controls.Add(new Literal { Text = EndSurveyMarker });
         }
 
         /// <summary>
@@ -247,6 +269,16 @@ namespace Engage.Survey.UI
             {
                 this.SurveyCompleted(this, e);
             }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the back button control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private static void BackButton_Click(object sender, EventArgs e)
+        {
+            HttpContext.Current.Response.Redirect(ReturnUrl, true);
         }
 
         /// <summary>
@@ -376,7 +408,7 @@ namespace Engage.Survey.UI
                 thankYouDiv.Attributes["class"] = CssClassThankYouWrap;
                 this.Controls.Add(thankYouDiv);
 
-                thankYouDiv.Controls.Add(new Label { Text = this.CurrentSurvey.FinalMessage, CssClass = CssClassThankYou});
+                thankYouDiv.Controls.Add(new Label { Text = this.CurrentSurvey.FinalMessage, CssClass = CssClassThankYou });
 
                 var submitDiv = new HtmlGenericControl("DIV");
                 submitDiv.Attributes["class"] = CssClassButtonsArea;
@@ -399,7 +431,7 @@ namespace Engage.Survey.UI
             submitDiv.Attributes["class"] = CssClassButtonsArea;
             this.Controls.Add(submitDiv);
 
-            var button = new Button { ValidationGroup = "survey", Text = SubmitButtonText, ID = "SubmitButton", CssClass = CssClassSubmitButton };
+            var button = new Button { ValidationGroup = "survey", Text = this.SubmitButtonText, ID = "SubmitButton", CssClass = CssClassSubmitButton };
 
             // add the handler for the button
             button.Click += this.SubmitButton_Click;
@@ -413,7 +445,7 @@ namespace Engage.Survey.UI
         /// </summary>
         private void RenderBackButton(Control submitDiv)
         {
-            var button = new Button { Text = BackButtonText, ID = "BackButton", CssClass = CssClassBackButton };
+            var button = new Button { Text = this.BackButtonText, ID = "BackButton", CssClass = CssClassBackButton };
             button.Click += BackButton_Click;
             submitDiv.Controls.Add(button);
         }
@@ -445,28 +477,6 @@ namespace Engage.Survey.UI
                 this.CollectResponses(this);
 
                 this.WriteSurvey();
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the back button control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private static void BackButton_Click(object sender, EventArgs e)
-        {
-            HttpContext.Current.Response.Redirect(ReturnUrl, true);
-        }
-
-        /// <summary>
-        /// Gets the return URL if on the querystring.
-        /// </summary>
-        /// <value>The return URL.</value>
-        private static string ReturnUrl
-        {
-            get
-            {
-                return HttpContext.Current.Request.QueryString["returnurl"] ?? String.Empty;
             }
         }
     }

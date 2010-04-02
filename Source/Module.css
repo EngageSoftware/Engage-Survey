@@ -121,3 +121,11 @@ ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px 
 /*============ Global Navigation ============*/
 .em-success, .thankyou-wrap{border:2px #95c277 solid;background:#f5ffea;color:#020202;padding:8px 15px;-moz-border-radius:5px;-webkit-border-radius:5px;}
 .em-success .Normal, .thankyou-wrap .Normal {color:#020202;}
+
+/*============ User Message ============*/
+.em-user-message{width:600px;margin:0 auto;}
+	.em-message-title{color:#666;margin:5px 0;font-size:16px;}
+		.em-error{background:#ffd8d8;border:1px #800000 solid;padding:5px 15px;}
+		.em-warning{background:#fff5b7;border:1px #e1c300 solid;padding:5px 15px;}
+		.em-success{background:#e0ffce;border:1px #78bd4e solid;padding:5px 15px;}
+		.em-help{background:#e3f1ff;border:1px #2e94fc solid;padding:5px 15px;}

@@ -132,6 +132,14 @@
   <data name="DeleteButton.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="PostEndMessage.Format" xml:space="preserve">
+    <value>&lt;div class="post-end-message"&gt;&lt;p&gt;This survey is no longer available&lt;/p&gt;&lt;p&gt;{0}&lt;/p&gt;&lt;/div&gt;</value>
+    <comment>{0} is message defined on survey</comment>
+  </data>
+  <data name="PreStartMessage.Format" xml:space="preserve">
+    <value>&lt;div class="pre-start-message"&gt;&lt;p&gt;This survey is not yet available&lt;/p&gt;&lt;p&gt;{0}&lt;/p&gt;&lt;/div&gt;</value>
+    <comment>{0} is message defined on survey</comment>
+  </data>
   <data name="SubmitButton.Text" xml:space="preserve">
     <value>Submit</value>
   </data>

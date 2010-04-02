@@ -90,8 +90,10 @@ namespace Engage.Dnn.Survey
 
                 this.SurveyControl.SurveyCompleted += this.SurveyControl1_SurveyCompleted;
 
-                this.SurveyControl.BackButtonText = this.Localize("BackButton.Text", LocalResourceFile);
-                this.SurveyControl.SubmitButtonText = this.Localize("SubmitButton.Text", LocalResourceFile);
+                this.SurveyControl.BackButtonText = this.Localize("BackButton.Text");
+                this.SurveyControl.SubmitButtonText = this.Localize("SubmitButton.Text");
+                this.SurveyControl.PreStartMessageTemplate = this.Localize("PreStartMessage.Format");
+                this.SurveyControl.PostEndMessageTemplate = this.Localize("PostEndMessage.Format");
 
                 // allow module editors to delete user responses
                 this.DeleteResponseButton.Click += this.DeleteResponseButton_Click;

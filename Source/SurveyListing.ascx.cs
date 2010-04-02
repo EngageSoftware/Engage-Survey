@@ -13,6 +13,7 @@ namespace Engage.Dnn.Survey
 {
     using System;
     using System.Globalization;
+    using System.Linq;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -69,7 +70,13 @@ namespace Engage.Dnn.Survey
             if (mode == ListingMode.Definition)
             {
                 // bind to survey definitions
-                this.SurveyGrid.DataSource = Survey.LoadSurveys();
+                var surveys = Survey.LoadSurveys();
+                if (!this.IsAdmin)
+                {
+                    surveys = surveys.Where(survey => survey.StartDate <= DateTime.Now && survey.EndDate > DateTime.Now);
+                }
+
+                this.SurveyGrid.DataSource = surveys;
             }
             else
             {

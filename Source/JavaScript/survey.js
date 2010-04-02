@@ -313,7 +313,7 @@ if (!Array.prototype.indexOf) {
                 return true;
             }
             else {
-                $wrappingSection.slideUp(AnimationSpeed);
+                $wrappingSection.slideUp(AnimationSpeed, function () { $(this).hide(); });
             }
         }
         
@@ -362,7 +362,7 @@ if (!Array.prototype.indexOf) {
         function makeDatePickerReadonly(datePicker) {
             var $inputWrap = $(datePicker.get_element()).closest('.ee-input'),
                 $datePickerElement = $inputWrap.find('.RadPicker'),
-                $dateLabel = $inputWrap.find('.ee-input-pre');
+                $dateLabel = $inputWrap.find('.ee-date-pre');
 
             if ($dateLabel.length === 0) {
                 $dateLabel = $('<span />').addClass('ee-date-pre').insertAfter($datePickerElement);

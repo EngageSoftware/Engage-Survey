@@ -14,6 +14,7 @@ namespace Engage.Survey.UI
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.UI;
@@ -145,6 +146,26 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
+        /// Gets or sets the message template to use when the survey's <see cref="ISurvey.StartDate"/> is in the future.
+        /// </summary>
+        /// <value>The message template for surveys that haven't started.</value>
+        public string PreStartMessageTemplate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the message template to use when the survey's <see cref="ISurvey.EndDate"/> is in the past.
+        /// </summary>
+        /// <value>The message template for surveys that have ended.</value>
+        public string PostEndMessageTemplate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether [submit button text].
         /// </summary>
         /// <value><c>true</c> if [submit button text]; otherwise, <c>false</c>.</value>
@@ -226,13 +247,18 @@ namespace Engage.Survey.UI
             }
 
             // TODO: switch to UTC dates
-            if (this.CurrentSurvey.StartDate > DateTime.Now)
+            bool beforeStartDate = this.CurrentSurvey.StartDate > DateTime.Now;
+            bool afterEndDate = this.CurrentSurvey.EndDate <= DateTime.Now;
+            if (beforeStartDate || afterEndDate)
             {
-                ph.Controls.Add(new Literal { Text = HttpUtility.HtmlEncode(this.CurrentSurvey.PreStartMessage) });
-            }
-            else if (this.CurrentSurvey.EndDate <= DateTime.Now)
-            {
-                ph.Controls.Add(new Literal { Text = HttpUtility.HtmlEncode(this.CurrentSurvey.PostEndMessage) });
+                var message = beforeStartDate ? this.CurrentSurvey.PreStartMessage : this.CurrentSurvey.PostEndMessage;
+                var messageWrapperHtmlFormat = beforeStartDate ? this.PreStartMessageTemplate : this.PostEndMessageTemplate;
+                var messageHtml = string.Format(
+                    CultureInfo.CurrentCulture,
+                    messageWrapperHtmlFormat, 
+                    HttpUtility.HtmlEncode(message));
+
+                ph.Controls.Add(new Literal { Text = messageHtml });
             }
             else
             {

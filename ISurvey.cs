@@ -20,12 +20,11 @@ namespace Engage.Survey
     /// </summary>
     public interface ISurvey : ISurveyElement
     {
-
         /// <summary>
-        /// Gets a value indicating whether this instance is readonly.
+        /// Gets a value indicating whether this instance is read-only.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if this instance is readonly; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance is read-only; otherwise, <c>false</c>.
         /// </value>
         bool IsReadOnly { get; }
 
@@ -34,19 +33,6 @@ namespace Engage.Survey
         /// </summary>
         /// <value>The survey id.</value>
         int SurveyId { get; set; }
-
-        /// <summary>
-        /// Gets the sections.
-        /// </summary>
-        /// <returns>List of ISections for this survey</returns>
-        List<ISection> GetSections();
-
-        /// <summary>
-        /// Gets the section.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <returns>An ISectcion using the title.</returns>
-        ISection GetSection(string title);
 
         /// <summary>
         /// Gets the final message option.
@@ -107,6 +93,19 @@ namespace Engage.Survey
         }
 
         /// <summary>
+        /// Gets the sections.
+        /// </summary>
+        /// <returns>List of ISections for this survey</returns>
+        List<ISection> GetSections();
+
+        /// <summary>
+        /// Gets the section.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <returns>An <see cref="ISection"/> using the title.</returns>
+        ISection GetSection(string title);
+
+        /// <summary>
         /// Renders the survey from this survey.
         /// </summary>
         /// <param name="ph">The place holder to render the survey.</param>
@@ -130,7 +129,8 @@ namespace Engage.Survey
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="userId">The ID of the user saving this instance</param>
+        /// <returns>The ID of the created <c>ResponseHeader</c>, or <c>0</c> if nothing was saved</returns>
         int Save(int userId);
     }
 }

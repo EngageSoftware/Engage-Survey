@@ -74,6 +74,17 @@ if (!Array.prototype.indexOf) {
         var validator = $('#Form').validate(),
             AnimationSpeed = 'normal',
             pendingQuestionDeleteCallbacks = [];
+        
+        $('legend a', '.ee-collapsed, .ee-expanded').click(function (event) {
+            event.preventDefault();
+            
+            var $collapsableSectionWrap = $(this).closest('.ee-collapsed, .ee-expanded'),
+                $collapsableSection = $collapsableSectionWrap.find('.ee-collapsable');
+            
+            $collapsableSection.slideToggle(AnimationSpeed, function () {
+                $collapsableSectionWrap.toggleClass('ee-collapsed').toggleClass('ee-expanded');
+            });            
+        });
 
         $("#ee-previews").sortable({
             items: 'li.ee-preview', 

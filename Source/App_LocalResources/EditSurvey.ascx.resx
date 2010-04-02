@@ -198,6 +198,21 @@
   <data name="EvalDescriptionLabel.Text" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="EvalEndDateLabel.Text" xml:space="preserve">
+    <value>Ends</value>
+  </data>
+  <data name="EvalPostEndLabel.Text" xml:space="preserve">
+    <value>Message when viewing after end</value>
+  </data>
+  <data name="EvalPreStartLabel.Text" xml:space="preserve">
+    <value>Message when viewing before start</value>
+  </data>
+  <data name="EvalStartDateLabel.Text" xml:space="preserve">
+    <value>Starts</value>
+  </data>
+  <data name="EvalTimeframeLabel.Text" xml:space="preserve">
+    <value>Survey Timeframe</value>
+  </data>
   <data name="EvalTitleLabel.Text" xml:space="preserve">
     <value>Title</value>
   </data>

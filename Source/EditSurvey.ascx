@@ -15,22 +15,24 @@
             <span class="ee-input"><textarea id="EvalDescTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
         </div>
         <fieldset class="ee-timeframe ee-collapsed">
-            <legend><%=Localize("EvalTimeframeLabel.Text")%></legend>
-            <div class="ee-start-date">
-                <span class="ee-label eval-start-date"><%=Localize("EvalStartDateLabel.Text")%></span>
-                <span class="ee-input"><telerik:RadDateTimePicker runat="server" Calendar-ShowRowHeaders="false" Skin="Simple" /></span>
-            </div>
-            <div class="ee-pre-start">
-                <span class="ee-label eval-pre-start"><%=Localize("EvalPreStartLabel.Text")%></span>
-                <span class="ee-input"><textarea id="EvalPreStartTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
-            </div>
-            <div class="ee-end-date">
-                <span class="ee-label eval-end-date"><%=Localize("EvalEndDateLabel.Text")%></span>
-                <span class="ee-input"><telerik:RadDateTimePicker runat="server" Calendar-ShowRowHeaders="false" Skin="Simple" /></span>
-            </div>
-            <div class="ee-post-end">
-                <span class="ee-label eval-post-end"><%=Localize("EvalPostEndLabel.Text")%></span>
-                <span class="ee-input"><textarea id="EvalPostEndTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
+            <legend><a href="#"><%=Localize("EvalTimeframeLabel.Text")%></a></legend>
+            <div class="ee-collapsable">
+                <div class="ee-start-date">
+                    <span class="ee-label eval-start-date"><%=Localize("EvalStartDateLabel.Text")%></span>
+                    <span class="ee-input"><telerik:RadDateTimePicker runat="server" Calendar-ShowRowHeaders="false" Skin="Simple" /></span>
+                </div>
+                <div class="ee-pre-start">
+                    <span class="ee-label eval-pre-start"><%=Localize("EvalPreStartLabel.Text")%></span>
+                    <span class="ee-input"><textarea id="EvalPreStartTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
+                </div>
+                <div class="ee-end-date">
+                    <span class="ee-label eval-end-date"><%=Localize("EvalEndDateLabel.Text")%></span>
+                    <span class="ee-input"><telerik:RadDateTimePicker runat="server" Calendar-ShowRowHeaders="false" Skin="Simple" /></span>
+                </div>
+                <div class="ee-post-end">
+                    <span class="ee-label eval-post-end"><%=Localize("EvalPostEndLabel.Text")%></span>
+                    <span class="ee-input"><textarea id="EvalPostEndTextArea" class="NormalTextBox" cols="40" rows="4"></textarea></span>
+                </div>
             </div>
         </fieldset>
         <ul class="ee-action-btns">

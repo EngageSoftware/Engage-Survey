@@ -240,6 +240,8 @@
     </Content>
     <EmbeddedResource Include="JavaScript\survey.js" />
     <Content Include="Controls\GlobalNavigation.ascx" />
+    <Content Include="images\collapse.gif" />
+    <Content Include="images\expand.gif" />
     <Content Include="References\Telerik.Web.Design.dll" />
     <Content Include="References\Telerik.Web.UI.dll" />
     <Content Include="References\Telerik.Web.UI.xml" />

@@ -80,6 +80,12 @@
 			.pv-answer{float:left;padding:5px 0 0 0;}
 			#engage-evaluation hr{border:none;border-top:1px #ccc solid;}
 			li.ee-undo{background:#FFF6BF;color:#020202;border-top:1px solid #FFD324;border-bottom:1px solid #FFD324;padding:5px 10px;}
+			
+			.ee-collapsed legend a, .ee-expanded legend a {background-repeat:no-repeat; background-position:0 0; padding:0 0 0 12px;}
+			.ee-collapsed legend a {background-image:url(images/expand.gif);}
+			.ee-expanded legend a {background-image:url(images/collapse.gif);}
+			.ee-collapsed .ee-collapsable {display:none;}
+			.ee-expanded .ee-collapsable {display:block;}
 /*------ Survey Listing ------*/
 .survey-listing{}
 	.survey-listing h3{color:#000;font-size:18px;margin-bottom:0;font-family:"Lucida Sans Unicode", Helvetica, Arial, Sans-Serif;}

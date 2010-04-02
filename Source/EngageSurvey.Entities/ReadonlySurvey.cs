@@ -198,6 +198,46 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Gets or sets the date and time on which the survey is first available.
+        /// </summary>
+        /// <value>The start date for the survey.</value>
+        public DateTime? StartDate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the date and time on which the survey expires, i.e. is no longer available to be taken.
+        /// </summary>
+        /// <value>The end date for the survey.</value>
+        public DateTime? EndDate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the message to display when the user tries to access a survey which has not yet started.
+        /// </summary>
+        /// <value>The message to display before this survey's <see cref="ISurvey.StartDate"/>.</value>
+        public string PreStartMessage
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the message to display when the user tries to access a survey which has expired.
+        /// </summary>
+        /// <value>The message to display after this survey's <see cref="ISurvey.EndDate"/>.</value>
+        public string PostEndMessage
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Loads a completed survey using the <see cref="ResponseHeader"/> ID for the User/Survey.
         /// </summary>
         /// <param name="responseHeaderId">The <see cref="ResponseHeader"/> ID.</param>

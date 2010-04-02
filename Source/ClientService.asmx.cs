@@ -12,6 +12,7 @@
 // TODO: Authentication...
 namespace Engage.Dnn.Survey
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
@@ -108,11 +109,12 @@ namespace Engage.Dnn.Survey
                 dataContext.Surveys.InsertOnSubmit(surveyToUpdate);
             }
 
+            // TODO: store dates in UTC
             surveyToUpdate.Text = survey.Text;
             surveyToUpdate.ShowText = true;
-            surveyToUpdate.StartDate = survey.StartDate;
+            surveyToUpdate.StartDate = survey.StartDate; ////.HasValue ? survey.StartDate.Value.ToUniversalTime() : (DateTime?)null;
             surveyToUpdate.PreStartMessage = survey.PreStartMessage;
-            surveyToUpdate.EndDate = survey.EndDate;
+            surveyToUpdate.EndDate = survey.EndDate; ////.HasValue ? survey.EndDate.Value.ToUniversalTime() : (DateTime?)null;
             surveyToUpdate.PostEndMessage = survey.PostEndMessage;
             surveyToUpdate.Sections.First().Text = survey.Sections.First().Text;
             surveyToUpdate.Sections.First().ShowText = true;

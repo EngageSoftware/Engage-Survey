@@ -32,6 +32,19 @@ namespace Engage.Dnn.Survey
             Completed
         }
 
+        private ListingMode SelectedListingMode
+        {
+            get
+            {
+                if (Enum.IsDefined(typeof(ListingMode), this.FilterRadioButtonList.SelectedValue))
+                {
+                    return (ListingMode)Enum.Parse(typeof(ListingMode), this.FilterRadioButtonList.SelectedValue);
+                }
+
+                return ListingMode.Definition;
+            }
+        }
+
         /// <summary>
         /// Raises the <see cref="Control.Init"/> event.
         /// </summary>
@@ -106,19 +119,6 @@ namespace Engage.Dnn.Survey
             this.BindData(this.SelectedListingMode);
         }
 
-        private ListingMode SelectedListingMode
-        {
-            get
-            {
-                if (Enum.IsDefined(typeof(ListingMode), this.FilterRadioButtonList.SelectedValue))
-                {
-                    return (ListingMode)Enum.Parse(typeof(ListingMode), this.FilterRadioButtonList.SelectedValue);
-                }
-
-                return ListingMode.Definition;
-            }
-        }
-
         /// <summary>
         /// Handles the <see cref="LinkButton.Click"/> event of the <see cref="NewSurveyButton"/> control.
         /// </summary>
@@ -174,15 +174,14 @@ namespace Engage.Dnn.Survey
                 {
                     textHyperLink.Text = survey.Text;
                     textHyperLink.NavigateUrl = surveyIsComplete
-                        ? this.BuildPreviewUrl(completedSurvey.ResponseHeaderId, "responseHeaderId") 
-                        : this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
+                                                        ? this.BuildPreviewUrl(completedSurvey.ResponseHeaderId, "responseHeaderId") 
+                                                        : this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
                 }
 
                 var dateLabel = e.Item.FindControl("DateLabel") as Label;
                 var userLabel = e.Item.FindControl("UserLabel") as Label;
                 if (dateLabel != null)
                 {
-                    
                     dateLabel.Text = surveyIsComplete ? string.Format(CultureInfo.CurrentCulture, this.Localize("DateLabel.Format"), completedSurvey.CreationDate) : survey.GetSections()[0].Text;
                 }
 
@@ -207,46 +206,6 @@ namespace Engage.Dnn.Survey
                         }
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Gets the survey id from the QueryString if possible.
-        /// </summary>
-        /// <value>The survey id.</value>
-        private int? SurveyId
-        {
-            get
-            {
-                if (this.Request.QueryString["surveyId"] != null)
-                {
-                    int id;
-                    if (int.TryParse(this.Request.QueryString["surveyId"], NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
-                    {
-                        return id;
-                    }
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the response header id.
-        /// </summary>
-        /// <value>The response header id.</value>
-        private int? ResponseHeaderId
-        {
-            get
-            {
-                if (this.Request.QueryString["responseheaderId"] != null)
-                {
-                    int id;
-                    if (int.TryParse(this.Request.QueryString["responseheaderId"], NumberStyles.Integer, CultureInfo.InvariantCulture, out id))
-                    {
-                        return id;
-                    }
-                }
-                return null;
             }
         }
     }

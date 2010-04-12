@@ -84,10 +84,50 @@ namespace Engage.Survey
         string LogoURL { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [send notification].
+        /// Gets or sets a value indicating whether to send a notification email to an administrator after someone has completed the survey.
         /// </summary>
-        /// <value><c>true</c> if [send notification]; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if notification emails should be sent; otherwise, <c>false</c>.</value>
         bool SendNotification
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to send a thank you email to the survey taker (assuming that their email address is known) after they have completed the survey.
+        /// </summary>
+        /// <value><c>true</c> if thank you emails should be sent; otherwise, <c>false</c>.</value>
+        bool SendThankYou
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the email address from which notification emails should be sent.
+        /// </summary>
+        /// <value>The "from" email address for notification emails.</value>
+        string NotificationFromEmailAddress
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the email addresses to which notification emails should be sent.
+        /// </summary>
+        /// <value>The "to" email address(es) for notification emails.</value>
+        string NotificationToEmailAddresses
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the email address from which thank you emails should be sent.
+        /// </summary>
+        /// <value>The "from" email address for thank you emails.</value>
+        string ThankYouFromEmailAddress
         {
             get;
             set;

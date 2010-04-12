@@ -19,6 +19,34 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
 IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'PostEndMessage' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
     ADD PostEndMessage NVarChar(MAX) NULL
+
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'SendNotification' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD SendNotification bit NOT NULL
+
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'SendThankYou' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD SendThankYou bit NOT NULL
+
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'NotificationFromEmailAddress' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD NotificationFromEmailAddress NVarChar(320) NULL
+
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'NotificationToEmailAddresses' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD NotificationToEmailAddresses NVarChar(MAX) NULL
+
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'ThankYouFromEmailAddress' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD ThankYouFromEmailAddress NVarChar(320) NULL
+
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'PortalId' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD PortalId int NOT NULL
+
+IF NOT EXISTS (SELECT NULL FROM sys.columns WHERE name = 'ModuleId' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageSurvey_Survey]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Survey]
+    ADD ModuleId int NOT NULL
 GO
 
 

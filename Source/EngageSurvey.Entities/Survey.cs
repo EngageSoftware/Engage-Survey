@@ -15,7 +15,6 @@ namespace Engage.Survey.Entities
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Web;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
     using DotNetNuke.Services.Localization;
@@ -73,22 +72,6 @@ namespace Engage.Survey.Entities
             get
             {
                 return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [send notification].
-        /// </summary>
-        /// <value><c>true</c> if [send notification]; otherwise, <c>false</c>.</value>
-        public bool SendNotification
-        {
-            get
-            {
-                return true;
-            }
-
-            set
-            {
             }
         }
 

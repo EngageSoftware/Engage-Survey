@@ -41,6 +41,11 @@
     <include name="**/*.build"/>
     <include name="**/*.dnn"/>
     <include name="**/*.docx"/>
+    <include name="**/*.config"/>
+    <include name="**/*.dbml"/>
+    <include name="**/*.dbml.layout"/>
+    <include name="**/*.rpx"/>
+    <include name="**/*.txt"/>
     <include name="MSBuild/*.dll"/>
     <include name="MSBuild/*.targets"/>
   </patternset>

@@ -1569,6 +1569,20 @@ namespace Engage.Survey.Entities
 		
 		private string _PostEndMessage;
 		
+		private bool _SendNotification;
+		
+		private bool _SendThankYou;
+		
+		private string _NotificationFromEmailAddress;
+		
+		private string _NotificationToEmailAddresses;
+		
+		private string _ThankYouFromEmailAddress;
+		
+		private int _PortalId;
+		
+		private int _ModuleId;
+		
 		private EntitySet<Section> _Sections;
 		
 		private bool serializing;
@@ -1613,6 +1627,20 @@ namespace Engage.Survey.Entities
     partial void OnPreStartMessageChanged();
     partial void OnPostEndMessageChanging(string value);
     partial void OnPostEndMessageChanged();
+    partial void OnSendNotificationChanging(bool value);
+    partial void OnSendNotificationChanged();
+    partial void OnSendThankYouChanging(bool value);
+    partial void OnSendThankYouChanged();
+    partial void OnNotificationFromEmailAddressChanging(string value);
+    partial void OnNotificationFromEmailAddressChanged();
+    partial void OnNotificationToEmailAddressesChanging(string value);
+    partial void OnNotificationToEmailAddressesChanged();
+    partial void OnThankYouFromEmailAddressChanging(string value);
+    partial void OnThankYouFromEmailAddressChanged();
+    partial void OnPortalIdChanging(int value);
+    partial void OnPortalIdChanged();
+    partial void OnModuleIdChanging(int value);
+    partial void OnModuleIdChanged();
     #endregion
 		
 		public Survey()
@@ -1998,8 +2026,155 @@ namespace Engage.Survey.Entities
 			}
 		}
 		
+		[Column(Storage="_SendNotification", DbType="bit NOT NULL")]
+		[DataMember(Order=19)]
+		public bool SendNotification
+		{
+			get
+			{
+				return this._SendNotification;
+			}
+			set
+			{
+				if ((this._SendNotification != value))
+				{
+					this.OnSendNotificationChanging(value);
+					this.SendPropertyChanging();
+					this._SendNotification = value;
+					this.SendPropertyChanged("SendNotification");
+					this.OnSendNotificationChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SendThankYou", DbType="bit NOT NULL")]
+		[DataMember(Order=20)]
+		public bool SendThankYou
+		{
+			get
+			{
+				return this._SendThankYou;
+			}
+			set
+			{
+				if ((this._SendThankYou != value))
+				{
+					this.OnSendThankYouChanging(value);
+					this.SendPropertyChanging();
+					this._SendThankYou = value;
+					this.SendPropertyChanged("SendThankYou");
+					this.OnSendThankYouChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_NotificationFromEmailAddress", DbType="NVarChar(320) NULL")]
+		[DataMember(Order=21)]
+		public string NotificationFromEmailAddress
+		{
+			get
+			{
+				return this._NotificationFromEmailAddress;
+			}
+			set
+			{
+				if ((this._NotificationFromEmailAddress != value))
+				{
+					this.OnNotificationFromEmailAddressChanging(value);
+					this.SendPropertyChanging();
+					this._NotificationFromEmailAddress = value;
+					this.SendPropertyChanged("NotificationFromEmailAddress");
+					this.OnNotificationFromEmailAddressChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_NotificationToEmailAddresses", DbType="NVarChar(MAX) NULL")]
+		[DataMember(Order=22)]
+		public string NotificationToEmailAddresses
+		{
+			get
+			{
+				return this._NotificationToEmailAddresses;
+			}
+			set
+			{
+				if ((this._NotificationToEmailAddresses != value))
+				{
+					this.OnNotificationToEmailAddressesChanging(value);
+					this.SendPropertyChanging();
+					this._NotificationToEmailAddresses = value;
+					this.SendPropertyChanged("NotificationToEmailAddresses");
+					this.OnNotificationToEmailAddressesChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ThankYouFromEmailAddress", DbType="NVarChar(320) NULL")]
+		[DataMember(Order=23)]
+		public string ThankYouFromEmailAddress
+		{
+			get
+			{
+				return this._ThankYouFromEmailAddress;
+			}
+			set
+			{
+				if ((this._ThankYouFromEmailAddress != value))
+				{
+					this.OnThankYouFromEmailAddressChanging(value);
+					this.SendPropertyChanging();
+					this._ThankYouFromEmailAddress = value;
+					this.SendPropertyChanged("ThankYouFromEmailAddress");
+					this.OnThankYouFromEmailAddressChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PortalId", DbType="int NOT NULL")]
+		[DataMember(Order=24)]
+		public int PortalId
+		{
+			get
+			{
+				return this._PortalId;
+			}
+			set
+			{
+				if ((this._PortalId != value))
+				{
+					this.OnPortalIdChanging(value);
+					this.SendPropertyChanging();
+					this._PortalId = value;
+					this.SendPropertyChanged("PortalId");
+					this.OnPortalIdChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ModuleId", DbType="int NOT NULL")]
+		[DataMember(Order=25)]
+		public int ModuleId
+		{
+			get
+			{
+				return this._ModuleId;
+			}
+			set
+			{
+				if ((this._ModuleId != value))
+				{
+					this.OnModuleIdChanging(value);
+					this.SendPropertyChanging();
+					this._ModuleId = value;
+					this.SendPropertyChanged("ModuleId");
+					this.OnModuleIdChanged();
+				}
+			}
+		}
+		
 		[Association(Name="Survey_Section", Storage="_Sections", ThisKey="SurveyId", OtherKey="SurveyId")]
-		[DataMember(Order=19, EmitDefaultValue=false)]
+		[DataMember(Order=26, EmitDefaultValue=false)]
 		public EntitySet<Section> Sections
 		{
 			get

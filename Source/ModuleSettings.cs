@@ -49,11 +49,6 @@ namespace Engage.Dnn.Survey
         public static readonly Setting<bool> SendNotification = new Setting<bool>("SendNotification", SettingScope.TabModule, false);
 
         /// <summary>
-        /// Whether to send thank you emails by default
-        /// </summary>
-        public static readonly Setting<bool> SendThankYou = new Setting<bool>("SendThankYou", SettingScope.TabModule, false);
-
-        /// <summary>
         /// The email address from which to send notification emails, by default
         /// </summary>
         public static readonly Setting<string> NotificationFromEmailAddress = new Setting<string>("NotificationFromEmailAddress", SettingScope.TabModule, null);
@@ -62,6 +57,11 @@ namespace Engage.Dnn.Survey
         /// The email addresses to which to send notification emails, by default
         /// </summary>
         public static readonly Setting<string> NotificationToEmailAddresses = new Setting<string>("NotificationToEmailAddresses", SettingScope.TabModule, null);
+
+        /// <summary>
+        /// Whether to send thank you emails by default
+        /// </summary>
+        public static readonly Setting<bool> SendThankYou = new Setting<bool>("SendThankYou", SettingScope.TabModule, false);
 
         /// <summary>
         /// The email address from which to send thank you emails, by default

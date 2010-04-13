@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <%@ Import Namespace="DotNetNuke.UI.Utilities"%>
 <%@ Import Namespace="Engage.Survey.Util"%>
+<%@ Import Namespace="Engage.Dnn.Survey" %>
 <div id="engage-evaluation">
     <p class="ee-note"><%=Localize("RequiredNote.Text")%></p>
     <fieldset class="ee-create-new">
@@ -163,7 +164,7 @@ var CurrentContextInfo = {
     WebMethodUrl: '<%= ResolveUrl("ClientService.asmx") %>/',
     UserId: <%=UserId %>,    
     Survey: <%=SerializedSurvey %>,
-    PortalId: <%= PortalSettings.PortalId %>,
+    PortalId: <%= PortalId %>,
     ModuleId: <%= ModuleId %>,
     ErrorMessage: '<%= ClientAPI.GetSafeJSString(Localize("AjaxError.Text")) %>',
     SaveQuestionButtonText: '<%= ClientAPI.GetSafeJSString(Localize("SaveQuestion.Text")) %>',
@@ -173,7 +174,13 @@ var CurrentContextInfo = {
     ProgressText: '<%= ClientAPI.GetSafeJSString(Localize("ProgressText.Text")) %>',
     CheckBoxCheckedText: '<%= ClientAPI.GetSafeJSString(Localize("CheckBoxCheckedText.Text")) %>',
     CheckBoxUncheckedText: '<%= ClientAPI.GetSafeJSString(Localize("CheckBoxUncheckedText.Text")) %>',
-    DefaultEmail: '<%= ClientAPI.GetSafeJSString(PortalSettings.Email) %>',
+    DefaultEmailSettings: {
+        SendNotification: <%= this.DefaultSendNofitication ? "true" : "false" %>,
+        NotificationFromEmail: '<%= ClientAPI.GetSafeJSString(this.DefaultNotificationFromEmailAddress) %>',
+        NotificationToEmails: '<%= ClientAPI.GetSafeJSString(this.DefaultNotificationToEmailAddresses) %>',
+        SendThankYou: <%= this.DefaultSendThankYou ? "true" : "false" %>,
+        ThankYouFromEmail: '<%= ClientAPI.GetSafeJSString(this.DefaultThankYouFromEmailAddress) %>'
+    },
     EmailRegex: /<%=Engage.Utility.EmailRegEx %>/,
     EmailsRegex: /<%=Engage.Utility.EmailsRegEx %>/,
     ErrorMessages: {

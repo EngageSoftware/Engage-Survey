@@ -28,6 +28,74 @@ namespace Engage.Dnn.Survey
         private int? surveyId;
 
         /// <summary>
+        /// Gets a value indicating whether to send notification emails by default.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if notification emails are sent by default; otherwise, <c>false</c>.
+        /// </value>
+        protected bool DefaultSendNofitication
+        {
+            get
+            {
+                // ReSharper disable PossibleInvalidOperationException
+                return ModuleSettings.SendNotification.GetValueAsBooleanFor(this).Value;
+                // ReSharper restore PossibleInvalidOperationException
+            }
+        }
+
+        /// <summary>
+        /// Gets the email address from which to send notification emails, by default
+        /// </summary>
+        /// <value>The email address from which to send notification emails, by default</value>
+        protected string DefaultNotificationFromEmailAddress
+        {
+            get
+            {
+                return ModuleSettings.NotificationFromEmailAddress.GetValueAsStringFor(this) ?? this.PortalSettings.Email;
+            }
+        }
+
+        /// <summary>
+        /// Gets the email addresses to which to send notification emails, by default
+        /// </summary>
+        /// <value>The email addresses to which to send notification emails, by default.</value>
+        protected string DefaultNotificationToEmailAddresses
+        {
+            get
+            {
+                return ModuleSettings.NotificationToEmailAddresses.GetValueAsStringFor(this) ?? this.PortalSettings.Email;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether to send thank you emails by default.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if thank you emails are sent by default; otherwise, <c>false</c>.
+        /// </value>
+        protected bool DefaultSendThankYou
+        {
+            get
+            {
+                // ReSharper disable PossibleInvalidOperationException
+                return ModuleSettings.SendThankYou.GetValueAsBooleanFor(this).Value;
+                // ReSharper restore PossibleInvalidOperationException
+            }
+        }
+
+        /// <summary>
+        /// Gets the email address from which to send thank you emails, by default
+        /// </summary>
+        /// <value>The email address from which to send thank you emails, by default.</value>
+        protected string DefaultThankYouFromEmailAddress
+        {
+            get
+            {
+                return ModuleSettings.ThankYouFromEmailAddress.GetValueAsStringFor(this) ?? this.PortalSettings.Email;
+            }
+        }
+
+        /// <summary>
         /// Gets the survey id, or <c>null</c> if creating a new survey.
         /// </summary>
         /// <value>The survey id.</value>

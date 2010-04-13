@@ -893,9 +893,11 @@ if (!Array.prototype.indexOf) {
             }
         }
         else {
-			$('#EvalNotificationFromEmail').val(CurrentContextInfo.DefaultEmail);
-			$('#EvalNotificationToEmails').val(CurrentContextInfo.DefaultEmail);
-			$('#EvalThankYouFromEmail').val(CurrentContextInfo.DefaultEmail);
+            $('#EvalSendNotification').attr('checked', CurrentContextInfo.DefaultEmailSettings.SendNotification);
+			$('#EvalNotificationFromEmail').val(CurrentContextInfo.DefaultEmailSettings.NotificationFromEmail);
+			$('#EvalNotificationToEmails').val(CurrentContextInfo.DefaultEmailSettings.NotificationToEmails);
+            $('#EvalSendThankYou').attr('checked', CurrentContextInfo.DefaultEmailSettings.SendThankYou);
+			$('#EvalThankYouFromEmail').val(CurrentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
         }
     });
 })(jQuery);

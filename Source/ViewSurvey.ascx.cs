@@ -95,7 +95,7 @@ namespace Engage.Dnn.Survey
                     }
                 }
 
-                return null;
+                return ModuleSettings.SurveyId.GetValueAsInt32For(this);
             }
         }
 

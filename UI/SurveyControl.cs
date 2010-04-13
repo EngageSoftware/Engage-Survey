@@ -233,8 +233,8 @@ namespace Engage.Survey.UI
             this.Controls.Add(ph);
             if (this.CurrentSurvey == null)
             {
-                var noSurveyDiv = new HtmlGenericControl("DIV");
-                noSurveyDiv.Attributes["class"] = CssClassNoSurveyDefined;
+                var nosurveyDiv = new HtmlGenericControl("DIV");
+                nosurveyDiv.Attributes["class"] = CssClassNoSurveyDefined;
 
                 return;
             }
@@ -311,7 +311,7 @@ namespace Engage.Survey.UI
         /// Gets the value.
         /// </summary>
         /// <param name="c">The control to inspect</param>
-        /// <param name="key">The key.</param>
+        /// <param name="key">The key of the control.</param>
         /// <returns>The string value from the Text property.</returns>
         private static string GetValue(Control c, out string key)
         {
@@ -469,6 +469,7 @@ namespace Engage.Survey.UI
         /// <summary>
         /// Renders the back button.
         /// </summary>
+        /// <param name="submitDiv">The div to put the .</param>
         private void RenderBackButton(Control submitDiv)
         {
             var button = new Button { Text = this.BackButtonText, ID = "BackButton", CssClass = CssClassBackButton };
@@ -507,6 +508,9 @@ namespace Engage.Survey.UI
         }
     }
 
+    /// <summary>
+    /// Event args class that contains save information about a Survey.
+    /// </summary>
     public class SavedEventArgs : EventArgs
     {
         /// <summary>

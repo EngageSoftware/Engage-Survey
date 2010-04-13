@@ -150,6 +150,12 @@
   <data name="CancelQuestionHyperLink.ToolTip" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="CheckBoxCheckedText.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="CheckBoxUncheckedText.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="CopyQuestionHyperLink.Text" xml:space="preserve">
     <value>Copy</value>
   </data>
@@ -195,11 +201,29 @@
   <data name="EditQuestionHyperLink.ToolTip" xml:space="preserve">
     <value>Edit Question</value>
   </data>
+  <data name="Error: Email.Text" xml:space="preserve">
+    <value>Please enter a valid email address.</value>
+  </data>
+  <data name="Error: Emails.Text" xml:space="preserve">
+    <value>Please enter a list of valid email addresses (comma-separated).</value>
+  </data>
+  <data name="Error: Required.Text" xml:space="preserve">
+    <value>This field is required.</value>
+  </data>
   <data name="EvalDescriptionLabel.Text" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="EvalEmailLabel.Text" xml:space="preserve">
+    <value>Emails</value>
+  </data>
   <data name="EvalEndDateLabel.Text" xml:space="preserve">
     <value>Ends</value>
+  </data>
+  <data name="EvalNotificationFromEmailLabel.Text" xml:space="preserve">
+    <value>Notification "From" Email</value>
+  </data>
+  <data name="EvalNotificationToEmailsLabel.Text" xml:space="preserve">
+    <value>Notification "To" Emails</value>
   </data>
   <data name="EvalPostEndLabel.Text" xml:space="preserve">
     <value>Message when viewing after end</value>
@@ -207,8 +231,17 @@
   <data name="EvalPreStartLabel.Text" xml:space="preserve">
     <value>Message when viewing before start</value>
   </data>
+  <data name="EvalSendNotificationEmailLabel.Text" xml:space="preserve">
+    <value>Send Notification Email</value>
+  </data>
+  <data name="EvalSendThankYouEmailLabel.Text" xml:space="preserve">
+    <value>Send Thank You Email</value>
+  </data>
   <data name="EvalStartDateLabel.Text" xml:space="preserve">
     <value>Starts</value>
+  </data>
+  <data name="EvalThankYouFromEmailLabel.Text" xml:space="preserve">
+    <value>Thank You "From" Email</value>
   </data>
   <data name="EvalTimeframeLabel.Text" xml:space="preserve">
     <value>Survey Timeframe</value>

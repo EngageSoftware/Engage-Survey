@@ -35,6 +35,31 @@
                 </div>
             </div>
         </fieldset>
+        <fieldset class="ee-email ee-collapsed ee-optional">
+            <legend><a href="#" class="CommandButton"><%=Localize("EvalEmailLabel.Text")%></a></legend>
+            <div class="ee-collapsable">
+                <div class="ee-notification ee-optional">
+                    <span class="ee-label eval-notification"><%=Localize("EvalSendNotificationEmailLabel.Text")%></span>
+                    <span class="ee-input"><input id="EvalSendNotification" type="checkbox" /></span>
+                </div>
+                <div class="ee-notification-from ee-optional">
+                    <span class="ee-label eval-notification-from"><%=Localize("EvalNotificationFromEmailLabel.Text")%></span>
+                    <span class="ee-input"><input id="EvalNotificationFromEmail" type="text" class="NormalTextBox" maxlength="320" name="notificationEmail"/></span>
+                </div>
+                <div class="ee-notification-to ee-optional">
+                    <span class="ee-label eval-notification-to"><%=Localize("EvalNotificationToEmailsLabel.Text")%></span>
+                    <span class="ee-input"><input id="EvalNotificationToEmails" type="text" class="NormalTextBox" name="notificationEmails" /></span>
+                </div>
+                <div class="ee-thankyou ee-optional">
+                    <span class="ee-label eval-thankyou"><%=Localize("EvalSendThankYouEmailLabel.Text")%></span>
+                    <span class="ee-input"><input id="EvalSendThankYou" type="checkbox" /></span>
+                </div>
+                <div class="ee-thankyou-from ee-optional">
+                    <span class="ee-label eval-thankyou-from"><%=Localize("EvalThankYouFromEmailLabel.Text")%></span>
+                    <span class="ee-input"><input id="EvalThankYouFromEmail" type="text" class="NormalTextBox" maxlength="320" name="thankYouEmail"/></span>
+                </div>
+            </div>
+        </fieldset>
         <ul class="ee-action-btns">
             <li class="primary-btn"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("CreateNewEvalHyperLink.ToolTip")) %>" id="EvalNew" class="create-new"><%=Localize("CreateNewEvalHyperLink.Text")%></a></li>
             <li class="primary-btn" style="display:none;"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("EditEvalHyperLink.ToolTip")) %>" id="EvalEdit"><%=Localize("EditEvalHyperLink.Text")%></a></li>
@@ -143,6 +168,26 @@ var CurrentContextInfo = {
     SaveQuestionToolTip: '<%= ClientAPI.GetSafeJSString(Localize("SaveQuestion.ToolTip")) %>',
     UpdateQuestionButtonText: '<%= ClientAPI.GetSafeJSString(Localize("UpdateQuestion.Text")) %>',
     UpdateQuestionToolTip: '<%= ClientAPI.GetSafeJSString(Localize("UpdateQuestion.ToolTip")) %>',
-    ProgressText: '<%= ClientAPI.GetSafeJSString(Localize("ProgressText.Text")) %>'
+    ProgressText: '<%= ClientAPI.GetSafeJSString(Localize("ProgressText.Text")) %>',
+    CheckBoxCheckedText: '<%= ClientAPI.GetSafeJSString(Localize("CheckBoxCheckedText.Text")) %>',
+    CheckBoxUncheckedText: '<%= ClientAPI.GetSafeJSString(Localize("CheckBoxUncheckedText.Text")) %>',
+    DefaultEmail: '<%= ClientAPI.GetSafeJSString(PortalSettings.Email) %>',
+    EmailRegex: /<%=Engage.Utility.EmailRegEx %>/,
+    EmailsRegex: /<%=Engage.Utility.EmailsRegEx %>/,
+    ErrorMessages: {
+        required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
+        notificationEmail: {
+            required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
+            email: '<%= ClientAPI.GetSafeJSString(Localize("Error: Email.Text")) %>'
+        },
+        thankYouEmail: {
+            required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
+            email: '<%= ClientAPI.GetSafeJSString(Localize("Error: Email.Text")) %>'
+        },
+        notificationEmails: {
+            required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
+            emails: '<%= ClientAPI.GetSafeJSString(Localize("Error: Emails.Text")) %>'
+        }
+    }
 };
 </script>

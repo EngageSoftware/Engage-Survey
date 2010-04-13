@@ -161,7 +161,7 @@
 <script type="text/javascript">
 var CurrentContextInfo = {
     WebMethodUrl: '<%= ResolveUrl("ClientService.asmx") %>/',
-    UserId: <%=UserId %>,
+    UserId: <%=UserId %>,    
     Survey: <%=SerializedSurvey %>,
     ErrorMessage: '<%= ClientAPI.GetSafeJSString(Localize("AjaxError.Text")) %>',
     SaveQuestionButtonText: '<%= ClientAPI.GetSafeJSString(Localize("SaveQuestion.Text")) %>',

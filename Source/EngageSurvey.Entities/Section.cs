@@ -33,7 +33,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Gets or sets only the text value of Text attribute for the survey element.
+        /// Gets only the text value of Text attribute for the survey element.
         /// </summary>
         /// <value></value>
         public string UnformattedText
@@ -75,13 +75,14 @@ namespace Engage.Survey.Entities
                     return question;
                 }
             }
+
             return null;
         }
 
         /// <summary>
         /// Gets the survey.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The reference to the survey (owner).</returns>
         public ISurvey GetSurvey()
         {
             return this.Survey;
@@ -93,7 +94,7 @@ namespace Engage.Survey.Entities
         /// <returns>Array of IQuestions</returns>
         public List<IQuestion> GetQuestions()
         {
-            List<IQuestion> questions = new List<IQuestion>();
+            var questions = new List<IQuestion>();
 
             foreach (Question q in Questions)
             {
@@ -127,12 +128,12 @@ namespace Engage.Survey.Entities
         /// <param name="validationProvider">The validation provider.</param>
         public static void RenderSection(ISection section, PlaceHolder ph, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
         {
-            HtmlGenericControl sectionDiv = new HtmlGenericControl("DIV");
+            var sectionDiv = new HtmlGenericControl("DIV");
             sectionDiv.Attributes["class"] = Engage.Survey.Util.Utility.CssClassSectionWrap + " section" + section.SectionId;
             ph.Controls.Add(sectionDiv);
 
             // row for the section text
-            HtmlGenericControl title = new HtmlGenericControl("h3");
+            var title = new HtmlGenericControl("h3");
             title.Attributes["class"] = Engage.Survey.Util.Utility.CssClassSectionTitle;
             title.InnerText = section.FormattedText;
             sectionDiv.Controls.Add(title);
@@ -140,12 +141,12 @@ namespace Engage.Survey.Entities
             foreach (IQuestion question in section.GetQuestions())
             {
                 // create the question wrap div.
-                HtmlGenericControl questionWrapDiv = new HtmlGenericControl("DIV");
+                var questionWrapDiv = new HtmlGenericControl("DIV");
                 questionWrapDiv.Attributes["class"] = "qw" + question.QuestionId;
                 sectionDiv.Controls.Add(questionWrapDiv);
 
                 // create the question span with label in it for question text.
-                HtmlGenericControl questionSpan = new HtmlGenericControl("SPAN");
+                var questionSpan = new HtmlGenericControl("SPAN");
                 questionSpan.Attributes["class"] = Engage.Survey.Util.Utility.CssClassQuestion;
                 questionSpan.InnerHtml = question.FormattedText;
                 questionWrapDiv.Controls.Add(questionSpan);
@@ -154,14 +155,14 @@ namespace Engage.Survey.Entities
                 //// if the question is required, then add the optional * notation.
                 if (question.IsRequired && showRequiredNotation)
                 {
-                    HtmlGenericControl requiredSpan = new HtmlGenericControl("SPAN");
+                    var requiredSpan = new HtmlGenericControl("SPAN");
                     requiredSpan.Attributes["class"] = Engage.Survey.Util.Utility.CssClassRequired;
                     requiredSpan.InnerText = "*";
                     questionSpan.Controls.Add(requiredSpan);
                 }
 
                 //// Create a span to put answer(s) in.
-                Control control = Engage.Survey.Util.Utility.CreateWebControl(question, readOnly);
+                Control control = Engage.Survey.Util.Utility.CreateWebControl(question, readOnly, string.Empty);
                 questionWrapDiv.Controls.Add(control);
 
                 if (string.IsNullOrEmpty(control.ID) == false && validationProvider != null)
@@ -189,7 +190,6 @@ namespace Engage.Survey.Entities
                 }
             }
         }
-
 
         /// <summary>
         /// Posts the save processing.
@@ -238,23 +238,22 @@ namespace Engage.Survey.Entities
             }
 
             #region IComparer Members
-
+            
             /// <summary>
             /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
             /// </summary>
+            /// <param name="x">The first object to compare.</param>
+            /// <param name="y">The second object to compare.</param>
             /// <returns>
-            /// Value 
-            ///                     Condition 
-            ///                     Less than zero
-            ///                 <paramref name="x"/> is less than <paramref name="y"/>.
-            ///                     Zero
-            ///                 <paramref name="x"/> equals <paramref name="y"/>.
-            ///                     Greater than zero
-            ///                 <paramref name="x"/> is greater than <paramref name="y"/>.
+            /// Value
+            /// Condition
+            /// Less than zero
+            /// <paramref name="x"/> is less than <paramref name="y"/>.
+            /// Zero
+            /// <paramref name="x"/> equals <paramref name="y"/>.
+            /// Greater than zero
+            /// <paramref name="x"/> is greater than <paramref name="y"/>.
             /// </returns>
-            /// <param name="x">The first object to compare.
-            ///                 </param><param name="y">The second object to compare.
-            ///                 </param>            
             public int Compare(ISection x, ISection y)
             {
                 if (x == null || y == null)

@@ -17,22 +17,38 @@ namespace Engage.Survey.Entities
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+    using DotNetNuke.Services.Localization;
     using Util;
 
+    /// <summary>
+    /// Represents a read-only survey.
+    /// </summary>
     public class ReadonlySurvey : ISurvey
     {
+        /// <summary>
+        /// Gets or sets the response header id.
+        /// </summary>
+        /// <value>The response header id.</value>
         public int ResponseHeaderId
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the user id.
+        /// </summary>
+        /// <value>The user id.</value>
         public int? UserId
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the creation date.
+        /// </summary>
+        /// <value>The creation date.</value>
         public DateTime CreationDate
         {
             get;
@@ -294,7 +310,7 @@ namespace Engage.Survey.Entities
         /// <summary>
         /// Loads all completed surveys.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of surveys.</returns>
         public static IQueryable<ReadonlySurvey> LoadSurveys()
         {
             SurveyModelDataContext context = SurveyModelDataContext.Instance;
@@ -394,25 +410,27 @@ namespace Engage.Survey.Entities
         /// <summary>
         /// Renders the survey from this survey.
         /// </summary>
-        /// <param name="table">The table.</param>
-        public void Render(Table table)
+        /// <param name="table">The HTML table to put the survey into.</param>
+        /// <param name="resourceFile">The resource file.</param>
+        public void Render(Table table, string resourceFile)
         {
             Debug.Assert(table != null, "table cannot be null");
 
             // add the survey title
             if (this.ShowText)
             {
+                string titleStyle = Localization.GetString("TitleInlineStyle", resourceFile);
                 var row = new TableRow();
                 table.Rows.Add(row);
                 var cell = new TableCell();
                 row.Cells.Add(cell);
                 cell.Text = this.Text;
-                cell.CssClass = Utility.CssClassSurveyTitle;
+                cell.Attributes.Add("style", titleStyle);
             }
 
             foreach (ReadonlySection s in this.GetSections())
             {
-                s.Render(table);
+                s.Render(table, resourceFile);
             }            
         }
 
@@ -443,8 +461,15 @@ namespace Engage.Survey.Entities
         }
     }
 
+    /// <summary>
+    /// A read-only section for a read-only survey.
+    /// </summary>
     public class ReadonlySection : ISection
     {
+        /// <summary>
+        /// Gets or sets the response header id.
+        /// </summary>
+        /// <value>The response header id.</value>
         public int ResponseHeaderId
         {
             get;
@@ -624,8 +649,10 @@ namespace Engage.Survey.Entities
         /// Renders the read-only section in a table.
         /// </summary>
         /// <param name="table">The table.</param>
-        public void Render(Table table)
+        /// <param name="resourceFile">The resource file.</param>
+        public void Render(Table table, string resourceFile)
         {
+
             var row = new TableRow();
             table.Rows.Add(row);
 
@@ -634,34 +661,36 @@ namespace Engage.Survey.Entities
             row.Cells.Add(cell);
 
             // let's create a new table for this section
-            var sectionTable = new Table { CssClass = Utility.CssClassSectionWrap };
+            string sectionWrapStyle = Localization.GetString("SectionWrapInlineStyle", resourceFile);
+            var sectionTable = new Table();
+            sectionTable.Attributes.Add("style", sectionWrapStyle);
             cell.Controls.Add(sectionTable);
 
             row = new TableRow();
             sectionTable.Rows.Add(row);
 
             // row for the section title
-            cell = new TableCell { ColumnSpan = 3, Text = this.FormattedText, CssClass = Utility.CssClassSectionTitle };
+            string sectionTitleStyle = Localization.GetString("SectionTitleInlineStyle", resourceFile);
+            cell = new TableCell { ColumnSpan = 3, Text = this.FormattedText };
+            cell.Attributes.Add("style", sectionTitleStyle);
             row.Cells.Add(cell);
 
+            string answerInlineStyle = Localization.GetString("AnswerInlineStyle", resourceFile);
             foreach (IQuestion question in this.GetQuestions())
             {
-                Control formControl = Utility.CreateWebControl(question, true);
-
+                Control formControl = Utility.CreateWebControl(question, true, answerInlineStyle);
+                
                 row = new TableRow();
                 sectionTable.Rows.Add(row);
 
-                // required col
-                cell = new TableCell { Text = question.IsRequired ? "*" : Utility.EntityNbsp, CssClass = Utility.CssClassRequired };
-                row.Cells.Add(cell);
-
                 // question
+                string questionTitleStyle = Localization.GetString("QuestionTitleInlineStyle", resourceFile);
                 cell = new TableCell
                            {
                                    ColumnSpan = 2,
-                                   Text = question.FormattedText,
-                                   CssClass = question.IsRequired ? Utility.CssClassRequired : Utility.CssClassQuestion
+                                   Text = question.FormattedText
                            };
+                cell.Attributes.Add("style", questionTitleStyle);
                 row.Cells.Add(cell);
 
                 row = new TableRow();
@@ -696,8 +725,15 @@ namespace Engage.Survey.Entities
         }
     }
 
+    /// <summary>
+    /// A read-only question for a read-only section.
+    /// </summary>
     public class ReadonlyQuestion : IQuestion
     {
+        /// <summary>
+        /// Gets or sets the response header id.
+        /// </summary>
+        /// <value>The response header id.</value>
         public int ResponseHeaderId
         {
             get;
@@ -861,7 +897,7 @@ namespace Engage.Survey.Entities
         /// Finds the response.
         /// </summary>
         /// <param name="answer">The answer.</param>
-        /// <returns></returns>
+        /// <returns>A user response entered by the user.</returns>
         public UserResponse FindResponse(IAnswer answer)
         {
             foreach (UserResponse r in this.Responses)
@@ -879,7 +915,7 @@ namespace Engage.Survey.Entities
         /// Gets the answer choice.
         /// </summary>
         /// <param name="key">The key.</param>
-        /// <returns></returns>
+        /// <returns>An answer using the passed in key.</returns>
         public IAnswer GetAnswer(Key key)
         {
             foreach (IAnswer answer in this.GetAnswers())
@@ -933,7 +969,7 @@ namespace Engage.Survey.Entities
         /// <summary>
         /// Gets the section.
         /// </summary>
-        /// <value>The section.</value>
+        /// <value>The section for this survey.</value>
         public ISection GetSection()
         {
             SurveyModelDataContext context = SurveyModelDataContext.Instance;
@@ -952,6 +988,9 @@ namespace Engage.Survey.Entities
         }
     }
 
+    /// <summary>
+    /// Represents a read-only answer.
+    /// </summary>
     public class ReadonlyAnswer : IAnswer
     {
         /// <summary>
@@ -998,7 +1037,7 @@ namespace Engage.Survey.Entities
         /// <summary>
         /// Gets or sets the text.
         /// </summary>
-        /// <value>The Text.</value>
+        /// <value>The text of the answer.</value>
         public string Text
         {
             get;

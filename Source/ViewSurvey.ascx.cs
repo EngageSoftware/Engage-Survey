@@ -30,13 +30,8 @@ namespace Engage.Dnn.Survey
     /// This control uses the Engage Survey Control to render a survey. It wires up an event to get in on the saving of a Survey and retrieves the ResponseId
     /// back. It this is raised out to any listeners of this module via the DNN <see cref="IModuleCommunicator"/> interface.
     /// </summary>
-    public partial class ViewSurvey : ModuleBase, IModuleCommunicator
-    {
-        /// <summary>
-        /// Occurs when module communication is invoked.
-        /// </summary>
-        public event ModuleCommunicationEventHandler ModuleCommunication;
-
+    public partial class ViewSurvey : ModuleBase
+    {     
         /// <summary>
         /// Gets the notification from email address either defined as a module setting or a survey setting.
         /// </summary>
@@ -159,7 +154,7 @@ namespace Engage.Dnn.Survey
                 var table = new Table();
                 var sb = new StringBuilder();
                 var writer = new HtmlTextWriter(new StringWriter(sb));
-                survey.Render(table);
+                survey.Render(table, this.LocalResourceFile);
                 table.RenderControl(writer);
 
                 body = body.Replace(Utility.SurveyTableMarker, sb.ToString());

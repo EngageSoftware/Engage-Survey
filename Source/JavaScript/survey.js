@@ -227,6 +227,8 @@ if (!Array.prototype.indexOf) {
 					NotificationToEmailAddresses: $('#EvalNotificationToEmails').val(),
 					SendThankYou: $('#EvalSendThankYou').attr('checked'),
 					ThankYouFromEmailAddress: $('#EvalThankYouFromEmail').val(),
+                    PortalId: CurrentContextInfo.PortalId,
+                    ModuleId: CurrentContextInfo.ModuleId,
                     RevisingUser: CurrentContextInfo.UserId,
                     Sections: [{
                         Text: $('#EvalDescTextArea').val()
@@ -399,7 +401,7 @@ if (!Array.prototype.indexOf) {
                         className: $this.attr('class'),
                         name: $this.attr('name'),
                         minlength: $this.data('minlength'),
-                        maxlength: $this.data('maxlength'),
+                        maxlength: $this.data('maxlength') || '',
                         rows: $this.data('rows'),
                         cols: $this.data('cols'),
                         checked: $this.data('checked')

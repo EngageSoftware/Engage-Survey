@@ -49,7 +49,7 @@
                 </div>
                 <div class="ee-notification-to ee-optional">
                     <span class="ee-label eval-notification-to"><%=Localize("EvalNotificationToEmailsLabel.Text")%></span>
-                    <span class="ee-input"><input id="EvalNotificationToEmails" type="text" class="NormalTextBox" name="notificationEmails" /></span>
+                    <span class="ee-input"><input id="EvalNotificationToEmails" type="text" class="NormalTextBox" maxlength="" name="notificationEmails" /></span>
                 </div>
                 <div class="ee-thankyou ee-optional">
                     <span class="ee-label eval-thankyou"><%=Localize("EvalSendThankYouEmailLabel.Text")%></span>

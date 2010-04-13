@@ -114,7 +114,7 @@ namespace Engage.Dnn.Survey
                                                            ? Survey.LoadSurvey(this.SurveyId.GetValueOrDefault())
                                                            : ReadonlySurvey.LoadSurvey(this.ResponseHeaderId.Value);
 
-                this.SurveyControl.SurveyCompleted += this.SurveyControl1_SurveyCompleted;
+                this.SurveyControl.SurveyCompleted += this.SurveyControl_SurveyCompleted;
 
                 this.SurveyControl.BackButtonText = this.Localize("BackButton.Text");
                 this.SurveyControl.SubmitButtonText = this.Localize("SubmitButton.Text");
@@ -243,9 +243,8 @@ namespace Engage.Dnn.Survey
                 // Send Email
                 try
                 {
-                    string adminEmail = PortalController.GetCurrentPortalSettings().Email;
                     string s = Mail.SendMail(
-                            adminEmail,
+                            this.SurveyControl.CurrentSurvey.ThankYouFromEmailAddress,
                             this.UserInfo.Email,
                             string.Empty,
                             subject,
@@ -287,7 +286,7 @@ namespace Engage.Dnn.Survey
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SavedEventArgs"/> instance containing the event data.</param>
-        private void SurveyControl1_SurveyCompleted(object sender, SavedEventArgs e)
+        private void SurveyControl_SurveyCompleted(object sender, SavedEventArgs e)
         {
             this.SendNotifications(e.ResponseHeaderId);
         }

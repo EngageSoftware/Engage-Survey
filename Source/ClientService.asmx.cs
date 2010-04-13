@@ -105,7 +105,11 @@ namespace Engage.Dnn.Survey
             }
             else
             {
-                surveyToUpdate = new Survey(survey.RevisingUser);
+                surveyToUpdate = new Survey(survey.RevisingUser)
+                                     {
+                                             PortalId = survey.PortalId, 
+                                             ModuleId = survey.ModuleId
+                                     };
                 dataContext.Surveys.InsertOnSubmit(surveyToUpdate);
             }
 
@@ -116,6 +120,11 @@ namespace Engage.Dnn.Survey
             surveyToUpdate.PreStartMessage = survey.PreStartMessage;
             surveyToUpdate.EndDate = survey.EndDate; ////.HasValue ? survey.EndDate.Value.ToUniversalTime() : (DateTime?)null;
             surveyToUpdate.PostEndMessage = survey.PostEndMessage;
+            surveyToUpdate.SendNotification = survey.SendNotification;
+            surveyToUpdate.NotificationFromEmailAddress = survey.NotificationFromEmailAddress;
+            surveyToUpdate.NotificationToEmailAddresses = survey.NotificationToEmailAddresses;
+            surveyToUpdate.SendThankYou = survey.SendThankYou;
+            surveyToUpdate.ThankYouFromEmailAddress = survey.ThankYouFromEmailAddress;
             surveyToUpdate.Sections.First().Text = survey.Sections.First().Text;
             surveyToUpdate.Sections.First().ShowText = true;
 

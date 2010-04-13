@@ -165,4 +165,49 @@
   <data name="ChooseDisplayTypeLabel.Help" xml:space="preserve">
     <value>Choose this module's function.  Each module can display a list of the available surveys (the default), it can display a specific survey, or it can display the "Thank You" message for when the user is finished taking a survey.</value>
   </data>
+  <data name="Email Settings.Text" xml:space="preserve">
+    <value>Email Settings</value>
+  </data>
+  <data name="NotificationFromEmailLabel.Help" xml:space="preserve">
+    <value>The email address from which notification emails should be sent</value>
+  </data>
+  <data name="NotificationFromEmailLabel.Text" xml:space="preserve">
+    <value>Notification "From" Email</value>
+  </data>
+  <data name="NotificationToEmailsLabel.Help" xml:space="preserve">
+    <value>The email addresses to which notification emails should be sent (separate multiple email addresses with commas)</value>
+  </data>
+  <data name="NotificationToEmailsLabel.Text" xml:space="preserve">
+    <value>Notification "To" Emails</value>
+  </data>
+  <data name="SendNotificationLabel.Help" xml:space="preserve">
+    <value>If checked, a survey created through this module will default to sending an email to the email address(es) below whenever someone completes it.</value>
+  </data>
+  <data name="SendNotificationLabel.Text" xml:space="preserve">
+    <value>Send Notification Email</value>
+  </data>
+  <data name="SendThankYouLabel.Help" xml:space="preserve">
+    <value>If checked, a survey created through this module will default to sending an email to everyone who completes it (when they are logged in and have a valid email address in their profile).</value>
+  </data>
+  <data name="SendThankYouLabel.Text" xml:space="preserve">
+    <value>Send Thank You Email</value>
+  </data>
+  <data name="ThankYouFromEmailLabel.Help" xml:space="preserve">
+    <value>The email address from which thank you emails should be sent</value>
+  </data>
+  <data name="ThankYouFromEmailLabel.Text" xml:space="preserve">
+    <value>Thank You "From" Email</value>
+  </data>
+  <data name="View Survey Settings.Text" xml:space="preserve">
+    <value>View Survey Settings</value>
+  </data>
+  <data name="NotificationFromEmailError.Text" xml:space="preserve">
+    <value>Notification "From" Email is not a valid email address</value>
+  </data>
+  <data name="NotificationToEmailsError.Text" xml:space="preserve">
+    <value>Notification "To" Emails is not a valid list of email addresses (comma-separated)</value>
+  </data>
+  <data name="ThankYouFromEmailError.Text" xml:space="preserve">
+    <value>Thank You "From" Email is not a valid email address</value>
+  </data>
 </root>

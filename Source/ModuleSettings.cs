@@ -16,7 +16,7 @@ namespace Engage.Dnn.Survey
     /// <summary>
     /// Contains the settings for the Survey module
     /// </summary>
-    public class ModuleSettings
+    public static class ModuleSettings
     {
         /// <summary>
         /// The display that is used for unauthenticated users.
@@ -24,9 +24,9 @@ namespace Engage.Dnn.Survey
         public static readonly Setting<ControlKey> DisplayType = new Setting<ControlKey>("DisplayType", SettingScope.TabModule, ControlKey.SurveyListing);
 
         /// <summary>
-        /// The SurveyTypeId for the survey to render.
+        /// The ID of the survey to render.
         /// </summary>
-        public static readonly Setting<int> SurveyTypeId = new Setting<int>("SurveyTypeId", SettingScope.TabModule, 0);
+        public static readonly Setting<int> SurveyId = new Setting<int>("SurveyId", SettingScope.TabModule, 0);
 
         /// <summary>
         /// Allow/disallow the same user to take a survey more than once.
@@ -42,5 +42,30 @@ namespace Engage.Dnn.Survey
         /// Whether this module has been configured
         /// </summary>
         public static readonly Setting<bool> IsConfigured = new Setting<bool>("ModuleConfigured", SettingScope.Portal, false);
+
+        /// <summary>
+        /// Whether to send notification emails by default
+        /// </summary>
+        public static readonly Setting<bool> SendNotification = new Setting<bool>("SendNotification", SettingScope.TabModule, false);
+
+        /// <summary>
+        /// Whether to send thank you emails by default
+        /// </summary>
+        public static readonly Setting<bool> SendThankYou = new Setting<bool>("SendThankYou", SettingScope.TabModule, false);
+
+        /// <summary>
+        /// The email address from which to send notification emails, by default
+        /// </summary>
+        public static readonly Setting<string> NotificationFromEmailAddress = new Setting<string>("NotificationFromEmailAddress", SettingScope.TabModule, null);
+
+        /// <summary>
+        /// The email addresses to which to send notification emails, by default
+        /// </summary>
+        public static readonly Setting<string> NotificationToEmailAddresses = new Setting<string>("NotificationToEmailAddresses", SettingScope.TabModule, null);
+
+        /// <summary>
+        /// The email address from which to send thank you emails, by default
+        /// </summary>
+        public static readonly Setting<string> ThankYouFromEmailAddress = new Setting<string>("ThankYouFromEmailAddress", SettingScope.TabModule, null);
     }
 }

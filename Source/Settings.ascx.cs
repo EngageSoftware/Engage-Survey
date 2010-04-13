@@ -12,6 +12,8 @@
 namespace Engage.Dnn.Survey
 {
     using System;
+    using System.Linq;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -39,32 +41,38 @@ namespace Engage.Dnn.Survey
             base.LoadSettings();
             try
             {
-                if (Page.IsPostBack == false)
+                if (!this.IsPostBack)
                 {
-                    var eventListing = new ListItem(Localization.GetString(ControlKey.SurveyListing.ToString(), LocalResourceFile), ControlKey.SurveyListing.ToString());
-                    var viewSurvey = new ListItem(Localization.GetString(ControlKey.ViewSurvey.ToString(), LocalResourceFile), ControlKey.ViewSurvey.ToString());
-                    var thanks = new ListItem(Localization.GetString(ControlKey.ThankYou.ToString(), LocalResourceFile), ControlKey.ThankYou.ToString());
+                    this.ListingDisplayDropDownList.Items.Add(new ListItem(Localization.GetString(ControlKey.SurveyListing.ToString(), this.LocalResourceFile), ControlKey.SurveyListing.ToString()));
+                    this.ListingDisplayDropDownList.Items.Add(new ListItem(Localization.GetString(ControlKey.ViewSurvey.ToString(), this.LocalResourceFile), ControlKey.ViewSurvey.ToString()));
+                    this.ListingDisplayDropDownList.Items.Add(new ListItem(Localization.GetString(ControlKey.ThankYou.ToString(), this.LocalResourceFile), ControlKey.ThankYou.ToString()));
+                    this.SetSelectedListItem(this.ListingDisplayDropDownList, Survey.ModuleSettings.DisplayType);
 
-                    this.ListingDisplayDropDownList.Items.Add(eventListing);
-                    this.ListingDisplayDropDownList.Items.Add(viewSurvey);
-                    this.ListingDisplayDropDownList.Items.Add(thanks);
+                    this.SurveyDropDownList.DataSource = Engage.Survey.Entities.Survey.LoadSurveys();
+                    this.SurveyDropDownList.DataTextField = "Text";
+                    this.SurveyDropDownList.DataValueField = "SurveyId";
+                    this.SurveyDropDownList.DataBind();
+                    this.SetSelectedListItem(this.SurveyDropDownList, Survey.ModuleSettings.SurveyId);
 
-                    ListItem listingDisplayListItem = this.ListingDisplayDropDownList.Items.FindByValue(Survey.ModuleSettings.DisplayType.GetValueAsStringFor(this));
-                    if (listingDisplayListItem != null)
-                    {
-                        listingDisplayListItem.Selected = true;
-                    }
-
+// ReSharper disable PossibleInvalidOperationException
                     this.AllowMultipleCheckBox.Checked = Survey.ModuleSettings.AllowMultpleEntries.GetValueAsBooleanFor(this).Value;
                     this.ShowRequiredNotationCheckBox.Checked = Survey.ModuleSettings.ShowRequiredNotation.GetValueAsBooleanFor(this).Value;
+                    this.SendNotificationCheckBox.Checked = Survey.ModuleSettings.SendNotification.GetValueAsBooleanFor(this).Value;
+                    this.SendThankYouCheckBox.Checked = Survey.ModuleSettings.SendThankYou.GetValueAsBooleanFor(this).Value;
 
-                    ListItem surveyTypeListItem = this.SurveyDropDownList.Items.FindByValue(Survey.ModuleSettings.SurveyTypeId.GetValueAsStringFor(this));
-                    if (surveyTypeListItem != null)
-                    {
-                        surveyTypeListItem.Selected = true;
-                    }
+// ReSharper restore PossibleInvalidOperationException
+                    this.NotificationFromEmailTextBox.Text = Survey.ModuleSettings.NotificationFromEmailAddress.GetValueAsStringFor(this)
+                                                             ?? this.PortalSettings.Email;
+                    this.NotificationToEmailsTextBox.Text = Survey.ModuleSettings.NotificationToEmailAddresses.GetValueAsStringFor(this)
+                                                             ?? this.PortalSettings.Email;
+                    this.ThankYouFromEmailTextBox.Text = Survey.ModuleSettings.ThankYouFromEmailAddress.GetValueAsStringFor(this)
+                                                             ?? this.PortalSettings.Email;
 
-                    this.ViewSurveyPanel.Visible = this.ListingDisplayDropDownList.SelectedValue == "ViewSurvey";
+                    this.SetViewSurveySettingsVisibility();
+
+                    this.NotificationFromEmailPatternValidator.ValidationExpression = Engage.Utility.EmailRegEx;
+                    this.NotificationToEmailsPatternValidator.ValidationExpression = Engage.Utility.EmailsRegEx;
+                    this.ThankYouFromEmailPatternValidator.ValidationExpression = Engage.Utility.EmailRegEx;
                 }
             }
             catch (Exception exc)
@@ -74,20 +82,26 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// UpdateSettings saves the modified settings to the Database
+        /// Saves the modified settings to the Database
         /// </summary>
         public override void UpdateSettings()
         {
-            if (Page.IsValid)
+            if (this.Page.IsValid)
             {
                 try
                 {
                     Survey.ModuleSettings.IsConfigured.Set(this, true);
 
                     Survey.ModuleSettings.DisplayType.Set(this, this.ListingDisplayDropDownList.SelectedValue);
-                    Survey.ModuleSettings.SurveyTypeId.Set(this, this.SurveyDropDownList.SelectedValue);
+                    Survey.ModuleSettings.SurveyId.Set(this, this.SurveyDropDownList.SelectedValue);
                     Survey.ModuleSettings.AllowMultpleEntries.Set(this, this.AllowMultipleCheckBox.Checked);
                     Survey.ModuleSettings.ShowRequiredNotation.Set(this, this.ShowRequiredNotationCheckBox.Checked);
+
+                    Survey.ModuleSettings.SendNotification.Set(this, this.SendNotificationCheckBox.Checked);
+                    Survey.ModuleSettings.NotificationFromEmailAddress.Set(this, this.NotificationFromEmailTextBox.Text);
+                    Survey.ModuleSettings.NotificationToEmailAddresses.Set(this, this.NotificationToEmailsTextBox.Text);
+                    Survey.ModuleSettings.SendThankYou.Set(this, this.SendThankYouCheckBox.Checked);
+                    Survey.ModuleSettings.ThankYouFromEmailAddress.Set(this, this.ThankYouFromEmailTextBox.Text);
                 }
                 catch (Exception exc)
                 {
@@ -97,13 +111,45 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
+        /// Raises the <see cref="Control.Init"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="EventArgs"/> object that contains the event data.</param>
+        protected override void OnInit(EventArgs e)
+        {
+            this.ListingDisplayDropDownList.SelectedIndexChanged += this.ListingDisplayDropDownList_SelectedIndexChanged;
+            base.OnInit(e);
+        }
+
+        /// <summary>
+        /// Selects the <see cref="ListItem"/> with the value of the given <paramref name="setting"/>.
+        /// </summary>
+        /// <param name="listControl">The list control.</param>
+        /// <param name="setting">The setting.</param>
+        private void SetSelectedListItem<T>(ListControl listControl, Setting<T> setting)
+        {
+            var selectedListItem = listControl.Items.FindByValue(setting.GetValueAsStringFor(this));
+            if (selectedListItem != null)
+            {
+                selectedListItem.Selected = true;
+            }
+        }
+
+        /// <summary>
+        /// Sets the visibility of <see cref="ViewSurveyPlaceholder"/>.
+        /// </summary>
+        private void SetViewSurveySettingsVisibility()
+        {
+            this.ViewSurveyPlaceholder.Visible = this.ListingDisplayDropDownList.SelectedValue == ControlKey.ViewSurvey.ToString();
+        }
+
+        /// <summary>
         /// Handles the <see cref="DropDownList.SelectedIndexChanged"/> event of the <see cref="ListingDisplayDropDownList"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void ListingDisplayDropDownList_SelectedIndexChanged(object sender, EventArgs e)
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void ListingDisplayDropDownList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.ViewSurveyPanel.Visible = this.ListingDisplayDropDownList.SelectedValue == "ViewSurvey";
-        }      
+            this.SetViewSurveySettingsVisibility();
+        }
     }
 }

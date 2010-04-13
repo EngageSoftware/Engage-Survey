@@ -30,6 +30,7 @@
     <exclude name="ReleaseNotes_*.htm"/>
     <exclude name="??.??.??.txt" />
     <exclude name="_ReSharper.*/**"/>
+    <exclude name="**/obj/**"/>
   </patternset>
   <patternset id="source.fileset">
     <include name="**/*.js"/>
@@ -48,6 +49,7 @@
     <include name="**/*.txt"/>
     <include name="MSBuild/*.dll"/>
     <include name="MSBuild/*.targets"/>
+    <exclude name="**/obj/**"/>
   </patternset>
 
   <target name="build" description="Builds the solution" if="${build}">

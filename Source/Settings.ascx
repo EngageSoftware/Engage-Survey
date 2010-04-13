@@ -51,7 +51,7 @@
         <asp:RegularExpressionValidator ID="NotificationFromEmailPatternValidator" runat="server" Display="None" ControlToValidate="NotificationFromEmailTextBox" ResourceKey="NotificationFromEmailError" />
         <asp:RegularExpressionValidator ID="NotificationToEmailsPatternValidator" runat="server" Display="None" ControlToValidate="NotificationToEmailsTextBox" ResourceKey="NotificationToEmailsError" />
         <asp:RegularExpressionValidator ID="ThankYouFromEmailPatternValidator" runat="server" Display="None" ControlToValidate="ThankYouFromEmailTextBox" ResourceKey="ThankYouFromEmailError" />
-        <asp:ValidationSummary runat="server" CssClass="em-error" ForeColor="" DisplayMode="List" />
+        <asp:ValidationSummary runat="server" CssClass="em-error em-message" ForeColor="" DisplayMode="List" />
     </div>
 </div>
 <script type="text/javascript">

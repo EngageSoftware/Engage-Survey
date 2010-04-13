@@ -202,12 +202,12 @@
     <value>View Survey Settings</value>
   </data>
   <data name="NotificationFromEmailError.Text" xml:space="preserve">
-    <value>Notification "From" Email is not a valid email address</value>
+    <value>&lt;em&gt;Notification "From" Email&lt;/em&gt; is not a valid email address</value>
   </data>
   <data name="NotificationToEmailsError.Text" xml:space="preserve">
-    <value>Notification "To" Emails is not a valid list of email addresses (comma-separated)</value>
+    <value>&lt;em&gt;Notification "To" Emails&lt;/em&gt; is not a valid list of email addresses (comma-separated)</value>
   </data>
   <data name="ThankYouFromEmailError.Text" xml:space="preserve">
-    <value>Thank You "From" Email is not a valid email address</value>
+    <value>&lt;em&gt;Thank You "From" Email&lt;/em&gt; is not a valid email address</value>
   </data>
 </root>

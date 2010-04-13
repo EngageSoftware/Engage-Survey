@@ -17,7 +17,10 @@ namespace Engage.Dnn.Survey
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    
+
+    /// <summary>
+    /// Class contains utility methods.
+    /// </summary>
     public static class Utility
     {
         /// <summary>
@@ -31,10 +34,25 @@ namespace Engage.Dnn.Survey
         public const string ModuleDefinitionFriendlyName = "Engage: Survey";
 
         /// <summary>
+        /// Constant used to locate the survey marker located in the .resx file for replacement with actual table based HTML survey.
+        /// </summary>
+        public const string SurveyTableMarker = "<!-- INSERT SURVEY TABLE HTML -->";
+
+        /// <summary>
+        /// Constant for inserting name during email generation.
+        /// </summary>
+        public const string UserNameMarker = "<!-- INSERT NAME -->";
+
+        /// <summary>
+        /// Constant for inserting survey information during email generation. 
+        /// </summary>
+        public const string SurveyInformationMarker = "<!-- INSERT SURVEYINFORMATION -->";
+
+        /// <summary>
         /// A public statically available method in which clients can call to get effectly the "NavigateUrl()"
         /// for this module. Code that references this project can obtain a valid URL to navigate to for another module.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The url to the survey's default control.</returns>
         public static string NavigateUrl()
         {
             var mc = new ModuleController();
@@ -53,7 +71,7 @@ namespace Engage.Dnn.Survey
         /// <summary>
         /// Gets the web service URL.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The url to the web service.</returns>
         public static string GetServiceUrl()
         {
             var url = new StringBuilder();

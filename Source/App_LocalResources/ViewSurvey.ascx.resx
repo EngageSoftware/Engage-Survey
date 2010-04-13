@@ -143,4 +143,43 @@
   <data name="SubmitButton.Text" xml:space="preserve">
     <value>Submit</value>
   </data>
+  <data name="SurveyCompleted_Body.Text" xml:space="preserve">
+    <value>&lt;!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'&gt;
+&lt;html xmlns='http://www.w3.org/1999/xhtml'&gt;
+&lt;head&gt;
+&lt;meta http-equiv='Content-Type' content='text/html; charset=utf-8' /&gt;
+&lt;title&gt;Survey Completed&lt;/title&gt;
+&lt;style type='text/css' &gt;
+survey-title{font-weight: bold}
+.section-wrap{clear:both;}
+	.section-wrap div{padding-top:10px;}
+	h3.section-title{}
+	.question-wrap{padding:0 0 10px 0;}
+		.question{display:block;font-weight:bold;padding:0 0 2px 0;}
+			.ee-required{}
+		.answer-horizontal,	.answer-vertical, .answer-vertical span{display:block;}
+.general-info{font-weight: bold}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form id='SurveyForm' action='get'&gt;
+    &lt;table&gt;
+        &lt;tr&gt;&lt;td class="general-info"&gt;Name: &lt;!-- INSERT NAME --&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class="general-info"&gt;Survey: &lt;!-- INSERT SURVEYNAME --&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;!-- INSERT SURVEY TABLE HTML --&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="SurveyCompleted_Subject.Text" xml:space="preserve">
+    <value>A Survey has been completed</value>
+  </data>
+  <data name="ThankYou_Body.Text" xml:space="preserve">
+    <value>Thank you for taking the time to complete our survey. Your feedback is valuable to us and we do appreciate you taking the time.</value>
+  </data>
+  <data name="ThankYou_Subject.Text" xml:space="preserve">
+    <value>Thank You for completing our Survey.</value>
+  </data>
 </root>

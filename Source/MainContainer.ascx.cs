@@ -13,8 +13,6 @@ namespace Engage.Dnn.Survey
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Globalization;
     using System.IO;
     using System.Web;
     using System.Web.UI;
@@ -148,7 +146,6 @@ namespace Engage.Dnn.Survey
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
     }
 }
 

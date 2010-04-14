@@ -24,11 +24,6 @@ namespace Engage.Survey.Entities
     public partial class SurveyModelDataContext
     {
         /// <summary>
-        /// The path to the resource file in which localized content for this class exists
-        /// </summary>
-        public static readonly string SharedResourceFile = "~/DesktopModules/EngageSurvey/App_LocalResources/SharedResources.resx";
-
-        /// <summary>
         /// Gets an instance of the <see cref="DataContext"/>.
         /// </summary>
         /// <value>The <see cref="DataContext"/> instance.</value>
@@ -48,7 +43,7 @@ namespace Engage.Survey.Entities
         {
             instance.RequiredMessage = string.Format(
                     CultureInfo.CurrentCulture, 
-                    Localization.GetString("Required Question.Format", SharedResourceFile),
+                    Localization.GetString("Required Question.Format", SurveyRepository.SharedResourceFile),
                     instance.Text);
         }
 

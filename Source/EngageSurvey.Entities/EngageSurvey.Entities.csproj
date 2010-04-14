@@ -106,6 +106,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SurveyModelDataContext.dbml</DependentUpon>
     </Compile>
+    <Compile Include="SurveyRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="References\BrandonHaynes.ModelAdapter.dll" />

@@ -18,11 +18,11 @@ namespace Engage.Dnn.Survey
     using System.Web.UI;
     using System.Web.UI.WebControls;
     using DotNetNuke.Entities.Modules.Communications;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
     using DotNetNuke.UI.Utilities;
+    using Engage.Survey;
     using Engage.Survey.Entities;
     using Engage.Survey.UI;
 
@@ -111,8 +111,8 @@ namespace Engage.Dnn.Survey
             {
                 this.SurveyControl.UserId = this.UserId;
                 this.SurveyControl.CurrentSurvey = this.ResponseHeaderId == null
-                                                           ? Survey.LoadSurvey(this.SurveyId.GetValueOrDefault())
-                                                           : ReadonlySurvey.LoadSurvey(this.ResponseHeaderId.Value);
+                                                           ? (ISurvey)new SurveyRepository().LoadSurvey(this.SurveyId.GetValueOrDefault())
+                                                           : new SurveyRepository().LoadReadOnlySurvey(this.ResponseHeaderId.Value);
 
                 this.SurveyControl.SurveyCompleted += this.SurveyControl_SurveyCompleted;
 
@@ -150,7 +150,7 @@ namespace Engage.Dnn.Survey
                 body = body.Replace(Utility.UserNameMarker, displayName);
                 body = body.Replace(Utility.SurveyInformationMarker, title);
 
-                var survey = (ReadonlySurvey)ReadonlySurvey.LoadSurvey(responseHeaderId);
+                var survey = new SurveyRepository().LoadReadOnlySurvey(responseHeaderId);
                 var table = new Table();
                 var sb = new StringBuilder();
                 var writer = new HtmlTextWriter(new StringWriter(sb));
@@ -277,7 +277,7 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void DeleteResponseButton_Click(object sender, EventArgs e)
         {
-            ReadonlySurvey.Delete(this.ResponseHeaderId);
+            new SurveyRepository().DeleteReadOnlySurvey(this.ResponseHeaderId);
             this.Response.Redirect(this.BuildLinkUrl(this.TabId));
         }
 

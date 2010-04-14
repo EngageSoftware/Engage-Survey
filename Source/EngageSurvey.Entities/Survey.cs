@@ -11,7 +11,6 @@
 
 namespace Engage.Survey.Entities
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
@@ -85,63 +84,6 @@ namespace Engage.Survey.Entities
             {
                 return this.Text;
             }
-        }
-
-        /// <summary>
-        /// Deletes the specified survey.
-        /// </summary>
-        /// <param name="surveyId">The ID of the survey to delete.</param>
-        public static void Delete(int? surveyId)
-        {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-
-            var answers = from a in context.Answers
-                          join q in context.Questions on a.QuestionId equals q.QuestionId
-                          join s in context.Sections on q.SectionId equals s.SectionId
-                          join su in context.Surveys on s.SurveyId equals su.SurveyId
-                          where su.SurveyId == surveyId
-                          select a;
-
-            context.Answers.DeleteAllOnSubmit(answers);
-
-            var questions = from q in context.Questions
-                            join s in context.Sections on q.SectionId equals s.SectionId
-                            join su in context.Surveys on s.SurveyId equals su.SurveyId
-                            where su.SurveyId == surveyId
-                            select q;
-
-            context.Questions.DeleteAllOnSubmit(questions);
-
-            var sections = from s in context.Sections
-                           join su in context.Surveys on s.SurveyId equals su.SurveyId
-                           where su.SurveyId == surveyId
-                           select s;
-
-            context.Sections.DeleteAllOnSubmit(sections);
-
-            // lastly remove the survey itself
-            context.Surveys.DeleteOnSubmit(context.Surveys.Where(evaluation => evaluation.SurveyId == surveyId).Single());
-
-            context.SubmitChanges();
-        }
-
-        /// <summary>
-        /// Loads the survey.
-        /// </summary>
-        /// <param name="surveyId">The survey id.</param>
-        /// <returns>The survey with the given ID, or <c>null</c> if no survey exists with the given ID</returns>
-        public static Survey LoadSurvey(int surveyId)
-        {
-            return SurveyModelDataContext.Instance.Surveys.SingleOrDefault(s => s.SurveyId == surveyId);
-        }
-
-        /// <summary>
-        /// Loads all the surveys.
-        /// </summary>
-        /// <returns>A sequence of all <see cref="Survey"/> instances</returns>
-        public static IQueryable<Survey> LoadSurveys()
-        {
-            return SurveyModelDataContext.Instance.Surveys;
         }
 
         /// <summary>
@@ -258,13 +200,9 @@ namespace Engage.Survey.Entities
         /// <returns>The ID of the created <see cref="ResponseHeader"/></returns>
         private static int CreateResponseHeader(int userId)
         {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            var header = new ResponseHeader
-                             {
-                                 CreatedBy = userId, RevisingUser = userId, UserId = userId, RevisionDate = DateTime.Now, CreationDate = DateTime.Now 
-                             };
-            context.ResponseHeaders.InsertOnSubmit(header);
-            context.SubmitChanges();
+            var surveyRepository = new SurveyRepository();
+            var header = surveyRepository.CreateResponseHeader(userId);
+            surveyRepository.SubmitChanges();
 
             return header.ResponseHeaderId;
         }
@@ -274,7 +212,7 @@ namespace Engage.Survey.Entities
         /// </summary>
         partial void OnCreated()
         {
-            this.FinalMessage = Localization.GetString("Survey Complete.Text", SurveyModelDataContext.SharedResourceFile);
+            this.FinalMessage = Localization.GetString("Survey Complete.Text", SurveyRepository.SharedResourceFile);
             this.FinalMessageOption = FinalMessageOption.UseFinalMessage;
             this.SectionFormatOption = ElementFormatOption.None;
             this.QuestionFormatOption = ElementFormatOption.None;
@@ -291,19 +229,16 @@ namespace Engage.Survey.Entities
         /// <param name="responseText">The response text.</param>
         private void WriteResponseEntry(int responseHeaderId, ISection section, IQuestion question, IAnswer answer, string responseText)
         {
-            SurveyModelDataContext context = SurveyModelDataContext.Instance;
-            var response = new Response
-                             {
-                                     SurveyId = this.SurveyId, 
-                                     SurveyText = this.Text, 
-                                     ShowSurveyText = this.ShowText, 
-                                     TitleOption = this.TitleOption, 
-                                     SectionText = section.Text, 
-                                     SectionRelativeOrder = section.RelativeOrder, 
-                                     ShowSectionText = false, 
-                                     ResponseHeaderId = responseHeaderId, 
-                                     SectionId = section.SectionId
-                             };
+            var surveyRepository = new SurveyRepository();
+            var response = surveyRepository.CreateResponse(responseHeaderId, 1);
+            response.SurveyId = this.SurveyId;
+            response.SurveyText = this.Text;
+            response.ShowSurveyText = this.ShowText;
+            response.TitleOption = this.TitleOption;
+            response.SectionText = section.Text;
+            response.SectionRelativeOrder = section.RelativeOrder;
+            response.ShowSectionText = false;
+            response.SectionId = section.SectionId;
             response.SectionRelativeOrder = section.RelativeOrder;
             response.SectionFormatOption = this.SectionFormatOption;
             response.QuestionId = question.QuestionId;
@@ -320,13 +255,8 @@ namespace Engage.Survey.Entities
             }
 
             response.UserResponse = responseText;
-            response.CreatedBy = 1;
-            response.CreationDate = DateTime.Now;
-            response.RevisingUser = 1;
-            response.RevisionDate = DateTime.Now;
 
-            context.Responses.InsertOnSubmit(response);
-            context.SubmitChanges();
+            surveyRepository.SubmitChanges();
 
             Debug.WriteLine(response.ResponseId);
         }

@@ -45,7 +45,7 @@ namespace Engage.Dnn.Survey
         [WebMethod]
         public Survey GetSurvey(int surveyId)
         {
-            return Survey.LoadSurvey(surveyId);
+            return new SurveyRepository().LoadSurvey(surveyId);
         }
         
         /// <summary>
@@ -55,7 +55,7 @@ namespace Engage.Dnn.Survey
         [WebMethod]
         public List<Survey> GetSurveys()
         {
-            return Survey.LoadSurveys().ToList();
+            return new SurveyRepository().LoadSurveys().ToList();
         }
     }
 }

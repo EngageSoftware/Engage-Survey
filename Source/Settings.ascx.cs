@@ -17,6 +17,7 @@ namespace Engage.Dnn.Survey
     using System.Web.UI.WebControls;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using Engage.Survey.Entities;
     using Framework;
 
     /// <summary>
@@ -46,26 +47,26 @@ namespace Engage.Dnn.Survey
                     this.ListingDisplayDropDownList.Items.Add(new ListItem(Localization.GetString(ControlKey.SurveyListing.ToString(), this.LocalResourceFile), ControlKey.SurveyListing.ToString()));
                     this.ListingDisplayDropDownList.Items.Add(new ListItem(Localization.GetString(ControlKey.ViewSurvey.ToString(), this.LocalResourceFile), ControlKey.ViewSurvey.ToString()));
                     this.ListingDisplayDropDownList.Items.Add(new ListItem(Localization.GetString(ControlKey.ThankYou.ToString(), this.LocalResourceFile), ControlKey.ThankYou.ToString()));
-                    this.SetSelectedListItem(this.ListingDisplayDropDownList, Survey.ModuleSettings.DisplayType);
+                    this.SetSelectedListItem(this.ListingDisplayDropDownList, Dnn.Survey.ModuleSettings.DisplayType);
 
-                    this.SurveyDropDownList.DataSource = Engage.Survey.Entities.Survey.LoadSurveys();
+                    this.SurveyDropDownList.DataSource = new SurveyRepository().LoadSurveys();
                     this.SurveyDropDownList.DataTextField = "Text";
                     this.SurveyDropDownList.DataValueField = "SurveyId";
                     this.SurveyDropDownList.DataBind();
-                    this.SetSelectedListItem(this.SurveyDropDownList, Survey.ModuleSettings.SurveyId);
+                    this.SetSelectedListItem(this.SurveyDropDownList, Dnn.Survey.ModuleSettings.SurveyId);
 
 // ReSharper disable PossibleInvalidOperationException
-                    this.AllowMultipleCheckBox.Checked = Survey.ModuleSettings.AllowMultpleEntries.GetValueAsBooleanFor(this).Value;
-                    this.ShowRequiredNotationCheckBox.Checked = Survey.ModuleSettings.ShowRequiredNotation.GetValueAsBooleanFor(this).Value;
-                    this.SendNotificationCheckBox.Checked = Survey.ModuleSettings.SendNotification.GetValueAsBooleanFor(this).Value;
-                    this.SendThankYouCheckBox.Checked = Survey.ModuleSettings.SendThankYou.GetValueAsBooleanFor(this).Value;
+                    this.AllowMultipleCheckBox.Checked = Dnn.Survey.ModuleSettings.AllowMultpleEntries.GetValueAsBooleanFor(this).Value;
+                    this.ShowRequiredNotationCheckBox.Checked = Dnn.Survey.ModuleSettings.ShowRequiredNotation.GetValueAsBooleanFor(this).Value;
+                    this.SendNotificationCheckBox.Checked = Dnn.Survey.ModuleSettings.SendNotification.GetValueAsBooleanFor(this).Value;
+                    this.SendThankYouCheckBox.Checked = Dnn.Survey.ModuleSettings.SendThankYou.GetValueAsBooleanFor(this).Value;
 
 // ReSharper restore PossibleInvalidOperationException
-                    this.NotificationFromEmailTextBox.Text = Survey.ModuleSettings.NotificationFromEmailAddress.GetValueAsStringFor(this)
+                    this.NotificationFromEmailTextBox.Text = Dnn.Survey.ModuleSettings.NotificationFromEmailAddress.GetValueAsStringFor(this)
                                                              ?? this.PortalSettings.Email;
-                    this.NotificationToEmailsTextBox.Text = Survey.ModuleSettings.NotificationToEmailAddresses.GetValueAsStringFor(this)
+                    this.NotificationToEmailsTextBox.Text = Dnn.Survey.ModuleSettings.NotificationToEmailAddresses.GetValueAsStringFor(this)
                                                              ?? this.PortalSettings.Email;
-                    this.ThankYouFromEmailTextBox.Text = Survey.ModuleSettings.ThankYouFromEmailAddress.GetValueAsStringFor(this)
+                    this.ThankYouFromEmailTextBox.Text = Dnn.Survey.ModuleSettings.ThankYouFromEmailAddress.GetValueAsStringFor(this)
                                                              ?? this.PortalSettings.Email;
 
                     this.SetViewSurveySettingsVisibility();
@@ -90,18 +91,18 @@ namespace Engage.Dnn.Survey
             {
                 try
                 {
-                    Survey.ModuleSettings.IsConfigured.Set(this, true);
+                    Dnn.Survey.ModuleSettings.IsConfigured.Set(this, true);
 
-                    Survey.ModuleSettings.DisplayType.Set(this, this.ListingDisplayDropDownList.SelectedValue);
-                    Survey.ModuleSettings.SurveyId.Set(this, this.SurveyDropDownList.SelectedValue);
-                    Survey.ModuleSettings.AllowMultpleEntries.Set(this, this.AllowMultipleCheckBox.Checked);
-                    Survey.ModuleSettings.ShowRequiredNotation.Set(this, this.ShowRequiredNotationCheckBox.Checked);
+                    Dnn.Survey.ModuleSettings.DisplayType.Set(this, this.ListingDisplayDropDownList.SelectedValue);
+                    Dnn.Survey.ModuleSettings.SurveyId.Set(this, this.SurveyDropDownList.SelectedValue);
+                    Dnn.Survey.ModuleSettings.AllowMultpleEntries.Set(this, this.AllowMultipleCheckBox.Checked);
+                    Dnn.Survey.ModuleSettings.ShowRequiredNotation.Set(this, this.ShowRequiredNotationCheckBox.Checked);
 
-                    Survey.ModuleSettings.SendNotification.Set(this, this.SendNotificationCheckBox.Checked);
-                    Survey.ModuleSettings.NotificationFromEmailAddress.Set(this, this.NotificationFromEmailTextBox.Text);
-                    Survey.ModuleSettings.NotificationToEmailAddresses.Set(this, this.NotificationToEmailsTextBox.Text);
-                    Survey.ModuleSettings.SendThankYou.Set(this, this.SendThankYouCheckBox.Checked);
-                    Survey.ModuleSettings.ThankYouFromEmailAddress.Set(this, this.ThankYouFromEmailTextBox.Text);
+                    Dnn.Survey.ModuleSettings.SendNotification.Set(this, this.SendNotificationCheckBox.Checked);
+                    Dnn.Survey.ModuleSettings.NotificationFromEmailAddress.Set(this, this.NotificationFromEmailTextBox.Text);
+                    Dnn.Survey.ModuleSettings.NotificationToEmailAddresses.Set(this, this.NotificationToEmailsTextBox.Text);
+                    Dnn.Survey.ModuleSettings.SendThankYou.Set(this, this.SendThankYouCheckBox.Checked);
+                    Dnn.Survey.ModuleSettings.ThankYouFromEmailAddress.Set(this, this.ThankYouFromEmailTextBox.Text);
                 }
                 catch (Exception exc)
                 {

@@ -36,14 +36,7 @@ namespace Engage.Dnn.Survey
         [WebMethod]
         public void DeleteQuestion(int questionId)
         {
-            var dataContext = SurveyModelDataContext.Instance;
-
-            var question = dataContext.Questions.Where(q => q.QuestionId == questionId).Single();
-
-            dataContext.Answers.DeleteAllOnSubmit(question.Answers);
-            dataContext.Questions.DeleteOnSubmit(question);
-
-            dataContext.SubmitChanges();
+            new SurveyRepository().DeleteQuestion(questionId);
         }
 
         /// <summary>
@@ -53,18 +46,7 @@ namespace Engage.Dnn.Survey
         [WebMethod]
         public void DeleteSurvey(int surveyId)
         {
-            var dataContext = SurveyModelDataContext.Instance;
-
-            var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
-
-            dataContext.Surveys.DeleteOnSubmit(survey);
-            dataContext.Sections.DeleteAllOnSubmit(survey.Sections);
-            var questions = survey.Sections.SelectMany(section => section.Questions);
-            dataContext.Questions.DeleteAllOnSubmit(questions);
-            var answers = questions.SelectMany(question => question.Answers);
-            dataContext.Answers.DeleteAllOnSubmit(answers);
-
-            dataContext.SubmitChanges();
+            new SurveyRepository().DeleteSurvey(surveyId);
         }
 
         /// <summary>
@@ -75,8 +57,8 @@ namespace Engage.Dnn.Survey
         [WebMethod]
         public void ReorderQuestions(int surveyId, Dictionary<string, int> questionOrderMap)
         {
-            var dataContext = SurveyModelDataContext.Instance;
-            var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
+            var surveyRepository = new SurveyRepository();
+            var survey = surveyRepository.LoadSurvey(surveyId);
 
             foreach (var questionIdOrderPair in questionOrderMap)
             {
@@ -85,7 +67,7 @@ namespace Engage.Dnn.Survey
                 survey.Sections[0].Questions.Where(q => q.QuestionId == questionId).Single().RelativeOrder = relativeOrder;
             }
 
-            dataContext.SubmitChanges();
+            surveyRepository.SubmitChanges();
         }
 
         /// <summary>
@@ -97,20 +79,15 @@ namespace Engage.Dnn.Survey
         public int UpdateSurvey(Survey survey)
         {
             Survey surveyToUpdate;
-            var dataContext = SurveyModelDataContext.Instance;
+            var surveyRepository = new SurveyRepository();
             if (survey.SurveyId > 0)
             {
-                surveyToUpdate = dataContext.Surveys.Where(s => s.SurveyId == survey.SurveyId).Single();
+                surveyToUpdate = surveyRepository.LoadSurvey(survey.SurveyId);
                 surveyToUpdate.RevisingUser = surveyToUpdate.Sections[0].RevisingUser = survey.RevisingUser;
             }
             else
             {
-                surveyToUpdate = new Survey(survey.RevisingUser)
-                                     {
-                                             PortalId = survey.PortalId, 
-                                             ModuleId = survey.ModuleId
-                                     };
-                dataContext.Surveys.InsertOnSubmit(surveyToUpdate);
+                surveyToUpdate = surveyRepository.CreateSurvey(survey.RevisingUser, survey.PortalId, survey.ModuleId);
             }
 
             // TODO: store dates in UTC
@@ -130,7 +107,7 @@ namespace Engage.Dnn.Survey
             surveyToUpdate.Sections.First().Text = survey.Sections.First().Text;
             surveyToUpdate.Sections.First().ShowText = true;
 
-            dataContext.SubmitChanges();
+            surveyRepository.SubmitChanges();
 
             return surveyToUpdate.SurveyId;
         }
@@ -146,8 +123,8 @@ namespace Engage.Dnn.Survey
         [WebMethod]
         public object UpdateQuestion(int surveyId, Question question)
         {
-            var dataContext = SurveyModelDataContext.Instance;
-            var survey = dataContext.Surveys.Where(s => s.SurveyId == surveyId).Single();
+            var surveyRepository = new SurveyRepository();
+            var survey = surveyRepository.LoadSurvey(surveyId);
             Question questionToUpdate;
             if (question.QuestionId > 0)
             {
@@ -156,8 +133,8 @@ namespace Engage.Dnn.Survey
             }
             else
             {
-                questionToUpdate = new Question(question.RevisingUser);
-                survey.Sections[0].Questions.Add(questionToUpdate);
+                questionToUpdate = surveyRepository.CreateQuestion(question.RevisingUser);
+                survey.Sections.First().Questions.Add(questionToUpdate);
             }
 
             questionToUpdate.Text = question.Text;
@@ -165,14 +142,10 @@ namespace Engage.Dnn.Survey
             questionToUpdate.RelativeOrder = question.RelativeOrder;
             questionToUpdate.ControlType = question.ControlType;
 
-            foreach (var answer in questionToUpdate.Answers)
-            {
-                var lambdaAnswer = answer;
-                if (!question.Answers.Any(a => a.AnswerId == lambdaAnswer.AnswerId))
-                {
-                    dataContext.Answers.DeleteOnSubmit(answer);
-                }
-            }
+            var answersToDelete = from answer in questionToUpdate.Answers
+                                  where !question.Answers.Any(a => a.AnswerId == answer.AnswerId)
+                                  select answer;
+            surveyRepository.DeleteAnswers(answersToDelete, true);
 
             int answerOrder = 0;
             foreach (var answer in question.Answers)
@@ -186,7 +159,7 @@ namespace Engage.Dnn.Survey
                 }
                 else
                 {
-                    answerToUpdate = new Answer(question.RevisingUser);
+                    answerToUpdate = surveyRepository.CreateAnswer(question.RevisingUser);
                     questionToUpdate.Answers.Add(answerToUpdate);
                 }
 
@@ -194,7 +167,7 @@ namespace Engage.Dnn.Survey
                 answerToUpdate.RelativeOrder = ++answerOrder;
             }
 
-            dataContext.SubmitChanges();
+            surveyRepository.SubmitChanges();
 
             return new
             {

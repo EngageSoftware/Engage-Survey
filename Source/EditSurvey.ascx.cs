@@ -124,7 +124,7 @@ namespace Engage.Dnn.Survey
         {
             get
             {
-                var survey = this.SurveyId == null ? null : Survey.LoadSurvey(this.SurveyId.Value);
+                var survey = this.SurveyId == null ? null : new SurveyRepository().LoadSurvey(this.SurveyId.Value);
                 return new JavaScriptSerializer().Serialize(survey);
             }
         }

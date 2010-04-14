@@ -115,6 +115,8 @@ namespace Engage.Dnn.Survey
 
             // TODO: store dates in UTC
             surveyToUpdate.Text = survey.Text;
+            surveyToUpdate.PortalId = survey.PortalId;
+            surveyToUpdate.ModuleId = survey.ModuleId;
             surveyToUpdate.ShowText = true;
             surveyToUpdate.StartDate = survey.StartDate; ////.HasValue ? survey.StartDate.Value.ToUniversalTime() : (DateTime?)null;
             surveyToUpdate.PreStartMessage = survey.PreStartMessage;

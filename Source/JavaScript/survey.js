@@ -878,40 +878,51 @@ if (!Array.prototype.indexOf) {
             return null;
         }
 
-        // Load survey to edit
-        if (CurrentContextInfo.Survey) {
-            $('.ee-create-new').data('surveyId', CurrentContextInfo.Survey.SurveyId);
-            $('#EvalTitleInput').val(CurrentContextInfo.Survey.Text);
-            $('#EvalDescTextArea').val(CurrentContextInfo.Survey.Sections[0].Text);
-            startDatePicker.set_selectedDate(parseDateString(CurrentContextInfo.Survey.StartDate));
-            $('#EvalPreStartTextArea').val(CurrentContextInfo.Survey.PreStartMessage);
-            endDatePicker.set_selectedDate(parseDateString(CurrentContextInfo.Survey.EndDate));
-            $('#EvalPostEndTextArea').val(CurrentContextInfo.Survey.PostEndMessage);
-			$('#EvalSendNotification').attr('checked', CurrentContextInfo.Survey.SendNotification);
-			$('#EvalNotificationFromEmail').val(CurrentContextInfo.Survey.NotificationFromEmailAddress);
-			$('#EvalNotificationToEmails').val(CurrentContextInfo.Survey.NotificationToEmailAddresses);
-			$('#EvalSendThankYou').attr('checked', CurrentContextInfo.Survey.SendThankYou);
-			$('#EvalThankYouFromEmail').val(CurrentContextInfo.Survey.ThankYouFromEmailAddress);
-            
-            $('#EvalNew').parent().hide();
-            makeSurveyReadOnly();
-            hideEditModeButtons();
-            $('.ee-create-questions').show(); 
-            
-            if (CurrentContextInfo.Survey.Sections[0].Questions.length) {
-                $('#PreviewArea').show();
-                
-                $.each(CurrentContextInfo.Survey.Sections[0].Questions, function (i, question) {
-                    addQuestionPreview(question.QuestionId, question.Text, question.IsRequired, question.ControlType, question.Answers);
-                });
+        (function initializeControls () {
+            if (startDatePicker === null || endDatePicker === null) {
+                setTimeout(function () {
+                    startDatePicker = $find($('.ee-start-date .RadPicker input').attr('id')),
+                    endDatePicker = $find($('.ee-end-date .RadPicker input').attr('id'));
+                    initializeControls();
+                }, 1);
+
+                return;
             }
-        }
-        else {
-            $('#EvalSendNotification').attr('checked', CurrentContextInfo.DefaultEmailSettings.SendNotification);
-			$('#EvalNotificationFromEmail').val(CurrentContextInfo.DefaultEmailSettings.NotificationFromEmail);
-			$('#EvalNotificationToEmails').val(CurrentContextInfo.DefaultEmailSettings.NotificationToEmails);
-            $('#EvalSendThankYou').attr('checked', CurrentContextInfo.DefaultEmailSettings.SendThankYou);
-			$('#EvalThankYouFromEmail').val(CurrentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
-        }
+
+            if (CurrentContextInfo.Survey) {
+                $('.ee-create-new').data('surveyId', CurrentContextInfo.Survey.SurveyId);
+                $('#EvalTitleInput').val(CurrentContextInfo.Survey.Text);
+                $('#EvalDescTextArea').val(CurrentContextInfo.Survey.Sections[0].Text);
+                startDatePicker.set_selectedDate(parseDateString(CurrentContextInfo.Survey.StartDate));
+                $('#EvalPreStartTextArea').val(CurrentContextInfo.Survey.PreStartMessage);
+                endDatePicker.set_selectedDate(parseDateString(CurrentContextInfo.Survey.EndDate));
+                $('#EvalPostEndTextArea').val(CurrentContextInfo.Survey.PostEndMessage);
+			    $('#EvalSendNotification').attr('checked', CurrentContextInfo.Survey.SendNotification);
+			    $('#EvalNotificationFromEmail').val(CurrentContextInfo.Survey.NotificationFromEmailAddress);
+			    $('#EvalNotificationToEmails').val(CurrentContextInfo.Survey.NotificationToEmailAddresses);
+			    $('#EvalSendThankYou').attr('checked', CurrentContextInfo.Survey.SendThankYou);
+			    $('#EvalThankYouFromEmail').val(CurrentContextInfo.Survey.ThankYouFromEmailAddress);
+            
+                $('#EvalNew').parent().hide();
+                makeSurveyReadOnly();
+                hideEditModeButtons();
+                $('.ee-create-questions').show(); 
+            
+                if (CurrentContextInfo.Survey.Sections[0].Questions.length) {
+                    $('#PreviewArea').show();
+                
+                    $.each(CurrentContextInfo.Survey.Sections[0].Questions, function (i, question) {
+                        addQuestionPreview(question.QuestionId, question.Text, question.IsRequired, question.ControlType, question.Answers);
+                    });
+                }
+            }
+            else {
+                $('#EvalSendNotification').attr('checked', CurrentContextInfo.DefaultEmailSettings.SendNotification);
+			    $('#EvalNotificationFromEmail').val(CurrentContextInfo.DefaultEmailSettings.NotificationFromEmail);
+			    $('#EvalNotificationToEmails').val(CurrentContextInfo.DefaultEmailSettings.NotificationToEmails);
+                $('#EvalSendThankYou').attr('checked', CurrentContextInfo.DefaultEmailSettings.SendThankYou);
+			    $('#EvalThankYouFromEmail').val(CurrentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
+            }
+        }());
     });
 })(jQuery);

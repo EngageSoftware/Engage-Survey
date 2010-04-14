@@ -70,7 +70,7 @@ namespace Engage.Dnn.Survey
             if (mode == ListingMode.Definition)
             {
                 // bind to survey definitions
-                var surveys = new SurveyRepository().LoadSurveys();
+                var surveys = new SurveyRepository().LoadSurveys(this.ModuleId);
                 if (!this.IsAdmin)
                 {
                     surveys = surveys.Where(survey => survey.StartDate <= DateTime.Now && survey.EndDate > DateTime.Now);
@@ -80,7 +80,7 @@ namespace Engage.Dnn.Survey
             }
             else
             {
-                this.SurveyGrid.DataSource = new SurveyRepository().LoadReadOnlySurveys();
+                this.SurveyGrid.DataSource = new SurveyRepository().LoadReadOnlySurveys(this.ModuleId);
             }
 
             this.SurveyGrid.DataBind();

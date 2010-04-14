@@ -361,23 +361,15 @@ namespace Engage.Survey.Entities
         /// <summary>
         /// Loads all completed surveys.
         /// </summary>
+        /// <param name="moduleId">The ID of the module by which to filter results.</param>
         /// <returns>A list of surveys.</returns>
-        public IQueryable<ReadonlySurvey> LoadReadOnlySurveys()
+        public IQueryable<ReadonlySurvey> LoadReadOnlySurveys(int moduleId)
         {
-            return (from response in this.Context.Responses
-                    join responseHeader in this.Context.ResponseHeaders on response.ResponseHeaderId equals responseHeader.ResponseHeaderId
-                    select new ReadonlySurvey
-                                {
-                                        SurveyId = response.SurveyId,
-                                        Text = response.SurveyText,
-                                        ShowText = response.ShowSurveyText,
-                                        TitleOption = response.TitleOption,
-                                        QuestionFormatOption = response.QuestionFormatOption,
-                                        SectionFormatOption = response.SectionFormatOption,
-                                        ResponseHeaderId = responseHeader.ResponseHeaderId,
-                                        CreationDate = responseHeader.CreationDate,
-                                        UserId = responseHeader.UserId
-                                }).Distinct();
+            return from readOnlySurvey in this.LoadReadOnlySurveys()
+                   join surveyDefinition in this.Context.Surveys on readOnlySurvey.SurveyId equals surveyDefinition.SurveyId
+                   where surveyDefinition.ModuleId == moduleId
+                   select readOnlySurvey;
+                           
         }
 
         /// <summary>
@@ -391,12 +383,27 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Loads all the surveys.
+        /// Loads all the surveys for a particular module instance.
         /// </summary>
-        /// <returns>A sequence of all <see cref="Survey"/> instances</returns>
-        public IQueryable<Survey> LoadSurveys()
+        /// <param name="moduleId">The ID of the module by which surveys should be filtered.</param>
+        /// <returns>
+        /// A sequence of the <see cref="Survey"/> instances
+        /// </returns>
+        public IQueryable<Survey> LoadSurveys(int moduleId)
         {
-            return this.Context.Surveys;
+            return this.Context.Surveys.Where(survey => survey.ModuleId == moduleId);
+        }
+
+        /// <summary>
+        /// Loads all the surveys for a particular portal instance.
+        /// </summary>
+        /// <param name="portalId">The ID of the portal by which surveys should be filtered.</param>
+        /// <returns>
+        /// A sequence of the <see cref="Survey"/> instances
+        /// </returns>
+        public IQueryable<Survey> LoadSurveysForPortal(int portalId)
+        {
+            return this.Context.Surveys.Where(survey => survey.PortalId == portalId);
         }
 
         /// <summary>
@@ -405,6 +412,28 @@ namespace Engage.Survey.Entities
         public void SubmitChanges()
         {
             this.Context.SubmitChanges();
+        }
+
+        /// <summary>
+        /// Loads all completed surveys.
+        /// </summary>
+        /// <returns>A list of surveys.</returns>
+        private IQueryable<ReadonlySurvey> LoadReadOnlySurveys()
+        {
+            return (from response in this.Context.Responses
+                    join responseHeader in this.Context.ResponseHeaders on response.ResponseHeaderId equals responseHeader.ResponseHeaderId
+                    select new ReadonlySurvey
+                               {
+                                       SurveyId = response.SurveyId,
+                                       Text = response.SurveyText,
+                                       ShowText = response.ShowSurveyText,
+                                       TitleOption = response.TitleOption,
+                                       QuestionFormatOption = response.QuestionFormatOption,
+                                       SectionFormatOption = response.SectionFormatOption,
+                                       ResponseHeaderId = responseHeader.ResponseHeaderId,
+                                       CreationDate = responseHeader.CreationDate,
+                                       UserId = responseHeader.UserId
+                               }).Distinct();
         }
     }
 }

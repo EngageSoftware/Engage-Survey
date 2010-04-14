@@ -53,9 +53,9 @@ namespace Engage.Dnn.Survey
         /// </summary>
         /// <returns>A <see cref="List{Survey}"/> of all <see cref="Survey"/>s</returns>
         [WebMethod]
-        public List<Survey> GetSurveys()
+        public List<Survey> GetSurveys(int portalId)
         {
-            return new SurveyRepository().LoadSurveys().ToList();
+            return new SurveyRepository().LoadSurveysForPortal(portalId).ToList();
         }
     }
 }

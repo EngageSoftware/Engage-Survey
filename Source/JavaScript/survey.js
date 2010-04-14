@@ -253,7 +253,6 @@ if (!Array.prototype.indexOf) {
             storePreviousValue($('#EvalNotificationToEmails'));
             storePreviousValue($('#EvalSendThankYou'), $('#EvalSendThankYou').attr('checked'));
             storePreviousValue($('#EvalThankYouFromEmail'));
-
             
             makeLabelEditable($('#EvalTitleInput'), $('<input type="text"/>'));
             makeLabelEditable($('#EvalDescTextArea'), $('<textarea/>'));
@@ -372,14 +371,21 @@ if (!Array.prototype.indexOf) {
         
         function makeElementReadonly($element, value) {
             $element.slideUp(AnimationSpeed, function () {
-                var $this = $(this);
+                var $this = $(this),
+                    maxlength = $this.attr('maxlength');
+
+                // if maxlength is not set (as on NotificationToEmails) then the browser default is returned (http://herr-schuessler.de/blog/selecting-input-fields-with-maxlength-via-jquery/)
+                if (maxlength < 0 || maxlength > 500000) {
+                    maxlength = '';
+                }
+
                 $('<span />')
                     .attr({
                         id: $this.attr('id'),
                         className: $this.attr('class'),
                         name: $this.attr('name')
                     }).data('minlength', $this.attr('minlength') || '') // if $this.attr('minlength') is null, then jQuery sees the data call as an accessor instead of a setter, so we change it to '' if it's null
-                    .data('maxlength', $this.attr('maxlength') || '')
+                    .data('maxlength', maxlength || '')
                     .data('rows', $this.attr('rows') || '')
                     .data('cols', $this.attr('cols') || '')
                     .data('checked', $this.attr('checked') !== undefined ? $this.attr('checked') : '')
@@ -394,14 +400,14 @@ if (!Array.prototype.indexOf) {
         
         function makeLabelEditable($element, $newElement) {
             $element.fadeOut(AnimationSpeed, function () {
-                var $this = $(this);
+                var $this = $(this),
+                    maxlength = $this.data('maxlength');
                 $newElement
                     .attr({
                         id: $this.attr('id'),
                         className: $this.attr('class'),
                         name: $this.attr('name'),
                         minlength: $this.data('minlength'),
-                        maxlength: $this.data('maxlength') || '',
                         rows: $this.data('rows'),
                         cols: $this.data('cols'),
                         checked: $this.data('checked')
@@ -410,6 +416,12 @@ if (!Array.prototype.indexOf) {
                     .hide()
                     .insertAfter($this)
                     .slideDown(AnimationSpeed);
+
+                // don't set maxlength if it doesn't have one set (since setting it to an invalid/default value can cause the textbox to stop working...)
+                if (maxlength !== '') {
+                    $newElement.attr('maxlength', maxlength);
+                }
+
                 $this.remove();
             }).removeClass('ee-input-pre');
         }

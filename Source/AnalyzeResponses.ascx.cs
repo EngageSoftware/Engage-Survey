@@ -130,18 +130,6 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Handles the <see cref="RadGrid.NeedDataSource"/> event of the <see cref="ResponseGrid"/> control.
-        /// </summary>
-        /// <param name="source">The source of the event.</param>
-        /// <param name="e">The <see cref="GridNeedDataSourceEventArgs"/> instance containing the event data.</param>
-        private void ResponseGrid_NeedDataSource(object source, GridNeedDataSourceEventArgs e)
-        {
-            var surveys = new SurveyRepository().LoadReadOnlySurveys(this.ModuleId);
-            this.ResponseGrid.MasterTableView.VirtualItemCount = surveys.Count();
-            this.ResponseGrid.DataSource = surveys.Skip(this.ResponseGrid.CurrentPageIndex * this.ResponseGrid.PageSize).Take(this.ResponseGrid.PageSize);
-        }
-
-        /// <summary>
         /// Replaces characters in the given <paramref name="filename"/> which are invalid for filenames.
         /// </summary>
         /// <param name="filename">The filename to fix.</param>
@@ -168,18 +156,6 @@ namespace Engage.Dnn.Survey
             commandItem.FindControl("InitInsertButton").Visible = false;
             commandItem.FindControl("RefreshButton").Visible = false;
             commandItem.FindControl("RebindGridButton").Visible = false;
-        }
-
-        /// <summary>
-        /// Binds the data.
-        /// </summary>
-        private void BindData()
-        {
-            ////var surveys = new SurveyRepository().LoadReadOnlySurveys(this.ModuleId);
-            ////this.ResponseGrid.DataSource = surveys;)
-            ////this.ResponseGrid.DataBind();
-
-
         }
 
         /// <summary>
@@ -225,13 +201,24 @@ namespace Engage.Dnn.Survey
                 {
                     this.SetupExport();
                     this.LocalizeGridHeaders();
-                    this.BindData();
                 }
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="RadGrid.NeedDataSource"/> event of the <see cref="ResponseGrid"/> control.
+        /// </summary>
+        /// <param name="source">The source of the event.</param>
+        /// <param name="e">The <see cref="GridNeedDataSourceEventArgs"/> instance containing the event data.</param>
+        private void ResponseGrid_NeedDataSource(object source, GridNeedDataSourceEventArgs e)
+        {
+            var surveys = new SurveyRepository().LoadReadOnlySurveys(this.ModuleId);
+            this.ResponseGrid.DataSource = surveys.Skip(this.ResponseGrid.CurrentPageIndex * this.ResponseGrid.PageSize).Take(this.ResponseGrid.PageSize);
+            this.ResponseGrid.MasterTableView.VirtualItemCount = surveys.Count();
         }
     }
 }

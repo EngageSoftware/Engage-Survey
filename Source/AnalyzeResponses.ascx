@@ -2,10 +2,10 @@
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 
 <div class="survey-analysis">
-    <telerik:RadGrid ID="ResponseGrid" runat="server" Skin="Simple" CssClass="sa-grid" AutoGenerateColumns="false" GridLines="None" PageSize="25">
+    <telerik:RadGrid ID="ResponseGrid" runat="server" Skin="Simple" CssClass="sa-grid" AutoGenerateColumns="false" GridLines="None" AllowPaging="true" AllowCustomPaging="true" PageSize="2">
         <ExportSettings ExportOnlyData="true" IgnorePaging="true" OpenInNewWindow="true"/>
         <MasterTableView CommandItemDisplay="TopAndBottom">
-            <PagerStyle Mode="NextPrevNumericAndAdvanced" />
+            <PagerStyle Mode="NextPrevNumericAndAdvanced" AlwaysVisible="true" />
             <CommandItemSettings ShowExportToWordButton="true" ShowExportToExcelButton="true" ShowExportToCsvButton="true" ShowExportToPdfButton="true" />
             <NoRecordsTemplate>
                 <h3 class="no-responses"><%=Localize("No Responses.Text") %></h3>

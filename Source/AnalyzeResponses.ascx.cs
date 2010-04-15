@@ -124,8 +124,21 @@ namespace Engage.Dnn.Survey
         protected override void OnInit(EventArgs e)
         {
             this.Load += this.Page_Load;
+            this.ResponseGrid.NeedDataSource += this.ResponseGrid_NeedDataSource;
             this.ResponseGrid.ItemCreated += ResponseGrid_ItemCreated;
             base.OnInit(e);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="RadGrid.NeedDataSource"/> event of the <see cref="ResponseGrid"/> control.
+        /// </summary>
+        /// <param name="source">The source of the event.</param>
+        /// <param name="e">The <see cref="GridNeedDataSourceEventArgs"/> instance containing the event data.</param>
+        private void ResponseGrid_NeedDataSource(object source, GridNeedDataSourceEventArgs e)
+        {
+            var surveys = new SurveyRepository().LoadReadOnlySurveys(this.ModuleId);
+            this.ResponseGrid.MasterTableView.VirtualItemCount = surveys.Count();
+            this.ResponseGrid.DataSource = surveys.Skip(this.ResponseGrid.CurrentPageIndex * this.ResponseGrid.PageSize).Take(this.ResponseGrid.PageSize);
         }
 
         /// <summary>
@@ -162,9 +175,11 @@ namespace Engage.Dnn.Survey
         /// </summary>
         private void BindData()
         {
-            var surveys = new SurveyRepository().LoadReadOnlySurveys(this.ModuleId);
-            this.ResponseGrid.DataSource = surveys;
-            this.ResponseGrid.DataBind();
+            ////var surveys = new SurveyRepository().LoadReadOnlySurveys(this.ModuleId);
+            ////this.ResponseGrid.DataSource = surveys;)
+            ////this.ResponseGrid.DataBind();
+
+
         }
 
         /// <summary>

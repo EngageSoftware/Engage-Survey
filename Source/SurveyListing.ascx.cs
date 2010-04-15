@@ -47,11 +47,13 @@ namespace Engage.Dnn.Survey
             var surveys = new SurveyRepository().LoadSurveys(this.ModuleId);
             if (!this.IsAdmin)
             {
-                surveys = surveys.Where(survey => survey.StartDate <= DateTime.Now && survey.EndDate > DateTime.Now);
+                surveys = from survey in surveys
+                          where (survey.StartDate == null || survey.StartDate <= DateTime.Now) 
+                             && (survey.EndDate == null || survey.EndDate > DateTime.Now)
+                          select survey;
             }
 
             this.SurveyGrid.DataSource = surveys;
-
             this.SurveyGrid.DataBind();
         }
 
@@ -166,6 +168,7 @@ namespace Engage.Dnn.Survey
             if (analyzeLink != null)
             {
                 analyzeLink.NavigateUrl = BuildAnalyzeUrl(survey.SurveyId);
+                analyzeLink.Visible = this.IsEditable;
             }
         }
     }

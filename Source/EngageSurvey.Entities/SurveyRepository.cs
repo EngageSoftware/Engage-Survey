@@ -386,12 +386,23 @@ namespace Engage.Survey.Entities
         /// Loads all the surveys for a particular module instance.
         /// </summary>
         /// <param name="moduleId">The ID of the module by which surveys should be filtered.</param>
+        /// <param name="getOutdatedSurveys"></param>
         /// <returns>
         /// A sequence of the <see cref="Survey"/> instances
         /// </returns>
-        public IQueryable<Survey> LoadSurveys(int moduleId)
+        public IQueryable<Survey> LoadSurveys(int moduleId, bool getOutdatedSurveys)
         {
-            return this.Context.Surveys.Where(survey => survey.ModuleId == moduleId);
+            var surveys = this.Context.Surveys.Where(survey => survey.ModuleId == moduleId);
+
+            if (!getOutdatedSurveys)
+            {
+                surveys = from survey in surveys
+                          where (survey.StartDate == null || survey.StartDate <= DateTime.Now)
+                             && (survey.EndDate == null || survey.EndDate > DateTime.Now)
+                          select survey;
+            }
+
+            return surveys;
         }
 
         /// <summary>

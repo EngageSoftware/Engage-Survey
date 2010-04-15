@@ -49,7 +49,7 @@ namespace Engage.Dnn.Survey
                     this.ListingDisplayDropDownList.Items.Add(new ListItem(Localization.GetString(ControlKey.ThankYou.ToString(), this.LocalResourceFile), ControlKey.ThankYou.ToString()));
                     this.SetSelectedListItem(this.ListingDisplayDropDownList, Dnn.Survey.ModuleSettings.DisplayType);
 
-                    this.SurveyDropDownList.DataSource = new SurveyRepository().LoadSurveys(this.ModuleId);
+                    this.SurveyDropDownList.DataSource = new SurveyRepository().LoadSurveys(this.ModuleId, true);
                     this.SurveyDropDownList.DataTextField = "Text";
                     this.SurveyDropDownList.DataValueField = "SurveyId";
                     this.SurveyDropDownList.DataBind();

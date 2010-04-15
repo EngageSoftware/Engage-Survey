@@ -44,15 +44,7 @@ namespace Engage.Dnn.Survey
         /// </summary>
         private void BindData()
         {
-            var surveys = new SurveyRepository().LoadSurveys(this.ModuleId);
-            if (!this.IsAdmin)
-            {
-                surveys = from survey in surveys
-                          where (survey.StartDate == null || survey.StartDate <= DateTime.Now) 
-                             && (survey.EndDate == null || survey.EndDate > DateTime.Now)
-                          select survey;
-            }
-
+            var surveys = new SurveyRepository().LoadSurveys(this.ModuleId, this.IsAdmin);
             this.SurveyGrid.DataSource = surveys;
             this.SurveyGrid.DataBind();
         }

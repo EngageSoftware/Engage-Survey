@@ -47,7 +47,7 @@ namespace Engage.Dnn.Survey
         /// Gets the survey for which to display responses.
         /// </summary>
         /// <value>The survey.</value>
-        private Survey Survey
+        protected Survey Survey
         {
             get
             {

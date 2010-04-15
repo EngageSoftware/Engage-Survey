@@ -1,8 +1,13 @@
 <%@ Control Language="C#" AutoEventWireup="false" CodeBehind="AnalyzeResponses.ascx.cs" Inherits="Engage.Dnn.Survey.AnalyzeResponses" %>
+<%@ Import Namespace="System.Linq" %>
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 
 <div class="survey-analysis">
-    <telerik:RadGrid ID="ResponseGrid" runat="server" Skin="Simple" CssClass="sa-grid" AutoGenerateColumns="false" GridLines="None" AllowPaging="true" AllowCustomPaging="true" PageSize="2">
+    <div class="sa-survey">
+        <h3 class="sa-survey-title"><%=HttpUtility.HtmlEncode(this.Survey.Text) %></h3>
+        <p class="sa-survey-desc"><%=HttpUtility.HtmlEncode(this.Survey.Sections.First().Text) %></p>
+    </div>
+    <telerik:RadGrid ID="ResponseGrid" runat="server" Skin="Simple" CssClass="sa-grid" AutoGenerateColumns="false" GridLines="None" AllowPaging="true" AllowCustomPaging="true" PageSize="25">
         <ExportSettings ExportOnlyData="true" IgnorePaging="true" OpenInNewWindow="true"/>
         <MasterTableView CommandItemDisplay="TopAndBottom">
             <PagerStyle Mode="NextPrevNumericAndAdvanced" AlwaysVisible="true" />

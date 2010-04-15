@@ -10,24 +10,15 @@
 namespace Engage.Dnn.Survey {
     
     
-    public partial class SurveyListing {
+    public partial class AnalyzeResponses {
         
         /// <summary>
-        /// SurveyGrid control.
+        /// ResponseGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater SurveyGrid;
-        
-        /// <summary>
-        /// NewSurveyButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton NewSurveyButton;
+        protected global::Telerik.Web.UI.RadGrid ResponseGrid;
     }
 }

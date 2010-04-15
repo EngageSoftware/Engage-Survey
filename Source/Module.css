@@ -101,13 +101,10 @@
 			span.sl-repeater-data span, ul.sl-repeater li span.sl-repeater-actions{display:block;font-family: Helvetica, Arial, Sans-Serif;}
 			span.sl-repeater-data .sl-title{font-size:14px;padding-bottom:5px;}
 			span.sl-repeater-data .sl-user{font-weight:bold;color:#444;}
-		ul.sl-repeater li a.ee-edit{display:block;float:left;padding:2px 15px;text-transform:capitalize;font-weight:bold;margin:0 5px;border-color:#fff #c8d6e1 #c8d6e1 #fff;border-style:solid;border-width:1px;font-family: Helvetica, Arial, Sans-Serif;}
-			ul.sl-repeater li.sl-item a.ee-edit:hover{background:#fff;}
-			ul.sl-repeater li.sl-alt-item a.ee-edit:hover{background:#F2F6F9;}
-		ul.sl-repeater li a.ee-delete{display:block;float:left;padding:2px 15px;text-transform:capitalize;font-weight:bold;margin:0 5px;border-color:#fff #c8d6e1 #c8d6e1 #fff;border-style:solid;border-width:1px;font-family: Helvetica, Arial, Sans-Serif;}
-			ul.sl-repeater li.sl-item a.ee-delete:hover{background:#fff;}
-			ul.sl-repeater li.sl-alt-item a.ee-edit:hover{background:#F2F6F9;}
-		ul.sl-repeater li.sl-item, ul.sl-repeater li.sl-alt-item{background:#F2F6F9;color:#020202;border:1px solid #D4DFE1;border-top:none;}
+		ul.sl-repeater li .sl-repeater-actions a, .sa-action-btn a{display:block;float:left;padding:2px 15px;text-transform:capitalize;font-weight:bold;margin:0 5px;border-color:#fff #c8d6e1 #c8d6e1 #fff;border-style:solid;border-width:1px;font-family: Helvetica, Arial, Sans-Serif;}
+			ul.sl-repeater li.sl-item .sl-repeater-actions a:hover, .rgRow .sa-action-btn a:hover{background:#fff;}
+			ul.sl-repeater li.sl-alt-item .sl-repeater-actions a:hover, .rgAltRow .sa-action-btn a:hover{background:#F2F6F9;}
+		ul.sl-repeater li{background:#F2F6F9;color:#020202;border:1px solid #D4DFE1;border-top:none;}
 			ul.sl-repeater li.sl-alt-item{background:#fff;}
 /*============ Global Navigation ============*/
 ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px #e4bbab solid;border-bottom:1px #e4bbab solid;padding:10px 15px;margin:0 0 15px 0;height:100%}

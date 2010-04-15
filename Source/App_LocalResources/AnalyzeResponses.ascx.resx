@@ -117,20 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnalyzeLink.Text" xml:space="preserve">
-    <value>analyze</value>
+  <data name="AnonymousUser.Text" xml:space="preserve">
+    <value>Anonymous User</value>
   </data>
-  <data name="CancelButton.Text" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="Date.Text" xml:space="preserve">
+    <value>Date</value>
   </data>
-  <data name="EditLink.Text" xml:space="preserve">
-    <value>edit</value>
+  <data name="DateLabel.Format" xml:space="preserve">
+    <value>{0:g}</value>
   </data>
-  <data name="NewSurveyButton.Text" xml:space="preserve">
-    <value>Add New Survey</value>
+  <data name="FileName.Format" xml:space="preserve">
+    <value>Responses for '{1}' as of {0:yyyy'-'MM'-'dd' 'HH'-'mm'-'ss}</value>
+    <comment>{0} = Current Date/Time
+{1} = Survey Title
+{2} = Survey ID</comment>
   </data>
-  <data name="Survey Definitions.Text" xml:space="preserve">
-    <value>Survey Definitions</value>
+  <data name="No Responses.Text" xml:space="preserve">
+    <value>There are not yet any responses for this survey</value>
+  </data>
+  <data name="Response ID.Text" xml:space="preserve">
+    <value>Response ID</value>
+  </data>
+  <data name="User.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="UserLabel.Format" xml:space="preserve">
+    <value>{0}</value>
+    <comment>{0} = Display Name
+{1} = First Name
+{2} = Last Name</comment>
+  </data>
+  <data name="View.Text" xml:space="preserve">
+    <value />
   </data>
   <data name="ViewLink.Text" xml:space="preserve">
     <value>view</value>

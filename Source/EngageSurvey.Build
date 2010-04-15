@@ -31,6 +31,7 @@
     <exclude name="??.??.??.txt" />
     <exclude name="_ReSharper.*/**"/>
     <exclude name="**/obj/**"/>
+    <exclude name="${references.directory}/*.xml"/>
   </patternset>
   <patternset id="source.fileset">
     <include name="**/*.js"/>
@@ -64,7 +65,7 @@
     <property name="version" value="${assemblyname::get-version(assembly::get-name(assembly::load-from-file(project.dll)))}" />
     <property name="project.version" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
   </target>
-  <target name="package" depends="get-version" description="Creates packages for this module, one for each three licenses and version of DNN (4 and 5)">
+  <target name="package" depends="get-version" description="Creates packages for this module, one for each three licenses">
     <property name="package.directory" value="package"/>
     <property name="package.name" value="Resources.zip"/>
     <property name="package.license" value="Standard"/>
@@ -86,9 +87,6 @@
 
     <call target="get-dependency-source"/>
 
-    <property name="dnn.version" value="4"/>
-    <call target="combine-enterprise"/>
-    <property name="dnn.version" value="5"/>
     <call target="combine-enterprise"/>
 
     <call target="project-specific-tasks"/>
@@ -139,7 +137,6 @@
         <include name="??.??.??.txt" />
         <include name="ReadMe.txt" />
         <include name="**/*.SqlDataProvider"/>
-        <include name="**/*.4.dnn"/>
         <include name="**/*.5.dnn"/>
       </fileset>
     </copy>
@@ -154,6 +151,7 @@
         <exclude name="${references.directory}/Microsoft.ApplicationBlocks.Data.dll"/>
         <exclude name="${references.directory}/System.Web.Extensions.dll"/>
         <exclude name="${references.directory}/*.Design.dll"/>
+        <exclude name="${references.directory}/Telerik.Web.UI.dll"/>
       </fileset>
     </copy>
 
@@ -167,16 +165,11 @@
     <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${project.version}" xpath="dotnetnuke/packages/package/@version"/>
     <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${project.version}" xpath="dotnetnuke/packages/package/components/component[@type='Script']/scripts/script[@type='UnInstall']/version"/>
     <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.5.dnn" value="${project.version}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[version='REPLACED BY NANT']/version"/>
-    <xmlpoke file="${package.directory}/temp/package/Engage${project.name}.4.dnn" value="${project.version}" xpath="dotnetnuke/folders/folder/version"/>
   </target>
-  <target name="create-packages" description="For the given license and type, creates packages for DNN 4 and DNN 5">
+  <target name="create-packages" description="For the given license and type, creates packages for DNN 5">
     <property name="license.file" value="EULA-${package.license}.htm"/>
     <call target="switch-license"/>
 
-    <property name="dnn.version" value="4"/>
-    <call target="zip-package"/>
-
-    <property name="dnn.version" value="5"/>
     <call target="zip-package"/>
   </target>
   <target name="switch-license" description="Switches out the license file and updates the reference to it in the DNN 5 manifest file">
@@ -198,25 +191,23 @@
     <if test="${includeSource}">
       <property name="package.type" value="Source"/>
     </if>
-    <zip zipfile="${package.directory}/${project.name}_${package.license}_${project.version}_${package.type}_${dnn.version}.zip">
+    <zip zipfile="${package.directory}/${project.name}_${package.license}_${project.version}_${package.type}.zip">
       <fileset basedir="${package.directory}/temp/package">
         <include name="**/*"/>
-        <exclude name="**/*.4.dnn" if="${dnn.version=='5'}"/>
-        <exclude name="**/*.5.dnn" if="${dnn.version=='4'}"/>
       </fileset>
     </zip>
   </target>
   <target name="combine-enterprise" description="Combines the Install and Source enterprise packages into one .zip file">
-    <zip zipfile="${package.directory}/${project.name}_${package.license}_${project.version}_${dnn.version}.zip">
+    <zip zipfile="${package.directory}/${project.name}_${package.license}_${project.version}.zip">
       <fileset basedir="${package.directory}">
-        <include name="${project.name}_${package.license}_${project.version}_Install_${dnn.version}.zip"/>
-        <include name="${project.name}_${package.license}_${project.version}_Source_${dnn.version}.zip"/>
+        <include name="${project.name}_${package.license}_${project.version}_Install.zip"/>
+        <include name="${project.name}_${package.license}_${project.version}_Source.zip"/>
         <include name="${project.name}_${package.license}_${project.version}_DependencySource.zip"/>
       </fileset>
     </zip>
 
-    <delete file="${package.directory}/${project.name}_${package.license}_${project.version}_Install_${dnn.version}.zip" failonerror="false"/>
-    <delete file="${package.directory}/${project.name}_${package.license}_${project.version}_Source_${dnn.version}.zip" failonerror="false"/>
+    <delete file="${package.directory}/${project.name}_${package.license}_${project.version}_Install.zip" failonerror="false"/>
+    <delete file="${package.directory}/${project.name}_${package.license}_${project.version}_Source.zip" failonerror="false"/>
   </target>
   <target name="get-dependency-source" description="Gets the latest source packages for the Engage Framework dependencies for this module">
     <property name="build.directory" value="_0.0"/>

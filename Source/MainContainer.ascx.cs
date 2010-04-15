@@ -79,7 +79,8 @@ namespace Engage.Dnn.Survey
                                { DefaultControlKey, DefaultSubControl },
                                { ControlKey.ViewSurvey, new SubControlInfo("ViewSurvey.ascx", false) },
                                { ControlKey.EditSurvey, new SubControlInfo("EditSurvey.ascx", true) },
-                               { ControlKey.ThankYou, new SubControlInfo("ThankYou.ascx", false) }
+                               { ControlKey.ThankYou, new SubControlInfo("ThankYou.ascx", false) },
+                               { ControlKey.Analyze, new SubControlInfo("AnalyzeResponses.ascx", true) }
                        };
         }
 

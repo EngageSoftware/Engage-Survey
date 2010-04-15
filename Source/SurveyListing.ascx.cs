@@ -17,35 +17,15 @@ namespace Engage.Dnn.Survey
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
     using Engage.Survey;
     using Engage.Survey.Entities;
 
     /// <summary>
-    /// The SurveyListing class displays the content
+    /// Lists this module's surveys, with links to edit the surveys and view responses
     /// </summary>
     public partial class SurveyListing : ModuleBase
     {
-        private enum ListingMode
-        {
-            Definition,
-            Completed
-        }
-
-        private ListingMode SelectedListingMode
-        {
-            get
-            {
-                if (Enum.IsDefined(typeof(ListingMode), this.FilterRadioButtonList.SelectedValue))
-                {
-                    return (ListingMode)Enum.Parse(typeof(ListingMode), this.FilterRadioButtonList.SelectedValue);
-                }
-
-                return ListingMode.Definition;
-            }
-        }
-
         /// <summary>
         /// Raises the <see cref="Control.Init"/> event.
         /// </summary>
@@ -55,8 +35,6 @@ namespace Engage.Dnn.Survey
             this.Load += this.Page_Load;
             this.NewSurveyButton.Click += this.NewSurveyButton_Click;
             this.SurveyGrid.ItemDataBound += this.SurveyDataGrid_OnItemDataBound;
-            this.FilterRadioButtonList.SelectedIndexChanged += this.FilterRadioButtonList_SelectedIndexChanged;
-            this.FilterRadioButtonList.Visible = this.IsAdmin;
             this.NewSurveyButton.Visible = this.IsAdmin;
             base.OnInit(e);
         }
@@ -64,36 +42,37 @@ namespace Engage.Dnn.Survey
         /// <summary>
         /// Binds the data.
         /// </summary>
-        /// <param name="mode">The listing mode.</param>
-        private void BindData(ListingMode mode)
+        private void BindData()
         {
-            if (mode == ListingMode.Definition)
+            var surveys = new SurveyRepository().LoadSurveys(this.ModuleId);
+            if (!this.IsAdmin)
             {
-                // bind to survey definitions
-                var surveys = new SurveyRepository().LoadSurveys(this.ModuleId);
-                if (!this.IsAdmin)
-                {
-                    surveys = surveys.Where(survey => survey.StartDate <= DateTime.Now && survey.EndDate > DateTime.Now);
-                }
+                surveys = surveys.Where(survey => survey.StartDate <= DateTime.Now && survey.EndDate > DateTime.Now);
+            }
 
-                this.SurveyGrid.DataSource = surveys;
-            }
-            else
-            {
-                this.SurveyGrid.DataSource = new SurveyRepository().LoadReadOnlySurveys(this.ModuleId);
-            }
+            this.SurveyGrid.DataSource = surveys;
 
             this.SurveyGrid.DataBind();
         }
 
         /// <summary>
+        /// Builds the URL to analyze the responses for the given survey.
+        /// </summary>
+        /// <param name="surveyId">The survey ID.</param>
+        /// <returns>A URL which takes the user to a page to analyze the responses to the survey with the given <paramref name="surveyId"/></returns>
+        private string BuildAnalyzeUrl(int surveyId)
+        {
+            return this.BuildLinkUrl(this.ModuleId, ControlKey.Analyze, "surveyId=" + surveyId.ToString(CultureInfo.InvariantCulture));
+        }
+
+        /// <summary>
         /// Builds the URL to edit the given survey.
         /// </summary>
-        /// <param name="surveyId">The survey id.</param>
+        /// <param name="surveyId">The survey ID.</param>
         /// <returns>A URL which takes the user to a page to edit the survey with the given <paramref name="surveyId"/></returns>
         private string BuildEditUrl(int surveyId)
         {
-            return BuildLinkUrl(this.ModuleId, "EditSurvey", "surveyId=" + surveyId);
+            return BuildLinkUrl(this.ModuleId, "EditSurvey", "surveyId=" + surveyId.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -108,22 +87,15 @@ namespace Engage.Dnn.Survey
         /// <summary>
         /// Build the URL to the read-only preview of the given survey.
         /// </summary>
-        /// <param name="id">The id of the survey or response.</param>
-        /// <param name="key">Survey Id or Response Header Id</param>
-        /// <returns>A URL to a read-only preview of the survey with the given <paramref name="id"/></returns>
-        private string BuildPreviewUrl(int id, string key)
+        /// <param name="surveyId">The survey ID.</param>
+        /// <returns>A URL to a read-only preview of the survey with the given <paramref name="surveyId"/></returns>
+        private string BuildPreviewUrl(int surveyId)
         {
-            return BuildLinkUrl(this.ModuleId, "ViewSurvey", key + "=" + id + "&returnurl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl));
-        }
-
-        /// <summary>
-        /// Handles the <see cref="ListControl.SelectedIndexChanged"/> event of the <see cref="FilterRadioButtonList"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void FilterRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.BindData(this.SelectedListingMode);
+            return BuildLinkUrl(
+                    this.ModuleId,
+                    "ViewSurvey",
+                    "SurveyId=" + surveyId.ToString(CultureInfo.InvariantCulture),
+                    "returnurl=" + HttpUtility.UrlEncode(this.Request.RawUrl));
         }
 
         /// <summary>
@@ -145,9 +117,9 @@ namespace Engage.Dnn.Survey
         {
             try
             {
-                if (!this.Page.IsPostBack)
+                if (!this.IsPostBack)
                 {
-                    this.BindData(0);
+                    this.BindData();
                 }
             }
             catch (Exception exc)
@@ -163,56 +135,37 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="DataGridItemEventArgs"/> instance containing the event data.</param>
         private void SurveyDataGrid_OnItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            if (e.Item.ItemType != ListItemType.Item && e.Item.ItemType != ListItemType.AlternatingItem)
             {
-                var survey = (ISurvey)e.Item.DataItem;
-                var completedSurvey = survey as ReadonlySurvey;
-                var surveyIsComplete = completedSurvey != null;
+                return;
+            }
 
-                var editHyperLink = e.Item.FindControl("EditHyperLink") as HyperLink;
-                if (editHyperLink != null)
-                {
-                    editHyperLink.NavigateUrl = this.BuildEditUrl(survey.SurveyId);
-                    editHyperLink.Visible = !surveyIsComplete && this.IsEditable;
-                }
+            var survey = (ISurvey)e.Item.DataItem;
 
-                var textHyperLink = e.Item.FindControl("TextHyperLink") as HyperLink;
-                if (textHyperLink != null)
-                {
-                    textHyperLink.Text = survey.Text;
-                    textHyperLink.NavigateUrl = surveyIsComplete
-                                                        ? this.BuildPreviewUrl(completedSurvey.ResponseHeaderId, "responseHeaderId") 
-                                                        : this.BuildPreviewUrl(survey.SurveyId, "SurveyId");
-                }
+            var textHyperLink = e.Item.FindControl("TextHyperLink") as HyperLink;
+            if (textHyperLink != null)
+            {
+                textHyperLink.Text = survey.Text;
+                textHyperLink.NavigateUrl = this.BuildPreviewUrl(survey.SurveyId);
+            }
 
-                var dateLabel = e.Item.FindControl("DateLabel") as Label;
-                var userLabel = e.Item.FindControl("UserLabel") as Label;
-                if (dateLabel != null)
-                {
-                    dateLabel.Text = surveyIsComplete ? string.Format(CultureInfo.CurrentCulture, this.Localize("DateLabel.Format"), completedSurvey.CreationDate) : survey.GetSections()[0].Text;
-                }
+            var descriptionLabel = e.Item.FindControl("DescriptionLabel") as Label;
+            if (descriptionLabel != null)
+            {
+                descriptionLabel.Text = survey.GetSections().First().Text;
+            }
 
-                if (userLabel != null)
-                {
-                    userLabel.Visible = surveyIsComplete;
-                    if (surveyIsComplete)
-                    {
-                        var surveyUser = completedSurvey.UserId.HasValue ? UserController.GetUser(this.PortalId, completedSurvey.UserId.Value, false) : null;
-                        if (surveyUser != null)
-                        {
-                            userLabel.Text = string.Format(
-                                    CultureInfo.CurrentCulture,
-                                    this.Localize("UserLabel.Format"),
-                                    surveyUser.DisplayName,
-                                    surveyUser.FirstName,
-                                    surveyUser.LastName);
-                        }
-                        else
-                        {
-                            userLabel.Text = this.Localize("AnonymousUser.Text");
-                        }
-                    }
-                }
+            var editHyperLink = e.Item.FindControl("EditHyperLink") as HyperLink;
+            if (editHyperLink != null)
+            {
+                editHyperLink.NavigateUrl = this.BuildEditUrl(survey.SurveyId);
+                editHyperLink.Visible = this.IsEditable;
+            }
+
+            var analyzeLink = e.Item.FindControl("AnalyzeLink") as HyperLink;
+            if (analyzeLink != null)
+            {
+                analyzeLink.NavigateUrl = BuildAnalyzeUrl(survey.SurveyId);
             }
         }
     }

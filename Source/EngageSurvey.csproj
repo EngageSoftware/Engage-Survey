@@ -97,6 +97,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AnalyzeResponses.ascx" />
+    <Content Include="ReleaseNotes_3.1.0.htm" />
     <Content Include="EditSurvey.ascx" />
     <Content Include="MainContainer.ascx" />
     <Content Include="SurveyListing.ascx" />
@@ -114,6 +116,13 @@
     </Compile>
     <Compile Include="Controls\GlobalNavigation.ascx.designer.cs">
       <DependentUpon>GlobalNavigation.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AnalyzeResponses.ascx.cs">
+      <DependentUpon>AnalyzeResponses.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AnalyzeResponses.ascx.designer.cs">
+      <DependentUpon>AnalyzeResponses.ascx</DependentUpon>
     </Compile>
     <Compile Include="EditSurvey.ascx.designer.cs">
       <DependentUpon>EditSurvey.ascx</DependentUpon>
@@ -178,7 +187,6 @@
     <None Include="EngageSurvey.5.dnn" />
     <None Include="Providers\DataProviders\SqlDataProvider\3.0.0.SqlDataProvider" />
     <None Include="EngageSurvey.Build" />
-    <None Include="EngageSurvey.4.dnn" />
     <None Include="Providers\DataProviders\SqlDataProvider\SampleEvaluations.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
@@ -233,6 +241,7 @@
     </Content>
     <None Include="JavaScript\jquery-1.3.2.debug-vsdoc.js" />
     <None Include="Providers\DataProviders\SqlDataProvider\3.1.0.SqlDataProvider" />
+    <Content Include="App_LocalResources\AnalyzeResponses.ascx.resx" />
     <EmbeddedResource Include="Util\Net35.bindingRedirect.config" />
     <EmbeddedResource Include="Util\Net35.withoutNamespaces.config" />
     <Content Include="ClientService.asmx" />

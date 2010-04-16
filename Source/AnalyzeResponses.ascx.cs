@@ -262,15 +262,14 @@ namespace Engage.Dnn.Survey
                         ItemStyle = { CssClass = "sa-user" },
                         HtmlEncode = true
                     });
-            this.ResponseGrid.MasterTableView.Columns.Add(
-                new GridBoundColumn
-                    {
-                        DataField = "ResponseHeaderId",
-                        HeaderText = this.Localize("Response ID.Header"),
-                        HeaderStyle = { CssClass = "sa-id rgHeader" },
-                        ItemStyle = { CssClass = "sa-id" },
-                        Display = false
-                    });
+            ////this.ResponseGrid.MasterTableView.Columns.Add(
+            ////    new GridBoundColumn
+            ////        {
+            ////            DataField = "ResponseHeaderId",
+            ////            HeaderText = this.Localize("Response ID.Header"),
+            ////            HeaderStyle = { CssClass = "sa-id rgHeader" },
+            ////            ItemStyle = { CssClass = "sa-id" }
+            ////        });
             this.ResponseGrid.MasterTableView.Columns.Add(
                 new GridHyperLinkColumn
                     {

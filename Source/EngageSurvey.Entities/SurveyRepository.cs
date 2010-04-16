@@ -39,7 +39,7 @@ namespace Engage.Survey.Entities
         /// <param name="context">The data context.</param>
         protected SurveyRepository(SurveyModelDataContext context)
         {
-            Context = context;
+            this.Context = context;
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Engage.Survey.Entities
         /// </summary>
         /// <param name="responseHeaderId">The ID of the <see cref="ResponseHeader"/> that the instance is connected to.</param>
         /// <param name="userId">The ID of the user creating the instance.</param>
-        /// <returns></returns>
+        /// <returns>The new <see cref="Response"/> instance</returns>
         public Response CreateResponse(int responseHeaderId, int userId)
         {
             var response = new Response
@@ -141,15 +141,6 @@ namespace Engage.Survey.Entities
             this.Context.Surveys.InsertOnSubmit(createSurvey);
 
             return createSurvey;
-        }
-
-        /// <summary>
-        /// Deletes the specified answers.
-        /// </summary>
-        /// <param name="answers">The answers to delete.</param>
-        public void DeleteAnswers(IEnumerable<Answer> answers)
-        {
-            DeleteAnswers(answers, false);
         }
 
         /// <summary>
@@ -359,17 +350,22 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Loads all completed surveys.
+        /// Gets the responses for the given survey.
         /// </summary>
-        /// <param name="moduleId">The ID of the module by which to filter results.</param>
-        /// <returns>A list of surveys.</returns>
-        public IQueryable<ReadonlySurvey> LoadReadOnlySurveys(int moduleId)
+        /// <param name="surveyId">The ID of the survey for which to get resposnes.</param>
+        /// <returns>A list of response headers, each associated with the list of individual question responses for that header</returns>
+        public IQueryable<IGrouping<ResponseHeader, Response>> LoadResponses(int surveyId)
         {
-            return from readOnlySurvey in this.LoadReadOnlySurveys()
-                   join surveyDefinition in this.Context.Surveys on readOnlySurvey.SurveyId equals surveyDefinition.SurveyId
-                   where surveyDefinition.ModuleId == moduleId
-                   select readOnlySurvey;
-                           
+            var responses = from response in this.Context.Responses 
+                            where response.SurveyId == surveyId 
+                                  && response.UserResponse != null 
+                            orderby response.QuestionRelativeOrder
+                            select response;
+
+            return from response in responses
+                   group response by response.ResponseHeader into responsesByHeader
+                   orderby responsesByHeader.Key.CreationDate descending
+                   select responsesByHeader;
         }
 
         /// <summary>
@@ -386,7 +382,7 @@ namespace Engage.Survey.Entities
         /// Loads all the surveys for a particular module instance.
         /// </summary>
         /// <param name="moduleId">The ID of the module by which surveys should be filtered.</param>
-        /// <param name="getOutdatedSurveys"></param>
+        /// <param name="getOutdatedSurveys">Whether to retrieve surveys whose <see cref="Survey.StartDate"/> or <see cref="Survey.EndDate"/> is out of range for the current date</param>
         /// <returns>
         /// A sequence of the <see cref="Survey"/> instances
         /// </returns>

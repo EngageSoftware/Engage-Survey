@@ -1,4 +1,4 @@
-// <copyright file="SurveyListing.ascx.cs" company="Engage Software">
+// <copyright file="AnalyzeResponses.ascx.cs" company="Engage Software">
 // Engage: Survey
 // Copyright (c) 2004-2010
 // by Engage Software ( http://www.engagesoftware.com )
@@ -12,14 +12,20 @@
 namespace Engage.Dnn.Survey
 {
     using System;
+    using System.Data;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Web;
     using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     using Engage.Survey.Entities;
     using Telerik.Web.UI;
 
@@ -32,6 +38,11 @@ namespace Engage.Dnn.Survey
         /// A regular expression to match (one or more) invalid filename characters or an underscore (to be used to replace the invalid characters with underscores, without having multiple underscores in a row)
         /// </summary>
         private static readonly Regex InvalidFilenameCharactersExpression = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "_]+", RegexOptions.Compiled);
+
+        /// <summary>
+        /// Backing field for <see cref="Responses"/>
+        /// </summary>
+        private IQueryable<IGrouping<ResponseHeader, Response>> responses;
 
         /// <summary>
         /// Backing field for <see cref="Survey"/>
@@ -61,6 +72,28 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
+        /// Gets or sets the grid control in which responses are listed.
+        /// </summary>
+        private RadGrid ResponseGrid { get; set; }
+
+        /// <summary>
+        /// Gets the list of responses (a list of response header, grouped with their related responses).
+        /// </summary>
+        /// <value>A queryable sequence of <see cref="ResponseHeader"/> instances, grouped with the header's corresponding <see cref="Response"/>s.</value>
+        private IQueryable<IGrouping<ResponseHeader, Response>> Responses
+        {
+            get
+            {
+                if (this.responses == null)
+                {
+                    this.responses = new SurveyRepository().LoadResponses(this.SurveyId);
+                }
+
+                return this.responses;
+            }
+        }
+
+        /// <summary>
         /// Gets the ID of the survey for which to display responses.
         /// </summary>
         /// <value>The survey ID.</value>
@@ -84,45 +117,13 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Gets the name of the user.
-        /// </summary>
-        /// <param name="userId">The user ID, or <c>null</c> for anonymous users.</param>
-        /// <returns>The user's name</returns>
-        protected string GetUser(int? userId)
-        {
-            var user = UserController.GetUser(this.PortalId, userId ?? Null.NullInteger, false);
-            if (user == null)
-            {
-                return this.Localize("AnonymousUser.Text");
-            }
-
-            return string.Format(
-                CultureInfo.CurrentCulture, 
-                this.Localize("UserLabel.Format"), 
-                user.DisplayName, 
-                user.FirstName, 
-                user.LastName);
-        }
-
-        /// <summary>
-        /// Gets the URL to view the completed survey.
-        /// </summary>
-        /// <param name="responseHeaderId">The ID of the <see cref="ResponseHeader"/>.</param>
-        /// <returns>A URL which points to a read-only view of the completed survey</returns>
-        protected string GetViewLink(int responseHeaderId)
-        {
-            return this.BuildLinkUrl(
-                    this.ModuleId, 
-                    ControlKey.ViewSurvey, 
-                    "responseHeaderId=" + responseHeaderId.ToString(CultureInfo.InvariantCulture));
-        }
-
-        /// <summary>
         /// Raises the <see cref="Control.Init"/> event.
         /// </summary>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected override void OnInit(EventArgs e)
         {
+            this.CreateGrid();
+
             this.Load += this.Page_Load;
             this.ResponseGrid.NeedDataSource += this.ResponseGrid_NeedDataSource;
             this.ResponseGrid.ItemCreated += ResponseGrid_ItemCreated;
@@ -159,14 +160,169 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Localizes the headers of the <see cref="ResponseGrid"/>.
+        /// Creates the <see cref="ResponseGrid"/>.
         /// </summary>
-        private void LocalizeGridHeaders()
+        /// <remarks>Because we're creating the question columns dynamically, it's easier to just create the whole grid dynamically</remarks>
+        private void CreateGrid()
         {
-            foreach (GridColumn column in this.ResponseGrid.MasterTableView.Columns)
+            ////<telerik:RadGrid ID="ResponseGrid" runat="server" Skin="Simple" CssClass="sa-grid" AutoGenerateColumns="false" GridLines="None" AllowPaging="true" AllowCustomPaging="true" PageSize="25">
+            ////    <ExportSettings ExportOnlyData="true" IgnorePaging="true" OpenInNewWindow="true"/>
+            ////    <MasterTableView CommandItemDisplay="TopAndBottom" DataKeyNames="ResponseHeaderId">
+            ////        <PagerStyle Mode="NextPrevNumericAndAdvanced" AlwaysVisible="true" />
+            ////        <CommandItemSettings ShowExportToWordButton="true" ShowExportToExcelButton="true" ShowExportToCsvButton="true" ShowExportToPdfButton="true" />
+            ////        <NoRecordsTemplate>
+            ////            <h3 class="no-responses"><%=Localize("No Responses.Text") %></h3>
+            ////        </NoRecordsTemplate>
+            ////        <Columns>
+            ////            <%-- Here be GridBoundColumns for each question --%>
+            ////            <telerik:GridBoundColumn DataField="CreationDate" HeaderText="Date" HeaderStyle-CssClass="sa-date" ItemStyle-CssClass="sa-date" />
+            ////            <telerik:GridBoundColumn DataField="User" HeaderText="User" HeaderStyle-CssClass="sa-user" ItemStyle-CssClass="sa-user"/>
+            ////            <telerik:GridBoundColumn DataField="ResponseHeaderId" HeaderText="Response ID" HeaderStyle-CssClass="sa-id" ItemStyle-CssClass="sa-id" />
+            ////            <telerik:GridHyperLinkColumn HeaderText="View" HeaderStyle-CssClass="sa-view" ItemStyle-CssClass="sa-view sa-action-btn" Text="View" DataNavigateUrlFormatString="<%=BuildLinkUrl(this.ModuleId, ViewSurvey, "responseHeaderId={0}"%>" DataNavigateUrlFields="ResponseHeaderId"/>
+            ////        </Columns>
+            ////    </MasterTableView>
+            ////</telerik:RadGrid>
+
+            this.ResponseGrid = new RadGrid
+                {
+                    ID = "ResponseGrid",
+                    Skin = "Simple",
+                    CssClass = "sa-grid",
+                    AutoGenerateColumns = false,
+                    GridLines = GridLines.None,
+                    AllowPaging = true,
+                    AllowCustomPaging = true,
+                    PageSize = 25,
+                    ExportSettings = { ExportOnlyData = true, IgnorePaging = true, OpenInNewWindow = true },
+                    MasterTableView =
+                        {
+                            CommandItemDisplay = GridCommandItemDisplay.TopAndBottom,
+                            DataKeyNames = new[] { "ResponseHeaderId" },
+                            PagerStyle = { Mode = GridPagerMode.NextPrevNumericAndAdvanced, AlwaysVisible = true },
+                            CommandItemSettings =
+                                {
+                                    ShowExportToWordButton = true,
+                                    ShowExportToExcelButton = true,
+                                    ShowExportToCsvButton = true,
+                                    ShowExportToPdfButton = true
+                                },
+                            NoRecordsTemplate = new NoRecordsTemplate(this.LocalResourceFile)
+                        }
+                };
+
+            // add column for each question
+            foreach (var response in Enumerable.Last(this.Responses))
             {
-                column.HeaderText = this.Localize(column.HeaderText);
+                this.ResponseGrid.MasterTableView.Columns.Add(
+                    new GridBoundColumn
+                        {
+                            DataField = response.QuestionText,
+                            HeaderText = response.QuestionText,
+                            HeaderStyle = { CssClass = "sa-question" },
+                            ItemStyle = { CssClass = "sa-question" }
+                        });
             }
+
+            this.ResponseGrid.MasterTableView.Columns.Add(
+                new GridBoundColumn
+                    {
+                        DataField = "CreationDate",
+                        HeaderText = this.Localize("Date.Header"),
+                        HeaderStyle = { CssClass = "sa-date" },
+                        ItemStyle = { CssClass = "sa-date" }
+                    });
+            this.ResponseGrid.MasterTableView.Columns.Add(
+                new GridBoundColumn
+                    {
+                        DataField = "User",
+                        HeaderText = this.Localize("User.Header"),
+                        HeaderStyle = { CssClass = "sa-user" },
+                        ItemStyle = { CssClass = "sa-user" }
+                    });
+            this.ResponseGrid.MasterTableView.Columns.Add(
+                new GridBoundColumn
+                    {
+                        DataField = "ResponseHeaderId",
+                        HeaderText = this.Localize("Response ID.Header"),
+                        HeaderStyle = { CssClass = "sa-id" },
+                        ItemStyle = { CssClass = "sa-id" }
+                    });
+            this.ResponseGrid.MasterTableView.Columns.Add(
+                new GridHyperLinkColumn
+                    {
+                        DataNavigateUrlFields = new[] { "ResponseHeaderId" },
+                        HeaderText = this.Localize("View.Header"),
+                        Text = this.Localize("View.Text"),
+                        HeaderStyle = { CssClass = "sa-view" },
+                        ItemStyle = { CssClass = "sa-view sa-action-btn" },
+                        DataNavigateUrlFormatString = this.BuildLinkUrl(this.ModuleId, ControlKey.ViewSurvey, "responseHeaderId={0}")
+                    });
+
+            this.ResponseGridPlaceholder.Controls.Add(this.ResponseGrid);
+        }
+
+        /// <summary>
+        /// Gets the name of the user.
+        /// </summary>
+        /// <param name="userId">The user ID, or <c>null</c> for anonymous users.</param>
+        /// <returns>The user's name</returns>
+        private string GetUser(int? userId)
+        {
+            var user = UserController.GetUser(this.PortalId, userId ?? Null.NullInteger, false);
+            if (user == null)
+            {
+                return this.Localize("AnonymousUser.Text");
+            }
+
+            return string.Format(
+                CultureInfo.CurrentCulture, 
+                this.Localize("UserLabel.Format"), 
+                user.DisplayName, 
+                user.FirstName, 
+                user.LastName);
+        }
+
+        /// <summary>
+        /// Pivots the questions into columns.
+        /// </summary>
+        /// <param name="responsesByHeader">A collection of <see cref="ResponseHeader"/>s, grouped with each header's <see cref="Response"/>s.</param>
+        /// <returns>A <see cref="DataTable"/> with columns for header information and for each question, and a row for each header</returns>
+        private DataTable PivotQuestions(IQueryable<IGrouping<ResponseHeader, Response>> responsesByHeader)
+        {
+            var table = new DataTable { Locale = CultureInfo.CurrentCulture };
+
+            if (!responsesByHeader.Any())
+            {
+                return table;
+            }
+
+            foreach (var response in Enumerable.Last(responsesByHeader))
+            {
+                table.Columns.Add(response.QuestionText, typeof(string));
+            }
+
+            // add header columns
+            var responseHeaderIdColumn = table.Columns.Add("ResponseHeaderId", typeof(int));
+            var creationDateColumn = table.Columns.Add("CreationDate", typeof(DateTime));
+            var userColumn = table.Columns.Add("User", typeof(string));
+
+            // create rows for each header
+            foreach (var headerWithResponses in responsesByHeader)
+            {
+                var row = table.NewRow();
+                table.Rows.Add(row);
+
+                foreach (var response in headerWithResponses)
+                {
+                    row[response.QuestionText] = response.UserResponse;
+                }
+
+                row[responseHeaderIdColumn] = headerWithResponses.Key.ResponseHeaderId;
+                row[creationDateColumn] = headerWithResponses.Key.CreationDate;
+                row[userColumn] = HttpUtility.HtmlEncode(this.GetUser(headerWithResponses.Key.UserId));
+            }
+
+            return table;
         }
 
         /// <summary>
@@ -200,7 +356,6 @@ namespace Engage.Dnn.Survey
                 if (!this.IsPostBack)
                 {
                     this.SetupExport();
-                    this.LocalizeGridHeaders();
                 }
             }
             catch (Exception exc)
@@ -216,9 +371,42 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="GridNeedDataSourceEventArgs"/> instance containing the event data.</param>
         private void ResponseGrid_NeedDataSource(object source, GridNeedDataSourceEventArgs e)
         {
-            var surveys = new SurveyRepository().LoadReadOnlySurveys(this.ModuleId);
-            this.ResponseGrid.DataSource = surveys.Skip(this.ResponseGrid.CurrentPageIndex * this.ResponseGrid.PageSize).Take(this.ResponseGrid.PageSize);
-            this.ResponseGrid.MasterTableView.VirtualItemCount = surveys.Count();
+            var pagedResponsesByHeader = this.Responses.Skip(this.ResponseGrid.CurrentPageIndex * this.ResponseGrid.PageSize).Take(this.ResponseGrid.PageSize);
+            this.ResponseGrid.DataSource = this.PivotQuestions(pagedResponsesByHeader);
+            this.ResponseGrid.MasterTableView.VirtualItemCount = this.Responses.Count();
+        }
+
+        /// <summary>
+        /// The template instantiated by the <see cref="AnalyzeResponses.ResponseGrid"/> when there are no responses to display
+        /// </summary>
+        private class NoRecordsTemplate : ITemplate
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Engage.Dnn.Survey.AnalyzeResponses.NoRecordsTemplate"/> class.
+            /// </summary>
+            /// <param name="resourceFile">The resource file.</param>
+            public NoRecordsTemplate(string resourceFile)
+            {
+                this.ResourceFile = resourceFile;
+            }
+
+            /// <summary>
+            /// Gets or sets he resource file.
+            /// </summary>
+            /// <value>The resource file.</value>
+            private string ResourceFile { get; set; }
+
+            /// <summary>
+            /// Defines the <see cref="Control"/> object that child controls and templates belong to. These child controls are in turn defined within an inline template.
+            /// </summary>
+            /// <param name="container">The <see cref="Control"/> object to contain the instances of controls from the inline template.</param>
+            public void InstantiateIn(Control container)
+            {
+// ReSharper disable LocalizableElement
+                container.Controls.Add(new Literal { Text = "<h3 class='no-responses'>" + Localization.GetString("No Responses.Text", this.ResourceFile) + "</h3>" });
+
+// ReSharper restore LocalizableElement
+            }
         }
     }
 }

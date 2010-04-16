@@ -13,12 +13,12 @@ namespace Engage.Dnn.Survey {
     public partial class AnalyzeResponses {
         
         /// <summary>
-        /// ResponseGrid control.
+        /// ResponseGridPlaceholder control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadGrid ResponseGrid;
+        protected global::System.Web.UI.WebControls.PlaceHolder ResponseGridPlaceholder;
     }
 }

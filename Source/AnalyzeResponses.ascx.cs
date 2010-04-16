@@ -132,13 +132,23 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Gets the name of the column for the question in the given <paramref name="response"/>.
+        /// Gets the name of the column for the question text in the given <paramref name="response"/>.
         /// </summary>
         /// <param name="response">The response from which to get the question info.</param>
-        /// <returns>The name of the column containing the responses to the question</returns>
-        private static string GetQuestionColumnName(Response response)
+        /// <returns>The name of the column containing the text of the responser to the question</returns>
+        private static string GetQuestionTextColumnName(Response response)
         {
-            return "Question-" + response.QuestionId.ToString(CultureInfo.InvariantCulture);
+            return "Question-Text-" + response.QuestionId.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Gets the name of the column for the question's order in the given <paramref name="response"/>.
+        /// </summary>
+        /// <param name="response">The response from which to get the question info.</param>
+        /// <returns>The name of the column containing the order of the responses to the question</returns>
+        private static string GetRelativeOrderColumnName(Response response)
+        {
+            return "Question-Order-" + response.QuestionId.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -223,10 +233,12 @@ namespace Engage.Dnn.Survey
                     "sa-question sa-question-{0} sa-question-id-{1}",
                     response.QuestionRelativeOrder,
                     response.QuestionId);
+
                 this.ResponseGrid.MasterTableView.Columns.Add(
                     new GridBoundColumn
                         {
-                            DataField = GetQuestionColumnName(response),
+                            DataField = GetQuestionTextColumnName(response),
+                            SortExpression = GetRelativeOrderColumnName(response),
                             HeaderText = response.QuestionText,
                             HeaderStyle = { CssClass = questionCssClass + " rgHeader" },
                             ItemStyle = { CssClass = questionCssClass },
@@ -322,12 +334,15 @@ namespace Engage.Dnn.Survey
                 return table;
             }
 
-            var columnMap = new Dictionary<int, DataColumn>();
+            var questionTextColumnMap = new Dictionary<int, DataColumn>();
+            var relativeOrderColumnMap = new Dictionary<int, DataColumn>();
 
             foreach (var response in Enumerable.Last(responsesByHeader))
             {
-                var column = table.Columns.Add(GetQuestionColumnName(response), typeof(string));
-                columnMap.Add(response.QuestionId, column);
+                var questionTextcolumn = table.Columns.Add(GetQuestionTextColumnName(response), typeof(string));
+                questionTextColumnMap.Add(response.QuestionId, questionTextcolumn);
+                var relativeOrdercolumn = table.Columns.Add(GetRelativeOrderColumnName(response), typeof(int));
+                relativeOrderColumnMap.Add(response.QuestionId, relativeOrdercolumn);
             }
 
             // add header columns
@@ -343,7 +358,8 @@ namespace Engage.Dnn.Survey
 
                 foreach (var response in headerWithResponses)
                 {
-                    row[columnMap[response.QuestionId]] = response.UserResponse;
+                    row[questionTextColumnMap[response.QuestionId]] = response.UserResponse;
+                    row[relativeOrderColumnMap[response.QuestionId]] = response.AnswerRelativeOrder ?? (object)DBNull.Value;
                 }
 
                 row[responseHeaderIdColumn] = headerWithResponses.Key.ResponseHeaderId;

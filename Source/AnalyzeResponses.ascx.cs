@@ -141,25 +141,6 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Handles the <see cref="RadGrid.ItemCreated"/> event of the <see cref="ResponseGrid"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="GridItemEventArgs"/> instance containing the event data.</param>
-        private static void ResponseGrid_ItemCreated(object sender, GridItemEventArgs e)
-        {
-            var commandItem = e.Item as GridCommandItem;
-            if (commandItem == null)
-            {
-                return;
-            }
-
-            commandItem.FindControl("AddNewRecordButton").Visible = false;
-            commandItem.FindControl("InitInsertButton").Visible = false;
-            commandItem.FindControl("RefreshButton").Visible = false;
-            commandItem.FindControl("RebindGridButton").Visible = false;
-        }
-
-        /// <summary>
         /// Creates the <see cref="ResponseGrid"/>.
         /// </summary>
         /// <remarks>Because we're creating the question columns dynamically, it's easier to just create the whole grid dynamically</remarks>
@@ -198,13 +179,30 @@ namespace Engage.Dnn.Survey
                         {
                             CommandItemDisplay = GridCommandItemDisplay.TopAndBottom,
                             DataKeyNames = new[] { "ResponseHeaderId" },
-                            PagerStyle = { Mode = GridPagerMode.NextPrevNumericAndAdvanced, AlwaysVisible = true },
+                            PagerStyle =
+                                {
+                                    Mode = GridPagerMode.NextPrevNumericAndAdvanced, 
+                                    AlwaysVisible = true,
+                                    FirstPageToolTip = this.Localize("First Page.ToolTip"),
+                                    PrevPageToolTip = this.Localize("Previous Page.ToolTip"),
+                                    NextPageToolTip = this.Localize("Next Page.ToolTip"),
+                                    LastPageToolTip = this.Localize("Last Page.ToolTip"),
+                                    FirstPageText = this.Localize("First Page.Text"),
+                                    PrevPageText = this.Localize("Previous Page.Text"),
+                                    NextPageText = this.Localize("Next Page.Text"),
+                                    LastPageText = this.Localize("Last Page.Text"),
+                                    PagerTextFormat = this.Localize("Pager.Format")
+                                },
                             CommandItemSettings =
                                 {
                                     ShowExportToWordButton = true,
                                     ShowExportToExcelButton = true,
                                     ShowExportToCsvButton = true,
-                                    ShowExportToPdfButton = true
+                                    ShowExportToPdfButton = true,
+                                    ExportToWordText = this.Localize("Export To Word.ToolTip"),
+                                    ExportToExcelText = this.Localize("Export To Excel.ToolTip"),
+                                    ExportToCsvText = this.Localize("Export To CSV.ToolTip"),
+                                    ExportToPdfText = this.Localize("Export To PDF.ToolTip")
                                 },
                             NoRecordsTemplate = new NoRecordsTemplate(this.LocalResourceFile)
                         }
@@ -374,6 +372,37 @@ namespace Engage.Dnn.Survey
             var pagedResponsesByHeader = this.Responses.Skip(this.ResponseGrid.CurrentPageIndex * this.ResponseGrid.PageSize).Take(this.ResponseGrid.PageSize);
             this.ResponseGrid.DataSource = this.PivotQuestions(pagedResponsesByHeader);
             this.ResponseGrid.MasterTableView.VirtualItemCount = this.Responses.Count();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="RadGrid.ItemCreated"/> event of the <see cref="ResponseGrid"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="GridItemEventArgs"/> instance containing the event data.</param>
+        private void ResponseGrid_ItemCreated(object sender, GridItemEventArgs e)
+        {
+            var commandItem = e.Item as GridCommandItem;
+            if (commandItem != null)
+            {
+                // control information from http://www.telerik.com/help/aspnet-ajax/grddefaultbehavior.html
+                commandItem.FindControl("AddNewRecordButton").Visible = false;
+                commandItem.FindControl("InitInsertButton").Visible = false;
+                commandItem.FindControl("RefreshButton").Visible = false;
+                commandItem.FindControl("RebindGridButton").Visible = false;
+            }
+            else
+            {
+                // control information from http://www.telerik.com/help/aspnet-ajax/grdaccessingdefaultpagerbuttons.html
+                var pagerItem = e.Item as GridPagerItem;
+                if (pagerItem != null)
+                {
+                    ((Label)pagerItem.FindControl("GoToPageLabel")).Text = this.Localize("Go to Page Label.Text");
+                    ((Button)pagerItem.FindControl("GoToPageLinkButton")).Text = this.Localize("Go to Page Button.Text");
+                    ((Label)pagerItem.FindControl("PageOfLabel")).Text = string.Format(CultureInfo.CurrentCulture, this.Localize("Page of.Format"), pagerItem.Paging.PageCount);
+                    ((Label)pagerItem.FindControl("ChangePageSizeLabel")).Text = this.Localize("Change Page Size Label.Text");
+                    ((Button)pagerItem.FindControl("ChangePageSizeLinkButton")).Text = this.Localize("Change Page Size Button.Text");
+                }
+            }
         }
 
         /// <summary>

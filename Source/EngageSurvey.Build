@@ -31,7 +31,7 @@
     <exclude name="??.??.??.txt" />
     <exclude name="_ReSharper.*/**"/>
     <exclude name="**/obj/**"/>
-    <exclude name="${references.directory}/*.xml"/>
+    <exclude name="${references.directory}/**"/>
   </patternset>
   <patternset id="source.fileset">
     <include name="**/*.js"/>

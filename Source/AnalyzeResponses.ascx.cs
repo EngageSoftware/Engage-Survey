@@ -12,6 +12,7 @@
 namespace Engage.Dnn.Survey
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Globalization;
     using System.IO;
@@ -126,8 +127,18 @@ namespace Engage.Dnn.Survey
 
             this.Load += this.Page_Load;
             this.ResponseGrid.NeedDataSource += this.ResponseGrid_NeedDataSource;
-            this.ResponseGrid.ItemCreated += ResponseGrid_ItemCreated;
+            this.ResponseGrid.ItemCreated += this.ResponseGrid_ItemCreated;
             base.OnInit(e);
+        }
+
+        /// <summary>
+        /// Gets the name of the column for the question in the given <paramref name="response"/>.
+        /// </summary>
+        /// <param name="response">The response from which to get the question info.</param>
+        /// <returns>The name of the column containing the responses to the question</returns>
+        private static string GetQuestionColumnName(Response response)
+        {
+            return "Question-" + response.QuestionId.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -146,24 +157,6 @@ namespace Engage.Dnn.Survey
         /// <remarks>Because we're creating the question columns dynamically, it's easier to just create the whole grid dynamically</remarks>
         private void CreateGrid()
         {
-            ////<telerik:RadGrid ID="ResponseGrid" runat="server" Skin="Simple" CssClass="sa-grid" AutoGenerateColumns="false" GridLines="None" AllowPaging="true" AllowCustomPaging="true" PageSize="25">
-            ////    <ExportSettings ExportOnlyData="true" IgnorePaging="true" OpenInNewWindow="true"/>
-            ////    <MasterTableView CommandItemDisplay="TopAndBottom" DataKeyNames="ResponseHeaderId">
-            ////        <PagerStyle Mode="NextPrevNumericAndAdvanced" AlwaysVisible="true" />
-            ////        <CommandItemSettings ShowExportToWordButton="true" ShowExportToExcelButton="true" ShowExportToCsvButton="true" ShowExportToPdfButton="true" />
-            ////        <NoRecordsTemplate>
-            ////            <h3 class="no-responses"><%=Localize("No Responses.Text") %></h3>
-            ////        </NoRecordsTemplate>
-            ////        <Columns>
-            ////            <%-- Here be GridBoundColumns for each question --%>
-            ////            <telerik:GridBoundColumn DataField="CreationDate" HeaderText="Date" HeaderStyle-CssClass="sa-date" ItemStyle-CssClass="sa-date" />
-            ////            <telerik:GridBoundColumn DataField="User" HeaderText="User" HeaderStyle-CssClass="sa-user" ItemStyle-CssClass="sa-user"/>
-            ////            <telerik:GridBoundColumn DataField="ResponseHeaderId" HeaderText="Response ID" HeaderStyle-CssClass="sa-id" ItemStyle-CssClass="sa-id" />
-            ////            <telerik:GridHyperLinkColumn HeaderText="View" HeaderStyle-CssClass="sa-view" ItemStyle-CssClass="sa-view sa-action-btn" Text="View" DataNavigateUrlFormatString="<%=BuildLinkUrl(this.ModuleId, ViewSurvey, "responseHeaderId={0}"%>" DataNavigateUrlFields="ResponseHeaderId"/>
-            ////        </Columns>
-            ////    </MasterTableView>
-            ////</telerik:RadGrid>
-
             this.ResponseGrid = new RadGrid
                 {
                     ID = "ResponseGrid",
@@ -171,17 +164,31 @@ namespace Engage.Dnn.Survey
                     CssClass = "sa-grid",
                     AutoGenerateColumns = false,
                     GridLines = GridLines.None,
+                    AllowSorting = true,
                     AllowPaging = true,
                     AllowCustomPaging = true,
                     PageSize = 25,
-                    ExportSettings = { ExportOnlyData = true, IgnorePaging = true, OpenInNewWindow = true },
+                    ExportSettings =
+                        {
+                            ExportOnlyData = true, 
+                            IgnorePaging = true, 
+                            OpenInNewWindow = true,
+                            FileName = this.GetExportFilename()
+                        },
+                    SortingSettings =
+                        {
+                            SortedAscToolTip = this.Localize("Sorted Ascending.ToolTip"),
+                            SortedDescToolTip = this.Localize("Sorted Descending.ToolTip"),
+                            SortToolTip = this.Localize("Sort.ToolTip")
+                        },
                     MasterTableView =
                         {
+                            AllowNaturalSort = false,
+                            SortExpressions = { new GridSortExpression { FieldName = "CreationDate", SortOrder = GridSortOrder.Descending } },
                             CommandItemDisplay = GridCommandItemDisplay.TopAndBottom,
-                            DataKeyNames = new[] { "ResponseHeaderId" },
                             PagerStyle =
                                 {
-                                    Mode = GridPagerMode.NextPrevNumericAndAdvanced, 
+                                    Mode = GridPagerMode.NextPrevNumericAndAdvanced,
                                     AlwaysVisible = true,
                                     FirstPageToolTip = this.Localize("First Page.ToolTip"),
                                     PrevPageToolTip = this.Localize("Previous Page.ToolTip"),
@@ -211,13 +218,18 @@ namespace Engage.Dnn.Survey
             // add column for each question
             foreach (var response in Enumerable.Last(this.Responses))
             {
+                var questionCssClass = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "sa-question sa-question-{0} sa-question-id-{1}",
+                    response.QuestionRelativeOrder,
+                    response.QuestionId);
                 this.ResponseGrid.MasterTableView.Columns.Add(
                     new GridBoundColumn
                         {
-                            DataField = response.QuestionText,
+                            DataField = GetQuestionColumnName(response),
                             HeaderText = response.QuestionText,
-                            HeaderStyle = { CssClass = "sa-question" },
-                            ItemStyle = { CssClass = "sa-question" }
+                            HeaderStyle = { CssClass = questionCssClass + " rgHeader" },
+                            ItemStyle = { CssClass = questionCssClass },
                         });
             }
 
@@ -226,7 +238,7 @@ namespace Engage.Dnn.Survey
                     {
                         DataField = "CreationDate",
                         HeaderText = this.Localize("Date.Header"),
-                        HeaderStyle = { CssClass = "sa-date" },
+                        HeaderStyle = { CssClass = "sa-date rgHeader" },
                         ItemStyle = { CssClass = "sa-date" }
                     });
             this.ResponseGrid.MasterTableView.Columns.Add(
@@ -234,16 +246,18 @@ namespace Engage.Dnn.Survey
                     {
                         DataField = "User",
                         HeaderText = this.Localize("User.Header"),
-                        HeaderStyle = { CssClass = "sa-user" },
-                        ItemStyle = { CssClass = "sa-user" }
+                        HeaderStyle = { CssClass = "sa-user rgHeader" },
+                        ItemStyle = { CssClass = "sa-user" },
+                        HtmlEncode = true
                     });
             this.ResponseGrid.MasterTableView.Columns.Add(
                 new GridBoundColumn
                     {
                         DataField = "ResponseHeaderId",
                         HeaderText = this.Localize("Response ID.Header"),
-                        HeaderStyle = { CssClass = "sa-id" },
-                        ItemStyle = { CssClass = "sa-id" }
+                        HeaderStyle = { CssClass = "sa-id rgHeader" },
+                        ItemStyle = { CssClass = "sa-id" },
+                        Display = false
                     });
             this.ResponseGrid.MasterTableView.Columns.Add(
                 new GridHyperLinkColumn
@@ -251,12 +265,26 @@ namespace Engage.Dnn.Survey
                         DataNavigateUrlFields = new[] { "ResponseHeaderId" },
                         HeaderText = this.Localize("View.Header"),
                         Text = this.Localize("View.Text"),
-                        HeaderStyle = { CssClass = "sa-view" },
+                        HeaderStyle = { CssClass = "sa-view rgHeader" },
                         ItemStyle = { CssClass = "sa-view sa-action-btn" },
                         DataNavigateUrlFormatString = this.BuildLinkUrl(this.ModuleId, ControlKey.ViewSurvey, "responseHeaderId={0}")
                     });
 
             this.ResponseGridPlaceholder.Controls.Add(this.ResponseGrid);
+        }
+
+        /// <summary>
+        /// Gets the name of the file when exporting data
+        /// </summary>
+        private string GetExportFilename()
+        {
+            var filename = string.Format(
+                CultureInfo.CurrentCulture, 
+                this.Localize("FileName.Format"), 
+                DateTime.Now, 
+                this.Survey.Text, 
+                this.Survey.SurveyId);
+            return RemoveInvalidCharacters(filename);
         }
 
         /// <summary>
@@ -294,9 +322,12 @@ namespace Engage.Dnn.Survey
                 return table;
             }
 
+            var columnMap = new Dictionary<int, DataColumn>();
+
             foreach (var response in Enumerable.Last(responsesByHeader))
             {
-                table.Columns.Add(response.QuestionText, typeof(string));
+                var column = table.Columns.Add(GetQuestionColumnName(response), typeof(string));
+                columnMap.Add(response.QuestionId, column);
             }
 
             // add header columns
@@ -312,7 +343,7 @@ namespace Engage.Dnn.Survey
 
                 foreach (var response in headerWithResponses)
                 {
-                    row[response.QuestionText] = response.UserResponse;
+                    row[columnMap[response.QuestionId]] = response.UserResponse;
                 }
 
                 row[responseHeaderIdColumn] = headerWithResponses.Key.ResponseHeaderId;
@@ -321,20 +352,6 @@ namespace Engage.Dnn.Survey
             }
 
             return table;
-        }
-
-        /// <summary>
-        /// Sets up the grid's export stuff.
-        /// </summary>
-        private void SetupExport()
-        {
-            var filename = string.Format(
-                    CultureInfo.CurrentCulture, 
-                    this.Localize("FileName.Format"), 
-                    DateTime.Now, 
-                    this.Survey.Text, 
-                    this.Survey.SurveyId);
-            this.ResponseGrid.ExportSettings.FileName = RemoveInvalidCharacters(filename);
         }
 
         /// <summary>
@@ -349,11 +366,6 @@ namespace Engage.Dnn.Survey
                 if (string.IsNullOrEmpty(this.Request.QueryString["SurveyId"]))
                 {
                     this.Response.Redirect(this.BuildLinkUrl(this.ModuleId, ControlKey.SurveyListing));
-                }
-
-                if (!this.IsPostBack)
-                {
-                    this.SetupExport();
                 }
             }
             catch (Exception exc)

@@ -199,6 +199,15 @@
   <data name="Response ID.Header" xml:space="preserve">
     <value>Response ID</value>
   </data>
+  <data name="Sort.ToolTip" xml:space="preserve">
+    <value>Click here to sort</value>
+  </data>
+  <data name="Sorted Ascending.ToolTip" xml:space="preserve">
+    <value>Sorted asc</value>
+  </data>
+  <data name="Sorted Descending.ToolTip" xml:space="preserve">
+    <value>Sorted desc</value>
+  </data>
   <data name="User.Header" xml:space="preserve">
     <value>User</value>
   </data>

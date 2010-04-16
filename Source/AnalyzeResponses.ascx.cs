@@ -22,12 +22,16 @@ namespace Engage.Dnn.Survey
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
     using Engage.Survey.Entities;
+
+    using Telerik.Charting;
+    using Telerik.Charting.Styles;
     using Telerik.Web.UI;
 
     /// <summary>
@@ -35,6 +39,8 @@ namespace Engage.Dnn.Survey
     /// </summary>
     public partial class AnalyzeResponses : ModuleBase
     {
+        private const string TelerikControlsSkin = "Simple";
+
         /// <summary>
         /// A regular expression to match (one or more) invalid filename characters or an underscore (to be used to replace the invalid characters with underscores, without having multiple underscores in a row)
         /// </summary>
@@ -123,12 +129,45 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected override void OnInit(EventArgs e)
         {
+            this.CreateGraphs();
             this.CreateGrid();
 
             this.Load += this.Page_Load;
             this.ResponseGrid.NeedDataSource += this.ResponseGrid_NeedDataSource;
             this.ResponseGrid.ItemCreated += this.ResponseGrid_ItemCreated;
             base.OnInit(e);
+        }
+
+        private void CreateGraphs()
+        {
+            var questions = new SurveyRepository().LoadAnswerResponseCounts(this.SurveyId);
+            foreach (var questionPair in questions)
+            {
+                var question = questionPair.First;
+                var answers = questionPair.Second;
+
+                var chart = new RadChart
+                    {
+                        ChartTitle = { TextBlock = { Text = question.Text } },
+                        SeriesOrientation = ChartSeriesOrientation.Horizontal,
+                        AutoTextWrap = true,
+                        AutoLayout = true,
+                        HttpHandlerUrl = this.ResolveUrl("~/ChartImage.axd")/*,
+                        PlotArea = { XAxis = { Visible = ChartAxisVisibility.False }, YAxis = { Step = 1 } }*/
+                    };
+
+                var chartSeries = new ChartSeries();
+                foreach (var answerPair in answers)
+                {
+                    var answer = answerPair.First;
+                    var answerCount = answerPair.Second;
+
+                    chartSeries.Items.Add(new ChartSeriesItem(answerCount, answer.Text));
+                }
+
+                chart.Series.Add(chartSeries);
+                this.ChartsPanel.Controls.Add(chart);
+            }
         }
 
         /// <summary>
@@ -170,7 +209,7 @@ namespace Engage.Dnn.Survey
             this.ResponseGrid = new RadGrid
                 {
                     ID = "ResponseGrid",
-                    Skin = "Simple",
+                    Skin = TelerikControlsSkin,
                     CssClass = "sa-grid",
                     AutoGenerateColumns = false,
                     GridLines = GridLines.None,

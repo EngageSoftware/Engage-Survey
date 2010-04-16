@@ -209,6 +209,39 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Loads all of the question, their answers, and the number of responses per answer for the given survey
+        /// </summary>
+        /// <param name="surveyId">The ID of the survey.</param>
+        /// <returns>
+        /// A sequence of <see cref="Pair{TFirst,TSecond}"/>s mapping <see cref="Question"/> instances to the list of that question's <see cref="Answer"/>s, 
+        /// paired with the number of responses for the answer
+        /// </returns>
+        public IQueryable<Pair<Question, IEnumerable<Pair<Answer, int>>>> LoadAnswerResponseCounts(int surveyId)
+        {
+            return from answer in this.Context.Answers
+                   join question in this.Context.Questions on answer.QuestionId equals question.QuestionId
+                   join section in this.Context.Sections on question.SectionId equals section.SectionId
+                   where section.SurveyId == surveyId
+                   orderby answer.RelativeOrder
+                   group answer by question into answersByQuestion 
+                   orderby answersByQuestion.Key.RelativeOrder
+                   select new Pair<Question, IEnumerable<Pair<Answer, int>>>
+                           {
+                               First = answersByQuestion.Key,
+                               Second = from answer in answersByQuestion
+                                        join response in this.Context.Responses.Where(r => r.UserResponse != null)
+                                            on answer.AnswerId equals response.AnswerId into answerResponses
+                                        from answerResponse in answerResponses.DefaultIfEmpty()
+                                        group answerResponse by answer into responsesByAnswer
+                                        select new Pair<Answer, int>
+                                                {
+                                                    First = responsesByAnswer.Key,
+                                                    Second = responsesByAnswer.Count(r => r != null)
+                                                }
+                           };
+        }
+
+        /// <summary>
         /// Loads the completed answers for a given completed question.
         /// </summary>
         /// <param name="responseHeaderId">The ID of the <see cref="ResponseHeader"/> of the completed survey.</param>

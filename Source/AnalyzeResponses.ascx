@@ -7,5 +7,6 @@
         <h3 class="sa-survey-title"><%=HttpUtility.HtmlEncode(this.Survey.Text) %></h3>
         <p class="sa-survey-desc"><%=HttpUtility.HtmlEncode(this.Survey.Sections.First().Text) %></p>
     </div>
+    <asp:Panel ID="ChartsPanel" runat="server" CssClass="sa-charts" />
     <asp:PlaceHolder ID="ResponseGridPlaceholder" runat="server" />
 </div>

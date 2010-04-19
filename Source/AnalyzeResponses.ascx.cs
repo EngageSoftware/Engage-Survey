@@ -43,6 +43,11 @@ namespace Engage.Dnn.Survey
         private const string TelerikControlsSkin = "Simple";
 
         /// <summary>
+        /// The skin to use for Telerik charts
+        /// </summary>
+        private const string TelerikChartsSkin = "Telerik";
+
+        /// <summary>
         /// A regular expression to match (one or more) invalid filename characters or an underscore (to be used to replace the invalid characters with underscores, without having multiple underscores in a row)
         /// </summary>
         private static readonly Regex InvalidFilenameCharactersExpression = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "_]+", RegexOptions.Compiled);
@@ -184,6 +189,7 @@ namespace Engage.Dnn.Survey
                     {
                         ChartTitle = { TextBlock = { Text = this.GetQuestionLabel(question.RelativeOrder, question.Text) } },
                         SeriesOrientation = ChartSeriesOrientation.Horizontal,
+                        Skin = TelerikChartsSkin,
                         Legend = { Visible = false },
                         AutoTextWrap = true,
                         AutoLayout = true,

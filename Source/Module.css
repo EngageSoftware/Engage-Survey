@@ -9,7 +9,8 @@
 		.answer-horizontal,	.answer-vertical, .answer-vertical span{display:block;}
 	.error-message{background:url(images/inline-validator-bg.png) no-repeat right;padding:2px 4px;color:#fff !important;font-weight:bold;}
 		.error-text{color:#fff !important;font-weight:bold;}
-	.buttons-area{padding-top:20px;}
+	.buttons-area{padding-top:20px; float:left;}
+	    .delete-button{float:left; margin: 20px 0 0 5px;}
 	.limit-reached{background:url(images/inline-validator-bg.png) no-repeat left;width:180px;color:#fff;font-weight:bold;}
 /*============ Engage Evaluation ============*/
 #engage-evaluation{}
@@ -37,7 +38,7 @@
             .ee-description textarea.NormalTextBox{height:100px;}
             .ee-input-pre{display:block;width:300px;}
         ul.ee-action-btns, ul.ee-pr-action-links{clear:both;padding:10px 15px 15px 110px;list-style:none;margin:0;}
-            ul.ee-action-btns li{padding:0;list-style:none;margin:0;}
+            ul.ee-action-btns li{padding:0;list-style:none;margin:0;display:inline;}
                 ul.ee-action-btns li.primary-btn a, ul.answer-inputs li.primary-btn a{color:#df3f00;font-weight:bold;font-size:16px;text-shadow:1px 1px 1px #fff;display:block;padding:3px 15px;font-family: Helvetica, Arial, Sans-Serif;}
                 ul.ee-action-btns li.primary-btn a:hover, ul.answer-inputs li.primary-btn a:hover{text-decoration:none;}
             ul.ee-action-btns li.primary-btn, ul.answer-inputs li.primary-btn{background: url(images/btn-bg.gif) repeat-x bottom;border:1px #f17b4d solid;display:block;float:left;}

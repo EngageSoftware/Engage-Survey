@@ -17,18 +17,19 @@ namespace Engage.Dnn.Survey
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-    using DotNetNuke.Entities.Modules.Communications;
+
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
     using DotNetNuke.UI.Utilities;
-    using Engage.Survey;
+
     using Engage.Survey.Entities;
     using Engage.Survey.UI;
 
     /// <summary>
-    /// This control uses the Engage Survey Control to render a survey. It wires up an event to get in on the saving of a Survey and retrieves the ResponseId
-    /// back. It this is raised out to any listeners of this module via the DNN <see cref="IModuleCommunicator"/> interface.
+    /// This control uses the Engage Survey Control to render a survey. 
+    /// It wires up an event to get in on the saving of a Survey and retrieves the ResponseId back.
     /// </summary>
     public partial class ViewSurvey : ModuleBase
     {     
@@ -109,11 +110,18 @@ namespace Engage.Dnn.Survey
 
             try
             {
-                this.SurveyControl.UserId = this.UserId;
-                this.SurveyControl.CurrentSurvey = this.ResponseHeaderId == null
-                                                           ? (ISurvey)new SurveyRepository().LoadSurvey(this.SurveyId.GetValueOrDefault())
-                                                           : new SurveyRepository().LoadReadOnlySurvey(this.ResponseHeaderId.Value);
+                bool displayingCompletedSurvey = false;
+                if (this.ResponseHeaderId == null || !ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration))
+                {
+                    this.SurveyControl.CurrentSurvey = new SurveyRepository().LoadSurvey(this.SurveyId.GetValueOrDefault());
+                }
+                else
+                {
+                    displayingCompletedSurvey = true;
+                    this.SurveyControl.CurrentSurvey = new SurveyRepository().LoadReadOnlySurvey(this.ResponseHeaderId.Value);
+                }
 
+                this.SurveyControl.UserId = this.UserId;
                 this.SurveyControl.SurveyCompleted += this.SurveyControl_SurveyCompleted;
 
                 this.SurveyControl.BackButtonText = this.Localize("BackButton.Text");
@@ -123,7 +131,7 @@ namespace Engage.Dnn.Survey
 
                 // allow module editors to delete user responses
                 this.DeleteResponseButton.Click += this.DeleteResponseButton_Click;
-                this.DeleteResponseButton.Visible = this.IsEditable && this.ResponseHeaderId != null;
+                this.DeleteResponseButton.Visible = this.IsEditable && displayingCompletedSurvey;
                 ClientAPI.AddButtonConfirm(this.DeleteResponseButton, this.Localize("ConfirmDelete.Text"));
             }
             catch (Exception exc)
@@ -144,7 +152,7 @@ namespace Engage.Dnn.Survey
         private string GenerateTableBasedSurvey(int responseHeaderId, string title, string displayName)
         {
             var builder = new StringBuilder();
-            string body = Localization.GetString("SurveyCompleted_Body.Text", this.LocalResourceFile);
+            string body = this.Localize("SurveyCompleted_Body.Text");
             if (body != null)
             {
                 body = body.Replace(Utility.UserNameMarker, displayName);
@@ -277,6 +285,11 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void DeleteResponseButton_Click(object sender, EventArgs e)
         {
+            if (!ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration))
+            {
+                return;
+            }
+
             new SurveyRepository().DeleteReadOnlySurvey(this.ResponseHeaderId);
             this.Response.Redirect(this.BuildLinkUrl(this.TabId));
         }

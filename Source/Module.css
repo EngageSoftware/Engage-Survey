@@ -106,6 +106,10 @@
 			ul.sl-repeater li.sl-alt-item .sl-repeater-actions a:hover, .rgAltRow .sa-action-btn a:hover{background:#F2F6F9;}
 		ul.sl-repeater li{background:#F2F6F9;color:#020202;border:1px solid #D4DFE1;border-top:none;}
 			ul.sl-repeater li.sl-alt-item{background:#fff;}
+/*================== Analyze ===============*/
+.sa-charts {clear:both;}
+.sa-charts .RadChart {float:left; padding: 1em;}
+
 /*============ Global Navigation ============*/
 ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px #e4bbab solid;border-bottom:1px #e4bbab solid;padding:10px 15px;margin:0 0 15px 0;height:100%}
 	ul.em-global-nav li{display:block;float:left;padding:5px 25px 5px 0;}

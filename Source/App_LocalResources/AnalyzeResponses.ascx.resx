@@ -120,6 +120,14 @@
   <data name="AnonymousUser.Text" xml:space="preserve">
     <value>Anonymous User</value>
   </data>
+  <data name="Answer.Format" xml:space="preserve">
+    <value>{0}. {1}</value>
+    <comment>{0} = Answer Number
+{1} = Answer Text</comment>
+  </data>
+  <data name="Axis Label.Text" xml:space="preserve">
+    <value>Number of Responses</value>
+  </data>
   <data name="Change Page Size Button.Text" xml:space="preserve">
     <value>Change</value>
   </data>
@@ -195,6 +203,11 @@
   </data>
   <data name="Previous Page.ToolTip" xml:space="preserve">
     <value>Previous Page</value>
+  </data>
+  <data name="Question.Format" xml:space="preserve">
+    <value>{0}. {1}</value>
+    <comment>{0} = Question Number
+{1} = Question Text</comment>
   </data>
   <data name="Response ID.Header" xml:space="preserve">
     <value>Response ID</value>

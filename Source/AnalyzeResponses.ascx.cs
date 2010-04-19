@@ -22,7 +22,6 @@ namespace Engage.Dnn.Survey
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
@@ -31,7 +30,6 @@ namespace Engage.Dnn.Survey
     using Engage.Survey.Entities;
 
     using Telerik.Charting;
-    using Telerik.Charting.Styles;
     using Telerik.Web.UI;
 
     /// <summary>
@@ -39,6 +37,9 @@ namespace Engage.Dnn.Survey
     /// </summary>
     public partial class AnalyzeResponses : ModuleBase
     {
+        /// <summary>
+        /// The skin to use for Telerik controls
+        /// </summary>
         private const string TelerikControlsSkin = "Simple";
 
         /// <summary>
@@ -138,38 +139,6 @@ namespace Engage.Dnn.Survey
             base.OnInit(e);
         }
 
-        private void CreateGraphs()
-        {
-            var questions = new SurveyRepository().LoadAnswerResponseCounts(this.SurveyId);
-            foreach (var questionPair in questions)
-            {
-                var question = questionPair.First;
-                var answers = questionPair.Second;
-
-                var chart = new RadChart
-                    {
-                        ChartTitle = { TextBlock = { Text = question.Text } },
-                        SeriesOrientation = ChartSeriesOrientation.Horizontal,
-                        AutoTextWrap = true,
-                        AutoLayout = true,
-                        HttpHandlerUrl = this.ResolveUrl("~/ChartImage.axd")/*,
-                        PlotArea = { XAxis = { Visible = ChartAxisVisibility.False }, YAxis = { Step = 1 } }*/
-                    };
-
-                var chartSeries = new ChartSeries();
-                foreach (var answerPair in answers)
-                {
-                    var answer = answerPair.First;
-                    var answerCount = answerPair.Second;
-
-                    chartSeries.Items.Add(new ChartSeriesItem(answerCount, answer.Text));
-                }
-
-                chart.Series.Add(chartSeries);
-                this.ChartsPanel.Controls.Add(chart);
-            }
-        }
-
         /// <summary>
         /// Gets the name of the column for the question text in the given <paramref name="response"/>.
         /// </summary>
@@ -198,6 +167,46 @@ namespace Engage.Dnn.Survey
         private static string RemoveInvalidCharacters(string filename)
         {
             return InvalidFilenameCharactersExpression.Replace(filename, "_");
+        }
+
+        /// <summary>
+        /// Creates the graphs for each question.
+        /// </summary>
+        private void CreateGraphs()
+        {
+            var questions = new SurveyRepository().LoadAnswerResponseCounts(this.SurveyId);
+            foreach (var questionPair in questions)
+            {
+                var question = questionPair.First;
+                var answers = questionPair.Second;
+
+                var chart = new RadChart
+                    {
+                        ChartTitle = { TextBlock = { Text = this.GetQuestionLabel(question.RelativeOrder, question.Text) } },
+                        SeriesOrientation = ChartSeriesOrientation.Horizontal,
+                        Legend = { Visible = false },
+                        AutoTextWrap = true,
+                        AutoLayout = true,
+                        HttpHandlerUrl = this.ResolveUrl("~/ChartImage.axd"),
+                        PlotArea =
+                            {
+                                XAxis = { Appearance = { TextAppearance = { Visible = false } } },
+                                YAxis = { Step = 1, AutoScale = false, AxisLabel = { TextBlock = { Text = this.Localize("Axis Label.Text") }, Visible = true } }
+                            }
+                    };
+
+                var chartSeries = new ChartSeries();
+                foreach (var answerPair in answers)
+                {
+                    var answer = answerPair.First;
+                    var answerCount = answerPair.Second;
+
+                    chartSeries.Items.Insert(0, new ChartSeriesItem(answerCount, this.GetAnswerLabel(answer.RelativeOrder, answer.Text)));
+                }
+
+                chart.Series.Add(chartSeries);
+                this.ChartsPanel.Controls.Add(chart);
+            }
         }
 
         /// <summary>
@@ -278,7 +287,7 @@ namespace Engage.Dnn.Survey
                         {
                             DataField = GetQuestionTextColumnName(response),
                             SortExpression = GetRelativeOrderColumnName(response),
-                            HeaderText = response.QuestionText,
+                            HeaderText = this.GetQuestionLabel(response.QuestionRelativeOrder, response.QuestionText),
                             HeaderStyle = { CssClass = questionCssClass + " rgHeader" },
                             ItemStyle = { CssClass = questionCssClass },
                         });
@@ -324,8 +333,25 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
+        /// Gets the text label for an answer.
+        /// </summary>
+        /// <param name="relativeOrder">The relative order, or <c>null</c> if an answer to an open-ended question.</param>
+        /// <param name="answerText">The answer text.</param>
+        /// <returns>The text to label an answer</returns>
+        private string GetAnswerLabel(int? relativeOrder, string answerText)
+        {
+            if (relativeOrder.HasValue)
+            {
+                return string.Format(CultureInfo.CurrentCulture, this.Localize("Answer.Format"), relativeOrder, answerText);
+            }
+
+            return answerText;
+        }
+
+        /// <summary>
         /// Gets the name of the file when exporting data
         /// </summary>
+        /// <returns>The filename (without extension) for the generated export file</returns>
         private string GetExportFilename()
         {
             var filename = string.Format(
@@ -335,6 +361,17 @@ namespace Engage.Dnn.Survey
                 this.Survey.Text, 
                 this.Survey.SurveyId);
             return RemoveInvalidCharacters(filename);
+        }
+
+        /// <summary>
+        /// Gets the text label for a question.
+        /// </summary>
+        /// <param name="relativeOrder">The relative order.</param>
+        /// <param name="questionText">The question text.</param>
+        /// <returns>The text to label a question</returns>
+        private string GetQuestionLabel(int relativeOrder, string questionText)
+        {
+            return string.Format(CultureInfo.CurrentCulture, this.Localize("Question.Format"), relativeOrder, questionText);
         }
 
         /// <summary>
@@ -396,7 +433,7 @@ namespace Engage.Dnn.Survey
 
                 foreach (var response in headerWithResponses)
                 {
-                    row[questionTextColumnMap[response.QuestionId]] = response.UserResponse;
+                    row[questionTextColumnMap[response.QuestionId]] = this.GetAnswerLabel(response.AnswerRelativeOrder, response.UserResponse);
                     row[relativeOrderColumnMap[response.QuestionId]] = response.AnswerRelativeOrder ?? (object)DBNull.Value;
                 }
 

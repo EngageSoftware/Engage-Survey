@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AnalyzeResponses.ascx" />
+    <Content Include="References\DotNetNuke.xml" />
     <Content Include="ReleaseNotes_3.1.0.htm" />
     <Content Include="EditSurvey.ascx" />
     <Content Include="MainContainer.ascx" />

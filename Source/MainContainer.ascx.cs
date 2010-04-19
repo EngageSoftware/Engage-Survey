@@ -19,6 +19,7 @@ namespace Engage.Dnn.Survey
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using Framework;
 
@@ -52,7 +53,7 @@ namespace Engage.Dnn.Survey
 
             SubControlInfo controlToLoad = this.GetControlToLoad();
 
-            if (!controlToLoad.RequiresEditPermission || PortalSecurity.HasNecessaryPermission(SecurityAccessLevel.Edit, this.PortalSettings, this.ModuleConfiguration, this.UserInfo))
+            if (!controlToLoad.RequiresEditPermission || ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration))
             {
                 this.LoadChildControl(controlToLoad);
             }

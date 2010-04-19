@@ -274,7 +274,7 @@ namespace Engage.Dnn.Survey
                 };
 
             // add column for each question
-            foreach (var response in Enumerable.Last(this.Responses))
+            foreach (var response in this.Responses.First())
             {
                 var questionCssClass = string.Format(
                     CultureInfo.InvariantCulture,
@@ -381,7 +381,7 @@ namespace Engage.Dnn.Survey
         /// <returns>The user's name</returns>
         private string GetUser(int? userId)
         {
-            var user = UserController.GetUser(this.PortalId, userId ?? Null.NullInteger, false);
+            var user = new UserController().GetUser(this.PortalId, userId ?? Null.NullInteger);
             if (user == null)
             {
                 return this.Localize("AnonymousUser.Text");
@@ -412,7 +412,7 @@ namespace Engage.Dnn.Survey
             var questionTextColumnMap = new Dictionary<int, DataColumn>();
             var relativeOrderColumnMap = new Dictionary<int, DataColumn>();
 
-            foreach (var response in Enumerable.Last(responsesByHeader))
+            foreach (var response in responsesByHeader.First())
             {
                 var questionTextcolumn = table.Columns.Add(GetQuestionTextColumnName(response), typeof(string));
                 questionTextColumnMap.Add(response.QuestionId, questionTextcolumn);
@@ -431,7 +431,7 @@ namespace Engage.Dnn.Survey
                 var row = table.NewRow();
                 table.Rows.Add(row);
 
-                foreach (var response in headerWithResponses)
+                foreach (var response in headerWithResponses.Where(response => questionTextColumnMap.ContainsKey(response.QuestionId)))
                 {
                     row[questionTextColumnMap[response.QuestionId]] = this.GetAnswerLabel(response.AnswerRelativeOrder, response.UserResponse);
                     row[relativeOrderColumnMap[response.QuestionId]] = response.AnswerRelativeOrder ?? (object)DBNull.Value;

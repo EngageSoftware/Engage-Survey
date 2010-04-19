@@ -82,7 +82,7 @@ namespace Engage.Dnn.Survey
                 url.Append(HttpContext.Current.Request.Url.Authority);
                 url.Append(Framework.ModuleBase.ApplicationUrl);
                 url.Append("/DesktopModules/");
-                url.Append(Globals.GetDesktopModuleByName(DesktopModuleName).FolderName);
+                url.Append(DesktopModuleController.GetDesktopModuleByModuleName(DesktopModuleName, Globals.GetPortalSettings().PortalId).FolderName);
                 url.Append("/SurveyService.asmx");
             }
 

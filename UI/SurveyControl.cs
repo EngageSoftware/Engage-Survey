@@ -211,7 +211,7 @@ namespace Engage.Survey.UI
         {
             get
             {
-                return HttpContext.Current.Request.QueryString["returnurl"] ?? String.Empty;
+                return HttpContext.Current.Request.QueryString["returnurl"] ?? string.Empty;
             }
         }
 

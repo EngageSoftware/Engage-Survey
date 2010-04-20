@@ -328,6 +328,12 @@ namespace Engage.Dnn.Survey
             ////            HeaderStyle = { CssClass = "sa-id rgHeader" },
             ////            ItemStyle = { CssClass = "sa-id" }
             ////        });
+            var returnUrlParameter = "returnUrl=" +
+                                     HttpUtility.UrlEncode(
+                                         this.BuildLinkUrl(
+                                             this.ModuleId,
+                                             this.GetCurrentControlKey(),
+                                             "surveyId=" + this.SurveyId.ToString(CultureInfo.InvariantCulture)));
             this.ResponseGrid.MasterTableView.Columns.Add(
                 new GridHyperLinkColumn
                     {
@@ -336,7 +342,7 @@ namespace Engage.Dnn.Survey
                         Text = this.Localize("View.Text"),
                         HeaderStyle = { CssClass = "sa-view rgHeader" },
                         ItemStyle = { CssClass = "sa-view sa-action-btn" },
-                        DataNavigateUrlFormatString = this.BuildLinkUrl(this.ModuleId, ControlKey.ViewSurvey, "responseHeaderId={0}")
+                        DataNavigateUrlFormatString = this.BuildLinkUrl(this.ModuleId, ControlKey.ViewSurvey, "responseHeaderId={0}", returnUrlParameter)
                     });
 
             this.ResponseGridPlaceholder.Controls.Add(this.ResponseGrid);

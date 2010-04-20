@@ -35,7 +35,9 @@ namespace Engage.Dnn.Survey
             this.Load += this.Page_Load;
             this.NewSurveyButton.Click += this.NewSurveyButton_Click;
             this.SurveyGrid.ItemDataBound += this.SurveyDataGrid_OnItemDataBound;
-            this.NewSurveyButton.Visible = this.IsAdmin;
+            
+            this.ActionButtonsPlaceholder.Visible = this.IsAdmin;
+            
             base.OnInit(e);
         }
 

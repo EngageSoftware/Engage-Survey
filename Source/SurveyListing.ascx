@@ -16,7 +16,9 @@
         </ItemTemplate>
         <FooterTemplate></ul></FooterTemplate>
     </asp:Repeater>
-    <ul class="ee-action-btns">
-        <li class="primary-btn"><asp:linkbutton ID="NewSurveyButton" runat="server" Resourcekey="NewSurveyButton.Text" /></li>
-    </ul>
+    <asp:PlaceHolder ID="ActionButtonsPlaceholder" runat="server">
+        <ul class="ee-action-btns">
+            <li class="primary-btn"><asp:linkbutton ID="NewSurveyButton" runat="server" Resourcekey="NewSurveyButton.Text" /></li>
+        </ul>
+    </asp:PlaceHolder>
 </div>

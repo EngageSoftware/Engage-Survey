@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AnalyzeResponses.ascx" />
+    <Content Include="images\validator-bg-right.gif" />
     <Content Include="References\DotNetNuke.xml" />
     <Content Include="ReleaseNotes_3.1.0.htm" />
     <Content Include="EditSurvey.ascx" />

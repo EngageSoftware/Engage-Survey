@@ -23,7 +23,7 @@
         #engage-evaluation .ee-label{display:block;float:left;text-align:right;width:100px;font-weight:bold;padding-right:10px;padding-top:5px;font-family: Helvetica, Arial, Sans-Serif;}
         #engage-evaluation .ee-input{display:block;float:left;background:#ebf5fc;color:#020202;padding:3px 5px;position:relative;font-family: Helvetica, Arial, Sans-Serif;}
             #engage-evaluation input.NormalTextBox, #engage-evaluation textarea.NormalTextBox, #engage-evaluation select.NormalTextBox{border:1px #cbcbcb solid;width:300px;padding:8px;font-family: Helvetica, Arial, Sans-Serif;}
-			label.error{display:block;position:absolute;top:10%;left:310px;padding:5px 20px;background: url(images/validator-bg-left.gif) right no-repeat;color:#ebc6c6;min-width:140px;font-weight:bold;font-family: Helvetica, Arial, Sans-Serif;}
+			label.error{display:block;position:absolute;top:10%;left:310px;padding:5px 20px;background: url(images/validator-bg-right.gif) left no-repeat;color:#ebc6c6;min-width:140px;font-weight:bold;font-family: Helvetica, Arial, Sans-Serif;}
 				span.ai-input label.error{top:-4px;left:-170px;}
         #engage-evaluation a.ee-edit, #engage-evaluation a.ee-copy, #engage-evaluation a.ee-delete{color:#007b00;padding:4px;text-decoration:underline;font-weight:bold;}
         #engage-evaluation a.ee-edit{color:#0063dd;padding:0;}

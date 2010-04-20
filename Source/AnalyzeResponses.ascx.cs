@@ -145,23 +145,27 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Gets the name of the column for the question text in the given <paramref name="response"/>.
+        /// Gets the name of the column for the question text.
         /// </summary>
-        /// <param name="response">The response from which to get the question info.</param>
-        /// <returns>The name of the column containing the text of the responser to the question</returns>
-        private static string GetQuestionTextColumnName(Response response)
+        /// <param name="questionId">The ID of the question.</param>
+        /// <returns>
+        /// The name of the column containing the text of the responser to the question
+        /// </returns>
+        private static string GetQuestionTextColumnName(int questionId)
         {
-            return "Question-Text-" + response.QuestionId.ToString(CultureInfo.InvariantCulture);
+            return "Question-Text-" + questionId.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
-        /// Gets the name of the column for the question's order in the given <paramref name="response"/>.
+        /// Gets the name of the column for the question's order.
         /// </summary>
-        /// <param name="response">The response from which to get the question info.</param>
-        /// <returns>The name of the column containing the order of the responses to the question</returns>
-        private static string GetRelativeOrderColumnName(Response response)
+        /// <param name="questionId">The ID of the question.</param>
+        /// <returns>
+        /// The name of the column containing the order of the responses to the question
+        /// </returns>
+        private static string GetRelativeOrderColumnName(int questionId)
         {
-            return "Question-Order-" + response.QuestionId.ToString(CultureInfo.InvariantCulture);
+            return "Question-Order-" + questionId.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -280,20 +284,20 @@ namespace Engage.Dnn.Survey
                 };
 
             // add column for each question
-            foreach (var response in this.Responses.First())
+            foreach (var question in new SurveyRepository().LoadQuestions(this.SurveyId))
             {
                 var questionCssClass = string.Format(
                     CultureInfo.InvariantCulture,
                     "sa-question sa-question-{0} sa-question-id-{1}",
-                    response.QuestionRelativeOrder,
-                    response.QuestionId);
+                    question.RelativeOrder,
+                    question.QuestionId);
 
                 this.ResponseGrid.MasterTableView.Columns.Add(
                     new GridBoundColumn
                         {
-                            DataField = GetQuestionTextColumnName(response),
-                            SortExpression = GetRelativeOrderColumnName(response),
-                            HeaderText = this.GetQuestionLabel(response.QuestionRelativeOrder, response.QuestionText),
+                            DataField = GetQuestionTextColumnName(question.QuestionId),
+                            SortExpression = GetRelativeOrderColumnName(question.QuestionId),
+                            HeaderText = this.GetQuestionLabel(question.RelativeOrder, question.Text),
                             HeaderStyle = { CssClass = questionCssClass + " rgHeader" },
                             ItemStyle = { CssClass = questionCssClass },
                         });
@@ -418,11 +422,11 @@ namespace Engage.Dnn.Survey
             var questionTextColumnMap = new Dictionary<int, DataColumn>();
             var relativeOrderColumnMap = new Dictionary<int, DataColumn>();
 
-            foreach (var response in responsesByHeader.First())
+            foreach (var response in new SurveyRepository().LoadQuestions(this.SurveyId))
             {
-                var questionTextcolumn = table.Columns.Add(GetQuestionTextColumnName(response), typeof(string));
+                var questionTextcolumn = table.Columns.Add(GetQuestionTextColumnName(response.QuestionId), typeof(string));
                 questionTextColumnMap.Add(response.QuestionId, questionTextcolumn);
-                var relativeOrdercolumn = table.Columns.Add(GetRelativeOrderColumnName(response), typeof(int));
+                var relativeOrdercolumn = table.Columns.Add(GetRelativeOrderColumnName(response.QuestionId), typeof(int));
                 relativeOrderColumnMap.Add(response.QuestionId, relativeOrdercolumn);
             }
 

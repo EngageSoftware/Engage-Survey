@@ -239,7 +239,7 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
-        /// Loads all of the question, their answers, and the number of responses per answer for the given survey
+        /// Loads all of the questions, their answers, and the number of responses per answer for the given survey
         /// </summary>
         /// <param name="surveyId">The ID of the survey.</param>
         /// <returns>
@@ -269,6 +269,22 @@ namespace Engage.Survey.Entities
                                                     Second = responsesByAnswer.Count(r => r != null)
                                                 }
                            };
+        }
+
+        /// <summary>
+        /// Loads all of the questions for the given survey (based on its current definition)
+        /// </summary>
+        /// <param name="surveyId">The ID of the survey.</param>
+        /// <returns>
+        /// A sequence of <see cref="Question"/> instances
+        /// </returns>
+        public IQueryable<Question> LoadQuestions(int surveyId)
+        {
+            return from question in this.Context.Questions
+                   join section in this.Context.Sections on question.SectionId equals section.SectionId
+                   where section.SurveyId == surveyId
+                   orderby question.RelativeOrder
+                   select question;
         }
 
         /// <summary>

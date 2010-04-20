@@ -736,7 +736,7 @@ if (!Array.prototype.indexOf) {
             
             validator = $('#Form').validate();
             if ($('#QuestionText').valid() &&
-               (!questionIsMultipleChoice || $('.ai-input input').valid())) {
+               (!questionIsMultipleChoice || $('.ai-input input:visible').valid())) {
             
                 $(this).text(CurrentContextInfo.ProgressText).parent().addClass('disabled');
                 callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {

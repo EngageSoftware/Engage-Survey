@@ -94,6 +94,10 @@ if (!Array.prototype.indexOf) {
             pendingQuestionDeleteCallbacks = [],
             startDatePicker = $find($('.ee-start-date .RadPicker input').attr('id')),
             endDatePicker = $find($('.ee-end-date .RadPicker input').attr('id'));
+
+        window.onbeforeunload = function () { 
+            return $('#CancelQuestion').is(':visible') || $('#EvalCancel').is(':visible') ? CurrentContextInfo.UnsavedChangedWarning : null; 
+        };
                    
         $('.ee-collapsed legend a, .ee-expanded legend a').click(function (event) {
             event.preventDefault();
@@ -271,7 +275,7 @@ if (!Array.prototype.indexOf) {
                 $('#EvalCancel').parent().fadeIn(AnimationSpeed);
                 $('#EvalUpdate').parent().fadeIn(AnimationSpeed);
             });
-            
+
             validator = $('#Form').validate();
         });
         

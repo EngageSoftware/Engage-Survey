@@ -172,6 +172,7 @@ var CurrentContextInfo = {
     UpdateQuestionButtonText: '<%= ClientAPI.GetSafeJSString(Localize("UpdateQuestion.Text")) %>',
     UpdateQuestionToolTip: '<%= ClientAPI.GetSafeJSString(Localize("UpdateQuestion.ToolTip")) %>',
     ProgressText: '<%= ClientAPI.GetSafeJSString(Localize("ProgressText.Text")) %>',
+    UnsavedChangedWarning : '<%= ClientAPI.GetSafeJSString(Localize("UnsavedChangedWarning.Text")) %>',
     CheckBoxCheckedText: '<%= ClientAPI.GetSafeJSString(Localize("CheckBoxCheckedText.Text")) %>',
     CheckBoxUncheckedText: '<%= ClientAPI.GetSafeJSString(Localize("CheckBoxUncheckedText.Text")) %>',
     DefaultEmailSettings: {

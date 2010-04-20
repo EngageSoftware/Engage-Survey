@@ -351,6 +351,9 @@
   <data name="UndoSurveyDeleteButton.ToolTip" xml:space="preserve">
     <value>Don't delete this survey</value>
   </data>
+  <data name="UnsavedChangedWarning.Text" xml:space="preserve">
+    <value>You have unsaved changes which will be lost if you leave the page without saving first</value>
+  </data>
   <data name="UpdateEvalHyperLink.Text" xml:space="preserve">
     <value>Update</value>
   </data>

@@ -15,6 +15,8 @@ namespace Engage.Survey.Entities
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Common.Utilities;
+
     /// <summary>
     /// Provides access to store and retrieve surveys and related types
     /// </summary>
@@ -206,6 +208,34 @@ namespace Engage.Survey.Entities
             this.Context.Answers.DeleteAllOnSubmit(answers);
 
             this.Context.SubmitChanges();
+        }
+
+        /// <summary>
+        /// Gets the ID of the module that the given question belongs to.
+        /// </summary>
+        /// <param name="questionId">The question's ID.</param>
+        /// <returns>The ID of the module, or <see cref="Null.NullInteger"/> if the question doesn't exist</returns>
+        public int GetModuleIdForQuestion(int questionId)
+        {
+            var moduleId = (from question in this.Context.Questions
+                            where question.QuestionId == questionId
+                            select question.Section.Survey.ModuleId).SingleOrDefault();
+
+            return moduleId == default(int) ? Null.NullInteger : moduleId;
+        }
+
+        /// <summary>
+        /// Gets the ID of the module that the given survey belongs to.
+        /// </summary>
+        /// <param name="surveyId">The survey's ID.</param>
+        /// <returns>The ID of the module, or <see cref="Null.NullInteger"/> if the survey doesn't exist</returns>
+        public int GetModuleIdForSurvey(int surveyId)
+        {
+            var moduleId = (from survey in this.Context.Surveys
+                            where survey.SurveyId == surveyId
+                            select survey.ModuleId).SingleOrDefault();
+
+            return moduleId == default(int) ? Null.NullInteger : moduleId;
         }
 
         /// <summary>

@@ -96,7 +96,11 @@ if (!Array.prototype.indexOf) {
             endDatePicker = $find($('.ee-end-date .RadPicker input').attr('id'));
 
         window.onbeforeunload = function () { 
-            return $('#CancelQuestion').is(':visible') || $('#EvalCancel').is(':visible') ? CurrentContextInfo.UnsavedChangedWarning : null; 
+            if ($('#CancelQuestion').is(':visible') || $('#EvalCancel').is(':visible')) {
+                return CurrentContextInfo.UnsavedChangedWarning;
+            }
+
+            return;
         };
                    
         $('.ee-collapsed legend a, .ee-expanded legend a').click(function (event) {

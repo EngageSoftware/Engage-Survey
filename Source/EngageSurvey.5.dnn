@@ -97,7 +97,7 @@
             </assembly>
             <assembly>
               <name>BrandonHaynes.ModelAdapter.dll</name>
-              <version>1.0.0</version>
+              <version>1.0.1</version>
             </assembly>
           </assemblies>
         </component>

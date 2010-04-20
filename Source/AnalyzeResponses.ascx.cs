@@ -447,10 +447,34 @@ namespace Engage.Dnn.Survey
                 var row = table.NewRow();
                 table.Rows.Add(row);
 
-                foreach (var response in headerWithResponses.Where(response => questionTextColumnMap.ContainsKey(response.QuestionId)))
+                var responses = from response in headerWithResponses
+                                where questionTextColumnMap.ContainsKey(response.QuestionId)
+                                group response by response.QuestionId
+                                into responsesByQuestion
+                                select new
+                                        {
+                                            QuestionId = responsesByQuestion.Key,
+                                            Responses = responsesByQuestion
+                                                            .OrderBy(response => response.AnswerRelativeOrder)
+                                                            .Select(response => new { response.AnswerRelativeOrder, response.UserResponse, response.AnswerText })
+                                        };
+
+                foreach (var response in responses)
                 {
-                    row[questionTextColumnMap[response.QuestionId]] = this.GetAnswerLabel(response.AnswerRelativeOrder, response.UserResponse);
-                    row[relativeOrderColumnMap[response.QuestionId]] = response.AnswerRelativeOrder ?? (object)DBNull.Value;
+                    var firstResponse = response.Responses.First();
+                    if (response.Responses.Count() == 1)
+                    {
+                        row[questionTextColumnMap[response.QuestionId]] = this.GetAnswerLabel(firstResponse.AnswerRelativeOrder, firstResponse.UserResponse);
+                    }
+                    else
+                    {
+                        var answerLabels = from answer in response.Responses
+                                           where bool.Parse(answer.UserResponse)
+                                           select this.GetAnswerLabel(answer.AnswerRelativeOrder, answer.AnswerText);
+                        row[questionTextColumnMap[response.QuestionId]] = string.Join(", ", answerLabels.ToArray());
+                    }
+
+                    row[relativeOrderColumnMap[response.QuestionId]] = firstResponse.AnswerRelativeOrder ?? (object)DBNull.Value;
                 }
 
                 row[responseHeaderIdColumn] = headerWithResponses.Key.ResponseHeaderId;

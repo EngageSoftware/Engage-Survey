@@ -11,6 +11,7 @@
 
 namespace Engage.Dnn.Survey
 {
+    using System;
     using System.Linq;
 
     /// <summary>
@@ -18,5 +19,11 @@ namespace Engage.Dnn.Survey
     /// </summary>
     public class FeatureController
     {
+#if TRIAL
+        /// <summary>
+        /// The license key for this module
+        /// </summary>
+        public static readonly Guid ModuleLicenseKey = new Guid("FB663AAE-324F-43CA-A194-D7B575AE3E13");
+#endif
     }
 }

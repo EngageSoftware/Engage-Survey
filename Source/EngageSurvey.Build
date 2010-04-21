@@ -53,11 +53,19 @@
     <exclude name="**/obj/**"/>
   </patternset>
 
+  <target name="clean" description="Cleans the solution">
+    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
+      <arg value="${solution.file}" />
+      <arg value="/t:Clean" />
+      <arg value="/m" /> <!-- multicore -->
+    </exec>
+  </target>
   <target name="build" description="Builds the solution" if="${build}">
     <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
       <arg value="${solution.file}" />
       <arg value="/p:Configuration=${project.config}" />
       <arg value="/p:Platform=&quot;Any CPU&quot;" />
+      <arg value="/p:DefineConstants=TRIAL" />
       <arg value="/m" /> <!-- multicore -->
     </exec>
   </target>

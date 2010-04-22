@@ -16,7 +16,7 @@
   </patternset>
   <property name="solutionFile" value="Engage${projectName}2008.sln"/>
   <property name="binDirectory" value="..\..\bin" overwrite="false"/>
-  <property name="projectDll" value="${binDirectory}\Engage.${projectName}.dll"/>
+  <property name="projectDll" value="${binDirectory}\Engage${projectName}.dll"/>
   <patternset id="projectAssemblies">
     <include name="${projectDll}"/>
     <include name="${binDirectory}/Engage.Survey.dll"/>

@@ -35,7 +35,6 @@
   
   <property name="testBuild" value="true" overwrite="false"/> <!-- testBuild is true if building from Visual Studio, false from Team Build (CI) -->
   <property name="buildTrial" value="false"/>
-  <property name="currentObjDirectory" value="obj\" overwrite="false"/>
   <property name="projectConfig" value="release"/>
   <property name="projectConfig" value="Debug" if="${testBuild}"/>
   <property name="zipLevel" value="9"/>
@@ -77,7 +76,6 @@
       <property name="includeSource" value="false"/>
       <property name="projectConfig" value="Trial"/>
       <property name="currentBinDirectory" value="${trialBinDirectory}"/>
-      <property name="currentObjDirectory" value="${currentObjDirectory}\trial\"/>
       <property name="packageLicense" value="${trialPackageLicenseName}"/>
       <call target="clean"/>
       <call target="build"/>
@@ -101,6 +99,7 @@
         <arg value="${solutionFile}" />
         <arg value="/p:Configuration=${projectConfig}" />
         <arg value="/p:Platform=&quot;Any CPU&quot;" />
+        <arg value="/p:OutputPath=&quot;${currentBinDirectory}&quot;" />
         <arg value="/m" /> <!-- multicore -->
       </exec>
     </if>

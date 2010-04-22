@@ -37,7 +37,7 @@
   <target name="package" description="Creates packages for this module, one for each value in the licenses and versions properties">
 
     <call target="build"/>
-    <call target="get-version"/>
+    <call target="set-version"/>
     <call target="clean-package-folder"/>
     <call target="setup-package-files"/>
     <call target="create-resources-zip"/>
@@ -79,7 +79,8 @@
     <call target="project-specific-tasks"/>
     <call target="cleanup"/>
   </target>
-  <target name="get-version" description="Sets the projectVersion property to the first three numbers from the version of the assembly specified by the projectDll property">
+  <target name="set-version" description="Sets the projectVersion property to the first three numbers from the version of the assembly specified by the projectDll property">
+    <echo message="${projectDll}"/>
     <property name="version" value="${fileversioninfo::get-file-version(fileversioninfo::get-version-info(projectDll))}" />
     <property name="projectVersion" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
   </target>

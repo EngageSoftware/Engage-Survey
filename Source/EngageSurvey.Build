@@ -13,7 +13,6 @@
   <patternset id="dependencySourcePackages">
     <include name="Engage.Framework_Source.zip"/>
     <include name="Engage.Dnn.Framework_Source.zip"/>
-    <include name="Engage.Survey_Source.zip"/>
   </patternset>
   <property name="projectDllName" value="Engage${projectName}.dll" />
   <property name="solutionFile" value="Engage${projectName}2008.sln"/>
@@ -227,16 +226,21 @@
   <target name="get-dependency-source" description="Gets the latest source packages for the Engage Framework dependencies for this module">
     <property name="buildDirectory" value="_0.0"/>
     <foreach item="Folder" in="\\etg19\qa\Engage\Engage 3.0\Builds\" property="foldername">
-      <property name="build.directory" value="${foldername}" if="${build-directory::is-greater-than(foldername, buildDirectory) and file::exists(path::combine(foldername, 'Release\Engage.Framework_Source.zip'))}"/>
+      <echo message="${foldername}"/>
+      <property name="buildDirectory" value="${foldername}" if="${build-directory::is-greater-than(foldername, buildDirectory) and file::exists(path::combine(foldername, 'Release\Engage.Framework_Source.zip'))}"/>
     </foreach>
 
-    <copy todir="${packageDirectory}/temp/dependencies">
+    <echo message="${buildDirectory}"/>
+    <property name="dependencyPackageDirectory" value="${packageDirectory}/temp/dependencies"/>
+    <copy todir="${dependencyPackageDirectory}">
       <fileset basedir="${path::combine(buildDirectory, 'Release\')}">
         <patternset refid="dependencySourcePackages"/>
       </fileset>
     </copy>
+    
+    <call target="get-project-specific-dependencies"/>
 
-    <zip zipfile="${packageDirectory}/${projectName}_${sourcePackageLicenseName}_${projectVersion}_DependencySource.zip" ziplevel="${zipLevel}">
+    <zip zipfile="${packageDirectory}/${dependencySourcePackageFileNameTemplate}.zip" ziplevel="${zipLevel}">
       <fileset basedir="${packageDirectory}/temp/dependencies">
         <include name="**/*"/>
       </fileset>
@@ -257,6 +261,16 @@
 
     <delete file="${packageDirectory}/${installPackageFileName}.zip" failonerror="false"/>
     <delete file="${packageDirectory}/${sourcePackageFileName}.zip" failonerror="false"/>
+  </target>
+  <target name="get-project-specific-dependencies" description="Puts source packages for any dependencies that can't be retrieved through the normal get-dependency-source target in dependencyPackageDirectory">
+    <xmlpeek file="EngageSurvey.csproj" property="engageSurveyFrameworkProjectFile" xpath="/x:Project/x:ItemGroup/x:ProjectReference[x:Name='Engage.Survey']/@Include">
+      <namespaces>
+        <namespace prefix="x" uri="http://schemas.microsoft.com/developer/msbuild/2003"/>
+      </namespaces>
+    </xmlpeek>
+    <property name="engageSurveyFrameworkDirectory" value="${path::get-directory-name(engageSurveyFrameworkProjectFile)}"/>
+    <nant buildfile="${path::combine(engageSurveyFrameworkDirectory, 'Engage.Survey.Build')}"/>
+    <copy file="${path::combine(engageSurveyFrameworkDirectory, '../package/Engage.Survey_Source.zip')}" todir="${dependencyPackageDirectory}"/>
   </target>
   <target name="project-specific-tasks" description="Place tasks specific to the current project in this task">
   </target>

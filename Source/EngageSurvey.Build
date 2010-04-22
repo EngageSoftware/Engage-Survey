@@ -74,6 +74,7 @@
     <if test="${createTrialPackage}">
       <property name="buildTrial" value="true"/>
       <property name="includeSource" value="false"/>
+      <property name="projectConfig" value="Trial"/>
       <property name="currentBinDirectory" value="${trialBinDirectory}"/>
       <property name="currentObjDirectory" value="${currentObjDirectory}\trial\"/>
       <property name="packageLicense" value="${trialPackageLicenseName}"/>
@@ -99,7 +100,6 @@
         <arg value="${solutionFile}" />
         <arg value="/p:Configuration=${projectConfig}" />
         <arg value="/p:Platform=&quot;Any CPU&quot;" />
-        <arg value="/p:DefineConstants=TRIAL" if="${buildTrial}" />
         <arg value="/p:OutputPath=${currentBinDirectory}" />
         <arg value="/p:BaseIntermediateOutputPath=${currentObjDirectory}" />
         <arg value="/m" /> <!-- multicore -->

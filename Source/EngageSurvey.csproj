@@ -46,6 +46,16 @@
     <DocumentationFile>..\..\bin\EngageSurvey.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Trial|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\trialBin\</OutputPath>
+    <DefineConstants Condition=" '$(DefineConstants)'=='' ">TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DefineConstants>TRACE;TRIAL</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BrandonHaynes.ModelAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

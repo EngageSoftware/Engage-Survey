@@ -23,13 +23,13 @@
     <include name="${binDirectory}/EngageSurvey.Entities.dll"/>
   </patternset>
   
-  <property name="build" value="true" overwrite="false"/> <!-- build is true if building from Visual Studio, false from Team Build (CI) -->
+  <property name="testBuild" value="true" overwrite="false"/> <!-- testBuild is true if building from Visual Studio, false from Team Build (CI) -->
   <property name="buildTrial" value="false"/>
   <property name="objDirectory" value="obj\" overwrite="false"/>
   <property name="projectConfig" value="release"/>
-  <property name="projectConfig" value="Debug" if="${build}"/>
+  <property name="projectConfig" value="Debug" if="${testBuild}"/>
   <property name="zipLevel" value="9"/>
-  <property name="zipLevel" value="1" if="${build}"/>
+  <property name="zipLevel" value="1" if="${testBuild}"/>
   <property name="referencesDirectory" value="References"/>
   <property name="packageDirectory" value="package"/>
   <property name="packageName" value="Resources.zip"/>
@@ -85,7 +85,7 @@
     <property name="projectVersion" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
   </target>
   <target name="build" description="Builds solutionFile">
-    <if test="${build or buildTrial}">
+    <if test="${testBuild or buildTrial}">
       <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
         <arg value="${solutionFile}" />
         <arg value="/p:Configuration=${projectConfig}" />
@@ -217,13 +217,13 @@
     </zip>
   </target>
   <target name="get-dependency-source" description="Gets the latest source packages for the Engage Framework dependencies for this module">
-    <property name="build.directory" value="_0.0"/>
+    <property name="buildDirectory" value="_0.0"/>
     <foreach item="Folder" in="\\etg19\qa\Engage\Engage 3.0\Builds\" property="foldername">
-      <property name="build.directory" value="${foldername}" if="${build-directory::is-greater-than(foldername, build.directory) and file::exists(path::combine(foldername, 'Release\Engage.Framework_Source.zip'))}"/>
+      <property name="build.directory" value="${foldername}" if="${build-directory::is-greater-than(foldername, buildDirectory) and file::exists(path::combine(foldername, 'Release\Engage.Framework_Source.zip'))}"/>
     </foreach>
 
     <copy todir="${packageDirectory}/temp/dependencies">
-      <fileset basedir="${path::combine(build.directory, 'Release\')}">
+      <fileset basedir="${path::combine(buildDirectory, 'Release\')}">
         <patternset refid="dependencySourcePackages"/>
       </fileset>
     </copy>

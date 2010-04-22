@@ -13,6 +13,7 @@
   <patternset id="dependencySourcePackages">
     <include name="Engage.Framework_Source.zip"/>
     <include name="Engage.Dnn.Framework_Source.zip"/>
+    <include name="Engage.Survey_Source.zip"/>
   </patternset>
   <property name="projectDllName" value="Engage${projectName}.dll" />
   <property name="solutionFile" value="Engage${projectName}2008.sln"/>
@@ -100,8 +101,6 @@
         <arg value="${solutionFile}" />
         <arg value="/p:Configuration=${projectConfig}" />
         <arg value="/p:Platform=&quot;Any CPU&quot;" />
-        <arg value="/p:OutputPath=${currentBinDirectory}" />
-        <arg value="/p:BaseIntermediateOutputPath=${currentObjDirectory}" />
         <arg value="/m" /> <!-- multicore -->
       </exec>
     </if>

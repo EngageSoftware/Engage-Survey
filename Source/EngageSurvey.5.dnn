@@ -81,11 +81,11 @@
             </assembly>
             <assembly>
               <name>Engage.Survey.dll</name>
-              <version>3.0.2</version>
+              <version>3.1.0</version>
             </assembly>
             <assembly>
               <name>EngageSurvey.Entities.dll</name>
-              <version>3.0.2</version>
+              <version>3.1.0</version>
             </assembly>
             <assembly>
               <name>Engage.Framework.dll</name>
@@ -93,7 +93,7 @@
             </assembly>
             <assembly>
               <name>Engage.Dnn.Framework.dll</name>
-              <version>3.1.4</version>
+              <version>3.1.5</version>
             </assembly>
             <assembly>
               <name>BrandonHaynes.ModelAdapter.dll</name>

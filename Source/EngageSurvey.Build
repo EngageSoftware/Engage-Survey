@@ -76,7 +76,6 @@
       <property name="projectConfig" value="Trial"/>
       <property name="currentBinDirectory" value="${trialBinDirectory}"/>
       <property name="packageLicense" value="${trialPackageLicenseName}"/>
-      <call target="clean"/>
       <call target="build"/>
       <call target="clean-package-folder"/>
       <call target="setup-package-files"/>
@@ -88,7 +87,6 @@
     <call target="cleanup"/>
   </target>
   <target name="set-version" description="Sets the projectVersion property to the first three numbers from the version of the assembly specified by the projectDll property">
-    <echo message="${projectDll}"/>
     <property name="version" value="${fileversioninfo::get-file-version(fileversioninfo::get-version-info(projectDll))}" />
     <property name="projectVersion" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
   </target>
@@ -102,13 +100,6 @@
         <arg value="/m" /> <!-- multicore -->
       </exec>
     </if>
-  </target>
-  <target name="clean" description="Cleans solutionFile">
-    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
-      <arg value="${solutionFile}" />
-      <arg value="/t:Clean" />
-      <arg value="/m" /> <!-- multicore -->
-    </exec>
   </target>
   <target name="clean-package-folder" description="Deletes all temporary files from package directory, then re-creates the folders to use">
     <mkdir dir="${packageDirectory}" failonerror="false"/>
@@ -226,11 +217,9 @@
   <target name="get-dependency-source" description="Gets the latest source packages for the Engage Framework dependencies for this module">
     <property name="buildDirectory" value="_0.0"/>
     <foreach item="Folder" in="\\etg19\qa\Engage\Engage 3.0\Builds\" property="foldername">
-      <echo message="${foldername}"/>
       <property name="buildDirectory" value="${foldername}" if="${build-directory::is-greater-than(foldername, buildDirectory) and file::exists(path::combine(foldername, 'Release\Engage.Framework_Source.zip'))}"/>
     </foreach>
 
-    <echo message="${buildDirectory}"/>
     <property name="dependencyPackageDirectory" value="${packageDirectory}/temp/dependencies"/>
     <copy todir="${dependencyPackageDirectory}">
       <fileset basedir="${path::combine(buildDirectory, 'Release\')}">

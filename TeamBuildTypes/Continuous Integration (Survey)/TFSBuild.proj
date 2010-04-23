@@ -229,6 +229,6 @@
     <CreateItem Include="..\Sources\inetpub\wwwroot\campus.dev\Website\DesktopModules\EngageSurvey\package\*.zip">
       <Output TaskParameter="Include" ItemName="Packages"/>
     </CreateItem>
-    <Copy SourceFiles="@(Packages)" DestinationFolder="..\Binaries\Release\"/>
+    <Copy SourceFiles="@(Packages)" DestinationFolder="..\Binaries\"/>
   </Target>
 </Project>

@@ -109,6 +109,11 @@
   <ItemGroup>
     <Content Include="AnalyzeResponses.ascx" />
     <Content Include="images\validator-bg-right.gif" />
+    <Content Include="Licenses\EULA-Enterprise.txt" />
+    <Content Include="Licenses\EULA-Professional.txt" />
+    <Content Include="Licenses\EULA-Standard.txt" />
+    <Content Include="Licenses\EULA-Trial.htm" />
+    <Content Include="Licenses\EULA-Trial.txt" />
     <Content Include="References\DotNetNuke.xml" />
     <Content Include="ReleaseNotes_3.1.0.htm" />
     <Content Include="EditSurvey.ascx" />

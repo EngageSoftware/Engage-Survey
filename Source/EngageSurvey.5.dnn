@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Engage: Survey" type="Module" version="REPLACED BY NANT">
+    <package name="Engage: Survey" type="Module" version="3.1.0">
       <friendlyName>Engage: Survey</friendlyName>
       <description>The DotNetNuke Survey module by Engage Software (www.engagesoftware.com)</description>
       <owner>
@@ -9,8 +9,8 @@
         <url>http://www.engagesoftware.com/</url>
         <email>support@engagesoftware.com</email>
       </owner>
-      <license src="REPLACED BY NANT"/>
-      <releaseNotes src="REPLACED BY NANT" />
+      <license src="Licenses/EULA-Standard.htm"/>
+      <releaseNotes src="ReleaseNotes_3.1.0.htm" />
       <components>
         <component type="ResourceFile">
           <resourceFiles>
@@ -33,7 +33,7 @@
             </script>
             <script type="UnInstall">
               <name>Uninstall.SqlDataProvider</name>
-              <version>REPLACED BY NANT</version>
+              <version latestVersion="latestVersion">3.1.0</version>
             </script>
           </scripts>
         </component>
@@ -77,7 +77,7 @@
           <assemblies>
             <assembly>
               <name>EngageSurvey.dll</name>
-              <version>REPLACED BY NANT</version>
+              <version latestVersion="latestVersion">3.1.0</version>
             </assembly>
             <assembly>
               <name>Engage.Survey.dll</name>
@@ -93,7 +93,7 @@
             </assembly>
             <assembly>
               <name>Engage.Dnn.Framework.dll</name>
-              <version>3.1.5</version>
+              <version>3.1.4</version>
             </assembly>
             <assembly>
               <name>BrandonHaynes.ModelAdapter.dll</name>

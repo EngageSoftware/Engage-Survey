@@ -196,9 +196,10 @@ namespace Engage.Survey.Entities
         /// Deletes the specified survey.
         /// </summary>
         /// <param name="surveyId">The ID of the survey to delete.</param>
-        public void DeleteSurvey(int surveyId)
+        /// <param name="moduleId">The ID of the module in which to find the survey.</param>
+        public void DeleteSurvey(int surveyId, int moduleId)
         {
-            var survey = this.LoadSurvey(surveyId);
+            var survey = this.LoadSurvey(surveyId, moduleId);
 
             this.Context.Surveys.DeleteOnSubmit(survey);
             this.Context.Sections.DeleteAllOnSubmit(survey.Sections);
@@ -206,6 +207,10 @@ namespace Engage.Survey.Entities
             this.Context.Questions.DeleteAllOnSubmit(questions);
             var answers = questions.SelectMany(question => question.Answers);
             this.Context.Answers.DeleteAllOnSubmit(answers);
+            var responses = this.Context.Responses.Where(response => response.SurveyId == surveyId);
+            this.Context.Responses.DeleteAllOnSubmit(responses);
+            var responseHeaders = responses.Select(response => response.ResponseHeader);
+            this.Context.ResponseHeaders.DeleteAllOnSubmit(responseHeaders);
 
             this.Context.SubmitChanges();
         }
@@ -422,10 +427,15 @@ namespace Engage.Survey.Entities
         /// Loads a completed survey using the <see cref="ResponseHeader"/> ID for the User/Survey.
         /// </summary>
         /// <param name="responseHeaderId">The <see cref="ResponseHeader"/> ID.</param>
+        /// <param name="moduleId">The module ID.</param>
         /// <returns>The survey with the given ID</returns>
-        public ReadonlySurvey LoadReadOnlySurvey(int responseHeaderId)
+        public ReadonlySurvey LoadReadOnlySurvey(int responseHeaderId, int moduleId)
         {
-            return this.LoadReadOnlySurveys().Where(s => s.ResponseHeaderId == responseHeaderId).SingleOrDefault();
+            return (from response in this.LoadReadOnlySurveys()
+                    join surveyDefinition in this.Context.Surveys on response.SurveyId equals surveyDefinition.SurveyId
+                   where response.ResponseHeaderId == responseHeaderId
+                      && surveyDefinition.ModuleId == moduleId
+                   select response).SingleOrDefault();
         }
 
         /// <summary>
@@ -455,6 +465,19 @@ namespace Engage.Survey.Entities
         public Survey LoadSurvey(int surveyId)
         {
             return this.Context.Surveys.SingleOrDefault(s => s.SurveyId == surveyId);
+        }
+
+        /// <summary>
+        /// Loads the survey for the given module.
+        /// </summary>
+        /// <param name="surveyId">The survey ID.</param>
+        /// <param name="moduleId">The module ID.</param>
+        /// <returns>
+        /// The survey with the given ID, or <c>null</c> if no survey exists with the given IDs
+        /// </returns>
+        public Survey LoadSurvey(int surveyId, int moduleId)
+        {
+            return this.Context.Surveys.SingleOrDefault(s => s.SurveyId == surveyId && s.ModuleId == moduleId);
         }
 
         /// <summary>

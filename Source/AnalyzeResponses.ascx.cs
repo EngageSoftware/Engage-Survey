@@ -77,7 +77,7 @@ namespace Engage.Dnn.Survey
             {
                 if (this.survey == null)
                 {
-                    this.survey = new SurveyRepository().LoadSurvey(this.SurveyId);
+                    this.survey = new SurveyRepository().LoadSurvey(this.SurveyId, this.ModuleId);
                 }
 
                 return this.survey;
@@ -135,6 +135,13 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected override void OnInit(EventArgs e)
         {
+            if (this.Survey == null)
+            {
+                // set this.survey to a valid survey, so that calls from markup don't fail
+                this.survey = new Survey(this.UserId);
+                return;
+            }
+
             this.CreateGraphs();
             this.CreateGrid();
 

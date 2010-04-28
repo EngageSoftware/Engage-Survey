@@ -124,7 +124,7 @@ namespace Engage.Dnn.Survey
         {
             get
             {
-                var survey = this.SurveyId == null ? null : new SurveyRepository().LoadSurvey(this.SurveyId.Value);
+                var survey = this.GetSurvey();
                 return new JavaScriptSerializer().Serialize(survey);
             }
         }
@@ -137,6 +137,15 @@ namespace Engage.Dnn.Survey
         {
             this.Load += this.Page_Load;
             base.OnInit(e);
+        }
+
+        /// <summary>
+        /// Gets the survey, or <c>null</c> if creating a new survey.
+        /// </summary>
+        /// <returns>The survey being edited</returns>
+        private Survey GetSurvey()
+        {
+            return this.SurveyId == null ? null : new SurveyRepository().LoadSurvey(this.SurveyId.Value, this.ModuleId);
         }
 
         /// <summary>

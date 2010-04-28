@@ -75,7 +75,7 @@ namespace Engage.Dnn.Survey
                 this.DenyAccess();
             }
 
-            surveyRepository.DeleteSurvey(surveyId);
+            surveyRepository.DeleteSurvey(surveyId, moduleId);
         }
 
         /// <summary>

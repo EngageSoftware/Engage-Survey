@@ -113,12 +113,12 @@ namespace Engage.Dnn.Survey
                 bool displayingCompletedSurvey = false;
                 if (this.ResponseHeaderId == null || !ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration))
                 {
-                    this.SurveyControl.CurrentSurvey = new SurveyRepository().LoadSurvey(this.SurveyId.GetValueOrDefault());
+                    this.SurveyControl.CurrentSurvey = new SurveyRepository().LoadSurvey(this.SurveyId.GetValueOrDefault(), this.ModuleId);
                 }
                 else
                 {
                     displayingCompletedSurvey = true;
-                    this.SurveyControl.CurrentSurvey = new SurveyRepository().LoadReadOnlySurvey(this.ResponseHeaderId.Value);
+                    this.SurveyControl.CurrentSurvey = new SurveyRepository().LoadReadOnlySurvey(this.ResponseHeaderId.Value, this.ModuleId);
                 }
 
                 this.SurveyControl.UserId = this.UserId;
@@ -162,7 +162,7 @@ namespace Engage.Dnn.Survey
                 body = body.Replace(Utility.UserNameMarker, displayName);
                 body = body.Replace(Utility.SurveyInformationMarker, title);
 
-                var survey = new SurveyRepository().LoadReadOnlySurvey(responseHeaderId);
+                var survey = new SurveyRepository().LoadReadOnlySurvey(responseHeaderId, this.ModuleId);
                 var table = new Table();
                 var sb = new StringBuilder();
                 var writer = new HtmlTextWriter(new StringWriter(sb));

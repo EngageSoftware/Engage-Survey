@@ -135,6 +135,9 @@
   <data name="DeleteButton.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="EditButton.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="PostEndMessage.Format" xml:space="preserve">
     <value>&lt;div class="post-end-message em-user-message"&gt;&lt;div class="em-help"&gt;&lt;h4 class="SubHead em-message-title"&gt;This survey is no longer available&lt;/h4&gt;&lt;p class="Normal"&gt;{0}&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</value>
     <comment>{0} is message defined on survey</comment>

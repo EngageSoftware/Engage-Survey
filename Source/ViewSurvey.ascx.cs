@@ -133,6 +133,10 @@ namespace Engage.Dnn.Survey
                 this.DeleteResponseButton.Click += this.DeleteResponseButton_Click;
                 this.DeleteResponseButton.Visible = this.IsEditable && displayingCompletedSurvey;
                 ClientAPI.AddButtonConfirm(this.DeleteResponseButton, this.Localize("ConfirmDelete.Text"));
+
+                // allow module editors to edit survey
+                this.EditDefinitionButton.Click += this.EditDefinitionButton_Click;
+                this.EditDefinitionButton.Visible = this.IsEditable && !displayingCompletedSurvey;
             }
             catch (Exception exc)
             {
@@ -292,6 +296,16 @@ namespace Engage.Dnn.Survey
 
             new SurveyRepository().DeleteReadOnlySurvey(this.ResponseHeaderId);
             this.Response.Redirect(this.BuildLinkUrl(this.TabId));
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Button.Click"/> event of the <see cref="EditDefinitionButton"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void EditDefinitionButton_Click(object sender, EventArgs e)
+        {
+            this.Response.Redirect(this.BuildLinkUrl(this.ModuleId, ControlKey.EditSurvey, "surveyId=" + this.SurveyId.GetValueOrDefault().ToString(CultureInfo.InvariantCulture)));
         }
 
         /// <summary>

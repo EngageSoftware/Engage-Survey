@@ -10,7 +10,8 @@
 	.error-message{background:url(images/inline-validator-bg.png) no-repeat right;padding:2px 4px;color:#fff !important;font-weight:bold;}
 		.error-text{color:#fff !important;font-weight:bold;}
 	.buttons-area{padding-top:20px; float:left;}
-	    .delete-button{float:left; margin: 20px 0 0 5px;}
+	    .buttons-area input{margin-left:5px;}
+	    .delete-button, .edit-button{float:left; margin: 20px 0 0 5px;}
 	.limit-reached{background:url(images/inline-validator-bg.png) no-repeat left;width:180px;color:#fff;font-weight:bold;}
 /*============ Engage Evaluation ============*/
 #engage-evaluation{}

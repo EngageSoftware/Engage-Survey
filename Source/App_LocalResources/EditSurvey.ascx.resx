@@ -283,7 +283,7 @@
     <value>Remove this answer, are you sure?</value>
   </data>
   <data name="RequiredNote.Text" xml:space="preserve">
-    <value>&lt;strong&gt;Note:&lt;/strong&gt; (*) denotes required fields</value>
+    <value>&lt;strong&gt;Note:&lt;/strong&gt; &lt;span class="ee-required-label"&gt;*&lt;/span&gt; denotes required fields</value>
   </data>
   <data name="SaveAllAnswersHyperLink.Text" xml:space="preserve">
     <value>Save All Answers</value>

@@ -4,3 +4,4 @@
     <engage:GlobalNav ID="GlobalNavigation" runat="server" />
     <asp:PlaceHolder id="SubControlPlaceholder" runat="server" />
 </div>
+<div style="clear:both;">&nbsp;</div>

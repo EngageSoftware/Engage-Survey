@@ -121,7 +121,7 @@
     <value>Add New</value>
   </data>
   <data name="AddNewLink.ToolTip" xml:space="preserve">
-    <value>Add New</value>
+    <value>Add New Survey</value>
   </data>
   <data name="HomeLink.Text" xml:space="preserve">
     <value>Home</value>
@@ -133,12 +133,12 @@
     <value>Manage</value>
   </data>
   <data name="ManageLink.ToolTip" xml:space="preserve">
-    <value>Manage</value>
+    <value>Manage Surveys</value>
   </data>
   <data name="SettingsLink.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="SettingsLink.ToolTip" xml:space="preserve">
-    <value>View Settings</value>
+    <value>View Module Settings</value>
   </data>
 </root>

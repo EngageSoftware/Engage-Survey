@@ -18,7 +18,6 @@ namespace Engage.Dnn.Survey
     using System.Web.UI;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using Framework;
@@ -80,7 +79,6 @@ namespace Engage.Dnn.Survey
                                { DefaultControlKey, DefaultSubControl },
                                { ControlKey.ViewSurvey, new SubControlInfo("ViewSurvey.ascx", false) },
                                { ControlKey.EditSurvey, new SubControlInfo("EditSurvey.ascx", true) },
-                               { ControlKey.ThankYou, new SubControlInfo("ThankYou.ascx", false) },
                                { ControlKey.Analyze, new SubControlInfo("AnalyzeResponses.ascx", true) }
                        };
         }

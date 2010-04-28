@@ -46,7 +46,6 @@ namespace Engage.Dnn.Survey
                 {
                     this.ListingDisplayDropDownList.Items.Add(new ListItem(Localization.GetString(ControlKey.SurveyListing.ToString(), this.LocalResourceFile), ControlKey.SurveyListing.ToString()));
                     this.ListingDisplayDropDownList.Items.Add(new ListItem(Localization.GetString(ControlKey.ViewSurvey.ToString(), this.LocalResourceFile), ControlKey.ViewSurvey.ToString()));
-                    this.ListingDisplayDropDownList.Items.Add(new ListItem(Localization.GetString(ControlKey.ThankYou.ToString(), this.LocalResourceFile), ControlKey.ThankYou.ToString()));
                     this.SetSelectedListItem(this.ListingDisplayDropDownList, Dnn.Survey.ModuleSettings.DisplayType);
 
                     this.SurveyDropDownList.DataSource = new SurveyRepository().LoadSurveys(this.ModuleId, true);

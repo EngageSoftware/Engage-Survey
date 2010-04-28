@@ -149,13 +149,6 @@
       <DependentUpon>SurveyService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ThankYou.ascx.cs">
-      <DependentUpon>ThankYou.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ThankYou.ascx.designer.cs">
-      <DependentUpon>ThankYou.ascx</DependentUpon>
-    </Compile>
     <Compile Include="EditSurvey.ascx.cs">
       <DependentUpon>EditSurvey.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -213,7 +206,6 @@
     <Content Include="App_LocalResources\Settings.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ThankYou.ascx" />
     <Content Include="ViewSurvey.ascx" />
   </ItemGroup>
   <ItemGroup>

@@ -32,11 +32,6 @@ namespace Engage.Dnn.Survey
         EditSurvey,
 
         /// <summary>
-        /// Display a final message for a survey
-        /// </summary>
-        ThankYou,
-
-        /// <summary>
         /// Displays responses for a survey
         /// </summary>
         Analyze

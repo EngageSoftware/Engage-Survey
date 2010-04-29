@@ -474,6 +474,7 @@ namespace Engage.Survey.UI
         {
             var button = new Button { Text = this.BackButtonText, ID = "BackButton", CssClass = CssClassBackButton };
             button.Click += BackButton_Click;
+            button.Visible = !string.IsNullOrEmpty(ReturnUrl);
             submitDiv.Controls.Add(button);
         }
 

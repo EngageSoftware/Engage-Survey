@@ -166,7 +166,7 @@
     <value>Choose this module's function.  Each module can display a list of the available surveys (the default), it can display a specific survey, or it can display the "Thank You" message for when the user is finished taking a survey.</value>
   </data>
   <data name="Email Settings.Text" xml:space="preserve">
-    <value>Email Settings</value>
+    <value>Default Email Settings</value>
   </data>
   <data name="NotificationFromEmailLabel.Help" xml:space="preserve">
     <value>The email address from which notification emails should be sent</value>

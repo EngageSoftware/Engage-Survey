@@ -59,8 +59,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Engage.Framework, Version=3.1.1.27346, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Engage.Framework, Version=3.1.4.20311, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\Framework\Engage.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -105,8 +106,10 @@
     <Compile Include="Util\ValidationProviderBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="References\Engage.Framework.dll" />
     <Content Include="References\Engage.Framework.XML" />
+    <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
+    <Content Include="References\Framework\Engage.Events.dll" />
+    <Content Include="References\Framework\Engage.Framework.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -66,9 +66,9 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Engage.Framework, Version=3.1.1.27346, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Engage.Framework, Version=3.1.4.20311, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
+      <HintPath>References\Framework\Engage.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -111,8 +111,10 @@
   <ItemGroup>
     <Content Include="References\BrandonHaynes.ModelAdapter.dll" />
     <Content Include="References\DotNetNuke.dll" />
-    <Content Include="References\Engage.Framework.dll" />
     <Content Include="References\Engage.Framework.XML" />
+    <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
+    <Content Include="References\Framework\Engage.Events.dll" />
+    <Content Include="References\Framework\Engage.Framework.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SurveyModelDataContext.dbml">

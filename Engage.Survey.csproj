@@ -106,7 +106,6 @@
     <Compile Include="Util\ValidationProviderBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="References\Engage.Framework.XML" />
     <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
     <Content Include="References\Framework\Engage.Events.dll" />
     <Content Include="References\Framework\Engage.Framework.dll" />

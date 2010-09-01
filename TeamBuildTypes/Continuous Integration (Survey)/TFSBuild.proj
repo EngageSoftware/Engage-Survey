@@ -246,7 +246,7 @@
   <Target Name="AfterEndToEndIteration">
     <!-- Get and checkout output folder-->
     <MakeDir Directories="$(ReplicateSourceFolder)"/>
-    <Exec Command="$(TF) workfold /decloak ." WorkingDirectory="$(ReplicateSourceFolder)" />
+    <Exec Command="$(TF) workfold /decloak /workspace:$(WorkspaceName) ." WorkingDirectory="$(ReplicateSourceFolder)" />
     <Exec Command="$(TF) get &quot;$(ReplicateSourceFolder)&quot; /recursive"/>
     <Exec Command="$(TF) checkout &quot;$(ReplicateSourceFolder)&quot; /recursive" />
 

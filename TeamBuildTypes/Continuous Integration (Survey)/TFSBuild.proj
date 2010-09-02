@@ -233,34 +233,34 @@
   </Target>
   
   <!-- Dependency replication scheme based on http://geekswithblogs.net/jakob/archive/2009/03/05/implementing-dependency-replication-with-tfs-team-build.aspx-->
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <TF>&quot;$(VS100COMNTOOLS)..\IDE\tf.exe&quot;</TF>
     <ReplicateSourceFolder>$(SolutionRoot)\inetpub\wwwroot\campus.dev\Website\DesktopModules\EngageSurvey\Output</ReplicateSourceFolder>
   </PropertyGroup>
   <ItemGroup>
-    <!-- Engage: Campus -->
+    --><!-- Engage: Campus --><!--
     <ReplicateDestinationFolder Include="$(BuildProjectFolderPath)/../../../Engage Campus/Source/References/Survey/">
       <LocalMapping>$(SolutionRoot)\Engage Campus\Source\References\Survey\</LocalMapping>
     </ReplicateDestinationFolder>
   </ItemGroup>
   <Target Name="AfterEndToEndIteration">
-    <!-- Get and checkout output folder-->
+    --><!-- Get and checkout output folder--><!--
     <MakeDir Directories="$(ReplicateSourceFolder)"/>
     <Exec Command="$(TF) workfold /decloak /workspace:$(WorkspaceName) ." WorkingDirectory="$(ReplicateSourceFolder)" />
     <Exec Command="$(TF) get &quot;$(ReplicateSourceFolder)&quot; /recursive"/>
     <Exec Command="$(TF) checkout &quot;$(ReplicateSourceFolder)&quot; /recursive" />
 
-    <!-- Copy build output to deploy folder and check in -->
+    --><!-- Copy build output to deploy folder and check in --><!--
     <Copy SourceFiles="@(CompilationOutputs)" DestinationFolder="$(ReplicateSourceFolder)"/>
     <Exec Command="$(TF) checkin /override:&quot;Team Build automatic check-in&quot; /notes:&quot;Code Reviewer&quot;=&quot;TFSSERVICE&quot; /comment:&quot;Checking in assemblies from Team Build $(NoCICheckinComment)&quot; &quot;$(ReplicateSourceFolder)&quot; /recursive"/>
 
-    <!-- Add destination folders to current workspace -->
+    --><!-- Add destination folders to current workspace --><!--
     <Exec Command="$(TF) workfold /workspace:$(WorkspaceName) &quot;%(ReplicateDestinationFolder.Identity)&quot; &quot;%(ReplicateDestinationFolder.LocalMapping)&quot;"/>
 
-    <!-- Merge to destinations -->
+    --><!-- Merge to destinations --><!--
     <Exec Command="$(TF) merge &quot;$(ReplicateSourceFolder)&quot; &quot;%(ReplicateDestinationFolder.LocalMapping)&quot; /recursive"/>
 
-    <!-- Check in -->
+    --><!-- Check in --><!--
     <Exec Command="$(TF) checkin /override:&quot;Team Build automatic check-in&quot; /notes:&quot;Code Reviewer&quot;=&quot;TFSSERVICE&quot; /comment:&quot;Checking in new version of Engage Survey assemblies from Team Build&quot; @(ReplicateDestinationFolder->'&quot;%(LocalMapping)&quot;', ' ') /recursive"/>
 
     <OnError ExecuteTargets="RecoverFromDependencyReplicationError"/>
@@ -268,5 +268,5 @@
   <Target Name="RecoverFromDependencyReplicationError">
     <Exec Command="$(TF) undo &quot;$(ReplicateSourceFolder)&quot; /recursive /noprompt" ContinueOnError="true"/>
     <Exec Command="$(TF) undo &quot;%(ReplicateDestinationFolder.LocalMapping)&quot; /recursive /noprompt" ContinueOnError="true"/>
-  </Target>  
+  </Target>-->  
 </Project>

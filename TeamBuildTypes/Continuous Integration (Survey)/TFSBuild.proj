@@ -235,7 +235,7 @@
   <!-- Dependency replication scheme based on http://geekswithblogs.net/jakob/archive/2009/03/05/implementing-dependency-replication-with-tfs-team-build.aspx-->
   <PropertyGroup>
     <TF>&quot;$(VS100COMNTOOLS)..\IDE\tf.exe&quot;</TF>
-    <ReplicateSourceFolder>$(SolutionRoot)\Source\Output</ReplicateSourceFolder>
+    <ReplicateSourceFolder>$(SolutionRoot)\inetpub\wwwroot\campus.dev\Website\DesktopModules\EngageSurvey\Output</ReplicateSourceFolder>
   </PropertyGroup>
   <ItemGroup>
     <!-- Engage: Campus -->

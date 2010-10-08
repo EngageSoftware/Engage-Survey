@@ -6,11 +6,11 @@ using System.Web.UI;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Engage.Dnn.Survey")]
-[assembly: AssemblyDescription("Engage Software's DotNetNuke Survey System.")]
+[assembly: AssemblyDescription("Engage Software's DotNetNuke Survey System")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Engage Software")]
 [assembly: AssemblyProduct("Engage.Dnn.Survey")]
-[assembly: AssemblyCopyright("Engage Software Copyright ©  2010")]
+[assembly: AssemblyCopyright("Engage Software Copyright © 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -28,7 +28,7 @@ using System.Web.UI;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("3.1.0.*")]
-[assembly: AssemblyFileVersion("3.1.0.0")]
+[assembly: AssemblyVersion("3.1.1.*")]
+[assembly: AssemblyFileVersion("3.1.1.0")]
 
 [assembly: WebResource("Engage.Dnn.Survey.JavaScript.survey.js", "text/javascript")]

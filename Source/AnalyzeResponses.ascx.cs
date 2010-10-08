@@ -208,7 +208,7 @@ namespace Engage.Dnn.Survey
                         PlotArea =
                             {
                                 XAxis = { Appearance = { TextAppearance = { Visible = false } } },
-                                YAxis = { Step = 1, AutoScale = false, AxisLabel = { TextBlock = { Text = this.Localize("Axis Label.Text") }, Visible = true } }
+                                YAxis = { AxisLabel = { TextBlock = { Text = this.Localize("Axis Label.Text") }, Visible = true } }
                             }
                     };
 

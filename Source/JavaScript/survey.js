@@ -473,13 +473,14 @@ if (!Array.prototype.indexOf) {
         $(".add-new").click(function (event) {
             event.preventDefault();
             
-            var $answerElement = $(".answer-inputs li.answer-input:visible:last").clone(true).hide().appendTo('.answer-inputs').slideDown(AnimationSpeed);
+            var $answerNumberElement = $(".answer-input:visible:last .answer-num");
+
+            var $answerElement = $(".answer-input-template").clone(true).attr('class', 'answer-input').hide().appendTo('.answer-inputs').slideDown(AnimationSpeed);
             
             // increment answer number
-            var $answerNumberElement = $answerElement.find('.answer-num');
             var answerNumber = parseInt($answerNumberElement.text(), 10);
-            $answerNumberElement.text(answerNumber + 1);
-            
+            $answerElement.find('.answer-num').text(answerNumber + 1);
+
             // clear out cloned textbox
             $answerElement.find('input').val('').focus();
             
@@ -744,7 +745,8 @@ if (!Array.prototype.indexOf) {
             
             validator = $('#Form').validate();
             if ($('#QuestionText').valid() &&
-               (!questionIsMultipleChoice || $('.ai-input input:visible').valid())) {
+               (!questionIsMultipleChoice || $('.ai-input input:visible').valid()) &&
+               ($('#DefineAnswerType :selected').val() != 0)) {
             
                 $(this).text(CurrentContextInfo.ProgressText).parent().addClass('disabled');
                 callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
@@ -769,14 +771,13 @@ if (!Array.prototype.indexOf) {
                 $questionElement = $('.ee-preview').eq(questionOrder - 1);
             }
             else {
-                $questionElement = $('.ee-preview:last');
+                $questionElement = $('.ee-preview-template').clone(true).attr('class', 'ee-preview');
                 
                 // if this is the first question, just use the hidden element
                 // otherwise, clone that element and replace its values
-                if ($questionElement.data('questionId')) {
-                    $questionElement = $questionElement.clone(true);
+                ////if ($questionElement.data('questionId')) {
                     $('#ee-previews').append($questionElement);
-                }
+                ////}
             }
             
             // update the new question preview
@@ -837,14 +838,10 @@ if (!Array.prototype.indexOf) {
                 .remove();
 
             // only should have two answers by default
-            $('#MultipleAnswer li.answer-input:gt(1)').remove();
-            var $defaultAnswers = $('#MultipleAnswer li.answer-input');
-            if ($defaultAnswers.length === 1) {
-                // if there's only one question, it has the 'disabled' class
-                $defaultAnswers.find('.ee-delete').removeClass('disabled');
-                
-                $defaultAnswers.clone(true).insertAfter($defaultAnswers).find('.answer-num').text(2);
-            }
+            $('#MultipleAnswer li.answer-input').remove();
+            var $defaultAnswers = $('#MultipleAnswer li.answer-input-template');
+            $defaultAnswers.clone(true).attr('class', 'answer-input').show().insertAfter($defaultAnswers).find('.answer-num').text(1);
+            $defaultAnswers.clone(true).attr('class', 'answer-input').show().insertAfter($defaultAnswers).find('.answer-num').text(2);
             
             $('.ai-input input').val('');
             

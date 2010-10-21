@@ -102,15 +102,8 @@
                 </div>
                 <div class="ee-answer-inputs" id="MultipleAnswer" style="display:none;">
                     <ul class="answer-inputs">
-                        <li class="answer-input">
+                        <li class="answer-input-template" style="display: none;">
                             <span class="ai-label"><span class="ee-required-label">*</span><%=Localize("AnswerTitle.Text")%> <span class="answer-num">1</span></span>
-                            <div class="ai-selected">
-                                <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" name="required" /></span>
-                                <a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("RemoveAnswerHyperLink.ToolTip"))%>" class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
-                            </div>
-                        </li>
-                        <li class="answer-input">                        
-                            <span class="ai-label"><span class="ee-required-label">*</span><%=Localize("AnswerTitle.Text")%> <span class="answer-num">2</span></span>
                             <div class="ai-selected">
                                 <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" name="required" /></span>
                                 <a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("RemoveAnswerHyperLink.ToolTip"))%>" class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
@@ -135,7 +128,7 @@
         <legend class="Head"><%=Localize("PreviewAreaLabel.Text")%></legend>
         <hr />
         <ul id="ee-previews">
-            <li class="ee-preview">
+            <li class="ee-preview-template" style="display:none;">
                 <ul class="ee-pr-action-links">
                     <li><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("EditQuestionHyperLink.ToolTip"))%>" class="ee-edit"><%=Localize("EditQuestionHyperLink.Text")%></a></li>
                     <li><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("CopyQuestionHyperLink.ToolTip"))%>" class="ee-copy"><%=Localize("CopyQuestionHyperLink.Text")%></a></li>

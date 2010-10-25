@@ -71,6 +71,9 @@ if (!Array.prototype.indexOf) {
         });
         $.validator.setDefaults({
             rules: {
+                DefineAnswerType: { 
+                    range: [1, 5] 
+                },
                 required: { required: true },
                 notificationEmail: { 
                     required: { depends: function (element) { return $('#EvalSendNotification').attr('checked'); } },
@@ -746,7 +749,7 @@ if (!Array.prototype.indexOf) {
             validator = $('#Form').validate();
             if ($('#QuestionText').valid() &&
                (!questionIsMultipleChoice || $('.ai-input input:visible').valid()) &&
-               ($('#DefineAnswerType :selected').val() != 0)) {
+               ($('#DefineAnswerType').valid()) ) {
             
                 $(this).text(CurrentContextInfo.ProgressText).parent().addClass('disabled');
                 callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {

@@ -179,6 +179,9 @@ var CurrentContextInfo = {
     EmailsRegex: /<%=Engage.Utility.EmailsRegEx %>/,
     ErrorMessages: {
         required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
+        DefineAnswerType: { 
+            range: '<%= ClientAPI.GetSafeJSString(Localize("TypeRequired.Text")) %>'
+        },
         notificationEmail: {
             required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
             email: '<%= ClientAPI.GetSafeJSString(Localize("Error: Email.Text")) %>'

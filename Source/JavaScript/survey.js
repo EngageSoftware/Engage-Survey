@@ -72,7 +72,7 @@ if (!Array.prototype.indexOf) {
         $.validator.setDefaults({
             rules: {
                 DefineAnswerType: { 
-                    range: [1, 5] 
+                    range: [1, 5]
                 },
                 required: { required: true },
                 notificationEmail: { 
@@ -92,7 +92,7 @@ if (!Array.prototype.indexOf) {
             onsubmit: false
         });
 
-        var validator = $('#Form').validate(),
+        var validator = $('#Form').validate({ignore: '#DefineAnswerType'}),
             AnimationSpeed = 'normal',
             pendingQuestionDeleteCallbacks = [],
             startDatePicker = $find($('.ee-start-date .RadPicker input').attr('id')),

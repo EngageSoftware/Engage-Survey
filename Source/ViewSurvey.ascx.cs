@@ -124,6 +124,8 @@ namespace Engage.Dnn.Survey
                 this.SurveyControl.UserId = this.UserId;
                 this.SurveyControl.SurveyCompleted += this.SurveyControl_SurveyCompleted;
 
+                this.SurveyControl.ShowRequiredNotation = ModuleSettings.ShowRequiredNotation.GetValueAsBooleanFor(this).Value;
+
                 this.SurveyControl.BackButtonText = this.Localize("BackButton.Text");
                 this.SurveyControl.SubmitButtonText = this.Localize("SubmitButton.Text");
                 this.SurveyControl.PreStartMessageTemplate = this.Localize("PreStartMessage.Format");

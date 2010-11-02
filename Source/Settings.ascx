@@ -9,7 +9,7 @@
     <asp:PlaceHolder ID="ViewSurveyPlaceholder" runat="server">
         <fieldset>
             <legend><%=Localize("View Survey Settings") %></legend>
-            <div class="ee-setting-item">
+            <div id="SurveySettingSection" runat="server" class="ee-setting-item">
                 <span class="ee-label"><dnn:Label ResourceKey="SurveyTypeIdLabel" runat="server" ControlName="SurveyDropDownList" Suffix=":"/></span>
                 <span class="ee-input"><asp:DropDownList ID="SurveyDropDownList" runat="server" CssClass="NormalTextBox" /></span>
             </div>

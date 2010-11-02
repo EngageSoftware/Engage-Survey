@@ -135,11 +135,11 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Sets the visibility of <see cref="ViewSurveyPlaceholder"/>.
+        /// Sets the visibility of <see cref="SurveySettingSection"/>.
         /// </summary>
         private void SetViewSurveySettingsVisibility()
         {
-            this.ViewSurveyPlaceholder.Visible = this.ListingDisplayDropDownList.SelectedValue == ControlKey.ViewSurvey.ToString();
+            this.SurveySettingSection.Visible = this.ListingDisplayDropDownList.SelectedValue == ControlKey.ViewSurvey.ToString();
         }
 
         /// <summary>

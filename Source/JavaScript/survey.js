@@ -71,9 +71,7 @@ if (!Array.prototype.indexOf) {
         });
         $.validator.setDefaults({
             rules: {
-                DefineAnswerType: { 
-                    range: [1, 5]
-                },
+                DefineAnswerType: { range: [1, 5] },
                 required: { required: true },
                 notificationEmail: { 
                     required: { depends: function (element) { return $('#EvalSendNotification').attr('checked'); } },

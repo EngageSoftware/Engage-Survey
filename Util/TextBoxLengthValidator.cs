@@ -9,23 +9,21 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.ComponentModel;
-
 namespace Engage.Survey.Util
 {
+    using System.ComponentModel;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     /// <summary>
-    /// Summary description for TextBoxLengthValidator.
+    /// Validates that the length of a <see cref="TextBox"/>'s value is no longer than a maximum length
     /// </summary>
     [ToolboxData("<{0}:TextBoxLengthValidator runat=server ErrorMessage=\"Characters entered exceeds max allowed\"></{0}:TextBoxLengthValidator>")]
-    public class TextBoxLengthValidator : BaseCompareValidator
+    public sealed class TextBoxLengthValidator : BaseCompareValidator
     {
         /// <summary>
-        /// Specifies the max length of the TextBox the control is validating. If this value
+        /// Gets or sets the max length of the TextBox the control is validating. If this value
         /// is 0, then an input of any length is considered valid
         /// </summary>
         [Bindable(true), Description("The maximum number of characters that can be entered"), Category("Behavior"), DefaultValue(850)]
@@ -34,7 +32,7 @@ namespace Engage.Survey.Util
             get
             {
                 object length = this.ViewState["MaxLength"];
-                return (length == null ? 0 : System.Convert.ToInt32(length));
+                return length == null ? 0 : System.Convert.ToInt32(length);
             }
 
             set
@@ -46,29 +44,27 @@ namespace Engage.Survey.Util
         #region Overrides
 
         /// <summary>
-        /// Adds client-side functionality for uplevel browsers by specifying the JavaScript function
-        /// to call when validating, as well as the needed parameter, MaxLength
-        /// </summary>
-        protected override void AddAttributesToRender(HtmlTextWriter writer)
-        {
-            base.AddAttributesToRender(writer);
-            if (this.EnableClientScript)
-            {
-                writer.AddAttribute("evaluationfunction", "TextBoxLengthIsValid");
-                writer.AddAttribute("maxlength", this.MaxLength.ToString());
-            }
-        }
-
-        /// <summary>
         /// Checks to ensure that the ControlToValidate property is set to a TextBox
         /// </summary>
+        /// <returns>
+        /// <c>true</c> if the control specified by <see cref="BaseValidator.ControlToValidate"/> is a valid control; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="T:System.Web.HttpException">
+        /// No value is specified for the <see cref="BaseValidator.ControlToValidate"/> property.
+        /// - or -
+        /// The input control specified by the <see cref="BaseValidator.ControlToValidate"/> property is not found on the page.
+        /// - or -
+        /// The input control specified by the <see cref="BaseValidator.ControlToValidate"/> property does not have a <see cref="ValidationPropertyAttribute"/> attribute associated with it; therefore, it cannot be validated with a validation control.
+        /// </exception>
         protected override bool ControlPropertiesValid()
         {
             if (this.Context == null)
             {
-                //only do this is running in the designer
+                // only do this if running in the designer
                 if (!(this.FindControl(this.GetControlRenderID(this.ControlToValidate)) is TextBox))
+                {
                     throw new HttpException("ControlToValidate must be a TextBox.");
+                }
             }
 
             return base.ControlPropertiesValid();
@@ -79,37 +75,19 @@ namespace Engage.Survey.Util
         /// otherwise, returns true only if the ControlToValidate's length is less than or equal to the
         /// specified MaxLength
         /// </summary>
+        /// <returns>
+        /// <c>true</c> if the value in the input control is valid; otherwise, <c>false</c>.
+        /// </returns>
         protected override bool EvaluateIsValid()
         {
-            if (this.MaxLength == 0) return true;
+            if (this.MaxLength == 0)
+            {
+                return true;
+            }
 
             string controlValue = this.GetControlValidationValue(this.ControlToValidate);
 
             return controlValue.Length <= this.MaxLength;
-        }
-
-        /// <summary>
-        /// Injects the JavaScript function that performs client-side validation for uplevel browsers.
-        /// </summary>
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (this.EnableClientScript)
-            {
-                StringBuilder sb = new StringBuilder(128);
-                sb.Append("<script language='javascript'>");
-                sb.Append("function TextBoxLengthIsValid(val)");
-                sb.Append("{");
-                sb.Append("var value = ValidatorGetValue(val.controltovalidate);");
-                sb.Append("if (ValidatorTrim(value).length == 0) return true;");
-                sb.Append("if (val.maxlength == 0) return true;");
-                sb.Append("return (value.length <= val.maxlength);");
-                sb.Append("}");
-                sb.Append("</script>");
-                
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "TxtBxLngthValIsValid", sb.ToString());
-            }
         }
 
         #endregion

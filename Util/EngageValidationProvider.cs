@@ -37,110 +37,108 @@ namespace Engage.Survey.Util
         {
             if (validationType == ValidationType.RequiredField)
             {
-                RequiredFieldValidator validator = new RequiredFieldValidator
-                                                       {
-                                                               Display = ValidatorDisplay.Dynamic,
-                                                               ControlToValidate = controlToValidate,
-                                                               ValidationGroup = validationGroup,
-                                                               ErrorMessage = ("<span class=\"error-text\">" + errorMessage + "</span>"),
-                                                               CssClass = cssClass
-                                                       };
-                containerControl.Controls.Add(validator);
+                containerControl.Controls.Add(new RequiredFieldValidator
+                    {
+                        Display = ValidatorDisplay.Dynamic,
+                        ControlToValidate = controlToValidate,
+                        ValidationGroup = validationGroup,
+                        ErrorMessage = "<span class=\"error-text\">" + errorMessage + "</span>",
+                        CssClass = cssClass
+                    });
             }
 
             if (validationType == ValidationType.EmailField)
             {
-                RegularExpressionValidator validator = new RegularExpressionValidator
-                                                           {
-                                                                   Display = ValidatorDisplay.Dynamic,
-                                                                   ControlToValidate = controlToValidate,
-                                                                   ValidationGroup = validationGroup,
-                                                                   ValidationExpression = Engage.Utility.EmailsRegEx,
-                                                                   ErrorMessage = ("<span class=\"error-text\">" + errorMessage + "</span>"),
-                                                                   CssClass = cssClass
-                                                           };
-                containerControl.Controls.Add(validator);
+                containerControl.Controls.Add(new RegularExpressionValidator
+                    {
+                        Display = ValidatorDisplay.Dynamic,
+                        ControlToValidate = controlToValidate,
+                        ValidationGroup = validationGroup,
+                        ValidationExpression = Engage.Utility.EmailsRegEx,
+                        ErrorMessage = "<span class=\"error-text\">" + errorMessage + "</span>",
+                        CssClass = cssClass
+                    });
             }
 
             if (validationType == ValidationType.LimitedLengthField)
             {
-                TextBoxLengthValidator tbv = new TextBoxLengthValidator
-                                                 {
-                                                         Display = ValidatorDisplay.Dynamic,
-                                                         ControlToValidate = controlToValidate,
-                                                         ValidationGroup = validationGroup,
-                                                         ErrorMessage = ("<span class=\"error-text\">" + errorMessage + "</span>"),
-                                                         MaxLength = maxLength
-                                                 };
-                containerControl.Controls.Add(tbv);
+                containerControl.Controls.Add(new TextBoxLengthValidator
+                    {
+                        Display = ValidatorDisplay.Dynamic,
+                        ControlToValidate = controlToValidate,
+                        ValidationGroup = validationGroup,
+                        ErrorMessage = "<span class=\"error-text\">" + errorMessage + "</span>",
+                        MaxLength = maxLength,
+                        CssClass = cssClass
+                    });
             }
 
             if (validationType == ValidationType.LimitedSelection)
             {
                 if (selectionLimit > 0)
                 {
-                    StringBuilder sb = new StringBuilder(128);
-                    sb.Append("<script language='javascript'>");
-                    sb.Append(Environment.NewLine);
+                    var gnarlyScriptBuilder = new StringBuilder(128);
+                    gnarlyScriptBuilder.Append("<script type=\"text/javascript\">");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
 
-                    sb.Append("var checkBoxesSelected = 0;");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("var checkBoxLimit = ");
-                    sb.Append(selectionLimit);
-                    sb.Append(";");
-                    sb.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("var checkBoxesSelected = 0;");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("var checkBoxLimit = ");
+                    gnarlyScriptBuilder.Append(selectionLimit);
+                    gnarlyScriptBuilder.Append(";");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
 
-                    sb.Append("function CheckSelectedCount(val)");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("{");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("			    jQuery('.limit-reached').hide(); ");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("		var allowCheck = true;");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("		if (val.checked)");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("		{");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("			if ((checkBoxesSelected + 1) <= checkBoxLimit)");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("			{");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("				checkBoxesSelected++;");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("			}");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("			else");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("			{");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("			    jQuery('.limit-reached').show(); ");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("				allowCheck = false;");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("			}");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("		}");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("		else ");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("		{");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("			checkBoxesSelected--;");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("		}");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("		return allowCheck;");
-                    sb.Append(Environment.NewLine);
-                    sb.Append("}");
-                    sb.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("function CheckSelectedCount(val)");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("{");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("			    jQuery('.limit-reached').hide(); ");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("		var allowCheck = true;");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("		if (val.checked)");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("		{");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("			if ((checkBoxesSelected + 1) <= checkBoxLimit)");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("			{");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("				checkBoxesSelected++;");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("			}");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("			else");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("			{");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("			    jQuery('.limit-reached').show(); ");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("				allowCheck = false;");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("			}");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("		}");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("		else ");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("		{");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("			checkBoxesSelected--;");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("		}");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("		return allowCheck;");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("}");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
 
-                    sb.Append("</script>");
-                    sb.Append(Environment.NewLine);
+                    gnarlyScriptBuilder.Append("</script>");
+                    gnarlyScriptBuilder.Append(Environment.NewLine);
 
                     if (!manager.IsClientScriptBlockRegistered("CheckBoxLimitCheck"))
                     {
-                        manager.RegisterClientScriptBlock(this.GetType(), "CheckBoxLimitCheck", sb.ToString());
+                        manager.RegisterClientScriptBlock(this.GetType(), "CheckBoxLimitCheck", gnarlyScriptBuilder.ToString());
                     }
                 }
             }

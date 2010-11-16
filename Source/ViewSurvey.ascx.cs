@@ -12,12 +12,15 @@
 namespace Engage.Dnn.Survey
 {
     using System;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Text;
+    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-
+    
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -32,7 +35,13 @@ namespace Engage.Dnn.Survey
     /// It wires up an event to get in on the saving of a Survey and retrieves the ResponseId back.
     /// </summary>
     public partial class ViewSurvey : ModuleBase
-    {     
+    {
+        /// <summary>
+        /// The name of the cookie to add to the user's browser when they've taken the survey, 
+        /// with a <c>string.format</c>-style placeholder for survey ID
+        /// </summary>
+        private const string SurveyTakenCookieNameFormat = "Engage_Survey_{0}";
+
         /// <summary>
         /// Gets the notification from email address either defined as a module setting or a survey setting.
         /// </summary>
@@ -101,6 +110,35 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
+        /// Gets a value indicating whether the HTTP cookie exists that indicates that the current user has already taken the current survey.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the "survey already taken" cookie exists; otherwise, <c>false</c>.
+        /// </value>
+        private bool SurveyTakenCookieExists
+        {
+            get { return this.Request.Cookies.AllKeys.Any(cookieName => cookieName == this.SurveyTakenCookieName); }
+        }
+
+        /// <summary>
+        /// Gets the name of the cookie which indicates that the survey has been taken.
+        /// </summary>
+        /// <remarks>This property assumes that a survey is currently being viewed (i.e. <see cref="SurveyId"/> is not <c>null</c>)</remarks>
+        /// <value>The name of the HTTP cookie whose presence indicates that this user has taken the current survey</value>
+        private string SurveyTakenCookieName
+        {
+            get
+            {
+                Debug.Assert(
+                    this.SurveyId.HasValue,
+                    "SurveyId must have a value",
+                    "It is only valid to call the SurveyTakenCookieName property when you are sure that SurveyId is set");
+
+                return string.Format(CultureInfo.InvariantCulture, SurveyTakenCookieNameFormat, this.SurveyId.Value);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="EventArgs"/> event.
         /// </summary>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
@@ -109,11 +147,18 @@ namespace Engage.Dnn.Survey
             base.OnInit(e);
 
             try
-            {
-                bool displayingCompletedSurvey = false;
+            {   
+                var displayingCompletedSurvey = false;
                 if (this.ResponseHeaderId == null || !ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration))
                 {
-                    this.SurveyControl.CurrentSurvey = new SurveyRepository().LoadSurvey(this.SurveyId.GetValueOrDefault(), this.ModuleId);
+                    this.SurveyControl.CurrentSurvey = new SurveyRepository().LoadSurvey(this.SurveyId.Value, this.ModuleId);
+
+                    // Check to see if the user has taken the survey and hide it if true
+                    if (!ModuleSettings.AllowMultpleEntries.GetValueAsBooleanFor(this).Value)
+                    {
+                        this.SurveyControl.ShowAlreadyTakenMessage = (IsLoggedIn && new SurveyRepository().UserHasTaken(this.UserId, this.SurveyId.Value)) ||
+                                                                     (!IsLoggedIn && this.SurveyTakenCookieExists);
+                    }
                 }
                 else
                 {
@@ -130,6 +175,7 @@ namespace Engage.Dnn.Survey
                 this.SurveyControl.SubmitButtonText = this.Localize("SubmitButton.Text");
                 this.SurveyControl.PreStartMessageTemplate = this.Localize("PreStartMessage.Format");
                 this.SurveyControl.PostEndMessageTemplate = this.Localize("PostEndMessage.Format");
+                this.SurveyControl.AlreadyTakenMessage = this.Localize("AlreadyTakenMessage.Text");
 
                 // allow module editors to delete user responses
                 this.DeleteResponseButton.Click += this.DeleteResponseButton_Click;
@@ -317,6 +363,7 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="SavedEventArgs"/> instance containing the event data.</param>
         private void SurveyControl_SurveyCompleted(object sender, SavedEventArgs e)
         {
+            this.Response.SetCookie(new HttpCookie(this.SurveyTakenCookieName, e.ResponseHeaderId.ToString(CultureInfo.InvariantCulture)));
             this.SendNotifications(e.ResponseHeaderId);
         }
     }

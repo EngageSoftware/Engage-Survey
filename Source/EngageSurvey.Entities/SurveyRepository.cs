@@ -55,6 +55,17 @@ namespace Engage.Survey.Entities
         }
 
         /// <summary>
+        /// Checks the database to determine if a user has taken the specified survey.
+        /// </summary>
+        /// <param name="userId">The id of the user.</param>
+        /// <param name="surveyId">The id of the survey.</param>
+        /// <returns>True if the user has taken the survey, false if not</returns>
+        public bool UserHasTaken(int userId, int surveyId)
+        {
+            return this.LoadResponses(surveyId).Any(responseHeader => responseHeader.Key.UserId == userId);
+        }
+
+        /// <summary>
         /// Creates a new <see cref="Answer"/> instance, to be persisted when <see cref="SubmitChanges"/> is called.
         /// </summary>
         /// <param name="userId">The ID of the user creating the instance.</param>

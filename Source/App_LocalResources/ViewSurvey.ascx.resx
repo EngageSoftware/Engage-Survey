@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlreadyTakenMessage.Text" xml:space="preserve">
+    <value>&lt;div class="already-taken-message em-user-message"&gt;&lt;div class="em-help"&gt;&lt;h4 class="SubHead em-message-title"&gt;You have already taken this survey&lt;/h4&gt;&lt;p class="Normal"&gt; We have already received your answers to this survey. Thank you for your feedback.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</value>
+  </data>
   <data name="AnswerInlineStyle.Text" xml:space="preserve">
     <value>display:block;</value>
   </data>
@@ -143,7 +146,7 @@
     <comment>{0} is message defined on survey</comment>
   </data>
   <data name="PreStartMessage.Format" xml:space="preserve">
-    <value>&lt;div class="pre-start-message em-user-message"&gt;&lt;div class=" em-help"&gt;&lt;h4 class="SubHead em-message-title"&gt;This survey is not yet available&lt;/h4&gt;&lt;p class="Normal"&gt;{0}&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</value>
+    <value>&lt;div class="pre-start-message em-user-message"&gt;&lt;div class="em-help"&gt;&lt;h4 class="SubHead em-message-title"&gt;This survey is not yet available&lt;/h4&gt;&lt;p class="Normal"&gt;{0}&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</value>
     <comment>{0} is message defined on survey</comment>
   </data>
   <data name="QuestionTitleInlineStyle.Text" xml:space="preserve">

@@ -69,11 +69,6 @@ namespace Engage.Survey.UI
         /// CSS Class to use when no survey typeId is defined
         /// </summary>
         public const string CssClassNoSurveyDefined = "no-survey-defined";
-        
-        /// <summary>
-        /// CSS Class to use for submit area at bottom
-        /// </summary>
-        public const string CssClassButtonsArea = "buttons-area";
 
         /// <summary>
         /// Marker for end survey.
@@ -91,6 +86,12 @@ namespace Engage.Survey.UI
         /// Occurs when the survey is completed.
         /// </summary>
         public event SaveEventHandler SurveyCompleted;
+
+        /// <summary>
+        /// Gets or sets the message to display when the user has already taken this survey.
+        /// </summary>
+        /// <value>The already taken message.</value>
+        public string AlreadyTakenMessage { get; set; }
 
         /// <summary>
         /// Gets or sets the survey that is being rendered.
@@ -191,6 +192,16 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to show a message that the current user has already taken this survey and cannot take it again.
+        /// </summary>
+        /// <value><c>true</c> if the already taken message should be shown instead of the survey; otherwise, <c>false</c>.</value>
+        public bool ShowAlreadyTakenMessage
+        {
+            get; 
+            set; 
+        }
+
+        /// <summary>
         /// Gets or sets the validation provider.
         /// </summary>
         /// <value>The validation provider.</value>
@@ -249,14 +260,19 @@ namespace Engage.Survey.UI
             // TODO: switch to UTC dates
             bool beforeStartDate = this.CurrentSurvey.StartDate > DateTime.Now;
             bool afterEndDate = this.CurrentSurvey.EndDate <= DateTime.Now;
-            if (beforeStartDate || afterEndDate)
+            if (beforeStartDate || afterEndDate || this.ShowAlreadyTakenMessage)
             {
-                var message = beforeStartDate ? this.CurrentSurvey.PreStartMessage : this.CurrentSurvey.PostEndMessage;
-                var messageWrapperHtmlFormat = beforeStartDate ? this.PreStartMessageTemplate : this.PostEndMessageTemplate;
-                var messageHtml = string.Format(
-                    CultureInfo.CurrentCulture,
-                    messageWrapperHtmlFormat, 
-                    HttpUtility.HtmlEncode(message));
+                string messageHtml;
+                if (this.ShowAlreadyTakenMessage)
+                {
+                    messageHtml = this.AlreadyTakenMessage;
+                }
+                else
+                {
+                    var message = beforeStartDate ? this.CurrentSurvey.PreStartMessage : this.CurrentSurvey.PostEndMessage;
+                    var messageWrapperHtmlFormat = beforeStartDate ? this.PreStartMessageTemplate : this.PostEndMessageTemplate;
+                    messageHtml = string.Format(CultureInfo.CurrentCulture, messageWrapperHtmlFormat, HttpUtility.HtmlEncode(message));
+                }
 
                 ph.Controls.Add(new Literal { Text = messageHtml });
             }
@@ -271,18 +287,10 @@ namespace Engage.Survey.UI
                 {
                     this.RenderSubmitButton();
                 }
-                else
-                {
-                    // we need to provide a back button.
-                    var submitDiv = new HtmlGenericControl("DIV");
-                    submitDiv.Attributes["class"] = CssClassButtonsArea;
-                    this.Controls.Add(submitDiv);
-
-                    this.RenderBackButton(submitDiv);
-                }
-
-                this.Controls.Add(new Literal { Text = EndSurveyMarker });
             }
+
+            this.RenderBackButton(this);
+            this.Controls.Add(new Literal { Text = EndSurveyMarker });
         }
 
         /// <summary>
@@ -436,11 +444,7 @@ namespace Engage.Survey.UI
 
                 thankYouDiv.Controls.Add(new Label { Text = this.CurrentSurvey.FinalMessage, CssClass = CssClassThankYou });
 
-                var submitDiv = new HtmlGenericControl("DIV");
-                submitDiv.Attributes["class"] = CssClassButtonsArea;
-                this.Controls.Add(submitDiv);
-
-                this.RenderBackButton(submitDiv);
+                this.RenderBackButton(this);
             }
             else
             {
@@ -453,17 +457,11 @@ namespace Engage.Survey.UI
         /// </summary>
         private void RenderSubmitButton()
         {
-            var submitDiv = new HtmlGenericControl("DIV");
-            submitDiv.Attributes["class"] = CssClassButtonsArea;
-            this.Controls.Add(submitDiv);
-
             var button = new Button { ValidationGroup = "survey", Text = this.SubmitButtonText, ID = "SubmitButton", CssClass = CssClassSubmitButton };
 
             // add the handler for the button
             button.Click += this.SubmitButton_Click;
-            submitDiv.Controls.Add(button);
-            
-            this.RenderBackButton(submitDiv); 
+            this.Controls.Add(button);
         }
 
         /// <summary>

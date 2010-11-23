@@ -202,6 +202,16 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the user has taken the survey previously.
+        /// </summary>
+        /// <value>A boolean showing whether the user has taken the survey.</value>
+        public bool UserHasTaken
+        {
+            get; 
+            set; 
+        }
+
+        /// <summary>
         /// Gets or sets the validation provider.
         /// </summary>
         /// <value>The validation provider.</value>

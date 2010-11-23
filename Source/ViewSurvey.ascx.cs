@@ -29,6 +29,7 @@ namespace Engage.Dnn.Survey
 
     using Engage.Survey.Entities;
     using Engage.Survey.UI;
+    using Engage.Survey.Util;
 
     /// <summary>
     /// This control uses the Engage Survey Control to render a survey. 
@@ -177,7 +178,7 @@ namespace Engage.Dnn.Survey
                 this.SurveyControl.PostEndMessageTemplate = this.Localize("PostEndMessage.Format");
                 this.SurveyControl.AlreadyTakenMessage = this.Localize("AlreadyTakenMessage.Text");
 
-                // allow module editors to delete user responses
+                // allow module editors to delete user responses)
                 this.DeleteResponseButton.Click += this.DeleteResponseButton_Click;
                 this.DeleteResponseButton.Visible = this.IsEditable && displayingCompletedSurvey;
                 ClientAPI.AddButtonConfirm(this.DeleteResponseButton, this.Localize("ConfirmDelete.Text"));
@@ -185,6 +186,14 @@ namespace Engage.Dnn.Survey
                 // allow module editors to edit survey
                 this.EditDefinitionButton.Click += this.EditDefinitionButton_Click;
                 this.EditDefinitionButton.Visible = this.IsEditable && !displayingCompletedSurvey;
+
+                // Check to see if the user has taken the survey and hide it if true
+                if (!ModuleSettings.AllowMultpleEntries.GetValueAsBooleanFor(this).Value)
+                {
+                    string surveyTakenCookieName = string.Format(CultureInfo.InvariantCulture, SurveyTakenCookieNameFormat, this.SurveyId.Value);
+                    this.SurveyControl.UserHasTaken = (IsLoggedIn && new SurveyRepository().UserHasTaken(this.UserId, this.SurveyId.Value)) ||
+                                                      this.Request.Cookies.AllKeys.Any(cookie => cookie == surveyTakenCookieName);
+                }
             }
             catch (Exception exc)
             {

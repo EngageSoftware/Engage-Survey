@@ -148,7 +148,7 @@ namespace Engage.Dnn.Survey
             var descriptionLabel = e.Item.FindControl("DescriptionLabel") as Label;
             if (descriptionLabel != null)
             {
-                descriptionLabel.Text = survey.GetSections().First().Text;
+                descriptionLabel.Text = HttpUtility.HtmlEncode(survey.GetSections().First().Text).Replace("\n", "<br />");
             }
 
             var editHyperLink = e.Item.FindControl("EditHyperLink") as HyperLink;

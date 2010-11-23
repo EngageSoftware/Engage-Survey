@@ -12,6 +12,7 @@
 namespace Engage.Survey.Entities
 {
     using System.Collections.Generic;
+    using System.Web;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -135,7 +136,7 @@ namespace Engage.Survey.Entities
             // row for the section text
             var title = new HtmlGenericControl("h3");
             title.Attributes["class"] = Engage.Survey.Util.Utility.CssClassSectionTitle;
-            title.InnerText = section.FormattedText;
+            title.InnerHtml = HttpUtility.HtmlEncode(section.FormattedText).Replace("\n", "<br />");
             sectionDiv.Controls.Add(title);
 
             foreach (IQuestion question in section.GetQuestions())

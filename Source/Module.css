@@ -52,7 +52,7 @@
             #engage-evaluation .ee-question a.ee-edit{display:block;cursor:pointer;margin-left:110px;padding-left:20px !important;clear:both;background: url(images/help-icn.gif) no-repeat left}
                 #section-title-input a.ee-delete{padding:5px 0 0 10px;display:block;float:left;}
         .ee-define-answers{}
-            #engage-evaluation .define-answer{float:left;display:block;clear:none;}
+            #engage-evaluation .define-answer{overflow:visible;float:left;display:block;clear:none;}
             .define-answer .ee-input{margin-bottom:10px;}
             .ee-answer-inputs{background:#eee;color:#020202;width:410px;border-bottom:1px #c4cbb2 solid;border-right:1px #cfcfcf solid;clear:both;}
 				ul.answer-inputs{margin:10px 0 0 0;padding:10px;list-style:none;clear:both;}

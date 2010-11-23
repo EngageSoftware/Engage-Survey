@@ -328,7 +328,7 @@ if (!Array.prototype.indexOf) {
         }
             
         function resetDatePickerToPreviousValue (datePicker) {
-            datePicker.set_selectedDate($(datePicker.get_element()).closest('.RadPicker').parent().data('previousValue'));
+             datePicker.set_selectedDate($(datePicker.get_element()).closest('.RadPicker').parent().data('previousValue'));
         }
             
         function makeSurveyReadOnly () {
@@ -381,29 +381,33 @@ if (!Array.prototype.indexOf) {
         function makeElementReadonly($element, value) {
             $element.slideUp(AnimationSpeed, function () {
                 var $this = $(this),
-                    maxlength = $this.attr('maxlength');
+                    maxlength = $this.attr('maxlength'),
+                    $readonlyElement;
 
                 // if maxlength is not set (as on NotificationToEmails) then the browser default is returned (http://herr-schuessler.de/blog/selecting-input-fields-with-maxlength-via-jquery/)
                 if (maxlength < 0 || maxlength > 500000) {
                     maxlength = '';
                 }
 
-                $('<span />')
-                    .attr({
-                        id: $this.attr('id'),
-                        className: $this.attr('class'),
-                        name: $this.attr('name')
-                    }).data('minlength', $this.attr('minlength') || '') // if $this.attr('minlength') is null, then jQuery sees the data call as an accessor instead of a setter, so we change it to '' if it's null
-                    .data('maxlength', maxlength || '')
-                    .data('rows', $this.attr('rows') || '')
-                    .data('cols', $this.attr('cols') || '')
-                    .data('checked', $this.attr('checked') !== undefined ? $this.attr('checked') : '')
-                    .addClass('ee-input-pre')
-                    .text(value || $this.val())
-                    .hide()
-                    .insertAfter($this)
-                    .fadeIn(AnimationSpeed);
+                $readonlyElement = 
+                    $('<span />')
+                        .attr({
+                            id: $this.attr('id'),
+                            className: $this.attr('class'),
+                            name: $this.attr('name')
+                        }).data('minlength', $this.attr('minlength') || '') // if $this.attr('minlength') is null, then jQuery sees the data call as an accessor instead of a setter, so we change it to '' if it's null
+                        .data('maxlength', maxlength || '')
+                        .data('rows', $this.attr('rows') || '')
+                        .data('cols', $this.attr('cols') || '')
+                        .data('checked', $this.attr('checked') !== undefined ? $this.attr('checked') : '')
+                        .addClass('ee-input-pre')
+                        .text(value || $this.val())
+                        .hide()
+                        .insertAfter($this)
+                        .fadeIn(AnimationSpeed);
                 $this.remove();
+
+                $readonlyElement.html($readonlyElement.html().replace(/\n/g, '\n<br />'));
             }).addClass('ee-input-pre');
         }
         

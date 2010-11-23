@@ -316,7 +316,7 @@ if (!Array.prototype.indexOf) {
         });
         
         function storePreviousValue ($input, value) {
-            $input.parent().data('previousValue', value || $input.text());
+            $input.parent().data('previousValue', value === undefined ? $input.text() : value);
         }
         
         function resetToPreviousValue ($input) {

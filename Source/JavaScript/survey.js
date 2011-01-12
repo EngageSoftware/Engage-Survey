@@ -71,7 +71,7 @@ if (!Array.prototype.indexOf) {
         });
         $.validator.setDefaults({
             rules: {
-                DefineAnswerType: { range: [1, 5] },
+                DefineAnswerType: { min: 1 },
                 required: { required: true },
                 notificationEmail: { 
                     required: { depends: function (element) { return $('#EvalSendNotification').attr('checked'); } },
@@ -475,11 +475,10 @@ if (!Array.prototype.indexOf) {
         }
         
         // add answer
-        $(".add-new").click(function (event) {
+        $("#AddNewQuestion").click(function (event) {
             event.preventDefault();
             
             var $answerNumberElement = $(".answer-input:visible:last .answer-num");
-
             var $answerElement = $(".answer-input-template").clone(true).attr('class', 'answer-input').hide().appendTo('.answer-inputs').slideDown(AnimationSpeed);
             
             // increment answer number
@@ -698,7 +697,7 @@ if (!Array.prototype.indexOf) {
                 
             $saveQuestionButtonWrap.removeClass('disabled');
 
-            if($('#QuestionText').val() || $('#DefineAnswerType :selected').val() > 0) {
+            if ($('#QuestionText').val() || $('#DefineAnswerType :selected').val() > 0) {
                 $cancelButtonWrap.fadeIn(AnimationSpeed);
             }
             else {
@@ -845,8 +844,8 @@ if (!Array.prototype.indexOf) {
             // only should have two answers by default
             $('#MultipleAnswer li.answer-input').remove();
             var $defaultAnswers = $('#MultipleAnswer li.answer-input-template');
-            $defaultAnswers.clone(true).attr('class', 'answer-input').show().insertAfter($defaultAnswers).find('.answer-num').text(1);
             $defaultAnswers.clone(true).attr('class', 'answer-input').show().insertAfter($defaultAnswers).find('.answer-num').text(2);
+            $defaultAnswers.clone(true).attr('class', 'answer-input').show().insertAfter($defaultAnswers).find('.answer-num').text(1);
             
             $('.ai-input input').val('');
             
@@ -933,6 +932,8 @@ if (!Array.prototype.indexOf) {
                 $('#EvalSendThankYou').attr('checked', CurrentContextInfo.DefaultEmailSettings.SendThankYou);
 			    $('#EvalThankYouFromEmail').val(CurrentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
             }
+            
+            resetCreateQuestionSection();
         }());
     });
 })(jQuery);

@@ -180,7 +180,7 @@ var CurrentContextInfo = {
     ErrorMessages: {
         required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
         DefineAnswerType: { 
-            range: '<%= ClientAPI.GetSafeJSString(Localize("TypeRequired.Text")) %>'
+            min: '<%= ClientAPI.GetSafeJSString(Localize("TypeRequired.Text")) %>'
         },
         notificationEmail: {
             required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',

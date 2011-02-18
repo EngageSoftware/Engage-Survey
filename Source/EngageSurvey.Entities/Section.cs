@@ -114,9 +114,10 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        /// <param name="defaultDropDownOptionText">The text for the default option (signifying no choice).</param>
+        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
         {
-            RenderSection(this, placeHolder, readOnly, showRequiredNotation, validationProvider);
+            RenderSection(this, placeHolder, readOnly, showRequiredNotation, validationProvider, defaultDropDownOptionText);
         }
 
         /// <summary>
@@ -127,7 +128,8 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        public static void RenderSection(ISection section, PlaceHolder ph, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        /// <param name="defaultDropDownOptionText">The text for the default option for drop downs (signifying no choice).</param>
+        public static void RenderSection(ISection section, PlaceHolder ph, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
         {
             var sectionDiv = new HtmlGenericControl("DIV");
             sectionDiv.Attributes["class"] = Engage.Survey.Util.Utility.CssClassSectionWrap + " section" + section.SectionId;
@@ -153,7 +155,7 @@ namespace Engage.Survey.Entities
                 questionWrapDiv.Controls.Add(questionSpan);
 
                 // <span class="questin">Phone<span>*</span></span>
-                //// if the question is required, then add the optional * notation.
+                // if the question is required, then add the optional * notation.
                 if (question.IsRequired && showRequiredNotation)
                 {
                     var requiredSpan = new HtmlGenericControl("SPAN");
@@ -162,8 +164,8 @@ namespace Engage.Survey.Entities
                     questionSpan.Controls.Add(requiredSpan);
                 }
 
-                //// Create a span to put answer(s) in.
-                Control control = Engage.Survey.Util.Utility.CreateWebControl(question, readOnly, string.Empty);
+                // Create a span to put answer(s) in.
+                Control control = Engage.Survey.Util.Utility.CreateWebControl(question, readOnly, string.Empty, defaultDropDownOptionText);
                 questionWrapDiv.Controls.Add(control);
 
                 if (string.IsNullOrEmpty(control.ID) == false && validationProvider != null)

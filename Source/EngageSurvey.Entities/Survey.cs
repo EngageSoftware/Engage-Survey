@@ -94,7 +94,8 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        public static void RenderSurvey(ISurvey survey, PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        /// <param name="defaultDropDownOptionText">The text for the default option (signifying no choice).</param>
+        public static void RenderSurvey(ISurvey survey, PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
         {
             Debug.Assert(placeHolder != null, "placeHolder cannot be null");
             Debug.Assert(validationProvider != null, "validationProvider cannot be null");
@@ -111,7 +112,7 @@ namespace Engage.Survey.Entities
             List<ISection> sections = survey.GetSections();
             foreach (ISection s in sections)
             {
-                s.Render(placeHolder, readOnly, showRequiredNotation, validationProvider);
+                s.Render(placeHolder, readOnly, showRequiredNotation, validationProvider, defaultDropDownOptionText);
             }
         }
 
@@ -175,9 +176,10 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        /// <param name="defaultDropDownOptionText">The text for the default option (signifying no choice).</param>
+        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
         {
-            RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider);
+            RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider, defaultDropDownOptionText);
         }
 
         /// <summary>

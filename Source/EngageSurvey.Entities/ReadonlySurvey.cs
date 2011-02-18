@@ -332,9 +332,10 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        public void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        /// <param name="defaultDropDownOptionText"></param>
+        public void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
         {
-            Survey.RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider);
+            Survey.RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider, "[Please make a selection]");
         }
 
         /// <summary>
@@ -528,9 +529,10 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        public void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider)
+        /// <param name="defaultDropDownOptionText"></param>
+        public void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
         {
-            Section.RenderSection(this, placeHolder, readOnly, showRequiredNotation, validationProvider);
+            Section.RenderSection(this, placeHolder, readOnly, showRequiredNotation, validationProvider, "[Please make a selection]");
         }
 
         /// <summary>
@@ -566,7 +568,7 @@ namespace Engage.Survey.Entities
             string answerInlineStyle = Localization.GetString("AnswerInlineStyle", resourceFile);
             foreach (IQuestion question in this.GetQuestions())
             {
-                Control formControl = Utility.CreateWebControl(question, true, answerInlineStyle);
+                Control formControl = Utility.CreateWebControl(question, true, answerInlineStyle, "[Please make a selection]");
                 
                 row = new TableRow();
                 sectionTable.Rows.Add(row);

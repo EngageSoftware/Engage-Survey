@@ -135,6 +135,9 @@
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>View Survey</value>
   </data>
+  <data name="DefaultDropDownOption.Text" xml:space="preserve">
+    <value>[Please make a selection]</value>
+  </data>
   <data name="DeleteButton.Text" xml:space="preserve">
     <value>Delete</value>
   </data>

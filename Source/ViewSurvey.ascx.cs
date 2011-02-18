@@ -177,6 +177,7 @@ namespace Engage.Dnn.Survey
                 this.SurveyControl.PreStartMessageTemplate = this.Localize("PreStartMessage.Format");
                 this.SurveyControl.PostEndMessageTemplate = this.Localize("PostEndMessage.Format");
                 this.SurveyControl.AlreadyTakenMessage = this.Localize("AlreadyTakenMessage.Text");
+                this.SurveyControl.DefaultDropDownOptionText = this.Localize("DefaultDropDownOption.Text");
 
                 // allow module editors to delete user responses)
                 this.DeleteResponseButton.Click += this.DeleteResponseButton_Click;

@@ -12,6 +12,7 @@
 namespace Engage.Survey.Util
 {
     using System;
+    using System.Globalization;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -174,14 +175,17 @@ namespace Engage.Survey.Util
         /// <param name="question">The question.</param>
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="style">The style.</param>
-        /// <returns>A Div with controls in it.</returns>
-        public static Control CreateWebControl(IQuestion question, bool readOnly, string style)
+        /// <param name="defaultDropDownOptionText">The text for the default option for drop down controls (signifying no choice).</param>
+        /// <returns>
+        /// A Div with controls in it.
+        /// </returns>
+        public static Control CreateWebControl(IQuestion question, bool readOnly, string style, string defaultDropDownOptionText)
         {
             WebControl control;
             switch (question.ControlType)
             {
                 case ControlType.DropDownChoices:
-                    control = (WebControl)RenderDropDownList(question, style);
+                    control = (WebControl)RenderDropDownList(question, style, defaultDropDownOptionText);
                     break;
                 case ControlType.HorizontalOptionButtons:
                     control = (WebControl)RenderHorizontalOptionButtons(question, style);
@@ -268,9 +272,10 @@ namespace Engage.Survey.Util
 
             if (question.SelectionLimit > 0)
             {
+                // TODO: Localize limit reached text
                 var limitDiv = new HtmlGenericControl("DIV");
                 limitDiv.Attributes["class"] = "limit-reached";
-                limitDiv.InnerText = "You may only select up to " + question.SelectionLimit + " items(s)";
+                limitDiv.InnerText = string.Format(CultureInfo.CurrentCulture, "You may only select up to {0} items(s)", question.SelectionLimit);
                 limitDiv.Style.Add("display", "none");
                 container.Controls.Add(limitDiv);
             }
@@ -307,8 +312,11 @@ namespace Engage.Survey.Util
         /// </summary>
         /// <param name="question">The question.</param>
         /// <param name="style">The style.</param>
-        /// <returns>A control containing the question and answer choice(s).</returns>
-        private static Control RenderDropDownList(IQuestion question, string style)
+        /// <param name="defaultOptionText">The text for the default option (signifying no choice).</param>
+        /// <returns>
+        /// A control containing the question and answer choice(s).
+        /// </returns>
+        private static Control RenderDropDownList(IQuestion question, string style, string defaultOptionText)
         {
             var ddl = new DropDownList();
             if (string.IsNullOrEmpty(style))
@@ -320,7 +328,7 @@ namespace Engage.Survey.Util
                 ddl.Attributes.Add("style", style);
             }
 
-            ddl.Items.Add(new ListItem("[Please make a selection]", string.Empty));
+            ddl.Items.Add(new ListItem(defaultOptionText, string.Empty));
 
             ddl.Attributes.Add("RelationshipKey", question.RelationshipKey.ToString());
             ddl.ID = question.RelationshipKey.ToString();

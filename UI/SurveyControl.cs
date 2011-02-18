@@ -181,6 +181,15 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
+        /// Gets or sets the text to use for the default option (signifying on option chosen) on drop down controls.
+        /// </summary>
+        public string DefaultDropDownOptionText
+        {
+            get; 
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the user id.
         /// </summary>
         /// <remarks>You can optionally set this property and it will be stored with the <c>ResponseHeader</c> record.</remarks>
@@ -290,7 +299,7 @@ namespace Engage.Survey.UI
             {
                 // Need to make validator construction mechanism as we create new implementations! hk
                 // draw the survey
-                this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider());
+                this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider(), this.DefaultDropDownOptionText);
 
                 // no need to include the submit button in html
                 if (!this.IsReadOnly)

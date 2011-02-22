@@ -14,6 +14,9 @@ namespace Engage.Survey
     using System;
     using System.Collections.Generic;
     using System.Web.UI.WebControls;
+
+    using Engage.Survey.UI;
+
     using Util;
 
     /// <summary>
@@ -193,8 +196,8 @@ namespace Engage.Survey
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        /// <param name="defaultDropDownOptionText"></param>
-        void Render(PlaceHolder ph, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText);
+        /// <param name="localizer">Localizes text.</param>
+        void Render(PlaceHolder ph, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, ILocalizer localizer);
 
         /// <summary>
         /// Pres the save processing.

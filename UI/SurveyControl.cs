@@ -76,6 +76,16 @@ namespace Engage.Survey.UI
         public const string EndSurveyMarker = "<!--survey_ends_here-->";
 
         /// <summary>
+        /// Backing field for <see cref="BackButtonText"/>
+        /// </summary>
+        private string backButtonText;
+
+        /// <summary>
+        /// Backing field for <see cref="SubmitButtonText"/>
+        /// </summary>
+        private string submitButtonText;
+
+        /// <summary>
         /// SaveEventHandler used for Save Completed event.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -86,12 +96,6 @@ namespace Engage.Survey.UI
         /// Occurs when the survey is completed.
         /// </summary>
         public event SaveEventHandler SurveyCompleted;
-
-        /// <summary>
-        /// Gets or sets the message to display when the user has already taken this survey.
-        /// </summary>
-        /// <value>The already taken message.</value>
-        public string AlreadyTakenMessage { get; set; }
 
         /// <summary>
         /// Gets or sets the survey that is being rendered.
@@ -142,28 +146,20 @@ namespace Engage.Survey.UI
         [Category("")]
         public string BackButtonText
         {
-            get;
-            set;
-        }
+            get
+            {
+                if (!string.IsNullOrEmpty(this.backButtonText))
+                {
+                    return this.backButtonText;
+                }
 
-        /// <summary>
-        /// Gets or sets the message template to use when the survey's <see cref="ISurvey.StartDate"/> is in the future.
-        /// </summary>
-        /// <value>The message template for surveys that haven't started.</value>
-        public string PreStartMessageTemplate
-        {
-            get;
-            set;
-        }
+                return this.Localizer.Localize("BackButton.Text");
+            }
 
-        /// <summary>
-        /// Gets or sets the message template to use when the survey's <see cref="ISurvey.EndDate"/> is in the past.
-        /// </summary>
-        /// <value>The message template for surveys that have ended.</value>
-        public string PostEndMessageTemplate
-        {
-            get;
-            set;
+            set
+            {
+                this.backButtonText = value;
+            }
         }
 
         /// <summary>
@@ -176,17 +172,20 @@ namespace Engage.Survey.UI
         [Category("")]
         public string SubmitButtonText
         {
-            get;
-            set;
-        }
+            get
+            {
+                if (!string.IsNullOrEmpty(this.submitButtonText))
+                {
+                    return this.submitButtonText;
+                }
 
-        /// <summary>
-        /// Gets or sets the text to use for the default option (signifying on option chosen) on drop down controls.
-        /// </summary>
-        public string DefaultDropDownOptionText
-        {
-            get; 
-            set;
+                return this.Localizer.Localize("SubmitButton.Text");
+            }
+            
+            set
+            {
+                this.submitButtonText = value;
+            }
         }
 
         /// <summary>
@@ -234,6 +233,14 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
+        /// Gets or sets the localizer.
+        /// </summary>
+        /// <value>
+        /// The localizer.
+        /// </value>
+        public ILocalizer Localizer { get; set; }
+
+        /// <summary>
         /// Gets the return URL if on the querystring.
         /// </summary>
         /// <value>The return URL.</value>
@@ -243,6 +250,33 @@ namespace Engage.Survey.UI
             {
                 return HttpContext.Current.Request.QueryString["returnurl"] ?? string.Empty;
             }
+        }
+
+        /// <summary>
+        /// Gets the message to display when the user has already taken this survey.
+        /// </summary>
+        /// <value>The already taken message.</value>
+        private string AlreadyTakenMessage
+        {
+            get { return this.Localizer.Localize("AlreadyTakenMessage.Text"); }
+        }
+
+        /// <summary>
+        /// Gets the message template to use when the survey's <see cref="ISurvey.StartDate"/> is in the future.
+        /// </summary>
+        /// <value>The message template for surveys that haven't started.</value>
+        private string PreStartMessageTemplate
+        {
+            get { return this.Localizer.Localize("PreStartMessage.Format"); }
+        }
+
+        /// <summary>
+        /// Gets the message template to use when the survey's <see cref="ISurvey.EndDate"/> is in the past.
+        /// </summary>
+        /// <value>The message template for surveys that have ended.</value>
+        private string PostEndMessageTemplate
+        {
+            get { return this.Localizer.Localize("PostEndMessage.Format"); }
         }
 
         /// <summary>
@@ -299,7 +333,7 @@ namespace Engage.Survey.UI
             {
                 // Need to make validator construction mechanism as we create new implementations! hk
                 // draw the survey
-                this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider(), this.DefaultDropDownOptionText);
+                this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider(), this.Localizer);
 
                 // no need to include the submit button in html
                 if (!this.IsReadOnly)

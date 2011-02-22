@@ -92,6 +92,7 @@
     <Compile Include="ISurvey.cs" />
     <Compile Include="ISurveyElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\ILocalizer.cs" />
     <Compile Include="UserResponse.cs" />
     <Compile Include="UI\SurveyControl.cs" />
     <Compile Include="UI\SurveyControlDesigner.cs" />

@@ -18,6 +18,8 @@ namespace Engage.Survey.Util
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using Engage.Survey.UI;
+
     /// <summary>
     /// Class that contains static and utility type behavior.
     /// </summary>
@@ -175,17 +177,17 @@ namespace Engage.Survey.Util
         /// <param name="question">The question.</param>
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="style">The style.</param>
-        /// <param name="defaultDropDownOptionText">The text for the default option for drop down controls (signifying no choice).</param>
+        /// <param name="localizer">Localizes text.</param>
         /// <returns>
         /// A Div with controls in it.
         /// </returns>
-        public static Control CreateWebControl(IQuestion question, bool readOnly, string style, string defaultDropDownOptionText)
+        public static Control CreateWebControl(IQuestion question, bool readOnly, string style, ILocalizer localizer)
         {
             WebControl control;
             switch (question.ControlType)
             {
                 case ControlType.DropDownChoices:
-                    control = (WebControl)RenderDropDownList(question, style, defaultDropDownOptionText);
+                    control = (WebControl)RenderDropDownList(question, style, localizer.Localize("DefaultDropDownOption.Text"));
                     break;
                 case ControlType.HorizontalOptionButtons:
                     control = (WebControl)RenderHorizontalOptionButtons(question, style);
@@ -200,7 +202,7 @@ namespace Engage.Survey.Util
                     control = (WebControl)RenderSmallInputField(question, style);
                     break;
                 case ControlType.Checkbox:
-                    return RenderCheckBoxList(question, readOnly, style);
+                    return RenderCheckBoxList(question, readOnly, style, localizer.Localize("CheckBoxLimitExceeded.Format"));
                 default:
                     control = new Label { Text = "No control info found for ControlType: " + question.ControlType };
                     break;
@@ -256,8 +258,9 @@ namespace Engage.Survey.Util
         /// <param name="question">The question.</param>
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="style">The style.</param>
+        /// <param name="limitReachedErrorFormat">The <see cref="string.Format(System.IFormatProvider,string,object[])"/>-style message for when the maximum number of options has been exceeded</param>
         /// <returns>A control containing the question and answer choice(s).</returns>
-        private static Control RenderCheckBoxList(IQuestion question, bool readOnly, string style)
+        private static Control RenderCheckBoxList(IQuestion question, bool readOnly, string style, string limitReachedErrorFormat)
         {
             var container = new HtmlGenericControl("SPAN") { ID = "CheckBoxSpan" + question.QuestionId };
 
@@ -275,7 +278,7 @@ namespace Engage.Survey.Util
                 // TODO: Localize limit reached text
                 var limitDiv = new HtmlGenericControl("DIV");
                 limitDiv.Attributes["class"] = "limit-reached";
-                limitDiv.InnerText = string.Format(CultureInfo.CurrentCulture, "You may only select up to {0} items(s)", question.SelectionLimit);
+                limitDiv.InnerText = string.Format(CultureInfo.CurrentCulture, limitReachedErrorFormat, question.SelectionLimit);
                 limitDiv.Style.Add("display", "none");
                 container.Controls.Add(limitDiv);
             }

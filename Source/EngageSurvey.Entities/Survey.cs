@@ -17,6 +17,9 @@ namespace Engage.Survey.Entities
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
     using DotNetNuke.Services.Localization;
+
+    using Engage.Survey.UI;
+
     using Util;
 
     /// <summary>
@@ -94,8 +97,8 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        /// <param name="defaultDropDownOptionText">The text for the default option (signifying no choice).</param>
-        public static void RenderSurvey(ISurvey survey, PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
+        /// <param name="localizer">Localizes text.</param>
+        public static void RenderSurvey(ISurvey survey, PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, ILocalizer localizer)
         {
             Debug.Assert(placeHolder != null, "placeHolder cannot be null");
             Debug.Assert(validationProvider != null, "validationProvider cannot be null");
@@ -112,7 +115,7 @@ namespace Engage.Survey.Entities
             List<ISection> sections = survey.GetSections();
             foreach (ISection s in sections)
             {
-                s.Render(placeHolder, readOnly, showRequiredNotation, validationProvider, defaultDropDownOptionText);
+                s.Render(placeHolder, readOnly, showRequiredNotation, validationProvider, localizer);
             }
         }
 
@@ -176,10 +179,10 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        /// <param name="defaultDropDownOptionText">The text for the default option (signifying no choice).</param>
-        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
+        /// <param name="localizer">The text for the default option (signifying no choice).</param>
+        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, ILocalizer localizer)
         {
-            RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider, defaultDropDownOptionText);
+            RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider, localizer);
         }
 
         /// <summary>

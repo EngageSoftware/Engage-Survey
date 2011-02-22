@@ -16,6 +16,9 @@ namespace Engage.Survey.Entities
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
+
+    using Engage.Survey.UI;
+
     using Util;
 
     /// <summary>
@@ -114,10 +117,10 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        /// <param name="defaultDropDownOptionText">The text for the default option (signifying no choice).</param>
-        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
+        /// <param name="localizer">The text for the default option (signifying no choice).</param>
+        public virtual void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, ILocalizer localizer)
         {
-            RenderSection(this, placeHolder, readOnly, showRequiredNotation, validationProvider, defaultDropDownOptionText);
+            RenderSection(this, placeHolder, readOnly, showRequiredNotation, validationProvider, localizer);
         }
 
         /// <summary>
@@ -128,8 +131,8 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        /// <param name="defaultDropDownOptionText">The text for the default option for drop downs (signifying no choice).</param>
-        public static void RenderSection(ISection section, PlaceHolder ph, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
+        /// <param name="localizer">Localizes text.</param>
+        public static void RenderSection(ISection section, PlaceHolder ph, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, ILocalizer localizer)
         {
             var sectionDiv = new HtmlGenericControl("DIV");
             sectionDiv.Attributes["class"] = Engage.Survey.Util.Utility.CssClassSectionWrap + " section" + section.SectionId;
@@ -160,12 +163,12 @@ namespace Engage.Survey.Entities
                 {
                     var requiredSpan = new HtmlGenericControl("SPAN");
                     requiredSpan.Attributes["class"] = Engage.Survey.Util.Utility.CssClassRequired;
-                    requiredSpan.InnerText = "*";
+                    requiredSpan.InnerText = localizer.Localize("RequiredNotation.Text");
                     questionSpan.Controls.Add(requiredSpan);
                 }
 
                 // Create a span to put answer(s) in.
-                Control control = Engage.Survey.Util.Utility.CreateWebControl(question, readOnly, string.Empty, defaultDropDownOptionText);
+                Control control = Engage.Survey.Util.Utility.CreateWebControl(question, readOnly, string.Empty, localizer);
                 questionWrapDiv.Controls.Add(control);
 
                 if (string.IsNullOrEmpty(control.ID) == false && validationProvider != null)
@@ -173,17 +176,17 @@ namespace Engage.Survey.Entities
                     // TODO: Localize error messages
                     if (question.IsRequired && question.ControlType != ControlType.Checkbox)
                     {
-                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.RequiredField, "error-message", questionWrapDiv, control.ID, question.UnformattedText + " is required.", "survey", 1, 0);
+                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.RequiredField, "error-message", questionWrapDiv, control.ID, string.Format(localizer.Localize("RequiredError.Format"), question.UnformattedText), "survey", 1, 0);
                     }
 
                     if (question.ControlType == ControlType.SmallTextInputField || question.ControlType == ControlType.LargeTextInputField)
                     {
-                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedLengthField, "error-message", questionWrapDiv, control.ID, "Max characters exceeded for [" + question.UnformattedText + "]", "survey", 1, 256);
+                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedLengthField, "error-message", questionWrapDiv, control.ID, string.Format(localizer.Localize("TextLengthExceeded.Format"), question.UnformattedText), "survey", 1, 256);
                     }
 
                     if (question.ControlType == ControlType.EmailInputField)
                     {
-                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.EmailField, "error-message", questionWrapDiv, control.ID, "Email Address should be in name@domain.com format.", "survey", 1, 0);
+                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.EmailField, "error-message", questionWrapDiv, control.ID, localizer.Localize("InvalidEmail.Text"), "survey", 1, 0);
                     }
 
                     if (question.ControlType == ControlType.Checkbox)

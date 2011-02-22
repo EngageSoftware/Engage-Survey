@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AnalyzeResponses.ascx" />
+    <Content Include="ReleaseNotes_3.2.6.htm" />
     <Content Include="ReleaseNotes_3.2.1.htm" />
     <Content Include="ReleaseNotes_3.2.0.htm" />
     <Content Include="ReleaseNotes_3.1.1.htm" />
@@ -149,6 +150,7 @@
     <Compile Include="AnalyzeResponses.ascx.designer.cs">
       <DependentUpon>AnalyzeResponses.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DnnLocalizer.cs" />
     <Compile Include="EditSurvey.ascx.designer.cs">
       <DependentUpon>EditSurvey.ascx</DependentUpon>
     </Compile>

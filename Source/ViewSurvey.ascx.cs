@@ -29,7 +29,6 @@ namespace Engage.Dnn.Survey
 
     using Engage.Survey.Entities;
     using Engage.Survey.UI;
-    using Engage.Survey.Util;
 
     /// <summary>
     /// This control uses the Engage Survey Control to render a survey. 
@@ -171,13 +170,7 @@ namespace Engage.Dnn.Survey
                 this.SurveyControl.SurveyCompleted += this.SurveyControl_SurveyCompleted;
 
                 this.SurveyControl.ShowRequiredNotation = ModuleSettings.ShowRequiredNotation.GetValueAsBooleanFor(this).Value;
-
-                this.SurveyControl.BackButtonText = this.Localize("BackButton.Text");
-                this.SurveyControl.SubmitButtonText = this.Localize("SubmitButton.Text");
-                this.SurveyControl.PreStartMessageTemplate = this.Localize("PreStartMessage.Format");
-                this.SurveyControl.PostEndMessageTemplate = this.Localize("PostEndMessage.Format");
-                this.SurveyControl.AlreadyTakenMessage = this.Localize("AlreadyTakenMessage.Text");
-                this.SurveyControl.DefaultDropDownOptionText = this.Localize("DefaultDropDownOption.Text");
+                this.SurveyControl.Localizer = new DnnLocalizer(this.LocalResourceFile);
 
                 // allow module editors to delete user responses)
                 this.DeleteResponseButton.Click += this.DeleteResponseButton_Click;
@@ -224,7 +217,7 @@ namespace Engage.Dnn.Survey
                 var table = new Table();
                 var sb = new StringBuilder();
                 var writer = new HtmlTextWriter(new StringWriter(sb));
-                survey.Render(table, this.LocalResourceFile);
+                survey.Render(table, new DnnLocalizer(this.LocalResourceFile));
                 table.RenderControl(writer);
 
                 body = body.Replace(Utility.SurveyTableMarker, sb.ToString());

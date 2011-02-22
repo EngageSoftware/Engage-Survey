@@ -39,7 +39,7 @@ using System.Web.UI;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("3.2.5.*")]
-[assembly: AssemblyFileVersion("3.2.5.0")]
+[assembly: AssemblyVersion("3.2.6.*")]
+[assembly: AssemblyFileVersion("3.2.6.0")]
 
 [assembly: WebResource("Engage.Dnn.Survey.JavaScript.survey.js", "text/javascript")]

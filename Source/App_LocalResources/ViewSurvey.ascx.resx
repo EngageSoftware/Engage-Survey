@@ -126,6 +126,10 @@
   <data name="BackButton.Text" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="CheckBoxLimitExceeded.Format" xml:space="preserve">
+    <value>You may only select up to {0} items(s)</value>
+    <comment>{0} is limit</comment>
+  </data>
   <data name="ConfirmDelete.Text" xml:space="preserve">
     <value>Are you sure that you want to delete this user response?</value>
   </data>
@@ -144,6 +148,9 @@
   <data name="EditButton.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="InvalidEmail.Text" xml:space="preserve">
+    <value>Email Address should be in name@domain.com format.</value>
+  </data>
   <data name="PostEndMessage.Format" xml:space="preserve">
     <value>&lt;div class="post-end-message em-user-message"&gt;&lt;div class="em-help"&gt;&lt;h4 class="SubHead em-message-title"&gt;This survey is no longer available&lt;/h4&gt;&lt;p class="Normal"&gt;{0}&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</value>
     <comment>{0} is message defined on survey</comment>
@@ -154,6 +161,13 @@
   </data>
   <data name="QuestionTitleInlineStyle.Text" xml:space="preserve">
     <value>display:block;font-weight:bold;padding:0 0 2px 0;</value>
+  </data>
+  <data name="RequiredError.Format" xml:space="preserve">
+    <value>{0} is required.</value>
+    <comment>{0} is question text</comment>
+  </data>
+  <data name="RequiredNotation.Text" xml:space="preserve">
+    <value>*</value>
   </data>
   <data name="SectionTitleInlineStyle.Text" xml:space="preserve">
     <value>font-size:14px;margin:0;font-weight:bold;color:#666;</value>
@@ -185,6 +199,10 @@
   </data>
   <data name="SurveyCompleted_Subject.Text" xml:space="preserve">
     <value>A Survey has been completed</value>
+  </data>
+  <data name="TextLengthExceeded.Format" xml:space="preserve">
+    <value>Max characters exceeded for [{0}]</value>
+    <comment>{0} is question text</comment>
   </data>
   <data name="ThankYou_Body.Text" xml:space="preserve">
     <value>&lt;!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'&gt;

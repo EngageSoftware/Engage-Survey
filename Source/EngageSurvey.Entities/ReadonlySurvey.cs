@@ -17,7 +17,9 @@ namespace Engage.Survey.Entities
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-    using DotNetNuke.Services.Localization;
+
+    using Engage.Survey.UI;
+
     using Util;
 
     /// <summary>
@@ -332,25 +334,25 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        /// <param name="defaultDropDownOptionText"></param>
-        public void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
+        /// <param name="localizer">Localizes text.</param>
+        public void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, ILocalizer localizer)
         {
-            Survey.RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider, "[Please make a selection]");
+            Survey.RenderSurvey(this, placeHolder, readOnly, showRequiredNotation, validationProvider, localizer);
         }
 
         /// <summary>
         /// Renders the survey from this survey.
         /// </summary>
         /// <param name="table">The HTML table to put the survey into.</param>
-        /// <param name="resourceFile">The resource file.</param>
-        public void Render(Table table, string resourceFile)
+        /// <param name="localizer">Localizes text.</param>
+        public void Render(Table table, ILocalizer localizer)
         {
             Debug.Assert(table != null, "table cannot be null");
 
             // add the survey title
             if (this.ShowText)
             {
-                string titleStyle = Localization.GetString("TitleInlineStyle", resourceFile);
+                string titleStyle = localizer.Localize("TitleInlineStyle");
                 var row = new TableRow();
                 table.Rows.Add(row);
                 var cell = new TableCell();
@@ -361,7 +363,7 @@ namespace Engage.Survey.Entities
 
             foreach (ReadonlySection s in this.GetSections())
             {
-                s.Render(table, resourceFile);
+                s.Render(table, localizer);
             }            
         }
 
@@ -529,20 +531,19 @@ namespace Engage.Survey.Entities
         /// <param name="readOnly">if set to <c>true</c> [read only].</param>
         /// <param name="showRequiredNotation">if set to <c>true</c> [show required notation].</param>
         /// <param name="validationProvider">The validation provider.</param>
-        /// <param name="defaultDropDownOptionText"></param>
-        public void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, string defaultDropDownOptionText)
+        /// <param name="localizer">Localizes text.</param>
+        public void Render(PlaceHolder placeHolder, bool readOnly, bool showRequiredNotation, ValidationProviderBase validationProvider, ILocalizer localizer)
         {
-            Section.RenderSection(this, placeHolder, readOnly, showRequiredNotation, validationProvider, "[Please make a selection]");
+            Section.RenderSection(this, placeHolder, readOnly, showRequiredNotation, validationProvider, localizer);
         }
 
         /// <summary>
         /// Renders the read-only section in a table.
         /// </summary>
         /// <param name="table">The table.</param>
-        /// <param name="resourceFile">The resource file.</param>
-        public void Render(Table table, string resourceFile)
+        /// <param name="localizer">Localizes text.</param>
+        public void Render(Table table, ILocalizer localizer)
         {
-
             var row = new TableRow();
             table.Rows.Add(row);
 
@@ -551,7 +552,7 @@ namespace Engage.Survey.Entities
             row.Cells.Add(cell);
 
             // let's create a new table for this section
-            string sectionWrapStyle = Localization.GetString("SectionWrapInlineStyle", resourceFile);
+            string sectionWrapStyle = localizer.Localize("SectionWrapInlineStyle.Text");
             var sectionTable = new Table();
             sectionTable.Attributes.Add("style", sectionWrapStyle);
             cell.Controls.Add(sectionTable);
@@ -560,21 +561,21 @@ namespace Engage.Survey.Entities
             sectionTable.Rows.Add(row);
 
             // row for the section title
-            string sectionTitleStyle = Localization.GetString("SectionTitleInlineStyle", resourceFile);
+            string sectionTitleStyle = localizer.Localize("SectionTitleInlineStyle.Text");
             cell = new TableCell { ColumnSpan = 3, Text = this.FormattedText };
             cell.Attributes.Add("style", sectionTitleStyle);
             row.Cells.Add(cell);
 
-            string answerInlineStyle = Localization.GetString("AnswerInlineStyle", resourceFile);
+            string answerInlineStyle = localizer.Localize("AnswerInlineStyle.Text");
             foreach (IQuestion question in this.GetQuestions())
             {
-                Control formControl = Utility.CreateWebControl(question, true, answerInlineStyle, "[Please make a selection]");
+                Control formControl = Utility.CreateWebControl(question, true, answerInlineStyle, localizer);
                 
                 row = new TableRow();
                 sectionTable.Rows.Add(row);
 
                 // question
-                string questionTitleStyle = Localization.GetString("QuestionTitleInlineStyle", resourceFile);
+                string questionTitleStyle = localizer.Localize("QuestionTitleInlineStyle.Text");
                 cell = new TableCell
                            {
                                    ColumnSpan = 2,

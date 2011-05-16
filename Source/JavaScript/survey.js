@@ -202,11 +202,7 @@ if (!Array.prototype.indexOf) {
                 contentType: "application/json; charset=utf-8",
                 dataFilter: function (data) {
                     var msg = typeof(data) === 'string' ? JSON.parse(data) : data;
-                    if (msg.hasOwnProperty('d')) {
-                        return msg.d;
-                    } else { 
-                        return msg;
-                    }
+                    return JSON.stringify(msg.hasOwnProperty('d') ? msg.d : msg);
                 },
                 success: function (msg) { 
                     if ($.isFunction(callback)) {

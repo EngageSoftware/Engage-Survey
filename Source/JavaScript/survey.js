@@ -200,13 +200,9 @@ if (!Array.prototype.indexOf) {
                 url: CurrentContextInfo.WebMethodUrl + methodName,
                 data: JSON.stringify(parameters),
                 contentType: "application/json; charset=utf-8",
-                dataFilter: function (data) {
-                    var msg = typeof(data) === 'string' ? JSON.parse(data) : data;
-                    return JSON.stringify(msg.hasOwnProperty('d') ? msg.d : msg);
-                },
                 success: function (msg) { 
                     if ($.isFunction(callback)) {
-                        callback(msg);
+                        callback(msg.hasOwnProperty('d') ? msg.d : msg);
                     }
                 },
                 error: function (/*XMLHttpRequest, textStatus, errorThrown*/) { 

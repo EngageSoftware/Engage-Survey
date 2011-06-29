@@ -111,6 +111,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AnalyzeResponses.ascx" />
+    <None Include="JavaScript\Array.prototype.indexOf.js" />
+    <None Include="JavaScript\jquery-ui-1.7.2.min.js" />
+    <None Include="JavaScript\jquery.validate-1.7.min.js" />
+    <None Include="JavaScript\json2.js" />
+    <EmbeddedResource Include="JavaScript\survey-all.min.js">
+      <DependentUpon>scripts.chirp.config</DependentUpon>
+    </EmbeddedResource>
     <Content Include="ReleaseNotes_3.2.6.htm" />
     <Content Include="ReleaseNotes_3.2.1.htm" />
     <Content Include="ReleaseNotes_3.2.0.htm" />
@@ -206,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EngageSurvey.5.dnn" />
+    <None Include="JavaScript\scripts.chirp.config" />
     <None Include="Providers\DataProviders\SqlDataProvider\3.0.0.SqlDataProvider" />
     <None Include="EngageSurvey.Build">
       <SubType>Designer</SubType>
@@ -270,7 +278,7 @@
     </Content>
     <Content Include="App_LocalResources\SharedResources.resx">
     </Content>
-    <EmbeddedResource Include="JavaScript\survey.js" />
+    <None Include="JavaScript\survey.js" />
     <Content Include="Controls\GlobalNavigation.ascx" />
     <Content Include="images\collapse.gif" />
     <Content Include="images\expand.gif" />

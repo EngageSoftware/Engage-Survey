@@ -156,7 +156,7 @@ namespace Engage.Dnn.Survey
         private void Page_Load(object sender, EventArgs e)
         {
             this.AddJQueryReference();
-            this.Page.ClientScript.RegisterClientScriptResource(typeof(EditSurvey), "Engage.Dnn.Survey.JavaScript.survey.js");
+            this.Page.ClientScript.RegisterClientScriptResource(typeof(EditSurvey), "Engage.Dnn.Survey.JavaScript.survey-all.min.js");
         }
     }
 }

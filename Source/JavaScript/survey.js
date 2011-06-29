@@ -67,9 +67,9 @@
         function callWebMethod(methodName, parameters, callback) {
             jQuery.ajax({
                 type: "POST",
-                url: currentContextInfo.WebMethodUrl + methodName,
+                url: currentContextInfo.WebMethodUrl + methodName + "?portalId=" + currentContextInfo.PortalId,
                 data: JSON.stringify(parameters),
-                contentType: "application/json; charset=utf-8",
+                contentType: "application/json",
                 success: function (msg) { 
                     if ($.isFunction(callback)) {
                         callback(msg.hasOwnProperty('d') ? msg.d : msg);

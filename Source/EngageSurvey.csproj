@@ -112,7 +112,7 @@
   <ItemGroup>
     <Content Include="AnalyzeResponses.ascx" />
     <None Include="JavaScript\Array.prototype.indexOf.js" />
-    <None Include="JavaScript\jquery-ui-1.7.2.min.js" />
+    <None Include="JavaScript\jquery-ui-1.8.13.js" />
     <None Include="JavaScript\jquery.validate-1.7.min.js" />
     <None Include="JavaScript\json2.js" />
     <EmbeddedResource Include="JavaScript\survey-all.min.js">

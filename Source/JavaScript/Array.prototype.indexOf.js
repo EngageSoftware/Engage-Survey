@@ -2,25 +2,42 @@
  * from https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
  * implements FireFox/SpiderMonkey algorithm for the Array's indexOf method in browsers that don't natively support it
  */
-if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function(elt /*, from*/) {
-        var len = this.length >>> 0;
+if (!Array.prototype.indexOf)
+{
+  Array.prototype.indexOf = function(searchElement /*, fromIndex */)
+  {
+    "use strict";
 
-        var from = Number(arguments[1]) || 0;
-        from = (from < 0)
-             ? Math.ceil(from)
-             : Math.floor(from);
-             
-        if (from < 0) {
-            from += len;
-        }
+    if (this === void 0 || this === null)
+      throw new TypeError();
 
-        for (; from < len; from++) {
-            if (from in this && this[from] === elt) {
-                return from;
-            }
-        }
-        
-        return -1;
-    };
+    var t = Object(this);
+    var len = t.length >>> 0;
+    if (len === 0)
+      return -1;
+
+    var n = 0;
+    if (arguments.length > 0)
+    {
+      n = Number(arguments[1]);
+      if (n !== n) // shortcut for verifying if it's NaN
+        n = 0;
+      else if (n !== 0 && n !== (1 / 0) && n !== -(1 / 0))
+        n = (n > 0 || -1) * Math.floor(Math.abs(n));
+    }
+
+    if (n >= len)
+      return -1;
+
+    var k = n >= 0
+          ? n
+          : Math.max(len - Math.abs(n), 0);
+
+    for (; k < len; k++)
+    {
+      if (k in t && t[k] === searchElement)
+        return k;
+    }
+    return -1;
+  };
 }

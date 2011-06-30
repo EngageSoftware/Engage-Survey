@@ -313,18 +313,19 @@ namespace Engage.Survey.Entities
         {
             return (from response in this.Context.Responses
                     where response.ResponseHeaderId == responseHeaderId && response.QuestionId == questionId
-                    orderby response.AnswerRelativeOrder
-                    select new ReadonlyAnswer 
+                    select new ReadonlyAnswer
                                {
-                                       AnswerId = response.AnswerId ?? 0,
-                                       Text = response.AnswerText,
-                                       RelativeOrder = response.AnswerRelativeOrder ?? 0,
-                                       IsCorrect = response.AnswerIsCorrect ?? false,
-                                       SectionId = response.SectionId,
-                                       QuestionId = response.QuestionId,
-                                       ResponseHeaderId = response.ResponseHeaderId,
-                                       AnswerValue = response.UserResponse
-                               }).Distinct();
+                                   AnswerId = response.AnswerId ?? 0,
+                                   Text = response.AnswerText,
+                                   RelativeOrder = response.AnswerRelativeOrder ?? 0,
+                                   IsCorrect = response.AnswerIsCorrect ?? false,
+                                   SectionId = response.SectionId,
+                                   QuestionId = response.QuestionId,
+                                   ResponseHeaderId = response.ResponseHeaderId,
+                                   AnswerValue = response.UserResponse
+                               })
+                    .Distinct()
+                    .OrderBy(response => response.RelativeOrder);
         }
 
         /// <summary>
@@ -360,33 +361,17 @@ namespace Engage.Survey.Entities
             var questions = (from response in this.Context.Responses
                              where response.ResponseHeaderId == responseHeaderId && response.SectionId == sectionId
                              select new ReadonlyQuestion
-                                         {
-                                                 QuestionId = response.QuestionId,
-                                                 Text = response.QuestionText,
-                                                 Comments = response.Comments,
-                                                 RelativeOrder = response.QuestionRelativeOrder,
-                                                 ControlType = response.ControlType,
-                                                 SectionId = response.SectionId,
-                                                 ResponseHeaderId = response.ResponseHeaderId
-                                         }).Distinct().OrderBy(response => response.RelativeOrder);
-
-            ////// Special case, these are open ended questions with no rows in the answer table. LargeTextInputField or SmallTextInputField
-            ////foreach (var question in Enumerable.Where(questions, question => !question.GetAnswers().Any()))
-            ////{
-            ////    // fetch the open ended response since we can't include in distinct list above.
-            ////    var lambdaQuestion = question;
-            ////    var questionResponse = (from response in this.Context.Responses
-            ////                            where response.ResponseHeaderId == responseHeaderId && response.QuestionId == lambdaQuestion.QuestionId
-            ////                            select new UserResponse
-            ////                                       {
-            ////                                               RelationshipKey = lambdaQuestion.RelationshipKey, 
-            ////                                               AnswerValue = response.UserResponse
-            ////                                       }).FirstOrDefault();
-
-            ////    question.Responses = new List<UserResponse> {
-            ////                                     questionResponse
-            ////                             };
-            ////}
+                                        {
+                                            QuestionId = response.QuestionId,
+                                            Text = response.QuestionText,
+                                            Comments = response.Comments,
+                                            RelativeOrder = response.QuestionRelativeOrder,
+                                            ControlType = response.ControlType,
+                                            SectionId = response.SectionId,
+                                            ResponseHeaderId = response.ResponseHeaderId
+                                        })
+                             .Distinct()
+                             .OrderBy(response => response.RelativeOrder);
 
             return questions;
         }
@@ -422,16 +407,17 @@ namespace Engage.Survey.Entities
         {
             return (from response in this.Context.Responses
                     where response.ResponseHeaderId == responseHeaderId && response.SurveyId == surveyId
-                    orderby response.SectionRelativeOrder
                     select new ReadonlySection
                                {
-                                       SurveyId = response.SurveyId,
-                                       SectionId = response.SectionId,
-                                       Text = response.SectionText,
-                                       ShowText = response.ShowSectionText,
-                                       RelativeOrder = response.SectionRelativeOrder,
-                                       ResponseHeaderId = response.ResponseHeaderId
-                               }).Distinct();
+                                   SurveyId = response.SurveyId,
+                                   SectionId = response.SectionId,
+                                   Text = response.SectionText,
+                                   ShowText = response.ShowSectionText,
+                                   RelativeOrder = response.SectionRelativeOrder,
+                                   ResponseHeaderId = response.ResponseHeaderId
+                               })
+                    .Distinct()
+                    .OrderBy(response => response.RelativeOrder);
         }
 
         /// <summary>

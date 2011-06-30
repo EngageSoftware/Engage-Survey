@@ -239,7 +239,9 @@ namespace Engage.Dnn.Survey
         {
             // generate table based HTML to represent the sruvey.
             string surveyHtml = this.GenerateTableBasedSurvey(
-                    responseHeaderId, this.SurveyControl.CurrentSurvey.Text, this.UserInfo.DisplayName);
+                    responseHeaderId, 
+                    this.SurveyControl.CurrentSurvey.Text, 
+                    this.UserInfo.DisplayName);
 
             if (surveyHtml.Length > 0)
             {

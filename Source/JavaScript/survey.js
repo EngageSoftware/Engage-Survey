@@ -11,11 +11,11 @@
         var $find = window.Sys.Application.findComponent,
             alert = window.alert,
             currentContextInfo = window.currentContextInfo,
-            validator = $('#Form').validate({ignore: '#DefineAnswerType'}),
             animationSpeed = 'normal',
             pendingQuestionDeleteCallbacks = [],
             startDatePicker = $find($('.ee-start-date .RadPicker input').attr('id')),
-            endDatePicker = $find($('.ee-end-date .RadPicker input').attr('id'));
+            endDatePicker = $find($('.ee-end-date .RadPicker input').attr('id')),
+            validator;
 
         $.validator.addMethod("email", function (value, element) {
             return this.optional(element) || currentContextInfo.EmailRegex.test(value);
@@ -56,6 +56,8 @@
             onsubmit: false
         });
 
+        validator = $('#Form').validate({ ignore: '#DefineAnswerType' });
+
         window.onbeforeunload = function () { 
             if ($('#CancelQuestion').is(':visible') || $('#EvalCancel').is(':visible')) {
                 return currentContextInfo.UnsavedChangedWarning;
@@ -63,6 +65,15 @@
 
             return undefined;
         };
+        
+        $(window).unload(function () {
+            // when the user leaves the page, finish any pending question deletions
+            $.each(pendingQuestionDeleteCallbacks, function (i, deleteQuestionFunction) {
+                if ($.isFunction(deleteQuestionFunction)) {
+                    deleteQuestionFunction();
+                }
+            });
+        });
 
         function callWebMethod(methodName, parameters, callback) {
             jQuery.ajax({
@@ -610,15 +621,8 @@
         $("#ee-previews").sortable({
             items: 'li.ee-preview', 
             placeholder: 'ui-state-highlight'
-        });
-        $(".answer-inputs").sortable({
-            items: 'li.answer-input',
-            placeholder: 'ui-state-highlight'
-        });
-        ////$("#ee-previews, .answer-inputs").disableSelection();
-        
-        // after reordering questions
-        $('#ee-previews').bind('sortupdate', function () {
+        }).bind('sortupdate', function () {
+            // after reordering questions
             var questionOrderMap = {},
                 parameters;
             $('#ee-previews li.ee-preview:visible').each(function (i, elem) {
@@ -633,8 +637,11 @@
             callWebMethod('ReorderQuestions', parameters);
         });
         
-        // after reordering answers
-        $('.answer-inputs').bind('sortupdate', function () {
+        $(".answer-inputs").sortable({
+            items: 'li.answer-input',
+            placeholder: 'ui-state-highlight'
+        }).bind('sortupdate', function () {
+            // after reordering answers
             var $answerNumberElements = $(".answer-inputs li.answer-input:visible").find('.answer-num');
             $answerNumberElements.each(function (i, elem) {
                 $(elem).text(i + 1);
@@ -831,15 +838,6 @@
                 callWebMethod('DeleteQuestion', { questionId: questionId }, function () {
                     $parentQuestionElement.remove();
                 });
-            });
-        });
-        
-        $(window).unload(function () {
-            // when the user leaves the page, finish any pending question deletions
-            $.each(pendingQuestionDeleteCallbacks, function (i, deleteQuestionFunction) {
-                if ($.isFunction(deleteQuestionFunction)) {
-                    deleteQuestionFunction();
-                }
             });
         });
         

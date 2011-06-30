@@ -42,4 +42,4 @@ using System.Web.UI;
 [assembly: AssemblyVersion("3.2.6.*")]
 [assembly: AssemblyFileVersion("3.2.6.0")]
 
-[assembly: WebResource("Engage.Dnn.Survey.JavaScript.survey-all.min.js", "text/javascript")]
+[assembly: WebResource("Engage.Dnn.Survey.JavaScript.survey-all.js", "text/javascript")]

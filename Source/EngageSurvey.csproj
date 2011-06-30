@@ -115,7 +115,7 @@
     <None Include="JavaScript\jquery-ui-1.8.13.js" />
     <None Include="JavaScript\jquery.validate-1.8.1.js" />
     <None Include="JavaScript\json2.js" />
-    <EmbeddedResource Include="JavaScript\survey-all.min.js">
+    <EmbeddedResource Include="JavaScript\survey-all.js">
       <DependentUpon>scripts.chirp.config</DependentUpon>
     </EmbeddedResource>
     <Content Include="ReleaseNotes_3.2.6.htm" />

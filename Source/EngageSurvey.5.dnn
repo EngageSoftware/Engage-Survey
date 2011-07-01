@@ -99,6 +99,10 @@
               <name>BrandonHaynes.ModelAdapter.dll</name>
               <version>1.0.1</version>
             </assembly>
+            <assembly>
+              <name>AntiXSSLibrary.dll</name>
+              <version>4.0.0</version>
+            </assembly>
           </assemblies>
         </component>
       </components>

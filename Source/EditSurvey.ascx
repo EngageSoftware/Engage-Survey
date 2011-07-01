@@ -1,8 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" CodeBehind="EditSurvey.ascx.cs" Inherits="Engage.Dnn.Survey.EditSurvey" %>
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
-<%@ Import Namespace="DotNetNuke.UI.Utilities"%>
 <%@ Import Namespace="Engage.Survey.Util"%>
-<%@ Import Namespace="Engage.Dnn.Survey" %>
+
 <div id="engage-evaluation">
     <p class="ee-note"><%=Localize("RequiredNote.Text")%></p>
     <fieldset class="ee-create-new">
@@ -181,47 +180,48 @@ var currentContextInfo = {
     Survey: <%=SerializedSurvey %>,
     PortalId: <%= PortalId %>,
     ModuleId: <%= ModuleId %>,
-    ErrorMessage: '<%= ClientAPI.GetSafeJSString(Localize("AjaxError.Text")) %>',
-    SaveQuestionButtonText: '<%= ClientAPI.GetSafeJSString(Localize("SaveQuestion.Text")) %>',
-    SaveQuestionToolTip: '<%= ClientAPI.GetSafeJSString(Localize("SaveQuestion.ToolTip")) %>',
-    UpdateQuestionButtonText: '<%= ClientAPI.GetSafeJSString(Localize("UpdateQuestion.Text")) %>',
-    UpdateQuestionToolTip: '<%= ClientAPI.GetSafeJSString(Localize("UpdateQuestion.ToolTip")) %>',
-    ProgressText: '<%= ClientAPI.GetSafeJSString(Localize("ProgressText.Text")) %>',
-    UnsavedChangedWarning : '<%= ClientAPI.GetSafeJSString(Localize("UnsavedChangedWarning.Text")) %>',
-    CheckBoxCheckedText: '<%= ClientAPI.GetSafeJSString(Localize("CheckBoxCheckedText.Text")) %>',
-    CheckBoxUncheckedText: '<%= ClientAPI.GetSafeJSString(Localize("CheckBoxUncheckedText.Text")) %>',
+    ErrorMessage: <%= GetJavaScriptString(Localize("AjaxError.Text")) %>,
+    SaveQuestionButtonText: <%= GetJavaScriptString(Localize("SaveQuestion.Text")) %>,
+    SaveQuestionToolTip: <%= GetJavaScriptString(Localize("SaveQuestion.ToolTip")) %>,
+    UpdateQuestionButtonText: <%= GetJavaScriptString(Localize("UpdateQuestion.Text")) %>,
+    UpdateQuestionToolTip: <%= GetJavaScriptString(Localize("UpdateQuestion.ToolTip")) %>,
+    ProgressText: <%= GetJavaScriptString(Localize("ProgressText.Text")) %>,
+    UnsavedChangedWarning : <%= GetJavaScriptString(Localize("UnsavedChangedWarning.Text")) %>,
+    CheckBoxCheckedText: <%= GetJavaScriptString(Localize("CheckBoxCheckedText.Text")) %>,
+    CheckBoxUncheckedText: <%= GetJavaScriptString(Localize("CheckBoxUncheckedText.Text")) %>,
     DefaultEmailSettings: {
         SendNotification: <%= this.DefaultSendNofitication ? "true" : "false" %>,
-        NotificationFromEmail: '<%= ClientAPI.GetSafeJSString(this.DefaultNotificationFromEmailAddress) %>',
-        NotificationToEmails: '<%= ClientAPI.GetSafeJSString(this.DefaultNotificationToEmailAddresses) %>',
+        NotificationFromEmail: <%= GetJavaScriptString(this.DefaultNotificationFromEmailAddress) %>,
+        NotificationToEmails: <%= GetJavaScriptString(this.DefaultNotificationToEmailAddresses) %>,
         SendThankYou: <%= this.DefaultSendThankYou ? "true" : "false" %>,
-        ThankYouFromEmail: '<%= ClientAPI.GetSafeJSString(this.DefaultThankYouFromEmailAddress) %>'
+        ThankYouFromEmail: <%= GetJavaScriptString(this.DefaultThankYouFromEmailAddress) %>
     },
+    DefaultCompletionMessage: <%= GetJavaScriptString(this.DefaultCompletionMessage) %>,
     EmailRegex: /<%=Engage.Utility.EmailRegEx %>/,
     EmailsRegex: /<%=Engage.Utility.EmailsRegEx %>/,
     ErrorMessages: {
-        required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
+        required: <%= GetJavaScriptString(Localize("Error: Required.Text")) %>,
         DefineAnswerType: { 
-            min: '<%= ClientAPI.GetSafeJSString(Localize("TypeRequired.Text")) %>'
+            min: <%= GetJavaScriptString(Localize("TypeRequired.Text")) %>
         },
         notificationEmail: {
-            required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
-            email: '<%= ClientAPI.GetSafeJSString(Localize("Error: Email.Text")) %>'
+            required: <%= GetJavaScriptString(Localize("Error: Required.Text")) %>,
+            email: <%= GetJavaScriptString(Localize("Error: Email.Text")) %>
         },
         thankYouEmail: {
-            required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
-            email: '<%= ClientAPI.GetSafeJSString(Localize("Error: Email.Text")) %>'
+            required: <%= GetJavaScriptString(Localize("Error: Required.Text")) %>,
+            email: <%= GetJavaScriptString(Localize("Error: Email.Text")) %>
         },
         notificationEmails: {
-            required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
-            emails: '<%= ClientAPI.GetSafeJSString(Localize("Error: Emails.Text")) %>'
+            required: <%= GetJavaScriptString(Localize("Error: Required.Text")) %>,
+            emails: <%= GetJavaScriptString(Localize("Error: Emails.Text")) %>
         },
         completionMessage: {
-            required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>'
+            required: <%= GetJavaScriptString(Localize("Error: Required.Text")) %>
         },
         completionUrl: {
-            required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
-            url: '<%= ClientAPI.GetSafeJSString(Localize("Error: Url.Text")) %>'
+            required: <%= GetJavaScriptString(Localize("Error: Required.Text")) %>,
+            url: <%= GetJavaScriptString(Localize("Error: Url.Text")) %>
         }
     }
 };

@@ -1044,6 +1044,7 @@
 			    $notificationToEmailsTextBox.val(currentContextInfo.DefaultEmailSettings.NotificationToEmails);
                 $sendThankYouCheckBox.attr('checked', currentContextInfo.DefaultEmailSettings.SendThankYou);
 			    $thankYourFromEmailTextBox.val(currentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
+			    $completionMessageTextArea.val(currentContextInfo.DefaultCompletionMessage);
             }
             
             resetCreateQuestionSection();

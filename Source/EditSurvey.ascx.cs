@@ -15,7 +15,10 @@ namespace Engage.Dnn.Survey
     using System.Globalization;
     using System.Web.Script.Serialization;
     using System.Web.UI;
+
     using Engage.Survey.Entities;
+
+    using Microsoft.Security.Application;
 
     /// <summary>
     /// The EditSurvey class is used to manage content
@@ -95,11 +98,32 @@ namespace Engage.Dnn.Survey
             }
         }
 
+        protected string DefaultCompletionMessage
+        {
+            get
+            {
+                return this.Localize("Survey Complete.Text", SurveyRepository.SharedResourceFile);
+            }
+        }
+
+        /// <summary>
+        /// Gets the survey serialized to a JSON object, or <c>"null"</c> if there is no survey.
+        /// </summary>
+        /// <value>The serialized survey.</value>
+        protected string SerializedSurvey
+        {
+            get
+            {
+                var survey = this.GetSurvey();
+                return new JavaScriptSerializer().Serialize(survey);
+            }
+        }
+
         /// <summary>
         /// Gets the survey id, or <c>null</c> if creating a new survey.
         /// </summary>
         /// <value>The survey id.</value>
-        protected int? SurveyId
+        private int? SurveyId
         {
             get
             {
@@ -117,16 +141,13 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Gets the survey serialized to a JSON object, or <c>"null"</c> if there is no survey.
+        /// Encodes input string for use in JavaScript.
         /// </summary>
-        /// <value>The serialized survey.</value>
-        protected string SerializedSurvey
+        /// <param name="value">The value to be encoded.</param>
+        /// <returns>Encoded string for use in JavaScript, with quotes surrounding value</returns>
+        protected static string GetJavaScriptString(string value)
         {
-            get
-            {
-                var survey = this.GetSurvey();
-                return new JavaScriptSerializer().Serialize(survey);
-            }
+            return Encoder.JavaScriptEncode(value, true);
         }
 
         /// <summary>

@@ -12,12 +12,23 @@
 namespace Engage.Survey.Util
 {
     /// <summary>
-    /// FinalMessageOption
+    /// The options for what should happen after the survey is completed
     /// </summary>
     public enum FinalMessageOption
     {
+        /// <summary>
+        /// Don't do anything.  Use this value if it's not possible to complete the survey
+        /// </summary>
         None = 0,
-        UseFinalMessage,
-        UseFinalURL
+
+        /// <summary>
+        /// Show <see cref="ISurvey.FinalMessage"/>
+        /// </summary>
+        UseFinalMessage = 1,
+
+        /// <summary>
+        /// Redirect the user to <see cref="ISurvey.FinalUrl"/>
+        /// </summary>
+        UseFinalUrl = 2
     }
 }

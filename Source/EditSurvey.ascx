@@ -61,6 +61,28 @@
                 </div>
             </div>
         </fieldset>
+        <fieldset class="ee-completion ee-collapsed ee-optional">
+            <legend><a href="#" class="CommandButton"><%=Localize("EvalCompletionLabel.Text")%></a></legend>
+            <div class="ee-collapsable">
+                <div class="ee-completion-action ee-optional">
+                    <span class="ee-label eval-completion-action"><%=Localize("EvalCompletionActionLabel.Text")%></span>
+                    <span class="ee-input">
+                        <select id="EvalCompletionAction" class="NormalTextBox">
+                            <option value="<%=(int)FinalMessageOption.UseFinalMessage %>"><%=Localize("CompletionActionMessage.Text") %></option>
+                            <option value="<%=(int)FinalMessageOption.UseFinalUrl %>"><%=Localize("CompletionActionUrl.Text") %></option>
+                        </select>
+                    </span>
+                </div>
+                <div class="ee-completion-message ee-optional">
+                    <span class="ee-label eval-completion-message"><%=Localize("EvalCompletionMessageLabel.Text")%></span>
+                    <span class="ee-input"><textarea id="EvalCompletionMessage" class="NormalTextBox" rows="5" cols="20" name="completionMessage"></textarea></span>
+                </div>
+                <div class="ee-completion-url ee-optional">
+                    <span class="ee-label eval-completion-url"><%=Localize("EvalCompletionUrlLabel.Text")%></span>
+                    <span class="ee-input"><input id="EvalCompletionUrl" type="text" class="NormalTextBox" name="completionUrl" /></span>
+                </div>
+            </div>
+        </fieldset>
         <ul class="ee-action-btns">
             <li class="primary-btn"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("CreateNewEvalHyperLink.ToolTip")) %>" id="EvalNew" class="create-new"><%=Localize("CreateNewEvalHyperLink.Text")%></a></li>
             <li class="primary-btn" style="display:none;"><a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("EditEvalHyperLink.ToolTip")) %>" id="EvalEdit"><%=Localize("EditEvalHyperLink.Text")%></a></li>
@@ -193,6 +215,13 @@ var currentContextInfo = {
         notificationEmails: {
             required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
             emails: '<%= ClientAPI.GetSafeJSString(Localize("Error: Emails.Text")) %>'
+        },
+        completionMessage: {
+            required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>'
+        },
+        completionUrl: {
+            required: '<%= ClientAPI.GetSafeJSString(Localize("Error: Required.Text")) %>',
+            url: '<%= ClientAPI.GetSafeJSString(Localize("Error: Url.Text")) %>'
         }
     }
 };

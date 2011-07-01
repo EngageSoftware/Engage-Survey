@@ -156,6 +156,12 @@
   <data name="CheckBoxUncheckedText.Text" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="CompletionActionMessage.Text" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="CompletionActionUrl.Text" xml:space="preserve">
+    <value>Redirect</value>
+  </data>
   <data name="CopyQuestionHyperLink.Text" xml:space="preserve">
     <value>Copy</value>
   </data>
@@ -209,6 +215,21 @@
   </data>
   <data name="Error: Required.Text" xml:space="preserve">
     <value>This field is required.</value>
+  </data>
+  <data name="Error: Url.Text" xml:space="preserve">
+    <value>Please enter a valid URL</value>
+  </data>
+  <data name="EvalCompletionActionLabel.Text" xml:space="preserve">
+    <value>Completion Action</value>
+  </data>
+  <data name="EvalCompletionLabel.Text" xml:space="preserve">
+    <value>Completion</value>
+  </data>
+  <data name="EvalCompletionMessageLabel.Text" xml:space="preserve">
+    <value>Completion Message</value>
+  </data>
+  <data name="EvalCompletionUrlLabel.Text" xml:space="preserve">
+    <value>Redirect URL</value>
   </data>
   <data name="EvalDescriptionLabel.Text" xml:space="preserve">
     <value>Description</value>

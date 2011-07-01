@@ -216,19 +216,22 @@ namespace Engage.Dnn.Survey
             surveyToUpdate.PortalId = survey.PortalId;
             surveyToUpdate.ModuleId = survey.ModuleId;
             surveyToUpdate.ShowText = true;
+
             surveyToUpdate.StartDate = survey.StartDate;
-                
-                ////.HasValue ? survey.StartDate.Value.ToUniversalTime() : (DateTime?)null;
             surveyToUpdate.PreStartMessage = survey.PreStartMessage;
             surveyToUpdate.EndDate = survey.EndDate;
-                
-                ////.HasValue ? survey.EndDate.Value.ToUniversalTime() : (DateTime?)null;
             surveyToUpdate.PostEndMessage = survey.PostEndMessage;
+            
             surveyToUpdate.SendNotification = survey.SendNotification;
             surveyToUpdate.NotificationFromEmailAddress = survey.NotificationFromEmailAddress;
             surveyToUpdate.NotificationToEmailAddresses = survey.NotificationToEmailAddresses;
             surveyToUpdate.SendThankYou = survey.SendThankYou;
             surveyToUpdate.ThankYouFromEmailAddress = survey.ThankYouFromEmailAddress;
+            
+            surveyToUpdate.FinalMessageOption = survey.FinalMessageOption;
+            surveyToUpdate.FinalMessage = survey.FinalMessage;
+            surveyToUpdate.FinalUrl = survey.FinalUrl;
+
             surveyToUpdate.Sections.First().Text = survey.Sections.First().Text;
             surveyToUpdate.Sections.First().ShowText = true;
 

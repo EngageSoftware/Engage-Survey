@@ -480,7 +480,7 @@ if (!JSON) {
 }());
 
 /*!
- * jQuery UI 1.8.13
+ * jQuery UI 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -499,7 +499,7 @@ if ( $.ui.version ) {
 }
 
 $.extend( $.ui, {
-	version: "1.8.13",
+	version: "1.8.14",
 
 	keyCode: {
 		ALT: 18,
@@ -792,7 +792,7 @@ $.extend( $.ui, {
 
 })( jQuery );
 /*!
- * jQuery UI Widget 1.8.13
+ * jQuery UI Widget 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -1054,7 +1054,7 @@ $.Widget.prototype = {
 
 })( jQuery );
 /*!
- * jQuery UI Mouse 1.8.13
+ * jQuery UI Mouse 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -1113,7 +1113,7 @@ $.widget("ui.mouse", {
 
 		var self = this,
 			btnIsLeft = (event.which == 1),
-			elIsCancel = (typeof this.options.cancel == "string" ? $(event.target).parents().add(event.target).filter(this.options.cancel).length : false);
+			elIsCancel = (typeof this.options.cancel == "string" ? $(event.target).closest(this.options.cancel).length : false);
 		if (!btnIsLeft || elIsCancel || !this._mouseCapture(event)) {
 			return true;
 		}
@@ -1214,7 +1214,7 @@ $.widget("ui.mouse", {
 
 })(jQuery);
 /*
- * jQuery UI Draggable 1.8.13
+ * jQuery UI Draggable 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -1378,6 +1378,10 @@ $.widget("ui.draggable", $.ui.mouse, {
 
 		this.helper.addClass("ui-draggable-dragging");
 		this._mouseDrag(event, true); //Execute the drag once - this causes the helper not to be visible before getting its correct position
+		
+		//If the ddmanager is used for droppables, inform the manager that dragging has started (see #5003)
+		if ( $.ui.ddmanager ) $.ui.ddmanager.dragStart(this, event);
+		
 		return true;
 	},
 
@@ -1443,6 +1447,9 @@ $.widget("ui.draggable", $.ui.mouse, {
 				this.parentNode.removeChild(this); 
 			}); //Remove frame helpers
 		}
+		
+		//If the ddmanager is used for droppables, inform the manager that dragging has stopped (see #5003)
+		if( $.ui.ddmanager ) $.ui.ddmanager.dragStop(this, event);
 		
 		return $.ui.mouse.prototype._mouseUp.call(this, event);
 	},
@@ -1570,8 +1577,8 @@ $.widget("ui.draggable", $.ui.mouse, {
 		var o = this.options;
 		if(o.containment == 'parent') o.containment = this.helper[0].parentNode;
 		if(o.containment == 'document' || o.containment == 'window') this.containment = [
-			(o.containment == 'document' ? 0 : $(window).scrollLeft()) - this.offset.relative.left - this.offset.parent.left,
-			(o.containment == 'document' ? 0 : $(window).scrollTop()) - this.offset.relative.top - this.offset.parent.top,
+			o.containment == 'document' ? 0 : $(window).scrollLeft() - this.offset.relative.left - this.offset.parent.left,
+			o.containment == 'document' ? 0 : $(window).scrollTop() - this.offset.relative.top - this.offset.parent.top,
 			(o.containment == 'document' ? 0 : $(window).scrollLeft()) + $(o.containment == 'document' ? document : window).width() - this.helperProportions.width - this.margins.left,
 			(o.containment == 'document' ? 0 : $(window).scrollTop()) + ($(o.containment == 'document' ? document : window).height() || document.body.parentNode.scrollHeight) - this.helperProportions.height - this.margins.top
 		];
@@ -1651,10 +1658,11 @@ $.widget("ui.draggable", $.ui.mouse, {
 			}
 
 			if(o.grid) {
-				var top = this.originalPageY + Math.round((pageY - this.originalPageY) / o.grid[1]) * o.grid[1];
+				//Check for grid elements set to 0 to prevent divide by 0 error causing invalid argument errors in IE (see ticket #6950)
+				var top = o.grid[1] ? this.originalPageY + Math.round((pageY - this.originalPageY) / o.grid[1]) * o.grid[1] : this.originalPageY;
 				pageY = containment ? (!(top - this.offset.click.top < containment[1] || top - this.offset.click.top > containment[3]) ? top : (!(top - this.offset.click.top < containment[1]) ? top - o.grid[1] : top + o.grid[1])) : top;
 
-				var left = this.originalPageX + Math.round((pageX - this.originalPageX) / o.grid[0]) * o.grid[0];
+				var left = o.grid[0] ? this.originalPageX + Math.round((pageX - this.originalPageX) / o.grid[0]) * o.grid[0] : this.originalPageX;
 				pageX = containment ? (!(left - this.offset.click.left < containment[0] || left - this.offset.click.left > containment[2]) ? left : (!(left - this.offset.click.left < containment[0]) ? left - o.grid[0] : left + o.grid[0])) : left;
 			}
 
@@ -1710,7 +1718,7 @@ $.widget("ui.draggable", $.ui.mouse, {
 });
 
 $.extend($.ui.draggable, {
-	version: "1.8.13"
+	version: "1.8.14"
 });
 
 $.ui.plugin.add("draggable", "connectToSortable", {
@@ -2029,7 +2037,7 @@ $.ui.plugin.add("draggable", "zIndex", {
 
 })(jQuery);
 /*
- * jQuery UI Droppable 1.8.13
+ * jQuery UI Droppable 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -2177,7 +2185,7 @@ $.widget("ui.droppable", {
 });
 
 $.extend($.ui.droppable, {
-	version: "1.8.13"
+	version: "1.8.14"
 });
 
 $.ui.intersect = function(draggable, droppable, toleranceMode) {
@@ -2268,6 +2276,12 @@ $.ui.ddmanager = {
 		return dropped;
 
 	},
+	dragStart: function( draggable, event ) {
+		//Listen for scrolling so that if the dragging causes scrolling the position of the droppables can be recalculated (see #5003)
+		draggable.element.parentsUntil( "body" ).bind( "scroll.droppable", function() {
+			if( !draggable.options.refreshPositions ) $.ui.ddmanager.prepareOffsets( draggable, event );
+		});
+	},
 	drag: function(draggable, event) {
 
 		//If you have a highly dynamic page, you might try this option. It renders positions every time you move the mouse.
@@ -2309,12 +2323,17 @@ $.ui.ddmanager = {
 			}
 		});
 
+	},
+	dragStop: function( draggable, event ) {
+		draggable.element.parentsUntil( "body" ).unbind( "scroll.droppable" );
+		//Call prepareOffsets one final time since IE does not fire return scroll events when overflow was caused by drag (see #5003)
+		if( !draggable.options.refreshPositions ) $.ui.ddmanager.prepareOffsets( draggable, event );
 	}
 };
 
 })(jQuery);
 /*
- * jQuery UI Resizable 1.8.13
+ * jQuery UI Resizable 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -2608,6 +2627,8 @@ $.widget("ui.resizable", $.ui.mouse, {
 		// Calculate the attrs that will be change
 		var data = trigger.apply(this, [event, dx, dy]), ie6 = $.browser.msie && $.browser.version < 7, csdif = this.sizeDiff;
 
+		// Put this in the mouseDrag handler since the user can start pressing shift while resizing
+		this._updateVirtualBoundaries(event.shiftKey);
 		if (this._aspectRatio || event.shiftKey)
 			data = this._updateRatio(data, event);
 
@@ -2666,6 +2687,32 @@ $.widget("ui.resizable", $.ui.mouse, {
 
 	},
 
+    _updateVirtualBoundaries: function(forceAspectRatio) {
+        var o = this.options, pMinWidth, pMaxWidth, pMinHeight, pMaxHeight, b;
+
+        b = {
+            minWidth: isNumber(o.minWidth) ? o.minWidth : 0,
+            maxWidth: isNumber(o.maxWidth) ? o.maxWidth : Infinity,
+            minHeight: isNumber(o.minHeight) ? o.minHeight : 0,
+            maxHeight: isNumber(o.maxHeight) ? o.maxHeight : Infinity
+        };
+
+        if(this._aspectRatio || forceAspectRatio) {
+            // We want to create an enclosing box whose aspect ration is the requested one
+            // First, compute the "projected" size for each dimension based on the aspect ratio and other dimension
+            pMinWidth = b.minHeight * this.aspectRatio;
+            pMinHeight = b.minWidth / this.aspectRatio;
+            pMaxWidth = b.maxHeight * this.aspectRatio;
+            pMaxHeight = b.maxWidth / this.aspectRatio;
+
+            if(pMinWidth > b.minWidth) b.minWidth = pMinWidth;
+            if(pMinHeight > b.minHeight) b.minHeight = pMinHeight;
+            if(pMaxWidth < b.maxWidth) b.maxWidth = pMaxWidth;
+            if(pMaxHeight < b.maxHeight) b.maxHeight = pMaxHeight;
+        }
+        this._vBoundaries = b;
+    },
+
 	_updateCache: function(data) {
 		var o = this.options;
 		this.offset = this.helper.offset();
@@ -2679,8 +2726,8 @@ $.widget("ui.resizable", $.ui.mouse, {
 
 		var o = this.options, cpos = this.position, csize = this.size, a = this.axis;
 
-		if (data.height) data.width = (csize.height * this.aspectRatio);
-		else if (data.width) data.height = (csize.width / this.aspectRatio);
+		if (isNumber(data.height)) data.width = (data.height * this.aspectRatio);
+		else if (isNumber(data.width)) data.height = (data.width / this.aspectRatio);
 
 		if (a == 'sw') {
 			data.left = cpos.left + (csize.width - data.width);
@@ -2696,7 +2743,7 @@ $.widget("ui.resizable", $.ui.mouse, {
 
 	_respectSize: function(data, event) {
 
-		var el = this.helper, o = this.options, pRatio = this._aspectRatio || event.shiftKey, a = this.axis,
+		var el = this.helper, o = this._vBoundaries, pRatio = this._aspectRatio || event.shiftKey, a = this.axis,
 				ismaxw = isNumber(data.width) && o.maxWidth && (o.maxWidth < data.width), ismaxh = isNumber(data.height) && o.maxHeight && (o.maxHeight < data.height),
 					isminw = isNumber(data.width) && o.minWidth && (o.minWidth > data.width), isminh = isNumber(data.height) && o.minHeight && (o.minHeight > data.height);
 
@@ -2836,7 +2883,7 @@ $.widget("ui.resizable", $.ui.mouse, {
 });
 
 $.extend($.ui.resizable, {
-	version: "1.8.13"
+	version: "1.8.14"
 });
 
 /*
@@ -3128,7 +3175,7 @@ var isNumber = function(value) {
 
 })(jQuery);
 /*
- * jQuery UI Selectable 1.8.13
+ * jQuery UI Selectable 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -3389,12 +3436,12 @@ $.widget("ui.selectable", $.ui.mouse, {
 });
 
 $.extend($.ui.selectable, {
-	version: "1.8.13"
+	version: "1.8.14"
 });
 
 })(jQuery);
 /*
- * jQuery UI Sortable 1.8.13
+ * jQuery UI Sortable 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -4379,7 +4426,7 @@ $.widget("ui.sortable", $.ui.mouse, {
 
 		// We first have to update the dom position of the actual currentItem
 		// Note: don't do it if the current item is already removed (by a user), or it gets reappended (see #4088)
-		if(!this._noFinalSort && this.currentItem[0].parentNode) this.placeholder.before(this.currentItem);
+		if(!this._noFinalSort && this.currentItem.parent().length) this.placeholder.before(this.currentItem);
 		this._noFinalSort = null;
 
 		if(this.helper[0] == this.currentItem[0]) {
@@ -4466,12 +4513,12 @@ $.widget("ui.sortable", $.ui.mouse, {
 });
 
 $.extend($.ui.sortable, {
-	version: "1.8.13"
+	version: "1.8.14"
 });
 
 })(jQuery);
 /*
- * jQuery UI Effects 1.8.13
+ * jQuery UI Effects 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -4721,7 +4768,7 @@ $.effects.animateClass = function(value, duration, easing, callback) {
 		that.animate(styleDifference(originalStyle, newStyle), {
 			queue: false,
 			duration: duration,
-			easding: easing,
+			easing: easing,
 			complete: function() {
 				$.each(classAnimationActions, function(i, action) {
 					if (value[action]) { that[action + 'Class'](value[action]); }
@@ -4778,7 +4825,7 @@ $.fn.extend({
 /******************************************************************************/
 
 $.extend($.effects, {
-	version: "1.8.13",
+	version: "1.8.14",
 
 	// Saves a set of properties in a data storage
 	save: function(element, set) {
@@ -5217,7 +5264,7 @@ $.extend($.easing,
 
 })(jQuery);
 /*
- * jQuery UI Effects Blind 1.8.13
+ * jQuery UI Effects Blind 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5266,7 +5313,7 @@ $.effects.blind = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Bounce 1.8.13
+ * jQuery UI Effects Bounce 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5344,7 +5391,7 @@ $.effects.bounce = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Clip 1.8.13
+ * jQuery UI Effects Clip 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5398,7 +5445,7 @@ $.effects.clip = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Drop 1.8.13
+ * jQuery UI Effects Drop 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5448,7 +5495,7 @@ $.effects.drop = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Explode 1.8.13
+ * jQuery UI Effects Explode 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5527,7 +5574,7 @@ $.effects.explode = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Fade 1.8.13
+ * jQuery UI Effects Fade 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5559,7 +5606,7 @@ $.effects.fade = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Fold 1.8.13
+ * jQuery UI Effects Fold 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5615,7 +5662,7 @@ $.effects.fold = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Highlight 1.8.13
+ * jQuery UI Effects Highlight 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5665,7 +5712,7 @@ $.effects.highlight = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Pulsate 1.8.13
+ * jQuery UI Effects Pulsate 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5716,7 +5763,7 @@ $.effects.pulsate = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Scale 1.8.13
+ * jQuery UI Effects Scale 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5894,7 +5941,7 @@ $.effects.size = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Shake 1.8.13
+ * jQuery UI Effects Shake 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -5951,7 +5998,7 @@ $.effects.shake = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Slide 1.8.13
+ * jQuery UI Effects Slide 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -6001,7 +6048,7 @@ $.effects.slide = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Transfer 1.8.13
+ * jQuery UI Effects Transfer 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -6046,7 +6093,7 @@ $.effects.transfer = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Accordion 1.8.13
+ * jQuery UI Accordion 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -6565,7 +6612,7 @@ $.widget( "ui.accordion", {
 });
 
 $.extend( $.ui.accordion, {
-	version: "1.8.13",
+	version: "1.8.14",
 	animations: {
 		slide: function( options, additions ) {
 			options = $.extend({
@@ -6657,7 +6704,7 @@ $.extend( $.ui.accordion, {
 
 })( jQuery );
 /*
- * jQuery UI Autocomplete 1.8.13
+ * jQuery UI Autocomplete 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -7269,7 +7316,7 @@ $.widget("ui.menu", {
 
 }(jQuery));
 /*
- * jQuery UI Button 1.8.13
+ * jQuery UI Button 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -7283,17 +7330,15 @@ $.widget("ui.menu", {
  */
 (function( $, undefined ) {
 
-var lastActive,
+var lastActive, startXPos, startYPos, clickDragged,
 	baseClasses = "ui-button ui-widget ui-state-default ui-corner-all",
 	stateClasses = "ui-state-hover ui-state-active ",
 	typeClasses = "ui-button-icons-only ui-button-icon-only ui-button-text-icons ui-button-text-icon-primary ui-button-text-icon-secondary ui-button-text-only",
-	formResetHandler = function( event ) {
-		$( ":ui-button", event.target.form ).each(function() {
-			var inst = $( this ).data( "button" );
-			setTimeout(function() {
-				inst.refresh();
-			}, 1 );
-		});
+	formResetHandler = function() {
+		var buttons = $( this ).find( ":ui-button" );
+		setTimeout(function() {
+			buttons.button( "refresh" );
+		}, 1 );
 	},
 	radioGroup = function( radio ) {
 		var name = radio.name,
@@ -7366,28 +7411,54 @@ $.widget( "ui.button", {
 				}
 				$( this ).removeClass( hoverClass );
 			})
-			.bind( "focus.button", function() {
-				// no need to check disabled, focus won't be triggered anyway
-				$( this ).addClass( focusClass );
-			})
-			.bind( "blur.button", function() {
-				$( this ).removeClass( focusClass );
-			})
 			.bind( "click.button", function( event ) {
 				if ( options.disabled ) {
+					event.preventDefault();
 					event.stopImmediatePropagation();
 				}
 			});
 
+		this.element
+			.bind( "focus.button", function() {
+				// no need to check disabled, focus won't be triggered anyway
+				self.buttonElement.addClass( focusClass );
+			})
+			.bind( "blur.button", function() {
+				self.buttonElement.removeClass( focusClass );
+			});
+
 		if ( toggleButton ) {
 			this.element.bind( "change.button", function() {
+				if ( clickDragged ) {
+					return;
+				}
 				self.refresh();
+			});
+			// if mouse moves between mousedown and mouseup (drag) set clickDragged flag
+			// prevents issue where button state changes but checkbox/radio checked state
+			// does not in Firefox (see ticket #6970)
+			this.buttonElement
+				.bind( "mousedown.button", function( event ) {
+					if ( options.disabled ) {
+						return;
+					}
+					clickDragged = false;
+					startXPos = event.pageX;
+					startYPos = event.pageY;
+				})
+				.bind( "mouseup.button", function( event ) {
+					if ( options.disabled ) {
+						return;
+					}
+					if ( startXPos !== event.pageX || startYPos !== event.pageY ) {
+						clickDragged = true;
+					}
 			});
 		}
 
 		if ( this.type === "checkbox" ) {
 			this.buttonElement.bind( "click.button", function() {
-				if ( options.disabled ) {
+				if ( options.disabled || clickDragged ) {
 					return false;
 				}
 				$( this ).toggleClass( "ui-state-active" );
@@ -7395,7 +7466,7 @@ $.widget( "ui.button", {
 			});
 		} else if ( this.type === "radio" ) {
 			this.buttonElement.bind( "click.button", function() {
-				if ( options.disabled ) {
+				if ( options.disabled || clickDragged ) {
 					return false;
 				}
 				$( this ).addClass( "ui-state-active" );
@@ -7454,6 +7525,7 @@ $.widget( "ui.button", {
 		// $.Widget.prototype._setOptionDisabled so it's easy to proxy and can
 		// be overridden by individual plugins
 		this._setOption( "disabled", options.disabled );
+		this._resetButton();
 	},
 
 	_determineButtonType: function() {
@@ -7521,6 +7593,7 @@ $.widget( "ui.button", {
 			} else {
 				this.element.removeAttr( "disabled" );
 			}
+			return;
 		}
 		this._resetButton();
 	},
@@ -7621,6 +7694,8 @@ $.widget( "ui.buttonset", {
 	},
 	
 	refresh: function() {
+		var ltr = this.element.css( "direction" ) === "ltr";
+		
 		this.buttons = this.element.find( this.options.items )
 			.filter( ":ui-button" )
 				.button( "refresh" )
@@ -7633,10 +7708,10 @@ $.widget( "ui.buttonset", {
 			})
 				.removeClass( "ui-corner-all ui-corner-left ui-corner-right" )
 				.filter( ":first" )
-					.addClass( "ui-corner-left" )
+					.addClass( ltr ? "ui-corner-left" : "ui-corner-right" )
 				.end()
 				.filter( ":last" )
-					.addClass( "ui-corner-right" )
+					.addClass( ltr ? "ui-corner-right" : "ui-corner-left" )
 				.end()
 			.end();
 	},
@@ -7657,7 +7732,7 @@ $.widget( "ui.buttonset", {
 
 }( jQuery ) );
 /*
- * jQuery UI Datepicker 1.8.13
+ * jQuery UI Datepicker 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -7670,7 +7745,7 @@ $.widget( "ui.buttonset", {
  */
 (function( $, undefined ) {
 
-$.extend($.ui, { datepicker: { version: "1.8.13" } });
+$.extend($.ui, { datepicker: { version: "1.8.14" } });
 
 var PROP_NAME = 'datepicker';
 var dpuuid = new Date().getTime();
@@ -7772,6 +7847,9 @@ function Datepicker() {
 $.extend(Datepicker.prototype, {
 	/* Class name added to elements to indicate already configured with a date picker. */
 	markerClassName: 'hasDatepicker',
+	
+	//Keep track of the maximum number of rows displayed (see #7043)
+	maxRows: 4,
 
 	/* Debug logging (if enabled). */
 	log: function () {
@@ -8272,6 +8350,9 @@ $.extend(Datepicker.prototype, {
 			return;
 		var inst = $.datepicker._getInst(input);
 		if ($.datepicker._curInst && $.datepicker._curInst != inst) {
+			if ( $.datepicker._datepickerShowing ) {
+				$.datepicker._triggerOnClose($.datepicker._curInst);
+			}
 			$.datepicker._curInst.dpDiv.stop(true, true);
 		}
 		var beforeShow = $.datepicker._get(inst, 'beforeShow');
@@ -8335,6 +8416,7 @@ $.extend(Datepicker.prototype, {
 	/* Generate the date picker content. */
 	_updateDatepicker: function(inst) {
 		var self = this;
+		self.maxRows = 4; //Reset the max number of rows being displayed (see #7043)
 		var borders = $.datepicker._getBorders(inst.dpDiv);
 		instActive = inst; // for delegate hover events
 		inst.dpDiv.empty().append(this._generateHTML(inst));
@@ -8415,6 +8497,14 @@ $.extend(Datepicker.prototype, {
 	    return [position.left, position.top];
 	},
 
+	/* Trigger custom callback of onClose. */
+	_triggerOnClose: function(inst) {
+		var onClose = this._get(inst, 'onClose');
+		if (onClose)
+			onClose.apply((inst.input ? inst.input[0] : null),
+						  [(inst.input ? inst.input.val() : ''), inst]);
+	},
+
 	/* Hide the date picker from view.
 	   @param  input  element - the input field attached to the date picker */
 	_hideDatepicker: function(input) {
@@ -8435,10 +8525,7 @@ $.extend(Datepicker.prototype, {
 					(showAnim == 'fadeIn' ? 'fadeOut' : 'hide'))]((showAnim ? duration : null), postProcess);
 			if (!showAnim)
 				postProcess();
-			var onClose = this._get(inst, 'onClose');
-			if (onClose)
-				onClose.apply((inst.input ? inst.input[0] : null),
-					[(inst.input ? inst.input.val() : ''), inst]);  // trigger custom callback
+			$.datepicker._triggerOnClose(inst);
 			this._datepickerShowing = false;
 			this._lastInput = null;
 			if (this._inDialog) {
@@ -8728,6 +8815,9 @@ $.extend(Datepicker.prototype, {
 						checkLiteral();
 				}
 		}
+		if (iValue < value.length){
+			throw "Extra/unparsed characters found in date: " + value.substring(iValue);
+		}
 		if (year == -1)
 			year = new Date().getFullYear();
 		else if (year < 100)
@@ -8839,7 +8929,7 @@ $.extend(Datepicker.prototype, {
 							break;
 						case 'o':
 							output += formatNumber('o',
-								(date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / 86400000, 3);
+								Math.round((new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / 86400000), 3);
 							break;
 						case 'm':
 							output += formatNumber('m', date.getMonth() + 1, 2);
@@ -9114,6 +9204,7 @@ $.extend(Datepicker.prototype, {
 		var html = '';
 		for (var row = 0; row < numMonths[0]; row++) {
 			var group = '';
+			this.maxRows = 4;
 			for (var col = 0; col < numMonths[1]; col++) {
 				var selectedDate = this._daylightSavingAdjust(new Date(drawYear, drawMonth, inst.selectedDay));
 				var cornerClass = ' ui-corner-all';
@@ -9148,7 +9239,9 @@ $.extend(Datepicker.prototype, {
 				if (drawYear == inst.selectedYear && drawMonth == inst.selectedMonth)
 					inst.selectedDay = Math.min(inst.selectedDay, daysInMonth);
 				var leadDays = (this._getFirstDayOfMonth(drawYear, drawMonth) - firstDay + 7) % 7;
-				var numRows = (isMultiMonth ? 6 : Math.ceil((leadDays + daysInMonth) / 7)); // calculate the number of rows to generate
+				var curRows = Math.ceil((leadDays + daysInMonth) / 7); // calculate the number of rows to generate
+				var numRows = (isMultiMonth ? this.maxRows > curRows ? this.maxRows : curRows : curRows); //If multiple months, use the higher number of rows (see #7043)
+				this.maxRows = numRows;
 				var printDate = this._daylightSavingAdjust(new Date(drawYear, drawMonth, 1 - leadDays));
 				for (var dRow = 0; dRow < numRows; dRow++) { // create date picker rows
 					calender += '<tr>';
@@ -9374,18 +9467,23 @@ $.extend(Datepicker.prototype, {
  */ 
 function bindHover(dpDiv) {
 	var selector = 'button, .ui-datepicker-prev, .ui-datepicker-next, .ui-datepicker-calendar td a';
-	return dpDiv.delegate(selector, 'mouseout', function() {
-			$(this).removeClass('ui-state-hover');
-			if (this.className.indexOf('ui-datepicker-prev') != -1) $(this).removeClass('ui-datepicker-prev-hover');
-			if (this.className.indexOf('ui-datepicker-next') != -1) $(this).removeClass('ui-datepicker-next-hover');
-		})
-		.delegate(selector, 'mouseover', function(){
-			if (!$.datepicker._isDisabledDatepicker( instActive.inline ? dpDiv.parent()[0] : instActive.input[0])) {
-				$(this).parents('.ui-datepicker-calendar').find('a').removeClass('ui-state-hover');
-				$(this).addClass('ui-state-hover');
-				if (this.className.indexOf('ui-datepicker-prev') != -1) $(this).addClass('ui-datepicker-prev-hover');
-				if (this.className.indexOf('ui-datepicker-next') != -1) $(this).addClass('ui-datepicker-next-hover');
+	return dpDiv.bind('mouseout', function(event) {
+			var elem = $( event.target ).closest( selector );
+			if ( !elem.length ) {
+				return;
 			}
+			elem.removeClass( "ui-state-hover ui-datepicker-prev-hover ui-datepicker-next-hover" );
+		})
+		.bind('mouseover', function(event) {
+			var elem = $( event.target ).closest( selector );
+			if ($.datepicker._isDisabledDatepicker( instActive.inline ? dpDiv.parent()[0] : instActive.input[0]) ||
+					!elem.length ) {
+				return;
+			}
+			elem.parents('.ui-datepicker-calendar').find('a').removeClass('ui-state-hover');
+			elem.addClass('ui-state-hover');
+			if (elem.hasClass('ui-datepicker-prev')) elem.addClass('ui-datepicker-prev-hover');
+			if (elem.hasClass('ui-datepicker-next')) elem.addClass('ui-datepicker-next-hover');
 		});
 }
 
@@ -9440,7 +9538,7 @@ $.fn.datepicker = function(options){
 $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
-$.datepicker.version = "1.8.13";
+$.datepicker.version = "1.8.14";
 
 // Workaround for #4055
 // Add another global to avoid noConflict issues with inline event handlers
@@ -9448,7 +9546,7 @@ window['DP_jQuery_' + dpuuid] = $;
 
 })(jQuery);
 /*
- * jQuery UI Dialog 1.8.13
+ * jQuery UI Dialog 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -10151,7 +10249,7 @@ $.widget("ui.dialog", {
 });
 
 $.extend($.ui.dialog, {
-	version: "1.8.13",
+	version: "1.8.14",
 
 	uuid: 0,
 	maxZ: 0,
@@ -10272,8 +10370,8 @@ $.extend($.ui.dialog.overlay, {
 	width: function() {
 		var scrollWidth,
 			offsetWidth;
-		// handle IE 6
-		if ($.browser.msie && $.browser.version < 7) {
+		// handle IE
+		if ( $.browser.msie ) {
 			scrollWidth = Math.max(
 				document.documentElement.scrollWidth,
 				document.body.scrollWidth
@@ -10326,7 +10424,7 @@ $.extend($.ui.dialog.overlay.prototype, {
 
 }(jQuery));
 /*
- * jQuery UI Position 1.8.13
+ * jQuery UI Position 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -10578,7 +10676,7 @@ if ( !$.offset.setOffset ) {
 
 }( jQuery ));
 /*
- * jQuery UI Progressbar 1.8.13
+ * jQuery UI Progressbar 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -10682,12 +10780,12 @@ $.widget( "ui.progressbar", {
 });
 
 $.extend( $.ui.progressbar, {
-	version: "1.8.13"
+	version: "1.8.14"
 });
 
 })( jQuery );
 /*
- * jQuery UI Slider 1.8.13
+ * jQuery UI Slider 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -11348,12 +11446,12 @@ $.widget( "ui.slider", $.ui.mouse, {
 });
 
 $.extend( $.ui.slider, {
-	version: "1.8.13"
+	version: "1.8.14"
 });
 
 }(jQuery));
 /*
- * jQuery UI Tabs 1.8.13
+ * jQuery UI Tabs 1.8.14
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -12052,7 +12150,7 @@ $.widget( "ui.tabs", {
 });
 
 $.extend( $.ui.tabs, {
-	version: "1.8.13"
+	version: "1.8.14"
 });
 
 /*
@@ -12110,7 +12208,6 @@ $.extend( $.ui.tabs.prototype, {
 });
 
 })( jQuery );
-
 /*!
  * jQuery Validation Plugin 1.8.1
  *
@@ -13323,7 +13420,7 @@ if (!Array.prototype.indexOf)
 }
 /// <reference path="jquery-1.3.2.debug-vsdoc.js" />
 /// <reference path="json2.js" />
-/// <reference path="jquery-ui-1.8.13.js" />
+/// <reference path="jquery-ui-1.8.14.js" />
 /// <reference path="jquery.validate-1.8.1.js" />
 /// <reference path="Array.prototype.indexOf.js" />
 /*globals jQuery, Sys, currentContextInfo, alert */
@@ -13336,9 +13433,49 @@ if (!Array.prototype.indexOf)
             currentContextInfo = window.currentContextInfo,
             animationSpeed = 'normal',
             pendingQuestionDeleteCallbacks = [],
+            validator,
+            $form = $('#Form'),
+            $moduleWrap = $('#engage-evaluation'),
+            $surveyTitleTextBox = $('#EvalTitleInput'),
+            $surveyDescriptionTextArea = $('#EvalDescTextArea'),
             startDatePicker = $find($('.ee-start-date .RadPicker input').attr('id')),
+            $preStartTextArea = $('#EvalPreStartTextArea'),
             endDatePicker = $find($('.ee-end-date .RadPicker input').attr('id')),
-            validator;
+            $postEndTextArea = $('#EvalPostEndTextArea'),
+            $sendNotificationCheckBox = $('#EvalSendNotification'),
+            $notificationFromEmailTextBox = $('#EvalNotificationFromEmail'),
+            $notificationToEmailsTextBox = $('#EvalNotificationToEmails'),
+            $sendThankYouCheckBox = $('#EvalSendThankYou'),
+            $thankYourFromEmailTextBox = $('#EvalThankYouFromEmail'),
+            $completionActionDropDown = $('#EvalCompletionAction'),
+            $completionMessageTextArea = $('#EvalCompletionMessage'),
+            $completionUrlTextBox = $('#EvalCompletionUrl'),
+            $newSurveyButton = $('#EvalNew'),
+            $editSurveyButton = $('#EvalEdit'),
+            $updateSurveyButton = $('#EvalUpdate'),
+            $cancelSurveyEditButton = $('#EvalCancel'),
+            $deleteSurveyButton = $('#EvalDelete'),
+            $createQuestionArea = $('#CreateQuestions'),
+            $questionTextArea = $('#QuestionText'),
+            $questionRequiredCheckBox = $('#QuestionRequiredCheckBox'),
+            $answerTypeDropDown = $('#DefineAnswerType'),
+            $shortTextAnswerPreview = $('#ShortTextAnswer'),
+            $longTextAnswerPreview = $('#LongTextAnswer'),
+            $multipleAnswerSection = $('#MultipleAnswer'),
+            $addNewQuestionButton = $('#AddNewQuestion'),
+            $saveQuestionButton = $('#SaveQuestion'),
+            $cancelQuestionEditButton = $('#CancelQuestion'),
+            $previewArea = $('#PreviewArea'),
+            $questionPreviewList = $('#ee-previews'),
+            completionAction = { message: 1, url: 2 },
+            answerType = {
+                none: 0,
+                textArea: 1,
+                textBox: 2,
+                verticalRadioButtons: 3,
+                dropDown: 5,
+                checkBox: 6
+            };
 
         $.validator.addMethod("email", function (value, element) {
             return this.optional(element) || currentContextInfo.EmailRegex.test(value);
@@ -13353,7 +13490,7 @@ if (!Array.prototype.indexOf)
                 notificationEmail: {
                     required: {
                         depends: function () {
-                            return $('#EvalSendNotification').is(':checked');
+                            return $sendNotificationCheckBox.is(':checked');
                         }
                     },
                     email: true
@@ -13361,7 +13498,7 @@ if (!Array.prototype.indexOf)
                 notificationEmails: { 
                     required: {
                         depends: function () {
-                            return $('#EvalSendNotification').is(':checked');
+                            return $sendNotificationCheckBox.is(':checked');
                         }
                     }, 
                     emails: true
@@ -13369,20 +13506,35 @@ if (!Array.prototype.indexOf)
                 thankYouEmail: { 
                     required: {
                         depends: function () {
-                            return $('#EvalSendThankYou').is(':checked');
+                            return $sendThankYouCheckBox.is(':checked');
                         }
                     }, 
                     email: true
+                },
+                completionMessage: {
+                    required: {
+                        depends: function () {
+                            return $completionActionDropDown.val() !== completionAction.url.toString();
+                        }
+                    }
+                },
+                completionUrl: {
+                    required: {
+                        depends: function () {
+                            return $completionActionDropDown.val() === completionAction.url.toString();
+                        }
+                    },
+                    url: true
                 }
             },
             messages: currentContextInfo.ErrorMessages,
             onsubmit: false
         });
 
-        validator = $('#Form').validate({ ignore: '#DefineAnswerType' });
+        validator = $form.validate({ ignore: '#DefineAnswerType' });
 
         window.onbeforeunload = function () { 
-            if ($('#CancelQuestion').is(':visible') || $('#EvalCancel').is(':visible')) {
+            if ($cancelQuestionEditButton.is(':visible') || $cancelSurveyEditButton.is(':visible')) {
                 return currentContextInfo.UnsavedChangedWarning;
             }
 
@@ -13406,6 +13558,10 @@ if (!Array.prototype.indexOf)
                 contentType: "application/json",
                 success: function (msg) { 
                     if ($.isFunction(callback)) {
+                        if (typeof msg === 'string') {
+                            msg = JSON.parse(msg);
+                        }
+                        
                         callback(msg.hasOwnProperty('d') ? msg.d : msg);
                     }
                 },
@@ -13420,21 +13576,24 @@ if (!Array.prototype.indexOf)
             return {
                 survey : {
                     SurveyId: $('.ee-create-new').data('surveyId') || -1,
-                    Text: $('#EvalTitleInput').val(),
+                    Text: $surveyTitleTextBox.val(),
                     StartDate: startDatePicker.get_selectedDate(),
-                    PreStartMessage: $('#EvalPreStartTextArea').val(),
+                    PreStartMessage: $preStartTextArea.val(),
                     EndDate: endDatePicker.get_selectedDate(),
-                    PostEndMessage: $('#EvalPostEndTextArea').val(),
-                    SendNotification: $('#EvalSendNotification').is(':checked'),
-                    NotificationFromEmailAddress: $('#EvalNotificationFromEmail').val(),
-                    NotificationToEmailAddresses: $('#EvalNotificationToEmails').val(),
-                    SendThankYou: $('#EvalSendThankYou').is(':checked'),
-                    ThankYouFromEmailAddress: $('#EvalThankYouFromEmail').val(),
+                    PostEndMessage: $postEndTextArea.val(),
+                    SendNotification: $sendNotificationCheckBox.is(':checked'),
+                    NotificationFromEmailAddress: $notificationFromEmailTextBox.val(),
+                    NotificationToEmailAddresses: $notificationToEmailsTextBox.val(),
+                    SendThankYou: $sendThankYouCheckBox.is(':checked'),
+                    ThankYouFromEmailAddress: $thankYourFromEmailTextBox.val(),
+                    FinalMessageOption: $completionActionDropDown.val(),
+                    FinalMessage: $completionMessageTextArea.val(),
+                    FinalUrl: $completionUrlTextBox.val(),
                     PortalId: currentContextInfo.PortalId,
                     ModuleId: currentContextInfo.ModuleId,
                     RevisingUser: currentContextInfo.UserId,
                     Sections: [{
-                        Text: $('#EvalDescTextArea').val()
+                        Text: $surveyDescriptionTextArea.val()
                     }]
                 }
             };
@@ -13453,19 +13612,23 @@ if (!Array.prototype.indexOf)
             return {
                 surveyId: $('.ee-create-new').data('surveyId') || -1,
                 question: {
-                    QuestionId: $('#CreateQuestions').data('questionId') || -1,
-                    Text: $('#QuestionText').val(),
-                    IsRequired: $('#QuestionRequiredCheckBox').is(':checked'),
-                    RelativeOrder: $('#CreateQuestions').data('relativeOrder') || $('.ee-preview').length + 1,
-                    ControlType: $('#DefineAnswerType').val(),
+                    QuestionId: $createQuestionArea.data('questionId') || -1,
+                    Text: $questionTextArea.val(),
+                    IsRequired: $questionRequiredCheckBox.is(':checked'),
+                    RelativeOrder: $createQuestionArea.data('relativeOrder') || $('.ee-preview').length + 1,
+                    ControlType: $answerTypeDropDown.val(),
                     RevisingUser: currentContextInfo.UserId,
-                    Answers: $.map($('#MultipleAnswer:visible .answer-inputs li.answer-input:visible'), function (elem) {
-                        var $elem = $(elem);
-                        return {
-                            AnswerId: $elem.data('answerId') || -1,
-                            Text: $elem.find(':input').val()
-                        };
-                    })
+                    Answers: !$multipleAnswerSection.is(':visible') ? 
+                                [] :
+                                $.map(
+                                    $multipleAnswerSection.find('.answer-inputs li.answer-input:visible'), 
+                                    function (elem) {
+                                        var $elem = $(elem);
+                                        return {
+                                            AnswerId: $elem.data('answerId') || -1,
+                                            Text: $elem.find(':input').val()
+                                        };
+                                    })
                 }
             };
         }
@@ -13542,8 +13705,8 @@ if (!Array.prototype.indexOf)
         }
                    
         function hideEditModeButtons(callback) {
-            $('#EvalUpdate').parent().fadeOut(animationSpeed);
-            $('#EvalCancel').parent().fadeOut(animationSpeed, callback);
+            $updateSurveyButton.parent().fadeOut(animationSpeed);
+            $cancelSurveyEditButton.parent().fadeOut(animationSpeed, callback);
         }
         
         function storePreviousValue($input, value) {
@@ -13563,11 +13726,11 @@ if (!Array.prototype.indexOf)
         }
             
         function makeElementReadonly($element, value) {
+            var $readonlyElement = $('<span />');
             $element.slideUp(animationSpeed, function () {
                 var $this = $(this),
                     maxlength = $this.attr('maxlength'),
-                    minlength = $this.attr('minlength'),
-                    $readonlyElement;
+                    minlength = $this.attr('minlength');
 
                 // if maxlength is not set (as on NotificationToEmails) then the browser default is returned 
                 // (http://herr-schuessler.de/blog/selecting-input-fields-with-maxlength-via-jquery/)
@@ -13580,8 +13743,7 @@ if (!Array.prototype.indexOf)
                     minlength = '';
                 }
 
-                $readonlyElement = 
-                    $('<span />')
+                $readonlyElement
                     .attr({
                         id: $this.attr('id'),
                         className: $this.attr('class'),
@@ -13600,24 +13762,25 @@ if (!Array.prototype.indexOf)
 
                 $readonlyElement.html($readonlyElement.html().replace(/\n/g, '\n<br />'));
             }).addClass('ee-input-pre');
+
+            return $readonlyElement;
         }
         
         function makeOptionalElementReadonly($element, $wrappingSection, value, makeReadonlyFunction) {
             value = (value === undefined && $.isFunction($element.val)) ? $element.val() : value;
             if (value) {
                 makeReadonlyFunction = makeReadonlyFunction || makeElementReadonly;
-                makeReadonlyFunction($element, value);
+                $element = makeReadonlyFunction($element, value);
                 
                 $wrappingSection.slideDown(animationSpeed);
-                
-                return true;
             } else {
                 $wrappingSection.slideUp(animationSpeed, function () {  
                     $(this).hide(); 
                 });
 
-                return false;
             }
+            
+            return $element;
         }
         
         function makeLabelEditable($element, $newElement) {
@@ -13647,6 +13810,8 @@ if (!Array.prototype.indexOf)
 
                 $this.remove();
             }).removeClass('ee-input-pre');
+
+            return $newElement;
         }
         
         function makeDatePickerReadonly(datePicker) {
@@ -13675,116 +13840,156 @@ if (!Array.prototype.indexOf)
                 $dateLabel = $inputWrap.find('.ee-date-pre');
 
             $dateLabel.slideUp(animationSpeed, function () {
+                $dateLabel.hide();
                 $datePickerElement.fadeIn(animationSpeed);
+            });
+        }
+        
+        function makeSelectReadonly($select) {
+            var $inputWrap = $select.closest('.ee-input'),
+                $label = $inputWrap.find('.ee-select-pre');
+
+            if ($label.length === 0) {
+                $label = $('<span />').addClass('ee-select-pre').insertAfter($select);
+            }
+            
+            $select.slideUp(animationSpeed, function () {
+                $label
+                    .text($select.find('option:selected').text())
+                    .hide()
+                    .fadeIn(animationSpeed);
+                    
+                $select.hide();
+            });
+
+            return $label;
+        }
+        
+        function makeSelectEditable($select) {
+            var $label = $select.closest('.ee-input').find('.ee-select-pre');
+
+            $label.slideUp(animationSpeed, function () {
+                $label.hide();
+                $select.fadeIn(animationSpeed);
             });
         }
 
         function makeSurveyReadOnly() {
-            var timeframeSectionHasAnyValue,
-                timeframeElementHasValue;
-            makeElementReadonly($('#EvalTitleInput'));
-            makeOptionalElementReadonly($('#EvalDescTextArea'), $('.ee-description'));
+            var timeframeLabel,
+                timeframeSectionHasAnyValue;
+            
+            $surveyTitleTextBox = makeElementReadonly($surveyTitleTextBox);
+            $surveyDescriptionTextArea = makeOptionalElementReadonly($surveyDescriptionTextArea, $('.ee-description'));
 
-            timeframeElementHasValue = makeOptionalElementReadonly(
+            timeframeLabel = makeOptionalElementReadonly(
                 startDatePicker, 
                 $('.ee-start-date'), 
                 startDatePicker.get_selectedDate(), 
                 makeDatePickerReadonly
             );
-            timeframeSectionHasAnyValue = timeframeElementHasValue;
-            timeframeElementHasValue = makeOptionalElementReadonly($('#EvalPreStartTextArea'), $('.ee-pre-start'));
-            timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || timeframeElementHasValue;
-            timeframeElementHasValue = makeOptionalElementReadonly(
+            timeframeSectionHasAnyValue = timeframeLabel !== startDatePicker; // if the element was converted to a label, then it has a value
+            $preStartTextArea = makeOptionalElementReadonly($preStartTextArea, $('.ee-pre-start'));
+            timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || $preStartTextArea.is('span');
+            timeframeLabel = makeOptionalElementReadonly(
                 endDatePicker, 
                 $('.ee-end-date'), 
                 endDatePicker.get_selectedDate(), 
                 makeDatePickerReadonly
             );
-            timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || timeframeElementHasValue;
-            timeframeElementHasValue = makeOptionalElementReadonly($('#EvalPostEndTextArea'), $('.ee-post-end'));
-            timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || timeframeElementHasValue;
+            timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || timeframeLabel !== endDatePicker;
+            $postEndTextArea = makeOptionalElementReadonly($postEndTextArea, $('.ee-post-end'));
+            timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || $postEndTextArea.is('span');
             
             $('.ee-timeframe.ee-expanded legend a').click();
             if (!timeframeSectionHasAnyValue) {
                 $('.ee-timeframe').slideUp(animationSpeed);
             }
             
-            makeOptionalElementReadonly(
-                $('#EvalSendNotification'), 
+            $sendNotificationCheckBox = makeOptionalElementReadonly(
+                $sendNotificationCheckBox, 
                 $('.ee-notification'), 
-                $('#EvalSendNotification').is(':checked') ? currentContextInfo.CheckBoxCheckedText : currentContextInfo.CheckBoxUncheckedText
+                $sendNotificationCheckBox.is(':checked') ? currentContextInfo.CheckBoxCheckedText : currentContextInfo.CheckBoxUncheckedText
             );
-            makeOptionalElementReadonly($('#EvalNotificationFromEmail'), $('.ee-notification-from'));
-            makeOptionalElementReadonly($('#EvalNotificationToEmails'), $('.ee-notification-to'));
-            makeOptionalElementReadonly(
-                $('#EvalSendThankYou'), 
+            $notificationFromEmailTextBox = makeOptionalElementReadonly($notificationFromEmailTextBox, $('.ee-notification-from'));
+            $notificationToEmailsTextBox = makeOptionalElementReadonly($notificationToEmailsTextBox, $('.ee-notification-to'));
+            $sendThankYouCheckBox = makeOptionalElementReadonly(
+                $sendThankYouCheckBox, 
                 $('.ee-thankyou'), 
-                $('#EvalSendThankYou').is(':checked') ? currentContextInfo.CheckBoxCheckedText : currentContextInfo.CheckBoxUncheckedText
+                $sendThankYouCheckBox.is(':checked') ? currentContextInfo.CheckBoxCheckedText : currentContextInfo.CheckBoxUncheckedText
             );
-            makeOptionalElementReadonly($('#EvalThankYouFromEmail'), $('.ee-thankyou-from'));
-            
+            $thankYourFromEmailTextBox = makeOptionalElementReadonly($thankYourFromEmailTextBox, $('.ee-thankyou-from'));
+
+            makeOptionalElementReadonly(
+                $completionActionDropDown, 
+                $('.ee-completion-action'), 
+                $completionActionDropDown.find('option:selected').text(),
+                makeSelectReadonly
+            );
+            $completionMessageTextArea = makeOptionalElementReadonly($completionMessageTextArea, $('.ee-completion-message'));
+            $completionUrlTextBox = makeOptionalElementReadonly($completionUrlTextBox, $('.ee-completion-url'));
+
             $('.ee-email.ee-expanded legend a').click();
            
-            $('#EvalEdit').parent().fadeIn(animationSpeed);
-            $('#EvalDelete').parent().fadeIn(animationSpeed);
+            $editSurveyButton.parent().fadeIn(animationSpeed);
+            $deleteSurveyButton.parent().fadeIn(animationSpeed);
         }
 
         function resetCreateQuestionSection() {
             // reset the "create question" section
-            $('#QuestionText').val('');
-            $('#QuestionRequiredCheckBox').attr('checked', true);
-            $('#DefineAnswerType').find('option:first').attr('selected', true);
-            $('#ShortTextAnswer').slideUp(animationSpeed);
-            $('#LongTextAnswer').slideUp(animationSpeed);
-            $('#MultipleAnswer').slideUp(animationSpeed);
-            $('#CancelQuestion').parent().fadeOut(animationSpeed);
-            $('#AddNewQuestion').parent().fadeOut(animationSpeed);
+            $questionTextArea.val('');
+            $questionRequiredCheckBox.attr('checked', true);
+            $answerTypeDropDown.find('option:first').attr('selected', true);
+            $shortTextAnswerPreview.slideUp(animationSpeed);
+            $longTextAnswerPreview.slideUp(animationSpeed);
+            $multipleAnswerSection.slideUp(animationSpeed);
+            $cancelQuestionEditButton.parent().fadeOut(animationSpeed);
+            $addNewQuestionButton.parent().fadeOut(animationSpeed);
             
             // remove all remove answers and related undo messages
-            $('#MultipleAnswer li.answer-input.deleted')
+            $multipleAnswerSection.find('li.answer-input.deleted')
                 .add('.answer-inputs li.ee-undo:not(.template)')
                 .remove();
 
             // only should have two answers by default
-            $('#MultipleAnswer li.answer-input').remove();
-            var $defaultAnswers = $('#MultipleAnswer li.answer-input-template');
+            $multipleAnswerSection.find('li.answer-input').remove();
+            var $defaultAnswers = $multipleAnswerSection.find('li.answer-input-template');
             $defaultAnswers.clone(true).attr('class', 'answer-input').show().insertAfter($defaultAnswers).find('.answer-num').text(2);
             $defaultAnswers.clone(true).attr('class', 'answer-input').show().insertAfter($defaultAnswers).find('.answer-num').text(1);
             
             $('.ai-input input').val('');
             
-            $('#SaveQuestion')
+            $saveQuestionButton
                 .text(currentContextInfo.SaveQuestionButtonText)
                 .attr('title', currentContextInfo.SaveQuestionToolTip)
                 .parent()
                 .addClass('disabled');
             
             // clear out stored data values
-            $('#CreateQuestions').removeData('questionId').removeData('relativeOrder')
+            $createQuestionArea.removeData('questionId').removeData('relativeOrder')
                 .find('#MultipleAnswer li.answer-input').removeData('answerId');
 
             validator.resetForm();
         }
         
         function showAnswersInput(questionType) {
-            var $multipleAnswer = $('#MultipleAnswer'),
-                $shortTextAnswer = $('#ShortTextAnswer'),
-                $longAnswerText = $('#LongTextAnswer'),
+            var $multipleAnswer = $multipleAnswerSection,
+                $shortTextAnswer = $shortTextAnswerPreview,
+                $longAnswerText = $longTextAnswerPreview,
                 $addAnswerButton = $('.ee-define-answer .primary-btn'),
-                $saveQuestionButtonWrap = $('#SaveQuestion').parent(),
-                $cancelButtonWrap = $('#CancelQuestion').parent();
+                $saveQuestionButtonWrap = $saveQuestionButton.parent(),
+                $cancelButtonWrap = $cancelQuestionEditButton.parent();
                 
             $saveQuestionButtonWrap.removeClass('disabled');
 
-            if ($('#QuestionText').val() || $('#DefineAnswerType :selected').val() > 0) {
+            // TODO: does .find('option:selected').val() give any different result than just .val()?
+            if ($questionTextArea.val() || $answerTypeDropDown.find('option:selected').val() > 0) {
                 $cancelButtonWrap.fadeIn(animationSpeed);
             } else {
                 $cancelButtonWrap.fadeOut(animationSpeed);
             }
 
             switch (questionType) {
-            case 0:
-                // ControlType.None
+            case answerType.none:
                 $longAnswerText.slideUp(animationSpeed);
                 $shortTextAnswer.slideUp(animationSpeed);
                 $multipleAnswer.slideUp(animationSpeed);
@@ -13792,24 +13997,21 @@ if (!Array.prototype.indexOf)
                 
                 $saveQuestionButtonWrap.addClass('disabled');
                 break;
-            case 2:
-                // ControlType.SmallTextInputField
+            case answerType.textBox:
                 $multipleAnswer.slideUp(animationSpeed);
                 $longAnswerText.slideUp(animationSpeed);
                 $addAnswerButton.fadeOut(animationSpeed, function () {
                     $shortTextAnswer.slideDown(animationSpeed);
                 });
                 break;
-            case 1:
-                // ControlType.LargeTextInputField
+            case answerType.textArea:
                 $shortTextAnswer.slideUp(animationSpeed);
                 $multipleAnswer.slideUp(animationSpeed);
                 $addAnswerButton.fadeOut(animationSpeed, function () {
                     $longAnswerText.slideDown(animationSpeed);
                 });
                 break;
-            default: 
-                // multiple answer
+            default: // multiple answer
                 $longAnswerText.slideUp(animationSpeed);
                 $shortTextAnswer.slideUp(animationSpeed, function () {
                     $multipleAnswer.slideDown(animationSpeed);
@@ -13826,23 +14028,24 @@ if (!Array.prototype.indexOf)
                 $baseAnswerElement;
             
             // set the "edit" question text and required-nedd based on the "preview" question text and required-ness
-            $('#QuestionText').val($questionLi.children('.pv-question').text());
-            $('#QuestionRequiredCheckBox').attr('checked', $questionLi.children('.ee-required-label').text() === '*');
+            $questionTextArea.val($questionLi.children('.pv-question').text());
+            $questionRequiredCheckBox.attr('checked', $questionLi.children('.ee-required-label').text() === '*');
             
             if (setQuestionData) {
                 // set the question id on the "edit" section based on the question id in the "preview" section
-                $('#CreateQuestions').data('questionId', questionId).data('relativeOrder', $('#ee-previews li.ee-preview').index($questionLi) + 1);
+                $createQuestionArea
+                    .data('questionId', questionId)
+                    .data('relativeOrder', $questionPreviewList.find('li.ee-preview').index($questionLi) + 1);
             }
             
             // set the "edit" answer type based on the "preview" answer type
-            $('#DefineAnswerType').val(questionType);
+            $answerTypeDropDown.val(questionType);
             
             showAnswersInput(questionType);
             
-            // Not SmallTextInputField or LargeTextInputField or ControlType.None
-            if (questionType !== 2 && questionType !== 1 && questionType !== 0) {
+            if (questionType !== answerType.textBox && questionType !== answerType.textArea && questionType !== answerType.none) {
 
-                $('#CancelQuestion').parent().show();
+                $cancelQuestionEditButton.parent().show();
 
                 //clone an existing element
                 $baseAnswerElement = $(".answer-inputs li.answer-input:last").clone(true);
@@ -13872,7 +14075,7 @@ if (!Array.prototype.indexOf)
         }
         
         function addQuestionPreview(questionId, questionText, isRequired, questionType, answers) {
-            var questionOrder = $('#CreateQuestions').data('relativeOrder'),
+            var questionOrder = $createQuestionArea.data('relativeOrder'),
                 $questionElement, 
                 $answerDiv,
                 $dropDown;
@@ -13884,7 +14087,7 @@ if (!Array.prototype.indexOf)
                 // if this is the first question, just use the hidden element
                 // otherwise, clone that element and replace its values
                 ////if ($questionElement.data('questionId')) {
-                $('#ee-previews').append($questionElement);
+                $questionPreviewList.append($questionElement);
                 ////}
             }
             
@@ -13896,20 +14099,20 @@ if (!Array.prototype.indexOf)
             // update the preview with answer values
             $answerDiv = $questionElement.find('.pv-answer').empty();
             switch (questionType) {
-            case 2: // ControlType.SmallTextInputField
+            case answerType.textBox:
                 $answerDiv.html("<input type='text' class='NormalTextBox' />");
                 break;
-            case 1: // ControlType.LargeTextInputField
+            case answerType.textArea:
                 $answerDiv.html("<textarea class='NormalTextBox' />");
                 break;
-            case 5: // ControlType.DropDownChoices
+            case answerType.dropDown:
                 $dropDown = $("<select class='NormalTextBox dropdown-prev'></select>");
                 $answerDiv.append($dropDown);
                 $.each(answers, function (i, answer) {
                     $("<option>" + answer.Text + "</option>").appendTo($dropDown).data('answerId', answer.AnswerId);
                 });
                 break;
-            case 3: // ControlType.VerticalOptionsButtons
+            case answerType.verticalRadioButtons:
                 $.each(answers, function (i, answer) {
                     $("<label><input type='radio' name='" + questionId + "' />" + answer.Text + "</label>")
                         .appendTo($answerDiv)
@@ -13917,7 +14120,7 @@ if (!Array.prototype.indexOf)
                         .data('answerId', answer.AnswerId);
                 });
                 break;
-            case 6: // ControlType.Checkbox
+            case answerType.checkBox:
                 $.each(answers, function (i, answer) {
                     $("<label><input type='checkbox' />" + answer.Text + "</label>")
                         .appendTo($answerDiv)
@@ -13941,14 +14144,14 @@ if (!Array.prototype.indexOf)
             });            
         });
 
-        $("#ee-previews").sortable({
+        $questionPreviewList.sortable({
             items: 'li.ee-preview', 
             placeholder: 'ui-state-highlight'
         }).bind('sortupdate', function () {
             // after reordering questions
             var questionOrderMap = {},
                 parameters;
-            $('#ee-previews li.ee-preview:visible').each(function (i, elem) {
+            $questionPreviewList.find('li.ee-preview:visible').each(function (i, elem) {
                 questionOrderMap[$(elem).data('questionId')] = i + 1;
             });
             
@@ -13972,14 +14175,13 @@ if (!Array.prototype.indexOf)
         });
         
         // Add selection style back to the inputs, since our CSS is removing or hiding the native style
-        $("#engage-evaluation :input").focus(function () {
+        $moduleWrap.find(":input").focus(function () {
             $(this).addClass("focus");
         }).blur(function () {
             $(this).removeClass("focus");
         });
-        
-        // save new survey
-        $('#EvalNew').click(function (event) {
+
+        $newSurveyButton.click(function (event) {
             event.preventDefault();
             
             if (validator.form()) {
@@ -13988,7 +14190,7 @@ if (!Array.prototype.indexOf)
 
                 $this.text(currentContextInfo.ProgressText);                
                 updateSurvey(function () {
-                    $('#EvalNew').parent().fadeOut(animationSpeed, function () {
+                    $newSurveyButton.parent().fadeOut(animationSpeed, function () {
                         makeSurveyReadOnly();
                     });
                     $('.ee-create-questions').show();
@@ -13997,8 +14199,7 @@ if (!Array.prototype.indexOf)
             }
         });
         
-        // update existing survey
-        $('#EvalUpdate').click(function (event) {
+        $updateSurveyButton.click(function (event) {
             event.preventDefault();
             
             if (validator.form()) {
@@ -14015,59 +14216,64 @@ if (!Array.prototype.indexOf)
             }
         });
 
-        // edit survey
-        $('#EvalEdit').click(function (event) {
+        $editSurveyButton.click(function (event) {
             event.preventDefault();
             
             // save current value to "previous value" data field for usage in the cancel link click event.
-            storePreviousValue($('#EvalTitleInput'));
-            storePreviousValue($('#EvalDescTextArea'));
+            storePreviousValue($surveyTitleTextBox);
+            storePreviousValue($surveyDescriptionTextArea);
             storePreviousValue($('.ee-start-date .RadPicker'), startDatePicker.get_selectedDate());
-            storePreviousValue($('#EvalPreStartTextArea'));
+            storePreviousValue($preStartTextArea);
             storePreviousValue($('.ee-end-date .RadPicker'), endDatePicker.get_selectedDate());
-            storePreviousValue($('#EvalPostEndTextArea'));
-            storePreviousValue($('#EvalSendNotification'), $('#EvalSendNotification').is(':checked'));
-            storePreviousValue($('#EvalNotificationFromEmail'));
-            storePreviousValue($('#EvalNotificationToEmails'));
-            storePreviousValue($('#EvalSendThankYou'), $('#EvalSendThankYou').is(':checked'));
-            storePreviousValue($('#EvalThankYouFromEmail'));
+            storePreviousValue($postEndTextArea);
+            storePreviousValue($sendNotificationCheckBox, $sendNotificationCheckBox.is(':checked'));
+            storePreviousValue($notificationFromEmailTextBox);
+            storePreviousValue($notificationToEmailsTextBox);
+            storePreviousValue($sendThankYouCheckBox, $sendThankYouCheckBox.is(':checked'));
+            storePreviousValue($thankYourFromEmailTextBox);
+            storePreviousValue($completionActionDropDown);
+            storePreviousValue($completionMessageTextArea);
+            storePreviousValue($completionUrlTextBox);
             
-            makeLabelEditable($('#EvalTitleInput'), $('<input type="text"/>'));
-            makeLabelEditable($('#EvalDescTextArea'), $('<textarea/>'));
+            $surveyTitleTextBox = makeLabelEditable($surveyTitleTextBox, $('<input type="text"/>'));
+            $surveyDescriptionTextArea = makeLabelEditable($surveyDescriptionTextArea, $('<textarea/>'));
             makeDatePickerEditable(startDatePicker);
-            makeLabelEditable($('#EvalPreStartTextArea'), $('<textarea/>'));
+            $preStartTextArea = makeLabelEditable($preStartTextArea, $('<textarea/>'));
             makeDatePickerEditable(endDatePicker);
-            makeLabelEditable($('#EvalPostEndTextArea'), $('<textarea/>'));
-            makeLabelEditable($('#EvalSendNotification'), $('<input type="checkbox"/>'));
-            makeLabelEditable($('#EvalNotificationFromEmail'), $('<input type="text"/>'));
-            makeLabelEditable($('#EvalNotificationToEmails'), $('<input type="text"/>'));
-            makeLabelEditable($('#EvalSendThankYou'), $('<input type="checkbox"/>'));
-            makeLabelEditable($('#EvalThankYouFromEmail'), $('<input type="text"/>'));
+            $postEndTextArea = makeLabelEditable($postEndTextArea, $('<textarea/>'));
+            $sendNotificationCheckBox = makeLabelEditable($sendNotificationCheckBox, $('<input type="checkbox"/>'));
+            $notificationFromEmailTextBox = makeLabelEditable($notificationFromEmailTextBox, $('<input type="text"/>'));
+            $notificationToEmailsTextBox = makeLabelEditable($notificationToEmailsTextBox, $('<input type="text"/>'));
+            $sendThankYouCheckBox = makeLabelEditable($sendThankYouCheckBox, $('<input type="checkbox"/>'));
+            $thankYourFromEmailTextBox = makeLabelEditable($thankYourFromEmailTextBox, $('<input type="text"/>'));
+            makeSelectEditable($completionActionDropDown);
+            $completionMessageTextArea = makeLabelEditable($completionMessageTextArea, $('<textarea/>'));
+            $completionUrlTextBox = makeLabelEditable($completionUrlTextBox, $('<input type="text"/>'));
             
             $('.ee-create-new .ee-optional').show();
-            $('#EvalEdit').parent().fadeOut(animationSpeed, function () {
-                $('#EvalCancel').parent().fadeIn(animationSpeed);
-                $('#EvalUpdate').parent().fadeIn(animationSpeed);
+            $editSurveyButton.parent().fadeOut(animationSpeed, function () {
+                $cancelSurveyEditButton.parent().fadeIn(animationSpeed);
+                $updateSurveyButton.parent().fadeIn(animationSpeed);
             });
 
-            validator = $('#Form').validate();
+            validator = $form.validate();
         });
         
-        $('#EvalCancel').click(function (event) {
+        $cancelSurveyEditButton.click(function (event) {
             event.preventDefault();
             
             // retrieve data values and reset the text boxes.
-            resetToPreviousValue($('#EvalTitleInput'));
-            resetToPreviousValue($('#EvalDescTextArea'));
+            resetToPreviousValue($surveyTitleTextBox);
+            resetToPreviousValue($surveyDescriptionTextArea);
             resetDatePickerToPreviousValue(startDatePicker);
-            resetToPreviousValue($('#EvalPreStartTextArea'));
+            resetToPreviousValue($preStartTextArea);
             resetDatePickerToPreviousValue(endDatePicker);
-            resetToPreviousValue($('#EvalPostEndTextArea'));
-            resetCheckBoxToPreviousValue($('#EvalSendNotification'));
-            resetToPreviousValue($('#EvalNotificationFromEmail'));
-            resetToPreviousValue($('#EvalNotificationToEmails'));
-            resetCheckBoxToPreviousValue($('#EvalSendThankYou'));
-            resetToPreviousValue($('#EvalThankYouFromEmail'));
+            resetToPreviousValue($postEndTextArea);
+            resetCheckBoxToPreviousValue($sendNotificationCheckBox);
+            resetToPreviousValue($notificationFromEmailTextBox);
+            resetToPreviousValue($notificationToEmailsTextBox);
+            resetCheckBoxToPreviousValue($sendThankYouCheckBox);
+            resetToPreviousValue($thankYourFromEmailTextBox);
             
             hideEditModeButtons(function () {
                 makeSurveyReadOnly();
@@ -14076,18 +14282,17 @@ if (!Array.prototype.indexOf)
             validator.resetForm();
         });
 
-        $('#EvalDelete').click(function (event) {
+        $deleteSurveyButton.click(function (event) {
             event.preventDefault();
 
-            deleteWithUndo($('#engage-evaluation'), true, null, function deleteCallback() { 
+            deleteWithUndo($moduleWrap, true, null, function deleteCallback() { 
                 callWebMethod('DeleteSurvey', { surveyId: $('.ee-create-new').data('surveyId') }, function () {
                     window.location = $('.egn-home a').attr('href');
                 });
             });
         });
         
-        // add answer
-        $("#AddNewQuestion").click(function (event) {
+        $addNewQuestionButton.click(function (event) {
             event.preventDefault();
             
             var $answerNumberElement = $(".answer-input:visible:last .answer-num"),
@@ -14139,7 +14344,7 @@ if (!Array.prototype.indexOf)
 
             var $questionLi = $(this).closest('li.ee-preview');
             populateCreateQuestionSection($questionLi, true);
-            $('#SaveQuestion').text(currentContextInfo.UpdateQuestionButtonText).attr('title', currentContextInfo.UpdateQuestionToolTip);
+            $saveQuestionButton.text(currentContextInfo.UpdateQuestionButtonText).attr('title', currentContextInfo.UpdateQuestionToolTip);
         });
         
         // copy question
@@ -14148,7 +14353,7 @@ if (!Array.prototype.indexOf)
             
             var $questionLi = $(this).closest('li.ee-preview');
             populateCreateQuestionSection($questionLi, false);
-            $('#SaveQuestion').text(currentContextInfo.SaveQuestionButtonText).attr('title', currentContextInfo.SaveQuestionToolTip);
+            $saveQuestionButton.text(currentContextInfo.SaveQuestionButtonText).attr('title', currentContextInfo.SaveQuestionToolTip);
         });
         
         // delete question
@@ -14164,37 +14369,34 @@ if (!Array.prototype.indexOf)
             });
         });
         
-        // change answer type
-        $('#DefineAnswerType').change(function () {
+        $answerTypeDropDown.change(function () {
             showAnswersInput(parseInt($(this).val(), 10));
         });
 
-        // question textbox onblur
-        $('#QuestionText').blur(function () {
-            showAnswersInput(parseInt($('#DefineAnswerType').val(), 10));
+        $questionTextArea.blur(function () {
+            showAnswersInput(parseInt($answerTypeDropDown.val(), 10));
         });
         
-        // save questions
-        $('#SaveQuestion').click(function (event) {
+        $saveQuestionButton.click(function (event) {
             event.preventDefault();
             
-            var questionType = $('#DefineAnswerType :selected').val(),
+            var questionType = $answerTypeDropDown.find(':selected').val(),
                 questionIsMultipleChoice = questionType > 2; 
             
-            validator = $('#Form').validate();
-            if ($('#QuestionText').valid() &&
+            validator = $form.validate();
+            if ($questionTextArea.valid() &&
                     (!questionIsMultipleChoice || $('.ai-input input:visible').valid()) &&
-                    ($('#DefineAnswerType').valid())) {
+                    ($answerTypeDropDown.valid())) {
             
                 $(this).text(currentContextInfo.ProgressText).parent().addClass('disabled');
                 callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
-                    $('#PreviewArea').slideDown(animationSpeed);
+                    $previewArea.slideDown(animationSpeed);
                     
                     addQuestionPreview(
                         question.QuestionId, 
-                        $('#QuestionText').val(), 
-                        $('#QuestionRequiredCheckBox').is(':checked'), 
-                        parseInt($('#DefineAnswerType :selected').val(), 10), 
+                        $questionTextArea.val(), 
+                        $questionRequiredCheckBox.is(':checked'), 
+                        parseInt(questionType, 10), 
                         question.Answers
                     );
                         
@@ -14203,8 +14405,7 @@ if (!Array.prototype.indexOf)
             }
         });
 
-        // cancel question
-        $('#CancelQuestion').click(function (event) {
+        $cancelQuestionEditButton.click(function (event) {
             event.preventDefault();
             resetCreateQuestionSection();
         });
@@ -14230,36 +14431,39 @@ if (!Array.prototype.indexOf)
 
             if (currentContextInfo.Survey) {
                 $('.ee-create-new').data('surveyId', currentContextInfo.Survey.SurveyId);
-                $('#EvalTitleInput').val(currentContextInfo.Survey.Text);
-                $('#EvalDescTextArea').val(currentContextInfo.Survey.Sections[0].Text);
+                $surveyTitleTextBox.val(currentContextInfo.Survey.Text);
+                $surveyDescriptionTextArea.val(currentContextInfo.Survey.Sections[0].Text);
                 startDatePicker.set_selectedDate(parseDateString(currentContextInfo.Survey.StartDate));
-                $('#EvalPreStartTextArea').val(currentContextInfo.Survey.PreStartMessage);
+                $preStartTextArea.val(currentContextInfo.Survey.PreStartMessage);
                 endDatePicker.set_selectedDate(parseDateString(currentContextInfo.Survey.EndDate));
-                $('#EvalPostEndTextArea').val(currentContextInfo.Survey.PostEndMessage);
-			    $('#EvalSendNotification').attr('checked', currentContextInfo.Survey.SendNotification);
-			    $('#EvalNotificationFromEmail').val(currentContextInfo.Survey.NotificationFromEmailAddress);
-			    $('#EvalNotificationToEmails').val(currentContextInfo.Survey.NotificationToEmailAddresses);
-			    $('#EvalSendThankYou').attr('checked', currentContextInfo.Survey.SendThankYou);
-			    $('#EvalThankYouFromEmail').val(currentContextInfo.Survey.ThankYouFromEmailAddress);
+                $postEndTextArea.val(currentContextInfo.Survey.PostEndMessage);
+			    $sendNotificationCheckBox.attr('checked', currentContextInfo.Survey.SendNotification);
+			    $notificationFromEmailTextBox.val(currentContextInfo.Survey.NotificationFromEmailAddress);
+			    $notificationToEmailsTextBox.val(currentContextInfo.Survey.NotificationToEmailAddresses);
+			    $sendThankYouCheckBox.attr('checked', currentContextInfo.Survey.SendThankYou);
+			    $thankYourFromEmailTextBox.val(currentContextInfo.Survey.ThankYouFromEmailAddress);
+			    $completionActionDropDown.val(currentContextInfo.Survey.FinalMessageOption);
+			    $completionMessageTextArea.val(currentContextInfo.Survey.FinalMessage);
+			    $completionUrlTextBox.val(currentContextInfo.Survey.FinalUrl);
             
-                $('#EvalNew').parent().hide();
+                $newSurveyButton.parent().hide();
                 makeSurveyReadOnly();
                 hideEditModeButtons();
                 $('.ee-create-questions').show(); 
             
                 if (currentContextInfo.Survey.Sections[0].Questions.length) {
-                    $('#PreviewArea').show();
+                    $previewArea.show();
                 
                     $.each(currentContextInfo.Survey.Sections[0].Questions, function (i, question) {
                         addQuestionPreview(question.QuestionId, question.Text, question.IsRequired, question.ControlType, question.Answers);
                     });
                 }
             } else {
-                $('#EvalSendNotification').attr('checked', currentContextInfo.DefaultEmailSettings.SendNotification);
-			    $('#EvalNotificationFromEmail').val(currentContextInfo.DefaultEmailSettings.NotificationFromEmail);
-			    $('#EvalNotificationToEmails').val(currentContextInfo.DefaultEmailSettings.NotificationToEmails);
-                $('#EvalSendThankYou').attr('checked', currentContextInfo.DefaultEmailSettings.SendThankYou);
-			    $('#EvalThankYouFromEmail').val(currentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
+                $sendNotificationCheckBox.attr('checked', currentContextInfo.DefaultEmailSettings.SendNotification);
+			    $notificationFromEmailTextBox.val(currentContextInfo.DefaultEmailSettings.NotificationFromEmail);
+			    $notificationToEmailsTextBox.val(currentContextInfo.DefaultEmailSettings.NotificationToEmails);
+                $sendThankYouCheckBox.attr('checked', currentContextInfo.DefaultEmailSettings.SendThankYou);
+			    $thankYourFromEmailTextBox.val(currentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
             }
             
             resetCreateQuestionSection();

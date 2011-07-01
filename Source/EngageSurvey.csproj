@@ -21,7 +21,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <JSLintSkip>\JavaScript\jquery.validate-1.8.1.js|\JavaScript\jquery-ui-1.8.13.js|\JavaScript\Array.prototype.indexOf.js|\JavaScript\json2.js|\JavaScript\jquery-1.3.2.debug-vsdoc.js</JSLintSkip>
+    <JSLintSkip>\JavaScript\jquery.validate-1.8.1.js|\JavaScript\jquery-ui-1.8.13.js|\JavaScript\Array.prototype.indexOf.js|\JavaScript\json2.js|\JavaScript\jquery-1.3.2.debug-vsdoc.js|\JavaScript\jquery-ui-1.8.14.js</JSLintSkip>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -112,7 +112,7 @@
   <ItemGroup>
     <Content Include="AnalyzeResponses.ascx" />
     <None Include="JavaScript\Array.prototype.indexOf.js" />
-    <None Include="JavaScript\jquery-ui-1.8.13.js" />
+    <None Include="JavaScript\jquery-ui-1.8.14.js" />
     <None Include="JavaScript\jquery.validate-1.8.1.js" />
     <None Include="JavaScript\json2.js" />
     <EmbeddedResource Include="JavaScript\survey-all.js">

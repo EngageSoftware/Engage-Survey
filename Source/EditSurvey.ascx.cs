@@ -34,7 +34,7 @@ namespace Engage.Dnn.Survey
         /// Gets a value indicating whether to send notification emails by default.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if notification emails are sent by default; otherwise, <c>false</c>.
+        /// <c>true</c> if notification emails are sent by default; otherwise, <c>false</c>.
         /// </value>
         protected bool DefaultSendNofitication
         {
@@ -98,6 +98,10 @@ namespace Engage.Dnn.Survey
             }
         }
 
+        /// <summary>
+        /// Gets the default completion message.
+        /// </summary>
+        /// <value>The default completion message.</value>
         protected string DefaultCompletionMessage
         {
             get

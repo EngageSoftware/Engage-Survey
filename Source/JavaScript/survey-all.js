@@ -14443,7 +14443,12 @@ if (!Array.prototype.indexOf)
 			    $sendThankYouCheckBox.attr('checked', currentContextInfo.Survey.SendThankYou);
 			    $thankYourFromEmailTextBox.val(currentContextInfo.Survey.ThankYouFromEmailAddress);
 			    $completionActionDropDown.val(currentContextInfo.Survey.FinalMessageOption);
-			    $completionMessageTextArea.val(currentContextInfo.Survey.FinalMessage);
+                
+                var completionMessage = currentContextInfo.Survey.FinalMessage.replace(/<p>/g, "");
+                completionMessage = completionMessage.replace(/<\/p>/g, "");
+                completionMessage = completionMessage.replace(/<br \/>/g, "\n");
+
+			    $completionMessageTextArea.val(completionMessage);
 			    $completionUrlTextBox.val(currentContextInfo.Survey.FinalUrl);
             
                 $newSurveyButton.parent().hide();
@@ -14464,7 +14469,12 @@ if (!Array.prototype.indexOf)
 			    $notificationToEmailsTextBox.val(currentContextInfo.DefaultEmailSettings.NotificationToEmails);
                 $sendThankYouCheckBox.attr('checked', currentContextInfo.DefaultEmailSettings.SendThankYou);
 			    $thankYourFromEmailTextBox.val(currentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
-			    $completionMessageTextArea.val(currentContextInfo.DefaultCompletionMessage);
+
+                var defaultCompletionMessage = currentContextInfo.DefaultCompletionMessage.replace(/<p>/g, "");
+                defaultCompletionMessage = defaultCompletionMessage.replace(/<\/p>/g, "");
+                defaultCompletionMessage = defaultCompletionMessage.replace(/<br \/>/g, "\n");
+
+			    $completionMessageTextArea.val(defaultCompletionMessage);
             }
             
             resetCreateQuestionSection();

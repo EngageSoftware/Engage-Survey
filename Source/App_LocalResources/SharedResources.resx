@@ -122,9 +122,7 @@
     <comment>{0} = question text</comment>
   </data>
   <data name="Survey Complete.Text" xml:space="preserve">
-    <value>&lt;p&gt;Thank you for taking the time to fill out our survey.&lt;br&gt;
-
-  
-Your feedback is valued and will be used to improve our product.&lt;/p&gt;</value>
+    <value>Thank you for taking the time to fill out our survey.
+Your feedback is valued and will be used to improve our product.</value>
   </data>
 </root>

@@ -229,7 +229,7 @@ namespace Engage.Dnn.Survey
             surveyToUpdate.ThankYouFromEmailAddress = survey.ThankYouFromEmailAddress;
             
             surveyToUpdate.FinalMessageOption = survey.FinalMessageOption;
-            surveyToUpdate.FinalMessage = survey.FinalMessage;
+            surveyToUpdate.FinalMessage = "<p>" + survey.FinalMessage.Replace("\n", "<br />") + "</p>";
             surveyToUpdate.FinalUrl = survey.FinalUrl;
 
             surveyToUpdate.Sections.First().Text = survey.Sections.First().Text;

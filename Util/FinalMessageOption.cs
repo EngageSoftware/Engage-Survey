@@ -29,6 +29,6 @@ namespace Engage.Survey.Util
         /// <summary>
         /// Redirect the user to <see cref="ISurvey.FinalUrl"/>
         /// </summary>
-        UseFinalUrl = 2
+        UseFinalURL = 2
     }
 }

@@ -510,7 +510,13 @@ namespace Engage.Survey.UI
         /// </summary>
         private void RenderSubmitButton()
         {
-            var button = new Button { ValidationGroup = "survey", Text = this.SubmitButtonText, ID = "SubmitButton", CssClass = CssClassSubmitButton };
+            var button = new Button
+                {
+                    ValidationGroup = "survey", 
+                    Text = this.SubmitButtonText, ID = "SubmitButton", 
+                    CssClass = CssClassSubmitButton,
+                    Enabled = this.CurrentSurvey.GetSections()[0].GetQuestions().Count > 0
+                };
 
             // add the handler for the button
             button.Click += this.SubmitButton_Click;

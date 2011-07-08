@@ -47,6 +47,13 @@ namespace Engage.Dnn.Survey
         private void BindData()
         {
             var surveys = new SurveyRepository().LoadSurveys(this.ModuleId, this.IsAdmin);
+
+            // Hides surveys with no questions from non-administrators
+            if (!this.IsEditable)
+            {
+                surveys = surveys.Where(s => s.Sections.Any(section => section.Questions.Any()));
+            }
+
             this.SurveyGrid.DataSource = surveys;
             this.SurveyGrid.DataBind();
         }

@@ -68,7 +68,7 @@
                     <span class="ee-input">
                         <select id="EvalCompletionAction" class="NormalTextBox">
                             <option value="<%=(int)FinalMessageOption.UseFinalMessage %>"><%=Localize("CompletionActionMessage.Text") %></option>
-                            <option value="<%=(int)FinalMessageOption.UseFinalUrl %>"><%=Localize("CompletionActionUrl.Text") %></option>
+                            <option value="<%=(int)FinalMessageOption.UseFinalURL %>"><%=Localize("CompletionActionUrl.Text") %></option>
                         </select>
                     </span>
                 </div>

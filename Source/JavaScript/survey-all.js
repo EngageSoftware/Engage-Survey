@@ -13572,6 +13572,10 @@ if (!Array.prototype.indexOf)
             });
         }
         
+        function getHtmlForCompletionMessage(value) {
+            return $('<div/>').append($('<p/>').text(value)).html().replace(/\n/g, '<br />');
+        }
+
         function getSurveyParameters() {
             return {
                 survey : {
@@ -13587,7 +13591,7 @@ if (!Array.prototype.indexOf)
                     SendThankYou: $sendThankYouCheckBox.is(':checked'),
                     ThankYouFromEmailAddress: $thankYourFromEmailTextBox.val(),
                     FinalMessageOption: $completionActionDropDown.val(),
-                    FinalMessage: $completionMessageTextArea.val(),
+                    FinalMessage: getHtmlForCompletionMessage($completionMessageTextArea.val()),
                     FinalUrl: $completionUrlTextBox.val(),
                     PortalId: currentContextInfo.PortalId,
                     ModuleId: currentContextInfo.ModuleId,
@@ -14417,6 +14421,15 @@ if (!Array.prototype.indexOf)
             
             return null;
         }
+        
+        function processHtmlTextForTextarea(value) {
+            return $('<div/>')
+                .html(value)
+                    .find('br')
+                    .replaceWith('\n')
+                    .end()
+                .text();
+        }
 
         (function initializeControls() {
             if (startDatePicker === null || endDatePicker === null) {
@@ -14443,22 +14456,17 @@ if (!Array.prototype.indexOf)
 			    $sendThankYouCheckBox.attr('checked', currentContextInfo.Survey.SendThankYou);
 			    $thankYourFromEmailTextBox.val(currentContextInfo.Survey.ThankYouFromEmailAddress);
 			    $completionActionDropDown.val(currentContextInfo.Survey.FinalMessageOption);
-                
-                var completionMessage = currentContextInfo.Survey.FinalMessage.replace(/<p>/g, "");
-                completionMessage = completionMessage.replace(/<\/p>/g, "");
-                completionMessage = completionMessage.replace(/<br \/>/g, "\n");
-
-			    $completionMessageTextArea.val(completionMessage);
+                $completionMessageTextArea.val(processHtmlTextForTextarea(currentContextInfo.Survey.FinalMessage));
 			    $completionUrlTextBox.val(currentContextInfo.Survey.FinalUrl);
-            
+
                 $newSurveyButton.parent().hide();
                 makeSurveyReadOnly();
                 hideEditModeButtons();
                 $('.ee-create-questions').show(); 
-            
+
                 if (currentContextInfo.Survey.Sections[0].Questions.length) {
                     $previewArea.show();
-                
+
                     $.each(currentContextInfo.Survey.Sections[0].Questions, function (i, question) {
                         addQuestionPreview(question.QuestionId, question.Text, question.IsRequired, question.ControlType, question.Answers);
                     });
@@ -14469,12 +14477,7 @@ if (!Array.prototype.indexOf)
 			    $notificationToEmailsTextBox.val(currentContextInfo.DefaultEmailSettings.NotificationToEmails);
                 $sendThankYouCheckBox.attr('checked', currentContextInfo.DefaultEmailSettings.SendThankYou);
 			    $thankYourFromEmailTextBox.val(currentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
-
-                var defaultCompletionMessage = currentContextInfo.DefaultCompletionMessage.replace(/<p>/g, "");
-                defaultCompletionMessage = defaultCompletionMessage.replace(/<\/p>/g, "");
-                defaultCompletionMessage = defaultCompletionMessage.replace(/<br \/>/g, "\n");
-
-			    $completionMessageTextArea.val(defaultCompletionMessage);
+                $completionMessageTextArea.val(processHtmlTextForTextarea(currentContextInfo.DefaultCompletionMessage));
             }
             
             resetCreateQuestionSection();

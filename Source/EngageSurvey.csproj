@@ -122,6 +122,7 @@
     <EmbeddedResource Include="JavaScript\survey-all.js">
       <DependentUpon>scripts.chirp.config</DependentUpon>
     </EmbeddedResource>
+    <Content Include="ReleaseNotes_3.3.0.htm" />
     <Content Include="References\AntiXSSLibrary.dll" />
     <Content Include="ReleaseNotes_3.2.6.htm" />
     <Content Include="ReleaseNotes_3.2.1.htm" />

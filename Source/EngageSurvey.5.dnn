@@ -3,6 +3,7 @@
     <package name="Engage: Survey" type="Module" version="3.1.0">
       <friendlyName>Engage: Survey</friendlyName>
       <description>The DotNetNuke Survey module by Engage Software (www.engagesoftware.com)</description>
+      <iconFile>DesktopModules/EngageSurvey/images/survey-icon32.png</iconFile>
       <owner>
         <name>Engage Software</name>
         <organization>Engage Software</organization>

@@ -122,6 +122,12 @@
     <EmbeddedResource Include="JavaScript\survey-all.js">
       <DependentUpon>scripts.chirp.config</DependentUpon>
     </EmbeddedResource>
+    <Content Include="module.css">
+      <DependentUpon>module.chirp.less</DependentUpon>
+    </Content>
+    <Content Include="module.min.css">
+      <DependentUpon>module.chirp.less</DependentUpon>
+    </Content>
     <Content Include="ReleaseNotes_3.3.0.htm" />
     <Content Include="References\AntiXSSLibrary.dll" />
     <Content Include="ReleaseNotes_3.2.6.htm" />
@@ -243,7 +249,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="images\submit-btn.jpg" />
-    <Content Include="module.css" />
+    <None Include="module.chirp.less" />
     <Content Include="References\DotNetNuke.dll" />
     <Content Include="References\DotNetNuke.WebUtility.dll" />
     <Content Include="SurveyService.asmx" />

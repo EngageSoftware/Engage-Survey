@@ -169,6 +169,10 @@
       </fileset>
     </copy>
     
+    <if test="${file::exists(packageDirectory + '/temp/resources/module.min.css')}">
+      <move file="${packageDirectory}/temp/resources/module.min.css" tofile="${packageDirectory}/temp/resources/module.css" overwrite="true" />
+    </if>
+
     <zip zipfile="${packageDirectory}/temp/package/${packageName}" ziplevel="${zipLevel}">
       <fileset basedir="${packageDirectory}/temp/resources">
         <include name="**/*"/>

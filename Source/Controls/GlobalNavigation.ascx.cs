@@ -14,8 +14,8 @@ namespace Engage.Dnn.Survey
     using System;
     using System.Web.UI;
     using DotNetNuke.Common;
+    using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Localization;
 
     /// <summary>
     /// A navigation header visible to administrators
@@ -40,18 +40,20 @@ namespace Engage.Dnn.Survey
         private void Page_Load(object sender, EventArgs e)
         {
             this.Visible = this.IsAdmin;
-            this.SettingsLink.Visible = TabPermissionController.HasTabPermission("EDIT");
 
             this.HomeLink.NavigateUrl = Globals.NavigateURL();
             this.AddNewLink.NavigateUrl = this.BuildLinkUrl(this.ModuleId, ControlKey.EditSurvey);
             this.ManageLink.NavigateUrl = this.BuildLinkUrl(this.ModuleId, ControlKey.SurveyListing);
             this.SettingsLink.NavigateUrl = Globals.NavigateURL(this.TabId, "Module", "ModuleId=" + this.ModuleId);
 
-            this.HomeLink.ToolTip = Localization.GetString("HomeLink.ToolTip", this.LocalResourceFile);
-            this.AddNewLink.ToolTip = Localization.GetString("AddNewLink.ToolTip", this.LocalResourceFile);
-            this.ManageLink.ToolTip = Localization.GetString("ManageLink.ToolTip", this.LocalResourceFile);
-            this.SettingsLink.ToolTip = Localization.GetString("SettingsLink.ToolTip", this.LocalResourceFile);
+            this.HomeLink.ToolTip = this.Localize("HomeLink.ToolTip");
+            this.AddNewLink.ToolTip = this.Localize("AddNewLink.ToolTip");
+            this.ManageLink.ToolTip = this.Localize("ManageLink.ToolTip");
+            this.SettingsLink.ToolTip = this.Localize("SettingsLink.ToolTip");
 
+            // Settings is actually accessible via URL with SecurityAccessLevel.Edit, but .Admin is the check that ModuleInstanceContext does when adding to the action menu
+            var isSettingsAvailableInModuleActions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", this.ModuleConfiguration);
+            this.SettingsListItem.Visible = isSettingsAvailableInModuleActions;
             this.ManageListItem.Visible = ModuleSettings.DisplayType.GetValueAsEnumFor<ControlKey>(this) != ControlKey.SurveyListing;
         }
     }

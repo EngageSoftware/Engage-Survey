@@ -1003,12 +1003,15 @@
         }
         
         function processHtmlTextForTextarea(value) {
-            return $('<div/>')
-                .html(value)
-                    .find('br')
-                    .replaceWith('\n')
-                    .end()
-                .text();
+            var $element = $('<div/>').html(value),
+                $breaks = $element.find('br');
+            
+            // until jQuery 1.5.2, replaceWith fails on empty set
+            if ($breaks.length) {
+                $breaks.replaceWith('\n');
+            }
+
+            return $element.text();
         }
 
         (function initializeControls() {

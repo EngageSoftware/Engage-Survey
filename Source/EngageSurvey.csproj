@@ -123,6 +123,7 @@
     <EmbeddedResource Include="JavaScript\survey-all.js">
       <DependentUpon>scripts.chirp.config</DependentUpon>
     </EmbeddedResource>
+    <Content Include="ReleaseNotes_03.03.01.htm" />
     <Content Include="images\survey-icon32.png" />
     <Content Include="module.css">
       <DependentUpon>module.chirp.less</DependentUpon>

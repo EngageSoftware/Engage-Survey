@@ -1,0 +1,116 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Engage: Survey" type="Module" version="3.1.0">
+      <friendlyName>Engage: Survey</friendlyName>
+      <description>The DotNetNuke Survey module by Engage Software (www.engagesoftware.com)</description>
+      <iconFile>DesktopModules/EngageSurvey/images/survey-icon32.png</iconFile>
+      <owner>
+        <name>Engage Software</name>
+        <organization>Engage Software</organization>
+        <url>http://www.engagesoftware.com/</url>
+        <email>support@engagesoftware.com</email>
+      </owner>
+      <license src="Licenses/EULA-Standard.htm"/>
+      <releaseNotes src="ReleaseNotes_3.1.0.htm" />
+      <components>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/EngageSurvey</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\EngageSurvey</basePath>
+            <script type="Install">
+              <name>3.0.0.SqlDataProvider</name>
+              <version>3.0.0</version>
+            </script>
+            <script type="Install">
+              <name>3.1.0.SqlDataProvider</name>
+              <version>3.1.0</version>
+            </script>
+            <script type="UnInstall">
+              <name>Uninstall.SqlDataProvider</name>
+              <version latestVersion="latestVersion">3.1.0</version>
+            </script>
+          </scripts>
+        </component>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>Engage: Survey</moduleName>
+            <foldername>EngageSurvey</foldername>
+            <businessControllerClass>Engage.Dnn.Survey.FeatureController</businessControllerClass>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Engage: Survey</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>
+                    <controlSrc>DesktopModules/EngageSurvey/MainContainer.ascx</controlSrc>
+                    <controlType>View</controlType>
+                    <helpUrl>http://www.EngageSoftware.com/Support.aspx</helpUrl>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/EngageSurvey/Settings.ascx</controlSrc>
+                    <controlType>Edit</controlType>
+                    <helpUrl>http://www.EngageSoftware.com/Support.aspx</helpUrl>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>Engage.Dnn.Survey.FeatureController</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>3.0.0</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <name>EngageSurvey.dll</name>
+              <version latestVersion="latestVersion">3.1.0</version>
+            </assembly>
+            <assembly>
+              <name>Engage.Survey.dll</name>
+              <version>3.1.0</version>
+            </assembly>
+            <assembly>
+              <name>EngageSurvey.Entities.dll</name>
+              <version>3.1.0</version>
+            </assembly>
+            <assembly>
+              <name>Engage.Framework.dll</name>
+              <version>3.1.3</version>
+            </assembly>
+            <assembly>
+              <name>Engage.Dnn.Framework.dll</name>
+              <version>3.1.4</version>
+            </assembly>
+            <assembly>
+              <name>BrandonHaynes.ModelAdapter.dll</name>
+              <version>1.0.1</version>
+            </assembly>
+            <assembly>
+              <name>AntiXSSLibrary.dll</name>
+              <version>4.0.0</version>
+            </assembly>
+            <assembly>
+              <name>Telerik.Web.UI.dll</name>
+              <version>2009.3.1103.35</version>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

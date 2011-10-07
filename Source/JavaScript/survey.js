@@ -612,7 +612,7 @@
                 $baseAnswerElement;
             
             // set the "edit" question text and required-nedd based on the "preview" question text and required-ness
-            $questionTextArea.val($questionLi.children('.pv-question').text());
+            $questionTextArea.val($questionLi.children('.pv-question').html());
             $questionRequiredCheckBox.attr('checked', $questionLi.children('.ee-required-label').text() === '*');
             
             if (setQuestionData) {
@@ -646,7 +646,7 @@
                     $answerElement.find('.answer-num').text(i + 1);
 
                     // update cloned textbox's value
-                    $answerElement.find('input').val($(this).text() || $(this).parent().text());
+                    $answerElement.find('input').val($(this).html() || $(this).siblings('.pv-answer-option').html());
                     
                     //append answer LI to UL and set the answer id
                     $answerElement.appendTo('.answer-inputs');
@@ -676,7 +676,7 @@
             }
             
             // update the new question preview
-            $questionElement.find('.pv-question').text(questionText).show();
+            $questionElement.find('.pv-question').html(questionText).show();
             $questionElement.find('.ee-required-label').text(isRequired ? '*' : '').show();
             $questionElement.show().data('questionId', questionId).data('questionType', questionType);
             
@@ -693,23 +693,23 @@
                 $dropDown = $("<select class='NormalTextBox dropdown-prev'></select>");
                 $answerDiv.append($dropDown);
                 $.each(answers, function (i, answer) {
-                    $("<option>" + answer.Text + "</option>").appendTo($dropDown).data('answerId', answer.AnswerId);
+                    $("<option/>").html(answer.Text).appendTo($dropDown).data('answerId', answer.AnswerId);
                 });
                 break;
             case answerType.verticalRadioButtons:
                 $.each(answers, function (i, answer) {
-                    $("<label><input type='radio' name='" + questionId + "' />" + answer.Text + "</label>")
-                        .appendTo($answerDiv)
-                        .find('input')
-                        .data('answerId', answer.AnswerId);
+                    $("<label/>")
+                        .prepend($("<input/>").attr('type', 'radio').attr('name', questionId).data('answerId', answer.AnswerId))
+                        .prepend($("<span/>").attr('class', 'pv-answer-option').html(answer.Text))
+                        .appendTo($answerDiv);
                 });
                 break;
             case answerType.checkBox:
                 $.each(answers, function (i, answer) {
-                    $("<label><input type='checkbox' />" + answer.Text + "</label>")
-                        .appendTo($answerDiv)
-                        .find('input')
-                        .data('answerId', answer.AnswerId);
+                    $("<label/>")
+                        .prepend($("<input/>").attr('type', 'checkbox').data('answerId', answer.AnswerId))
+                        .prepend($("<span/>").attr('class', 'pv-answer-option').html(answer.Text))
+                        .appendTo($answerDiv);
                 });
                 break;
             default:

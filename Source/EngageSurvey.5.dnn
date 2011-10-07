@@ -110,6 +110,31 @@
             </assembly>
           </assemblies>
         </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/system.web/httpHandlers" action="update" key="path" collision="ignore">
+                    <add verb="*" path="ChartImage.axd" type="Telerik.Web.UI.ChartHttpHandler, Telerik.Web.UI, Culture=neutral, PublicKeyToken=121fae78165ba3d4" validate="true" />
+                  </node>
+                  <node path="/configuration/system.webServer/handlers" action="update" key="path" collision="ignore">
+                    <add name="Telerik.Web.UI.ChartHttpHandler" verb="*" path="ChartImage.axd" type="Telerik.Web.UI.ChartHttpHandler, Telerik.Web.UI, Culture=neutral, PublicKeyToken=121fae78165ba3d4" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/system.web/httpHandlers/add[@path='ChartImage.axd']" action="remove" />
+                  <node path="/configuration/system.webServer/handlers/add[@path='ChartImage.axd']" action="remove" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
       </components>
     </package>
   </packages>

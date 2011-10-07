@@ -272,7 +272,7 @@
     <property name="installPackageFileName" value="${packageFileNameTemplate}"/>
     <property name="packageType" value="Source"/>
     <property name="sourcePackageFileName" value="${packageFileNameTemplate}"/>
-    <zip zipfile="${packageDirectory}/${projectName}_${sourcePackageLicenseName}_${projectVersion}.zip">
+    <zip zipfile="${packageDirectory}/${projectName}_${sourcePackageLicenseName}_${projectVersion}_DNN${dnnVersion}.zip">
       <fileset basedir="${packageDirectory}">
         <include name="${installPackageFileName}.zip"/>
         <include name="${sourcePackageFileName}.zip"/>

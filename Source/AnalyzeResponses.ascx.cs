@@ -198,7 +198,7 @@ namespace Engage.Dnn.Survey
 
                 var chart = new RadChart
                     {
-                        ChartTitle = { TextBlock = { Text = this.GetQuestionLabel(question.RelativeOrder, question.Text) } },
+                        ChartTitle = { TextBlock = { Text = this.GetQuestionLabel(question.RelativeOrder, question.Text, false) } },
                         SeriesOrientation = ChartSeriesOrientation.Horizontal,
                         Skin = TelerikChartsSkin,
                         Legend = { Visible = false },
@@ -218,7 +218,7 @@ namespace Engage.Dnn.Survey
                     var answer = answerPair.First;
                     var answerCount = answerPair.Second;
 
-                    chartSeries.Items.Insert(0, new ChartSeriesItem(answerCount, this.GetAnswerLabel(answer.RelativeOrder, answer.Text)));
+                    chartSeries.Items.Insert(0, new ChartSeriesItem(answerCount, this.GetAnswerLabel(answer.RelativeOrder, answer.Text, false)));
                 }
 
                 chart.Series.Add(chartSeries);
@@ -259,7 +259,7 @@ namespace Engage.Dnn.Survey
                     MasterTableView =
                         {
                             AllowNaturalSort = false,
-                            SortExpressions = { new GridSortExpression { FieldName = "CreationDate", SortOrder = GridSortOrder.Descending } },
+                            SortExpressions = { new GridSortExpression { FieldName = @"CreationDate", SortOrder = GridSortOrder.Descending } },
                             CommandItemDisplay = GridCommandItemDisplay.TopAndBottom,
                             PagerStyle =
                                 {
@@ -304,7 +304,7 @@ namespace Engage.Dnn.Survey
                         {
                             DataField = GetQuestionTextColumnName(question.QuestionId),
                             SortExpression = GetRelativeOrderColumnName(question.QuestionId),
-                            HeaderText = this.GetQuestionLabel(question.RelativeOrder, question.Text),
+                            HeaderText = this.GetQuestionLabel(question.RelativeOrder, question.Text, true),
                             HeaderStyle = { CssClass = questionCssClass + " rgHeader" },
                             ItemStyle = { CssClass = questionCssClass },
                         });
@@ -360,15 +360,17 @@ namespace Engage.Dnn.Survey
         /// </summary>
         /// <param name="relativeOrder">The relative order, or <c>null</c> if an answer to an open-ended question.</param>
         /// <param name="answerText">The answer text.</param>
+        /// <param name="asHtml">Whether the text should be HTML or plain text</param>
         /// <returns>The text to label an answer</returns>
-        private string GetAnswerLabel(int? relativeOrder, string answerText)
+        private string GetAnswerLabel(int? relativeOrder, string answerText, bool asHtml)
         {
-            if (relativeOrder.HasValue)
-            {
-                return string.Format(CultureInfo.CurrentCulture, this.Localize("Answer.Format"), relativeOrder, answerText);
-            }
+            const int MaxAnswerLength = 75;
+            var answerLabel = relativeOrder.HasValue
+                                  ? string.Format(CultureInfo.CurrentCulture, this.Localize("Answer.Format"), relativeOrder, answerText)
+                                  : answerText.Length < MaxAnswerLength ? HttpUtility.HtmlEncode(answerText)
+                                  : string.Format("<span class=\"sa-long-answer\">{0}</a>", HttpUtility.HtmlEncode(answerText));
 
-            return HtmlUtils.Shorten(HttpUtility.HtmlEncode(answerText), 50, "<a title=\"" + HttpUtility.HtmlAttributeEncode(answerText) + "\">...</a>");
+            return asHtml ? answerLabel : HtmlUtils.StripTags(answerLabel, false);
         }
 
         /// <summary>
@@ -391,10 +393,12 @@ namespace Engage.Dnn.Survey
         /// </summary>
         /// <param name="relativeOrder">The relative order.</param>
         /// <param name="questionText">The question text.</param>
+        /// <param name="asHtml">Whether the text should be HTML or plain text</param>
         /// <returns>The text to label a question</returns>
-        private string GetQuestionLabel(int relativeOrder, string questionText)
+        private string GetQuestionLabel(int relativeOrder, string questionText, bool asHtml)
         {
-            return string.Format(CultureInfo.CurrentCulture, this.Localize("Question.Format"), relativeOrder, questionText);
+            var questionLabel = string.Format(CultureInfo.CurrentCulture, this.Localize("Question.Format"), relativeOrder, questionText);
+            return asHtml ? questionLabel : HtmlUtils.StripTags(questionLabel, false);
         }
 
         /// <summary>
@@ -454,30 +458,30 @@ namespace Engage.Dnn.Survey
                 var row = table.NewRow();
                 table.Rows.Add(row);
 
-                var responses = from response in headerWithResponses
-                                where questionTextColumnMap.ContainsKey(response.QuestionId)
-                                group response by response.QuestionId
-                                into responsesByQuestion
-                                select new
-                                        {
-                                            QuestionId = responsesByQuestion.Key,
-                                            Responses = responsesByQuestion
-                                                            .OrderBy(response => response.AnswerRelativeOrder)
-                                                            .Select(response => new { response.AnswerRelativeOrder, response.UserResponse, response.AnswerText })
-                                        };
+                var surveyResponses = from response in headerWithResponses
+                                      where questionTextColumnMap.ContainsKey(response.QuestionId)
+                                      group response by response.QuestionId
+                                      into responsesByQuestion
+                                      select new
+                                          {
+                                              QuestionId = responsesByQuestion.Key,
+                                              Responses = from response in responsesByQuestion
+                                                          orderby response.AnswerRelativeOrder
+                                                          select new { response.AnswerRelativeOrder, response.UserResponse, response.AnswerText }
+                                          };
 
-                foreach (var response in responses)
+                foreach (var response in surveyResponses)
                 {
                     var firstResponse = response.Responses.First();
                     if (response.Responses.Count() == 1)
                     {
-                        row[questionTextColumnMap[response.QuestionId]] = this.GetAnswerLabel(firstResponse.AnswerRelativeOrder, firstResponse.UserResponse);
+                        row[questionTextColumnMap[response.QuestionId]] = this.GetAnswerLabel(firstResponse.AnswerRelativeOrder, firstResponse.UserResponse, true);
                     }
                     else
                     {
                         var answerLabels = from answer in response.Responses
                                            where bool.Parse(answer.UserResponse)
-                                           select this.GetAnswerLabel(answer.AnswerRelativeOrder, answer.AnswerText);
+                                           select this.GetAnswerLabel(answer.AnswerRelativeOrder, answer.AnswerText, true);
                         row[questionTextColumnMap[response.QuestionId]] = string.Join(", ", answerLabels.ToArray());
                     }
 

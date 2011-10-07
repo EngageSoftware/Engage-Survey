@@ -497,6 +497,13 @@ ul.sl-repeater li.sl-alt-item {
   float: left;
   padding: 1em;
 }
+.sa-long-answer {
+  display: block;
+  height: 10em;
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 /*============ Global Navigation ============*/
 ul.em-global-nav {
   clear: both;

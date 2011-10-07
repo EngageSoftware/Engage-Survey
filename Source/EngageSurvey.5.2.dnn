@@ -25,12 +25,12 @@
           <scripts>
             <basePath>DesktopModules\EngageSurvey</basePath>
             <script type="Install">
-              <name>3.0.0.SqlDataProvider</name>
-              <version>3.0.0</version>
+              <name>03.00.00.SqlDataProvider</name>
+              <version>03.00.00</version>
             </script>
             <script type="Install">
-              <name>3.1.0.SqlDataProvider</name>
-              <version>3.1.0</version>
+              <name>03.01.00.SqlDataProvider</name>
+              <version>03.01.00</version>
             </script>
             <script type="UnInstall">
               <name>Uninstall.SqlDataProvider</name>

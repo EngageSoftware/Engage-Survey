@@ -126,6 +126,7 @@
     <EmbeddedResource Include="JavaScript\survey-all.js">
       <DependentUpon>scripts.chirp.config</DependentUpon>
     </EmbeddedResource>
+    <Content Include="ReleaseNotes_03.03.03.htm" />
     <Content Include="ReleaseNotes_03.03.01.htm" />
     <Content Include="images\survey-icon32.png" />
     <Content Include="module.css">
@@ -134,12 +135,12 @@
     <Content Include="module.min.css">
       <DependentUpon>module.chirp.less</DependentUpon>
     </Content>
-    <Content Include="ReleaseNotes_3.3.0.htm" />
+    <Content Include="ReleaseNotes_03.03.00.htm" />
     <Content Include="References\AntiXSSLibrary.dll" />
-    <Content Include="ReleaseNotes_3.2.6.htm" />
-    <Content Include="ReleaseNotes_3.2.1.htm" />
-    <Content Include="ReleaseNotes_3.2.0.htm" />
-    <Content Include="ReleaseNotes_3.1.1.htm" />
+    <Content Include="ReleaseNotes_03.02.06.htm" />
+    <Content Include="ReleaseNotes_03.02.01.htm" />
+    <Content Include="ReleaseNotes_03.02.00.htm" />
+    <Content Include="ReleaseNotes_03.01.01.htm" />
     <Content Include="images\validator-bg-right.gif" />
     <Content Include="Licenses\EULA-Enterprise.txt" />
     <Content Include="Licenses\EULA-Professional.txt" />
@@ -150,7 +151,7 @@
     <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
     <Content Include="References\Framework\Engage.Events.dll" />
     <Content Include="References\Framework\Engage.Framework.dll" />
-    <Content Include="ReleaseNotes_3.1.0.htm" />
+    <Content Include="ReleaseNotes_03.01.00.htm" />
     <Content Include="EditSurvey.ascx" />
     <Content Include="MainContainer.ascx" />
     <Content Include="SurveyListing.ascx" />
@@ -234,7 +235,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="JavaScript\scripts.chirp.config" />
-    <None Include="Providers\DataProviders\SqlDataProvider\3.0.0.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="EngageSurvey.Build">
       <SubType>Designer</SubType>
     </None>
@@ -288,7 +289,7 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="JavaScript\jquery-1.3.2.debug-vsdoc.js" />
-    <None Include="Providers\DataProviders\SqlDataProvider\3.1.0.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.01.00.SqlDataProvider" />
     <Content Include="App_LocalResources\AnalyzeResponses.ascx.resx" />
     <EmbeddedResource Include="Util\Net35.bindingRedirect.config" />
     <EmbeddedResource Include="Util\Net35.withoutNamespaces.config" />
@@ -305,8 +306,8 @@
     <Content Include="References\Telerik.Web.Design.dll" />
     <Content Include="References\Telerik.Web.UI.dll" />
     <Content Include="References\Telerik.Web.UI.xml" />
-    <Content Include="ReleaseNotes_3.0.2.htm" />
-    <Content Include="ReleaseNotes_3.0.1.htm" />
+    <Content Include="ReleaseNotes_03.00.02.htm" />
+    <Content Include="ReleaseNotes_03.00.01.htm" />
     <Content Include="images\drag-icn.gif" />
     <Content Include="images\em-add-icn.gif" />
     <Content Include="images\em-home-icn.gif" />
@@ -320,7 +321,7 @@
     <Content Include="Licenses\EULA-Professional.htm" />
     <Content Include="Licenses\EULA-Standard.htm" />
     <Content Include="References\BrandonHaynes.ModelAdapter.dll" />
-    <Content Include="ReleaseNotes_3.0.0.htm" />
+    <Content Include="ReleaseNotes_03.00.00.htm" />
     <Content Include="Sample.htm" />
   </ItemGroup>
   <ItemGroup>

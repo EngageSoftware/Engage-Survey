@@ -368,7 +368,7 @@ namespace Engage.Dnn.Survey
                 return string.Format(CultureInfo.CurrentCulture, this.Localize("Answer.Format"), relativeOrder, answerText);
             }
 
-            return answerText;
+            return HtmlUtils.Shorten(HttpUtility.HtmlEncode(answerText), 50, "<a title=\"" + HttpUtility.HtmlAttributeEncode(answerText) + "\">...</a>");
         }
 
         /// <summary>

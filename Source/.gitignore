@@ -1,0 +1,5 @@
+obj/
+_ReSharper.*
+~*
+*.bak
+*.orig

@@ -12,6 +12,7 @@
 namespace Engage.Survey.Entities
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -173,23 +174,25 @@ namespace Engage.Survey.Entities
 
                 if (string.IsNullOrEmpty(control.ID) == false && validationProvider != null)
                 {
+                    var validationGroup = string.Format(CultureInfo.InvariantCulture, "survey-{0}", section.GetSurvey().SurveyId);
+
                     // TODO: Localize error messages
                     if (question.IsRequired && question.ControlType != ControlType.Checkbox)
                     {
-                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.RequiredField, "error-message", questionWrapDiv, control.ID, string.Format(localizer.Localize("RequiredError.Format"), question.UnformattedText), "survey", 1, 0);
+                        validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.RequiredField, "error-message", questionWrapDiv, control.ID, string.Format(localizer.Localize("RequiredError.Format"), question.UnformattedText), validationGroup, 1, 0);
                     }
 
                     switch (question.ControlType)
                     {
                         case ControlType.LargeTextInputField:
                         case ControlType.SmallTextInputField:
-                            validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedLengthField, "error-message", questionWrapDiv, control.ID, string.Format(localizer.Localize("TextLengthExceeded.Format"), question.UnformattedText), "survey", 1, 4000);
+                            validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedLengthField, "error-message", questionWrapDiv, control.ID, string.Format(localizer.Localize("TextLengthExceeded.Format"), question.UnformattedText), validationGroup, 1, 4000);
                             break;
                         case ControlType.EmailInputField:
-                            validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.EmailField, "error-message", questionWrapDiv, control.ID, localizer.Localize("InvalidEmail.Text"), "survey", 1, 0);
+                            validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.EmailField, "error-message", questionWrapDiv, control.ID, localizer.Localize("InvalidEmail.Text"), validationGroup, 1, 0);
                             break;
                         case ControlType.Checkbox:
-                            validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedSelection, "error-message", questionWrapDiv, control.ID, string.Empty, "survey", question.SelectionLimit, 0);
+                            validationProvider.RegisterValidator(ph.Page.ClientScript, ValidationType.LimitedSelection, "error-message", questionWrapDiv, control.ID, string.Empty, validationGroup, question.SelectionLimit, 0);
                             break;
                     }
                 }

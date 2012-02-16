@@ -512,7 +512,7 @@ namespace Engage.Survey.UI
         {
             var button = new Button
                 {
-                    ValidationGroup = "survey", 
+                    ValidationGroup = string.Format(CultureInfo.InvariantCulture, "survey-{0}", this.CurrentSurvey.SurveyId), 
                     Text = this.SubmitButtonText, ID = "SubmitButton", 
                     CssClass = CssClassSubmitButton,
                     Enabled = this.CurrentSurvey.GetSections()[0].GetQuestions().Count > 0

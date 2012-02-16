@@ -438,7 +438,7 @@ namespace Engage.Survey.Entities
         /// <summary>
         /// Gets the responses for the given survey.
         /// </summary>
-        /// <param name="surveyId">The ID of the survey for which to get resposnes.</param>
+        /// <param name="surveyId">The ID of the survey for which to get responses.</param>
         /// <returns>A list of response headers, each associated with the list of individual question responses for that header</returns>
         public IQueryable<IGrouping<ResponseHeader, Response>> LoadResponses(int surveyId)
         {

@@ -556,7 +556,7 @@ namespace Engage.Survey.UI
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            this.Page.Validate();
+            ////this.Page.Validate(string.Format(CultureInfo.InvariantCulture, "survey-{0}", this.CurrentSurvey.SurveyId));
             if (this.Page.IsValid)
             {
                 this.CollectResponses(this);

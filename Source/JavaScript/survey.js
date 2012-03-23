@@ -3,6 +3,7 @@
 /// <reference path="jquery-ui-1.8.14.js" />
 /// <reference path="jquery.validate-1.8.1.js" />
 /// <reference path="Array.prototype.indexOf.js" />
+/*jslint maxlen: 150, browser: true */
 /*globals jQuery, Sys, currentContextInfo, alert */
 (function ($, window) {
     'use strict';
@@ -75,20 +76,20 @@
                     },
                     email: true
                 },
-                notificationEmails: { 
+                notificationEmails: {
                     required: {
                         depends: function () {
                             return $sendNotificationCheckBox.is(':checked');
                         }
-                    }, 
+                    },
                     emails: true
                 },
-                thankYouEmail: { 
+                thankYouEmail: {
                     required: {
                         depends: function () {
                             return $sendThankYouCheckBox.is(':checked');
                         }
-                    }, 
+                    },
                     email: true
                 },
                 completionMessage: {
@@ -113,14 +114,14 @@
 
         validator = $form.validate({ ignore: '#DefineAnswerType' });
 
-        window.onbeforeunload = function () { 
+        window.onbeforeunload = function () {
             if ($cancelQuestionEditButton.is(':visible') || $cancelSurveyEditButton.is(':visible')) {
                 return currentContextInfo.UnsavedChangedWarning;
             }
 
             return undefined;
         };
-        
+
         $(window).unload(function () {
             // when the user leaves the page, finish any pending question deletions
             $.each(pendingQuestionDeleteCallbacks, function (i, deleteQuestionFunction) {
@@ -136,22 +137,22 @@
                 url: currentContextInfo.WebMethodUrl + methodName + "?portalId=" + currentContextInfo.PortalId,
                 data: JSON.stringify(parameters),
                 contentType: "application/json",
-                success: function (msg) { 
+                success: function (msg) {
                     if ($.isFunction(callback)) {
                         if (typeof msg === 'string') {
                             msg = JSON.parse(msg);
                         }
-                        
+
                         callback(msg.hasOwnProperty('d') ? msg.d : msg);
                     }
                 },
-                error: function () { 
+                error: function () {
                     // TODO provide a more friendly error message
-                    alert(currentContextInfo.ErrorMessage); 
+                    alert(currentContextInfo.ErrorMessage);
                 }
             });
         }
-        
+
         function getHtmlForCompletionMessage(value) {
             return $('<div/>').append($('<p/>').text(value)).html().replace(/\n/g, '<br />');
         }
@@ -185,7 +186,7 @@
 
         function updateSurvey(callback) {
             callWebMethod('UpdateSurvey', getSurveyParameters(), function (surveyId) {
-                $('.ee-create-new').data('surveyId', surveyId); 
+                $('.ee-create-new').data('surveyId', surveyId);
                 if ($.isFunction(callback)) {
                     callback(surveyId);
                 }
@@ -202,113 +203,114 @@
                     RelativeOrder: $createQuestionArea.data('relativeOrder') || $('.ee-preview').length + 1,
                     ControlType: $answerTypeDropDown.val(),
                     RevisingUser: currentContextInfo.UserId,
-                    Answers: !$multipleAnswerSection.is(':visible') ? 
+                    Answers: !$multipleAnswerSection.is(':visible') ?
                                 [] :
                                 $.map(
-                                    $multipleAnswerSection.find('.answer-inputs li.answer-input:visible'), 
-                                    function (elem) {
-                                        var $elem = $(elem);
-                                        return {
-                                            AnswerId: $elem.data('answerId') || -1,
-                                            Text: $elem.find(':input').val()
-                                        };
-                                    })
+                                $multipleAnswerSection.find('.answer-inputs li.answer-input:visible'),
+                                function (elem) {
+                                    var $elem = $(elem);
+                                    return {
+                                        AnswerId: $elem.data('answerId') || -1,
+                                        Text: $elem.find(':input').val()
+                                    };
+                                }
+                            )
                 }
             };
         }
-        
+
         function deleteWithUndo($element, withTimer, afterFadeOut, deleteCallback, afterUndo) {
             $element.fadeOut('slow', function () {
-                var deleteTimeoutHandle, 
+                var deleteTimeoutHandle,
                     $undoElement = $element.siblings('.ee-undo').eq(0).clone().show().removeClass('template'),
                     undoHtml = $undoElement.html(),
                     undoTimeLimit = 11, // it'll take a second to actually show the timer, so it shows up to the user as 10
                     startTime = new Date(),
                     deleteTimeoutCallback;
-                    
+
                 if ($.isFunction(afterFadeOut)) {
                     afterFadeOut();
                 }
-                
+
                 $undoElement.html(undoHtml.replace('{0}', '<span class="undo-limit"></span>'));
-                
+
                 $element.addClass('deleted');
                 $element.before($undoElement);
-                
+
                 $undoElement.hide().fadeIn(animationSpeed);
-                
+
                 // set timer to delete question
-			    if (withTimer) {
-			        deleteTimeoutCallback = function () {
-	                    $undoElement.remove();
-	                    
-	                    // remove this callback from the list
-	                    pendingQuestionDeleteCallbacks.splice(pendingQuestionDeleteCallbacks.indexOf(deleteTimeoutCallback), 1);
+                if (withTimer) {
+                    deleteTimeoutCallback = function () {
+                        $undoElement.remove();
 
-	                    if ($.isFunction(deleteCallback)) {
-	                        deleteCallback();
-	                    }
-	                };
-			        
-			        pendingQuestionDeleteCallbacks.push(deleteTimeoutCallback);
-	                deleteTimeoutHandle = setTimeout(deleteTimeoutCallback, undoTimeLimit * 1000);
+                        // remove this callback from the list
+                        pendingQuestionDeleteCallbacks.splice(pendingQuestionDeleteCallbacks.indexOf(deleteTimeoutCallback), 1);
 
-	                // update the time remaining until deleted
-	                (function updateUndoTimer() {
-	                    var currentTime = new Date(),
-	                        msElapsed = currentTime.getTime() - startTime.getTime(),
-	                        msLeft = (undoTimeLimit * 1000) - msElapsed,
-	                        secondsLeft = parseInt(msLeft / 1000, 10);
-	                    $undoElement.find('span.undo-limit').text(secondsLeft.toString(10));
+                        if ($.isFunction(deleteCallback)) {
+                            deleteCallback();
+                        }
+                    };
 
-	                    if (secondsLeft > 0) {
-	                        setTimeout(updateUndoTimer, 300);
-	                    }
-	                }());
+                    pendingQuestionDeleteCallbacks.push(deleteTimeoutCallback);
+                    deleteTimeoutHandle = setTimeout(deleteTimeoutCallback, undoTimeLimit * 1000);
+
+                    // update the time remaining until deleted
+                    (function updateUndoTimer() {
+                        var currentTime = new Date(),
+                            msElapsed = currentTime.getTime() - startTime.getTime(),
+                            msLeft = (undoTimeLimit * 1000) - msElapsed,
+                            secondsLeft = parseInt(msLeft / 1000, 10);
+                        $undoElement.find('span.undo-limit').text(secondsLeft.toString(10));
+
+                        if (secondsLeft > 0) {
+                            setTimeout(updateUndoTimer, 300);
+                        }
+                    }());
                 }
 
                 // undo button
                 $undoElement.find('a').click(function (event) {
                     event.preventDefault();
-                    
+
                     clearTimeout(deleteTimeoutHandle);
-                    
+
                     // remove this callback from the list
                     pendingQuestionDeleteCallbacks.splice(pendingQuestionDeleteCallbacks.indexOf(deleteTimeoutCallback), 1);
-                    
+
                     $undoElement.fadeOut(animationSpeed, function () {
                         $element.removeClass('deleted').fadeIn(animationSpeed);
                         $undoElement.remove();
                     });
-                    
+
                     if ($.isFunction(afterUndo)) {
                         afterUndo();
                     }
                 });
             });
         }
-                   
+
         function hideEditModeButtons(callback) {
             $updateSurveyButton.parent().fadeOut(animationSpeed);
             $cancelSurveyEditButton.parent().fadeOut(animationSpeed, callback);
         }
-        
+
         function storePreviousValue($input, value) {
             $input.parent().data('previousValue', value === undefined ? $input.text() : value);
         }
-        
+
         function resetToPreviousValue($input) {
             $input.val($input.parent().data('previousValue'));
         }
-            
+
         function resetCheckBoxToPreviousValue($input) {
             $input.attr('checked', $input.parent().data('previousValue'));
         }
-            
+
         function resetDatePickerToPreviousValue(datePicker) {
             datePicker.set_selectedDate($(datePicker.get_element()).closest('.RadPicker').parent().data('previousValue'));
         }
-            
+
         function makeElementReadonly($element, value) {
             var $readonlyElement = $('<span />');
             $element.slideUp(animationSpeed, function () {
@@ -321,7 +323,7 @@
                 if (maxlength < 0 || maxlength > 500000) {
                     maxlength = '';
                 }
-                
+
                 // if minlength is null, then jQuery sees the data call as an accessor instead of a setter, so we change it to '' if it's null
                 if (!minlength) {
                     minlength = '';
@@ -332,7 +334,7 @@
                         id: $this.attr('id'),
                         className: $this.attr('class'),
                         name: $this.attr('name')
-                    }).data('minlength',  minlength) 
+                    }).data('minlength',  minlength)
                     .data('maxlength', maxlength || '')
                     .data('rows', $this.attr('rows') || '')
                     .data('cols', $this.attr('cols') || '')
@@ -349,24 +351,24 @@
 
             return $readonlyElement;
         }
-        
+
         function makeOptionalElementReadonly($element, $wrappingSection, value, makeReadonlyFunction) {
             value = (value === undefined && $.isFunction($element.val)) ? $element.val() : value;
             if (value) {
                 makeReadonlyFunction = makeReadonlyFunction || makeElementReadonly;
                 $element = makeReadonlyFunction($element, value);
-                
+
                 $wrappingSection.slideDown(animationSpeed);
             } else {
-                $wrappingSection.slideUp(animationSpeed, function () {  
-                    $(this).hide(); 
+                $wrappingSection.slideUp(animationSpeed, function () {
+                    $(this).hide();
                 });
 
             }
-            
+
             return $element;
         }
-        
+
         function makeLabelEditable($element, $newElement) {
             $element.fadeOut(animationSpeed, function () {
                 var $this = $(this),
@@ -397,7 +399,7 @@
 
             return $newElement;
         }
-        
+
         function makeDatePickerReadonly(datePicker) {
             var $inputWrap = $(datePicker.get_element()).closest('.ee-input'),
                 $datePickerElement = $inputWrap.find('.RadPicker'),
@@ -406,18 +408,18 @@
             if ($dateLabel.length === 0) {
                 $dateLabel = $('<span />').addClass('ee-date-pre').insertAfter($datePickerElement);
             }
-            
+
             $datePickerElement.slideUp(animationSpeed, function () {
                 var dateInput = datePicker.get_dateInput();
                 $dateLabel
                     .text(dateInput.get_dateFormatInfo().FormatDate(datePicker.get_selectedDate(), dateInput.get_displayDateFormat()))
                     .hide()
                     .fadeIn(animationSpeed);
-                    
+
                 $datePickerElement.hide();
             });
         }
-        
+
         function makeDatePickerEditable(datePicker) {
             var $inputWrap = $(datePicker.get_element()).closest('.ee-input'),
                 $datePickerElement = $inputWrap.find('.RadPicker'),
@@ -428,7 +430,7 @@
                 $datePickerElement.fadeIn(animationSpeed);
             });
         }
-        
+
         function makeSelectReadonly($select) {
             var $inputWrap = $select.closest('.ee-input'),
                 $label = $inputWrap.find('.ee-select-pre');
@@ -436,19 +438,19 @@
             if ($label.length === 0) {
                 $label = $('<span />').addClass('ee-select-pre').insertAfter($select);
             }
-            
+
             $select.slideUp(animationSpeed, function () {
                 $label
                     .text($select.find('option:selected').text())
                     .hide()
                     .fadeIn(animationSpeed);
-                    
+
                 $select.hide();
             });
 
             return $label;
         }
-        
+
         function makeSelectEditable($select) {
             var $label = $select.closest('.ee-input').find('.ee-select-pre');
 
@@ -461,51 +463,51 @@
         function makeSurveyReadOnly() {
             var timeframeLabel,
                 timeframeSectionHasAnyValue;
-            
+
             $surveyTitleTextBox = makeElementReadonly($surveyTitleTextBox);
             $surveyDescriptionTextArea = makeOptionalElementReadonly($surveyDescriptionTextArea, $('.ee-description'));
 
             timeframeLabel = makeOptionalElementReadonly(
-                startDatePicker, 
-                $('.ee-start-date'), 
-                startDatePicker.get_selectedDate(), 
+                startDatePicker,
+                $('.ee-start-date'),
+                startDatePicker.get_selectedDate(),
                 makeDatePickerReadonly
             );
             timeframeSectionHasAnyValue = timeframeLabel !== startDatePicker; // if the element was converted to a label, then it has a value
             $preStartTextArea = makeOptionalElementReadonly($preStartTextArea, $('.ee-pre-start'));
             timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || $preStartTextArea.is('span');
             timeframeLabel = makeOptionalElementReadonly(
-                endDatePicker, 
-                $('.ee-end-date'), 
-                endDatePicker.get_selectedDate(), 
+                endDatePicker,
+                $('.ee-end-date'),
+                endDatePicker.get_selectedDate(),
                 makeDatePickerReadonly
             );
             timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || timeframeLabel !== endDatePicker;
             $postEndTextArea = makeOptionalElementReadonly($postEndTextArea, $('.ee-post-end'));
             timeframeSectionHasAnyValue = timeframeSectionHasAnyValue || $postEndTextArea.is('span');
-            
+
             $('.ee-timeframe.ee-expanded legend a').click();
             if (!timeframeSectionHasAnyValue) {
                 $('.ee-timeframe').slideUp(animationSpeed);
             }
-            
+
             $sendNotificationCheckBox = makeOptionalElementReadonly(
-                $sendNotificationCheckBox, 
-                $('.ee-notification'), 
+                $sendNotificationCheckBox,
+                $('.ee-notification'),
                 $sendNotificationCheckBox.is(':checked') ? currentContextInfo.CheckBoxCheckedText : currentContextInfo.CheckBoxUncheckedText
             );
             $notificationFromEmailTextBox = makeOptionalElementReadonly($notificationFromEmailTextBox, $('.ee-notification-from'));
             $notificationToEmailsTextBox = makeOptionalElementReadonly($notificationToEmailsTextBox, $('.ee-notification-to'));
             $sendThankYouCheckBox = makeOptionalElementReadonly(
-                $sendThankYouCheckBox, 
-                $('.ee-thankyou'), 
+                $sendThankYouCheckBox,
+                $('.ee-thankyou'),
                 $sendThankYouCheckBox.is(':checked') ? currentContextInfo.CheckBoxCheckedText : currentContextInfo.CheckBoxUncheckedText
             );
             $thankYourFromEmailTextBox = makeOptionalElementReadonly($thankYourFromEmailTextBox, $('.ee-thankyou-from'));
 
             makeOptionalElementReadonly(
-                $completionActionDropDown, 
-                $('.ee-completion-action'), 
+                $completionActionDropDown,
+                $('.ee-completion-action'),
                 $completionActionDropDown.find('option:selected').text(),
                 makeSelectReadonly
             );
@@ -513,7 +515,7 @@
             $completionUrlTextBox = makeOptionalElementReadonly($completionUrlTextBox, $('.ee-completion-url'));
 
             $('.ee-email.ee-expanded legend a').click();
-           
+
             $editSurveyButton.parent().fadeIn(animationSpeed);
             $deleteSurveyButton.parent().fadeIn(animationSpeed);
         }
@@ -528,7 +530,7 @@
             $multipleAnswerSection.slideUp(animationSpeed);
             $cancelQuestionEditButton.parent().fadeOut(animationSpeed);
             $addNewQuestionButton.parent().fadeOut(animationSpeed);
-            
+
             // remove all remove answers and related undo messages
             $multipleAnswerSection.find('li.answer-input.deleted')
                 .add('.answer-inputs li.ee-undo:not(.template)')
@@ -539,22 +541,22 @@
             var $defaultAnswers = $multipleAnswerSection.find('li.answer-input-template');
             $defaultAnswers.clone(true).attr('class', 'answer-input').show().insertAfter($defaultAnswers).find('.answer-num').text(2);
             $defaultAnswers.clone(true).attr('class', 'answer-input').show().insertAfter($defaultAnswers).find('.answer-num').text(1);
-            
+
             $('.ai-input input').val('');
-            
+
             $saveQuestionButton
                 .text(currentContextInfo.SaveQuestionButtonText)
                 .attr('title', currentContextInfo.SaveQuestionToolTip)
                 .parent()
                 .addClass('disabled');
-            
+
             // clear out stored data values
             $createQuestionArea.removeData('questionId').removeData('relativeOrder')
                 .find('#MultipleAnswer li.answer-input').removeData('answerId');
 
             validator.resetForm();
         }
-        
+
         function showAnswersInput(questionType) {
             var $multipleAnswer = $multipleAnswerSection,
                 $shortTextAnswer = $shortTextAnswerPreview,
@@ -562,7 +564,7 @@
                 $addAnswerButton = $('.ee-define-answer .primary-btn'),
                 $saveQuestionButtonWrap = $saveQuestionButton.parent(),
                 $cancelButtonWrap = $cancelQuestionEditButton.parent();
-                
+
             $saveQuestionButtonWrap.removeClass('disabled');
 
             // TODO: does .find('option:selected').val() give any different result than just .val()?
@@ -578,7 +580,7 @@
                 $shortTextAnswer.slideUp(animationSpeed);
                 $multipleAnswer.slideUp(animationSpeed);
                 $addAnswerButton.slideUp(animationSpeed);
-                
+
                 $saveQuestionButtonWrap.addClass('disabled');
                 break;
             case answerType.textBox:
@@ -603,83 +605,83 @@
                 });
             }
         }
-        
+
         function populateCreateQuestionSection($questionLi, setQuestionData) {
             resetCreateQuestionSection();
-                    
+
             var questionType = $questionLi.data('questionType'),
                 questionId = $questionLi.data('questionId'),
                 $baseAnswerElement;
-            
+
             // set the "edit" question text and required-nedd based on the "preview" question text and required-ness
             $questionTextArea.val($questionLi.children('.pv-question').html());
             $questionRequiredCheckBox.attr('checked', $questionLi.children('.ee-required-label').text() === '*');
-            
+
             if (setQuestionData) {
                 // set the question id on the "edit" section based on the question id in the "preview" section
                 $createQuestionArea
                     .data('questionId', questionId)
                     .data('relativeOrder', $questionPreviewList.find('li.ee-preview').index($questionLi) + 1);
             }
-            
+
             // set the "edit" answer type based on the "preview" answer type
             $answerTypeDropDown.val(questionType);
-            
+
             showAnswersInput(questionType);
-            
+
             if (questionType !== answerType.textBox && questionType !== answerType.textArea && questionType !== answerType.none) {
 
                 $cancelQuestionEditButton.parent().show();
 
                 //clone an existing element
                 $baseAnswerElement = $(".answer-inputs li.answer-input:last").clone(true);
-                
+
                 //wipe out all of the answers
                 $('.answer-inputs li.answer-input').remove();
-                
+
                 //get each answer
                 $questionLi.find('.pv-answer').find('input, option').each(function (i) {
-                
+
                     var $answerElement = $baseAnswerElement.clone(true);
-                
+
                     // increment answer number
                     $answerElement.find('.answer-num').text(i + 1);
 
                     // update cloned textbox's value
                     $answerElement.find('input').val($(this).html() || $(this).siblings('.pv-answer-option').html());
-                    
+
                     //append answer LI to UL and set the answer id
                     $answerElement.appendTo('.answer-inputs');
-                    
+
                     if (setQuestionData) {
                         $answerElement.data('answerId', $(this).data('answerId'));
                     }
                 });
             }
         }
-        
+
         function addQuestionPreview(questionId, questionText, isRequired, questionType, answers) {
             var questionOrder = $createQuestionArea.data('relativeOrder'),
-                $questionElement, 
+                $questionElement,
                 $answerDiv,
                 $dropDown;
             if (questionOrder) {
                 $questionElement = $('.ee-preview').eq(questionOrder - 1);
             } else {
                 $questionElement = $('.ee-preview-template').clone(true).attr('class', 'ee-preview');
-                
+
                 // if this is the first question, just use the hidden element
                 // otherwise, clone that element and replace its values
                 ////if ($questionElement.data('questionId')) {
                 $questionPreviewList.append($questionElement);
                 ////}
             }
-            
+
             // update the new question preview
             $questionElement.find('.pv-question').html(questionText).show();
             $questionElement.find('.ee-required-label').text(isRequired ? '*' : '').show();
             $questionElement.show().data('questionId', questionId).data('questionType', questionType);
-            
+
             // update the preview with answer values
             $answerDiv = $questionElement.find('.pv-answer').empty();
             switch (questionType) {
@@ -719,17 +721,17 @@
 
         $('.ee-collapsed legend a, .ee-expanded legend a').click(function (event) {
             event.preventDefault();
-            
+
             var $collapsableSectionWrap = $(this).closest('.ee-collapsed, .ee-expanded'),
                 $collapsableSection = $collapsableSectionWrap.find('.ee-collapsable');
-            
+
             $collapsableSection.slideToggle(animationSpeed, function () {
                 $collapsableSectionWrap.toggleClass('ee-collapsed').toggleClass('ee-expanded');
-            });            
+            });
         });
 
         $questionPreviewList.sortable({
-            items: 'li.ee-preview', 
+            items: 'li.ee-preview',
             placeholder: 'ui-state-highlight'
         }).bind('sortupdate', function () {
             // after reordering questions
@@ -738,15 +740,15 @@
             $questionPreviewList.find('li.ee-preview:visible').each(function (i, elem) {
                 questionOrderMap[$(elem).data('questionId')] = i + 1;
             });
-            
+
             parameters = {
                 surveyId: $('.ee-create-new').data('surveyId'),
                 questionOrderMap: questionOrderMap
             };
-            
+
             callWebMethod('ReorderQuestions', parameters);
         });
-        
+
         $(".answer-inputs").sortable({
             items: 'li.answer-input',
             placeholder: 'ui-state-highlight'
@@ -757,7 +759,7 @@
                 $(elem).text(i + 1);
             });
         });
-        
+
         // Add selection style back to the inputs, since our CSS is removing or hiding the native style
         $moduleWrap.find(":input").focus(function () {
             $(this).addClass("focus");
@@ -767,12 +769,12 @@
 
         $newSurveyButton.click(function (event) {
             event.preventDefault();
-            
+
             if (validator.form()) {
                 var $this = $(this),
                     originalText = $this.text();
 
-                $this.text(currentContextInfo.ProgressText);                
+                $this.text(currentContextInfo.ProgressText);
                 updateSurvey(function () {
                     $newSurveyButton.parent().fadeOut(animationSpeed, function () {
                         makeSurveyReadOnly();
@@ -782,14 +784,14 @@
                 });
             }
         });
-        
+
         $updateSurveyButton.click(function (event) {
             event.preventDefault();
-            
+
             if (validator.form()) {
                 var $this = $(this),
                     originalText = $this.text();
-                
+
                 $this.text(currentContextInfo.ProgressText);
                 updateSurvey(function () {
                     hideEditModeButtons(function () {
@@ -802,7 +804,7 @@
 
         $editSurveyButton.click(function (event) {
             event.preventDefault();
-            
+
             // save current value to "previous value" data field for usage in the cancel link click event.
             storePreviousValue($surveyTitleTextBox);
             storePreviousValue($surveyDescriptionTextArea);
@@ -818,7 +820,7 @@
             storePreviousValue($completionActionDropDown);
             storePreviousValue($completionMessageTextArea);
             storePreviousValue($completionUrlTextBox);
-            
+
             $surveyTitleTextBox = makeLabelEditable($surveyTitleTextBox, $('<input type="text"/>'));
             $surveyDescriptionTextArea = makeLabelEditable($surveyDescriptionTextArea, $('<textarea/>'));
             makeDatePickerEditable(startDatePicker);
@@ -833,7 +835,7 @@
             makeSelectEditable($completionActionDropDown);
             $completionMessageTextArea = makeLabelEditable($completionMessageTextArea, $('<textarea/>'));
             $completionUrlTextBox = makeLabelEditable($completionUrlTextBox, $('<input type="text"/>'));
-            
+
             $('.ee-create-new .ee-optional').show();
             $editSurveyButton.parent().fadeOut(animationSpeed, function () {
                 $cancelSurveyEditButton.parent().fadeIn(animationSpeed);
@@ -842,10 +844,10 @@
 
             validator = $form.validate();
         });
-        
+
         $cancelSurveyEditButton.click(function (event) {
             event.preventDefault();
-            
+
             // retrieve data values and reset the text boxes.
             resetToPreviousValue($surveyTitleTextBox);
             resetToPreviousValue($surveyDescriptionTextArea);
@@ -858,7 +860,7 @@
             resetToPreviousValue($notificationToEmailsTextBox);
             resetCheckBoxToPreviousValue($sendThankYouCheckBox);
             resetToPreviousValue($thankYourFromEmailTextBox);
-            
+
             hideEditModeButtons(function () {
                 makeSurveyReadOnly();
             });
@@ -869,16 +871,16 @@
         $deleteSurveyButton.click(function (event) {
             event.preventDefault();
 
-            deleteWithUndo($moduleWrap, true, null, function deleteCallback() { 
+            deleteWithUndo($moduleWrap, true, null, function deleteCallback() {
                 callWebMethod('DeleteSurvey', { surveyId: $('.ee-create-new').data('surveyId') }, function () {
                     window.location = $('.egn-home a').attr('href');
                 });
             });
         });
-        
+
         $addNewQuestionButton.click(function (event) {
             event.preventDefault();
-            
+
             var $answerNumberElement = $(".answer-input:visible:last .answer-num"),
                 $answerElement = $(".answer-input-template")
                                 .clone(true)
@@ -887,30 +889,30 @@
                                 .appendTo('.answer-inputs')
                                 .slideDown(animationSpeed),
                 answerNumber = parseInt($answerNumberElement.text(), 10);
-            
+
             $answerElement.find('.answer-num').text(answerNumber + 1);
 
             // clear out cloned textbox
             $answerElement.find('input').val('').focus();
-            
+
             $(".answer-inputs .ee-delete").removeClass('disabled');
         });
-        
+
         // remove answer
         $(".answer-inputs .ee-delete").click(function (event) {
             event.preventDefault();
 
             var $answers = $(".answer-inputs li.answer-input:visible"),
                 $parentAnswerElement;
-            
+
             if ($answers.length > 1) {
-                
+
                 $parentAnswerElement = $(this).closest('li');
                 deleteWithUndo($parentAnswerElement, false, function afterFadeOut() {
                     $answers = $(".answer-inputs li.answer-input:visible").each(function (i, elem) {
                         $(elem).find('.answer-num').text(i + 1);
                     });
-                    
+
                     if ($answers.length < 2) {
                         $answers.find('.ee-delete').addClass('disabled');
                     }
@@ -921,7 +923,7 @@
                 });
             }
         });
-        
+
         // edit question
         $('.ee-pr-action-links .ee-edit').click(function (event) {
             event.preventDefault();
@@ -930,20 +932,20 @@
             populateCreateQuestionSection($questionLi, true);
             $saveQuestionButton.text(currentContextInfo.UpdateQuestionButtonText).attr('title', currentContextInfo.UpdateQuestionToolTip);
         });
-        
+
         // copy question
         $('.ee-pr-action-links .ee-copy').click(function (event) {
             event.preventDefault();
-            
+
             var $questionLi = $(this).closest('li.ee-preview');
             populateCreateQuestionSection($questionLi, false);
             $saveQuestionButton.text(currentContextInfo.SaveQuestionButtonText).attr('title', currentContextInfo.SaveQuestionToolTip);
         });
-        
+
         // delete question
         $('.ee-pr-action-links .ee-delete').click(function (event) {
             event.preventDefault();
-            
+
             var $parentQuestionElement = $(this).closest('li.ee-preview');
             deleteWithUndo($parentQuestionElement, true, null, function deleteCallback() {
                 var questionId = $parentQuestionElement.data('questionId');
@@ -952,7 +954,7 @@
                 });
             });
         });
-        
+
         $answerTypeDropDown.change(function () {
             showAnswersInput(parseInt($(this).val(), 10));
         });
@@ -960,30 +962,30 @@
         $questionTextArea.blur(function () {
             showAnswersInput(parseInt($answerTypeDropDown.val(), 10));
         });
-        
+
         $saveQuestionButton.click(function (event) {
             event.preventDefault();
-            
+
             var questionType = $answerTypeDropDown.find(':selected').val(),
-                questionIsMultipleChoice = questionType > 2; 
-            
+                questionIsMultipleChoice = questionType > 2;
+
             validator = $form.validate();
             if ($questionTextArea.valid() &&
                     (!questionIsMultipleChoice || $('.ai-input input:visible').valid()) &&
                     ($answerTypeDropDown.valid())) {
-            
+
                 $(this).text(currentContextInfo.ProgressText).parent().addClass('disabled');
                 callWebMethod('UpdateQuestion', getQuestionParameters(), function (question) {
                     $previewArea.slideDown(animationSpeed);
-                    
+
                     addQuestionPreview(
-                        question.QuestionId, 
-                        $questionTextArea.val(), 
-                        $questionRequiredCheckBox.is(':checked'), 
-                        parseInt(questionType, 10), 
+                        question.QuestionId,
+                        $questionTextArea.val(),
+                        $questionRequiredCheckBox.is(':checked'),
+                        parseInt(questionType, 10),
                         question.Answers
                     );
-                        
+
                     resetCreateQuestionSection();
                 });
             }
@@ -998,14 +1000,14 @@
             if (dateValue) {
                 return new Date(parseInt(dateValue.replace("/Date(", "").replace(")/", ""), 10));
             }
-            
+
             return null;
         }
-        
+
         function processHtmlTextForTextarea(value) {
             var $element = $('<div/>').html(value),
                 $breaks = $element.find('br');
-            
+
             // until jQuery 1.5.2, replaceWith fails on empty set
             if ($breaks.length) {
                 $breaks.replaceWith('\n');
@@ -1033,19 +1035,19 @@
                 $preStartTextArea.val(currentContextInfo.Survey.PreStartMessage);
                 endDatePicker.set_selectedDate(parseDateString(currentContextInfo.Survey.EndDate));
                 $postEndTextArea.val(currentContextInfo.Survey.PostEndMessage);
-			    $sendNotificationCheckBox.attr('checked', currentContextInfo.Survey.SendNotification);
-			    $notificationFromEmailTextBox.val(currentContextInfo.Survey.NotificationFromEmailAddress);
-			    $notificationToEmailsTextBox.val(currentContextInfo.Survey.NotificationToEmailAddresses);
-			    $sendThankYouCheckBox.attr('checked', currentContextInfo.Survey.SendThankYou);
-			    $thankYourFromEmailTextBox.val(currentContextInfo.Survey.ThankYouFromEmailAddress);
-			    $completionActionDropDown.val(currentContextInfo.Survey.FinalMessageOption);
+                $sendNotificationCheckBox.attr('checked', currentContextInfo.Survey.SendNotification);
+                $notificationFromEmailTextBox.val(currentContextInfo.Survey.NotificationFromEmailAddress);
+                $notificationToEmailsTextBox.val(currentContextInfo.Survey.NotificationToEmailAddresses);
+                $sendThankYouCheckBox.attr('checked', currentContextInfo.Survey.SendThankYou);
+                $thankYourFromEmailTextBox.val(currentContextInfo.Survey.ThankYouFromEmailAddress);
+                $completionActionDropDown.val(currentContextInfo.Survey.FinalMessageOption);
                 $completionMessageTextArea.val(processHtmlTextForTextarea(currentContextInfo.Survey.FinalMessage));
-			    $completionUrlTextBox.val(currentContextInfo.Survey.FinalUrl);
+                $completionUrlTextBox.val(currentContextInfo.Survey.FinalUrl);
 
                 $newSurveyButton.parent().hide();
                 makeSurveyReadOnly();
                 hideEditModeButtons();
-                $('.ee-create-questions').show(); 
+                $('.ee-create-questions').show();
 
                 if (currentContextInfo.Survey.Sections[0].Questions.length) {
                     $previewArea.show();
@@ -1056,13 +1058,13 @@
                 }
             } else {
                 $sendNotificationCheckBox.attr('checked', currentContextInfo.DefaultEmailSettings.SendNotification);
-			    $notificationFromEmailTextBox.val(currentContextInfo.DefaultEmailSettings.NotificationFromEmail);
-			    $notificationToEmailsTextBox.val(currentContextInfo.DefaultEmailSettings.NotificationToEmails);
+                $notificationFromEmailTextBox.val(currentContextInfo.DefaultEmailSettings.NotificationFromEmail);
+                $notificationToEmailsTextBox.val(currentContextInfo.DefaultEmailSettings.NotificationToEmails);
                 $sendThankYouCheckBox.attr('checked', currentContextInfo.DefaultEmailSettings.SendThankYou);
-			    $thankYourFromEmailTextBox.val(currentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
+                $thankYourFromEmailTextBox.val(currentContextInfo.DefaultEmailSettings.ThankYouFromEmail);
                 $completionMessageTextArea.val(processHtmlTextForTextarea(currentContextInfo.DefaultCompletionMessage));
             }
-            
+
             resetCreateQuestionSection();
         }());
     });

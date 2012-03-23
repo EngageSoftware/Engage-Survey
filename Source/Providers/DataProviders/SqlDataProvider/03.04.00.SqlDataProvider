@@ -1,0 +1,12 @@
+﻿ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Question]
+    ALTER COLUMN Text NVarChar(MAX) NOT NULL
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Answer]
+    ALTER COLUMN Text NVarChar(MAX) NOT NULL
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response]
+    ALTER COLUMN QuestionText NVarChar(MAX) NOT NULL
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageSurvey_Response]
+    ALTER COLUMN AnswerText NVarChar(MAX) NULL
+GO

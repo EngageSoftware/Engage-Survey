@@ -94,7 +94,7 @@
         <legend class="Head"><%=Localize("CreateNewQuestionsLabel.Text")%></legend>
         <div class="ee-question">
             <span class="ee-label"><span class="ee-required-label">*</span><%=Localize("TypeQuestionLabel.Text")%></span>
-            <span class="ee-input"><textarea id="QuestionText" class="NormalTextBox ee-required" minlength="1" maxlength="256" cols="40" rows="4" name="required"></textarea></span>
+            <span class="ee-input"><textarea id="QuestionText" class="NormalTextBox ee-required" minlength="1" cols="40" rows="4" name="required"></textarea></span>
         </div>
         <div class="ee-question-required">
             <span class="ee-label"><span class="ee-required-label">*</span><%=Localize("QuestionRequiredLabel.Text")%></span>
@@ -126,7 +126,7 @@
                         <li class="answer-input-template" style="display: none;">
                             <span class="ai-label"><span class="ee-required-label">*</span><%=Localize("AnswerTitle.Text")%> <span class="answer-num">1</span></span>
                             <div class="ai-selected">
-                                <span class="ai-input"><input class="NormalTextBox" type="text" maxlength="256" name="required" /></span>
+                                <span class="ai-input"><input class="NormalTextBox" type="text" name="required" /></span>
                                 <a href="#" title="<%=HttpUtility.HtmlAttributeEncode(Localize("RemoveAnswerHyperLink.ToolTip"))%>" class="ee-delete"><%=Localize("RemoveAnswerHyperLink.Text")%></a>
                             </div>
                         </li>

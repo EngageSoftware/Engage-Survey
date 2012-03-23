@@ -241,6 +241,7 @@
     <None Include="EngageSurvey.Build">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Providers\DataProviders\SqlDataProvider\03.04.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\SampleEvaluations.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>

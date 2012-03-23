@@ -1,10 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Database Name="campus_dnn2" Class="SurveyModelDataContext" BaseType="BrandonHaynes.ModelAdapter.DotNetNukeDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="campus_dnn2" Class="SurveyModelDataContext" BaseType="BrandonHaynes.ModelAdapter.DotNetNukeDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Table Name="dbo.EngageSurvey_Question" Member="Questions">
     <Type Name="Question">
       <Column Name="QuestionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Text" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="ShowText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="RequiredMessage" Type="System.String" DbType="NChar(256)" CanBeNull="true" />
@@ -38,7 +37,7 @@
     <Type Name="Answer">
       <Column Name="AnswerId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="QuestionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Text" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="IsCorrect" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="RelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="RevisingUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -102,14 +101,14 @@
       <Column Name="SectionRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ShowSectionText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="QuestionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="QuestionText" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Comments" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
       <Column Name="QuestionRelativeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="QuestionFormatOption" Type="global::Engage.Survey.Util.ElementFormatOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="ControlType" Type="global::Engage.Survey.Util.ControlType" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="AnswerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SectionFormatOption" Type="global::Engage.Survey.Util.ElementFormatOption" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
-      <Column Name="AnswerText" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="AnswerText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="AnswerRelativeOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AnswerIsCorrect" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="UserResponse" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />

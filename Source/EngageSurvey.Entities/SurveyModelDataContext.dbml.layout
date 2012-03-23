@@ -52,7 +52,7 @@
         <elementListCompartment Id="9fcb8688-b19f-41c1-9046-2bf15c0818c4" absoluteBounds="3.515, 7.335, 1.9700000000000002, 5.249226888020833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 2.89505126953125); (3.5 : 2.89505126953125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 2.89505126953125); (3.5 : 2.89505126953125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SurveyModelDataContext/Survey/Survey_Section" />
       <nodes>
         <classShapeMoniker Id="2dd9bfb5-9f4e-4c94-ba10-1486011bfd8e" />

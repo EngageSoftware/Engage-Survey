@@ -269,13 +269,15 @@ namespace Engage.Survey.Entities
                    join section in this.Context.Sections on question.SectionId equals section.SectionId
                    where section.SurveyId == surveyId
                    orderby answer.RelativeOrder
-                   group answer by question into answersByQuestion 
+                   group answer by question into answersByQuestion
                    orderby answersByQuestion.Key.RelativeOrder
                    select new Pair<Question, IEnumerable<Pair<Answer, int>>>
                            {
                                First = answersByQuestion.Key,
                                Second = from answer in answersByQuestion
-                                        join response in this.Context.Responses.Where(r => r.UserResponse != null)
+                                        join response in this.Context.Responses.Where(r => r.UserResponse != null 
+                                                && (r.ResponseHeader.Responses.Count(response => response.QuestionId == r.QuestionId && response.UserResponse != null) == 1 
+                                                    || r.UserResponse == bool.TrueString)) // checkbox questions store true/false instead of null/answer-text
                                             on answer.AnswerId equals response.AnswerId into answerResponses
                                         from answerResponse in answerResponses.DefaultIfEmpty()
                                         group answerResponse by answer into responsesByAnswer

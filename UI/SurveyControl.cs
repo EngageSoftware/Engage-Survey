@@ -20,6 +20,9 @@ namespace Engage.Survey.UI
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
+
+    using Engage.Annotations;
+
     using Util;
 
     /// <summary>
@@ -233,6 +236,14 @@ namespace Engage.Survey.UI
         }
 
         /// <summary>
+        /// Gets or sets a template containing any extra validator controls.
+        /// </summary>
+        /// <value> The validators template. </value>
+        [TemplateContainer(typeof(ValidatorsTemplateContainer))]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        public ITemplate Validators { get; set; }
+
+        /// <summary>
         /// Gets or sets the localizer.
         /// </summary>
         /// <value>
@@ -333,12 +344,20 @@ namespace Engage.Survey.UI
             {
                 // Need to make validator construction mechanism as we create new implementations! hk
                 // draw the survey
-                this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider(), this.Localizer);
+                var validationGroup = string.Format(CultureInfo.InvariantCulture, "survey-{0}", this.CurrentSurvey.SurveyId);
+                this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider(validationGroup), this.Localizer);
 
                 // no need to include the submit button in html
                 if (!this.IsReadOnly)
                 {
                     this.RenderSubmitButton();
+                }
+
+                if (this.Validators != null)
+                {
+                    var validatorsContainer = new ValidatorsTemplateContainer(validationGroup);
+                    this.Validators.InstantiateIn(validatorsContainer);
+                    ph.Controls.Add(validatorsContainer);
                 }
             }
 
@@ -439,7 +458,7 @@ namespace Engage.Survey.UI
 
                 Key relationshipKey = Key.ParseKeyFromString(key);
 
-                var section = this.CurrentSurvey.GetSections().Where(s => s.SectionId == relationshipKey.SectionId).Single();
+                var section = this.CurrentSurvey.GetSections().Single(s => s.SectionId == relationshipKey.SectionId);
                 var question = section.GetQuestion(relationshipKey);
 
                 string answerRelationshipKey;
@@ -557,12 +576,35 @@ namespace Engage.Survey.UI
         private void SubmitButton_Click(object sender, EventArgs e)
         {
             ////this.Page.Validate(string.Format(CultureInfo.InvariantCulture, "survey-{0}", this.CurrentSurvey.SurveyId));
-            if (this.Page.IsValid)
+            if (!this.Page.IsValid)
             {
-                this.CollectResponses(this);
-
-                this.WriteSurvey();
+                return;
             }
+
+            this.CollectResponses(this);
+            this.WriteSurvey();
+        }
+
+        /// <summary>
+        /// A container for the <see cref="SurveyControl.Validators"/> template
+        /// </summary>
+        public class ValidatorsTemplateContainer : Control, INamingContainer
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ValidatorsTemplateContainer"/> class.
+            /// </summary>
+            /// <param name="validationGroup">The validation group.</param>
+            public ValidatorsTemplateContainer(string validationGroup)
+            {
+                this.ValidationGroup = validationGroup;
+            }
+
+            /// <summary>
+            /// Gets the validation group.
+            /// </summary>
+            /// <value>The validation group.</value>
+            [UsedImplicitly]
+            public string ValidationGroup { get; private set; }
         }
     }
 

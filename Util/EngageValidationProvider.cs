@@ -21,6 +21,13 @@ namespace Engage.Survey.Util
     /// </summary>
     public class EngageValidationProvider : ValidationProviderBase
     {
+        public EngageValidationProvider(string validationGroup)
+        {
+            this.ValidationGroup = validationGroup;
+        }
+
+        public string ValidationGroup { get; private set; }
+
         /// <summary>
         /// Injects the specified manager.
         /// </summary>
@@ -30,10 +37,9 @@ namespace Engage.Survey.Util
         /// <param name="containerControl">The container control.</param>
         /// <param name="controlToValidate">The control to validate.</param>
         /// <param name="errorMessage">The error message.</param>
-        /// <param name="validationGroup">The validation group.</param>
         /// <param name="selectionLimit">The selection limit.</param>
         /// <param name="maxLength">Length of the max.</param>
-        public override void RegisterValidator(ClientScriptManager manager, ValidationType validationType, string cssClass, Control containerControl, string controlToValidate, string errorMessage, string validationGroup, int selectionLimit, int maxLength)
+        public override void RegisterValidator(ClientScriptManager manager, ValidationType validationType, string cssClass, Control containerControl, string controlToValidate, string errorMessage, int selectionLimit, int maxLength)
         {
             if (validationType == ValidationType.RequiredField)
             {
@@ -41,7 +47,7 @@ namespace Engage.Survey.Util
                     {
                         Display = ValidatorDisplay.Dynamic,
                         ControlToValidate = controlToValidate,
-                        ValidationGroup = validationGroup,
+                        ValidationGroup = this.ValidationGroup,
                         ErrorMessage = "<span class=\"error-text\">" + errorMessage + "</span>",
                         CssClass = cssClass
                     });
@@ -53,7 +59,7 @@ namespace Engage.Survey.Util
                     {
                         Display = ValidatorDisplay.Dynamic,
                         ControlToValidate = controlToValidate,
-                        ValidationGroup = validationGroup,
+                        ValidationGroup = this.ValidationGroup,
                         ValidationExpression = Engage.Utility.EmailsRegEx,
                         ErrorMessage = "<span class=\"error-text\">" + errorMessage + "</span>",
                         CssClass = cssClass
@@ -66,7 +72,7 @@ namespace Engage.Survey.Util
                     {
                         Display = ValidatorDisplay.Dynamic,
                         ControlToValidate = controlToValidate,
-                        ValidationGroup = validationGroup,
+                        ValidationGroup = this.ValidationGroup,
                         ErrorMessage = "<span class=\"error-text\">" + errorMessage + "</span>",
                         MaxLength = maxLength,
                         CssClass = cssClass

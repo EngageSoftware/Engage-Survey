@@ -133,3 +133,36 @@ ul.em-global-nav{clear:both;overflow:hidden;background:#fbf1ed;border-right:1px 
 		.em-success{background:#e0ffce;border-color:#78bd4e;}
 		.em-help{background:#e3f1ff;border-color:#2e94fc;}
 		.em-error{background:#ffd8d8;border-color:#800000;}
+
+/*========================  Settings ========================*/
+.eng-form fieldset { color: #222; background: #f7f7f7; border: solid 1px #ddd; padding: 15px; margin-bottom: 15px; }
+    .eng-form legend { color: #d4730c; font-size: 1.2em; }
+    .eng-form ul.eng-form-items, .eng-form ul.eng-actions { margin: 0;padding: 0;}
+    .eng-form ul li.eng-form-item, .eng-form ul.eng-actions li { list-style: none;margin: 0;padding: 6px 0;zoom: 1;/*clearfix below needs hasLayout in IE*/}
+    .eng-form ul li.eng-form-item:after {content: ""; display: table;clear: both;}
+        .eng-form label { display: block; }
+        .eng-form .eng-window-wrap label { display: inline; }
+            .eng-form .eng-form-item label a.dnnFormHelp { background-position: left;padding-left: 20px;display: inline;}
+            .eng-form .eng-form-item .dnnFormHelpContent { left: 30%;}
+        .eng-form .eng-tiny input, .eng-form .eng-tiny label { float: left; } /* eng-tiny should have the label after the input (e.g. for checkboxes) */
+        .eng-form .eng-tiny .eng-form-help { clear: left;float: none; }
+        .eng-form .eng-small input, .eng-form .eng-medium select { width: 4em; }
+        .eng-form .eng-small .RadInput .riTextBox { width: 4em !important; }
+        .eng-form .eng-medium input, .eng-form .eng-medium select { width: 200px; }
+        .eng-form .eng-medium .RadInput .riTextBox { width: 200px !important; }
+        .eng-form .eng-large input, .eng-form .eng-large select { width: 600px; }
+        .eng-form .eng-large .RadInput .riTextBox { width: 600px !important; }
+        .eng-form input[type="checkbox"], .eng-form input[type="radio"], .eng-form input[type="submit"], .eng-form input[type="button"] { width: auto; }
+        .eng-form .eng-list input { float: left; }
+        .eng-form .eng-list label { margin-bottom: 0.5em; }
+    .eng-form ul.eng-actions li { float: left; }
+        .eng-form .eng-primary-action {background:#d4730c;padding: 2px 6px;border:solid 1px #ddd;color:#fff;}
+        .eng-form .eng-primary-action[disabled] {cursor:default;color:#bbb;border-color: #777;}
+        .eng-form .eng-secondary-action {background:none;border:none;color:#d4730c;padding: 2px 6px;}
+        .eng-form .eng-secondary-action:hover {text-decoration: underline;}
+        .eng-form .eng-secondary-action[disabled] {cursor:default;background:#ddd;border:solid 1px #777;}
+        .eng-form .eng-secondary-action[disabled]:hover {text-decoration: none;}
+        .eng-form .eng-tertiary-action {background:#60605f;padding: 2px 6px;border:solid 1px #ddd;color:#fff;} 
+        .eng-form .eng-tertiary-action[disabled] {cursor:default;border-color:#bbb;color:#777;} 
+.eng-primary-action, .eng-secondary-action, .eng-tertiary-action{cursor:pointer;}
+.eng-end-form { clear: both;}

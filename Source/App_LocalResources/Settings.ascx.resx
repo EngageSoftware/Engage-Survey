@@ -243,4 +243,7 @@
   <data name="UseMinimumTimeoutProtection.Text" xml:space="preserve">
     <value>Use Minimum Timeout Protection</value>
   </data>
+  <data name="Display Type.Text" xml:space="preserve">
+    <value>Display Type</value>
+  </data>
 </root>

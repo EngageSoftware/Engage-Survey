@@ -2,90 +2,97 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="telerik" assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" %>
 
-<div id="engage-settings">
-    <div class="ee-setting-item">
-        <span class="ee-label"><dnn:Label ResourceKey="ChooseDisplayTypeLabel" runat="server" ControlName="ListingDisplayDropDownList" Suffix=":" /></span>
-        <span class="ee-input"><asp:DropDownList ID="ListingDisplayDropDownList" runat="server" CssClass="NormalTextBox" AutoPostBack="true" /></span>
-    </div>                                
+<div id="engage-settings" class="eng-form">
+    <asp:ValidationSummary runat="server" ShowMessageBox="false" ShowSummary="true" CssClass="NormalRed" />
+    <fieldset class="ee-display-settings">
+        <legend><%= Localize("Display Type") %></legend>
+        <ul class="eng-form-items">
+            <li class="eng-form-item eng-medium ee-display-setting">
+                <dnn:Label ResourceKey="ChooseDisplayTypeLabel" runat="server" ControlName="ListingDisplayDropDownList" Suffix=":" />
+                <asp:DropDownList ID="ListingDisplayDropDownList" runat="server" AutoPostBack="true" />
+            </li>
+        </ul>
+    </fieldset>    
     <fieldset class="ee-view-settings">
         <legend><%=Localize("View Survey Settings") %></legend>
-        <div id="SurveySettingSection" runat="server" class="ee-setting-item ee-survey-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="SurveyTypeIdLabel" runat="server" ControlName="SurveyDropDownList" Suffix=":"/></span>
-            <span class="ee-input"><asp:DropDownList ID="SurveyDropDownList" runat="server" CssClass="NormalTextBox" /></span>
-        </div>
-        <div class="ee-setting-item ee-multiple-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="AllowMultipleLabel" runat="server" ControlName="AllowMultipleCheckBox" Suffix=":"/></span>
-            <span class="ee-input"><asp:CheckBox ID="AllowMultipleCheckBox" runat="server" CssClass="NormalTextBox" /></span>
-        </div>
-        <div class="ee-setting-item ee-required-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="ShowRequiredNotationLabel" runat="server" ControlName="ShowRequiredNotationCheckBox" Suffix=":"/></span>
-            <span class="ee-input"><asp:CheckBox ID="ShowRequiredNotationCheckBox" runat="server" CssClass="NormalTextBox" /></span>
-        </div>   
+        <ul class="eng-form-items">
+            <li id="SurveySettingSection" runat="server" class="eng-form-item eng-large ee-survey-setting">
+                <dnn:Label ResourceKey="SurveyTypeIdLabel" runat="server" ControlName="SurveyDropDownList" Suffix=":"/>
+                <asp:DropDownList ID="SurveyDropDownList" runat="server" />
+            </li>
+            <li class="eng-form-item eng-tiny ee-multiple-setting">
+                <dnn:Label ResourceKey="AllowMultipleLabel" runat="server" ControlName="AllowMultipleCheckBox" Suffix=":"/>
+                <asp:CheckBox ID="AllowMultipleCheckBox" runat="server" />
+            </li>
+            <li class="eng-form-item eng-tiny ee-required-setting">
+                <dnn:Label ResourceKey="ShowRequiredNotationLabel" runat="server" ControlName="ShowRequiredNotationCheckBox" Suffix=":"/>
+                <asp:CheckBox ID="ShowRequiredNotationCheckBox" runat="server" />
+            </li>   
+        </ul>
     </fieldset>
     <fieldset class="ee-spam-settings">
         <legend><%=Localize("Survey SPAM Protection Settings") %></legend>
-        <div class="ee-setting-item ee-captcha-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="UseCaptchaProtection" runat="server" ControlName="UseCaptchaProtectionCheckBox" Suffix=":"/></span>
-            <span class="ee-input"><asp:CheckBox ID="UseCaptchaProtectionCheckBox" runat="server" CssClass="NormalTextBox" /></span>
-        </div>   
-        <div class="ee-setting-item ee-honeypot-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="UseInvisibleTextBoxProtection" runat="server" ControlName="UseInvisibleTextBoxProtectionCheckBox" Suffix=":"/></span>
-            <span class="ee-input"><asp:CheckBox ID="UseInvisibleTextBoxProtectionCheckBox" runat="server" CssClass="NormalTextBox" /></span>
-        </div>   
-        <div class="ee-setting-item ee-bot-timer-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="UseMinimumTimeoutProtection" runat="server" ControlName="UseMinimumTimeoutProtectionCheckBox" Suffix=":"/></span>
-            <span class="ee-input"><asp:CheckBox ID="UseMinimumTimeoutProtectionCheckBox" runat="server" CssClass="NormalTextBox" AutoPostBack="True" /></span>
-        </div>   
-        <div class="ee-setting-item ee-bot-timeout-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="MinimumTimeoutLength" runat="server" ControlName="MinimumTimeoutTextBox" Suffix=":"/></span>
-            <span class="ee-input">
-                <telerik:RadNumericTextBox ID="MinimumTimeoutTextBox" runat="server" CssClass="NormalTextBox" MinValue="1" MaxValue="15" AllowOutOfRangeAutoCorrect="True" NumberFormat-DecimalDigits="0" Width="50px" />
+        <ul class="eng-form-items">
+            <li class="eng-form-item eng-tiny ee-captcha-setting">
+                <dnn:Label ResourceKey="UseCaptchaProtection" runat="server" ControlName="UseCaptchaProtectionCheckBox" Suffix=":"/>
+                <asp:CheckBox ID="UseCaptchaProtectionCheckBox" runat="server" />
+            </li>   
+            <li class="eng-form-item eng-tiny ee-honeypot-setting">
+                <dnn:Label ResourceKey="UseInvisibleTextBoxProtection" runat="server" ControlName="UseInvisibleTextBoxProtectionCheckBox" Suffix=":"/>
+                <asp:CheckBox ID="UseInvisibleTextBoxProtectionCheckBox" runat="server" />
+            </li>   
+            <li class="eng-form-item eng-tiny ee-bot-timer-setting">
+                <dnn:Label ResourceKey="UseMinimumTimeoutProtection" runat="server" ControlName="UseMinimumTimeoutProtectionCheckBox" Suffix=":"/>
+                <asp:CheckBox ID="UseMinimumTimeoutProtectionCheckBox" runat="server" AutoPostBack="True" />
+            </li>   
+            <li class="eng-form-item eng-small ee-bot-timeout-setting">
+                <dnn:Label ResourceKey="MinimumTimeoutLength" runat="server" ControlName="MinimumTimeoutTextBox" Suffix=":"/>
+                <telerik:RadNumericTextBox ID="MinimumTimeoutTextBox" runat="server" MinValue="1" MaxValue="15" AllowOutOfRangeAutoCorrect="True" NumberFormat-DecimalDigits="0" />
                 <asp:Label runat="server" ResourceKey="seconds" />
-            </span>
-            <asp:RequiredFieldValidator ID="MinimumTimeoutRequiredValidator" runat="server" Display="None" ControlToValidate="MinimumTimeoutTextBox" ResourceKey="MinimumTimeoutTextBox.Required" />
-        </div>
+                <asp:RequiredFieldValidator ID="MinimumTimeoutRequiredValidator" runat="server" CssClass="NormalRed" Display="None" ControlToValidate="MinimumTimeoutTextBox" ResourceKey="MinimumTimeoutTextBox.Required" />
+            </li>
+        </ul>
     </fieldset>
     <fieldset class="ee-email-settings">
         <legend><%=Localize("Email Settings") %></legend>
-        <div class="ee-setting-item ee-notification-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="SendNotificationLabel" runat="server" ControlName="SendNotificationCheckBox" Suffix=":"/></span>
-            <span class="ee-input"><asp:CheckBox ID="SendNotificationCheckBox" runat="server" CssClass="NormalTextBox" /></span>
-        </div>   
-        <div class="ee-setting-item ee-notification-from-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="NotificationFromEmailLabel" runat="server" ControlName="NotificationFromEmailTextBox" Suffix=":"/></span>
-            <span class="ee-input"><asp:TextBox ID="NotificationFromEmailTextBox" runat="server" CssClass="NormalTextBox" /></span>
-            <asp:RegularExpressionValidator ID="NotificationFromEmailPatternValidator" runat="server" Display="None" ControlToValidate="NotificationFromEmailTextBox" ResourceKey="NotificationFromEmailError" />
-        </div>   
-        <div class="ee-setting-item ee-notification-to-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="NotificationToEmailsLabel" runat="server" ControlName="NotificationToEmailsTextBox" Suffix=":"/></span>
-            <span class="ee-input"><asp:TextBox ID="NotificationToEmailsTextBox" runat="server" CssClass="NormalTextBox" /></span>
-            <asp:RegularExpressionValidator ID="NotificationToEmailsPatternValidator" runat="server" Display="None" ControlToValidate="NotificationToEmailsTextBox" ResourceKey="NotificationToEmailsError" />
-        </div>   
-        <div class="ee-setting-item ee-thank-you-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="SendThankYouLabel" runat="server" ControlName="SendThankYouCheckBox" Suffix=":"/></span>
-            <span class="ee-input"><asp:CheckBox ID="SendThankYouCheckBox" runat="server" CssClass="NormalTextBox" /></span>
-        </div>   
-        <div class="ee-setting-item ee-thank-you-from-setting">
-            <span class="ee-label"><dnn:Label ResourceKey="ThankYouFromEmailLabel" runat="server" ControlName="ThankYouFromEmailTextBox" Suffix=":"/></span>
-            <span class="ee-input"><asp:TextBox ID="ThankYouFromEmailTextBox" runat="server" CssClass="NormalTextBox" /></span>
-            <asp:RegularExpressionValidator ID="ThankYouFromEmailPatternValidator" runat="server" Display="None" ControlToValidate="ThankYouFromEmailTextBox" ResourceKey="ThankYouFromEmailError" />
-        </div>
+        <ul class="eng-form-items">
+            <li class="eng-form-item eng-tiny ee-notification-setting">
+                <dnn:Label ResourceKey="SendNotificationLabel" runat="server" ControlName="SendNotificationCheckBox" Suffix=":"/>
+                <asp:CheckBox ID="SendNotificationCheckBox" runat="server" />
+            </li>   
+            <li class="eng-form-item eng-large ee-notification-from-setting">
+                <dnn:Label ResourceKey="NotificationFromEmailLabel" runat="server" ControlName="NotificationFromEmailTextBox" Suffix=":"/>
+                <asp:TextBox ID="NotificationFromEmailTextBox" runat="server" />
+                <asp:RegularExpressionValidator ID="NotificationFromEmailPatternValidator" runat="server" CssClass="NormalRed" Display="None" ControlToValidate="NotificationFromEmailTextBox" ResourceKey="NotificationFromEmailError" />
+            </li>   
+            <li class="eng-form-item eng-large ee-notification-to-setting">
+                <dnn:Label ResourceKey="NotificationToEmailsLabel" runat="server" ControlName="NotificationToEmailsTextBox" Suffix=":"/>
+                <asp:TextBox ID="NotificationToEmailsTextBox" runat="server" />
+                <asp:RegularExpressionValidator ID="NotificationToEmailsPatternValidator" runat="server" CssClass="NormalRed" Display="None" ControlToValidate="NotificationToEmailsTextBox" ResourceKey="NotificationToEmailsError" />
+            </li>   
+            <li class="eng-form-item eng-tiny ee-thank-you-setting">
+                <dnn:Label ResourceKey="SendThankYouLabel" runat="server" ControlName="SendThankYouCheckBox" Suffix=":"/>
+                <asp:CheckBox ID="SendThankYouCheckBox" runat="server" />
+            </li>   
+            <li class="eng-form-item eng-large ee-thank-you-from-setting">
+                <dnn:Label ResourceKey="ThankYouFromEmailLabel" runat="server" ControlName="ThankYouFromEmailTextBox" Suffix=":"/>
+                <asp:TextBox ID="ThankYouFromEmailTextBox" runat="server" />
+                <asp:RegularExpressionValidator ID="ThankYouFromEmailPatternValidator" runat="server" CssClass="NormalRed" Display="None" ControlToValidate="ThankYouFromEmailTextBox" ResourceKey="ThankYouFromEmailError" />
+            </li>
+        </ul>
     </fieldset>
-
-    <div class="em-user-message">
-        <asp:ValidationSummary runat="server" CssClass="em-error em-message" ForeColor="" DisplayMode="List" />
-    </div>
+    <script type="text/javascript">
+        (function () {
+            // fix bug where Validation Summary causes page to scroll to the top for no good reason
+            // workaround from https://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=299399
+            var originalValidationSummaryOnSubmit = window.ValidationSummaryOnSubmit;
+            window.ValidationSummaryOnSubmit = function (validationGroup) {
+                var originalScrollTo = window.scrollTo;
+                window.scrollTo = function () { };
+                originalValidationSummaryOnSubmit(validationGroup);
+                window.scrollTo = originalScrollTo;
+            };
+        }());
+    </script>
 </div>
-<script type="text/javascript">
-    (function () {
-        // fix bug where Validation Summary causes page to scroll to the top for no good reason
-        // workaround from https://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=299399
-        var originalValidationSummaryOnSubmit = window.ValidationSummaryOnSubmit;
-        window.ValidationSummaryOnSubmit = function (validationGroup) {
-            var originalScrollTo = window.scrollTo;
-            window.scrollTo = function () { };
-            originalValidationSummaryOnSubmit(validationGroup);
-            window.scrollTo = originalScrollTo;
-        };
-    }());
-</script>
+<div class="eng-end-form"></div>

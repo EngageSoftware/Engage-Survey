@@ -30,6 +30,8 @@ namespace Engage.Dnn.Survey
     using Engage.Survey.Entities;
     using Engage.Survey.UI;
 
+    using Telerik.Web.UI;
+
     /// <summary>
     /// This control uses the Engage Survey Control to render a survey. 
     /// It wires up an event to get in on the saving of a Survey and retrieves the ResponseId back.
@@ -65,6 +67,24 @@ namespace Engage.Dnn.Survey
             {
                 return this.SurveyControl.CurrentSurvey.NotificationToEmailAddresses;
             }
+        }
+
+        /// <summary>Gets a value indicating whether to use the CAPTCHA protection.</summary>
+        /// <value><c>true</c> if the form should be protected by a CAPTCHA; otherwise, <c>false</c>.</value>
+        protected bool UseCaptchaProtection { get; private set; }
+
+        /// <summary>Gets a value indicating whether to use the minimum timeout protection.</summary>
+        /// <value><c>true</c> if the form should be protected by a minimum timeout; otherwise, <c>false</c>.</value>
+        protected bool UseMinimumTimeoutProtection { get; private set; }
+
+        /// <summary>Gets a value indicating whether to use the invisible textbox protection.</summary>
+        /// <value><c>true</c> if the form should be protected by an invisible textbox; otherwise, <c>false</c>.</value>
+        protected bool UseInvisibleTextBoxProtection { get; private set; }
+
+        /// <summary>Gets the minimum timeout to use when <see cref="UseMinimumTimeoutProtection"/> is <c>true</c>.</summary>
+        protected int MinimumTimeout
+        {
+            get { return ModuleSettings.CaptchaMinTimeout.GetValueAsInt32For(this).Value; }
         }
 
         /// <summary>
@@ -188,6 +208,12 @@ namespace Engage.Dnn.Survey
                     this.SurveyControl.UserHasTaken = (IsLoggedIn && new SurveyRepository().UserHasTaken(this.UserId, this.SurveyId.Value)) ||
                                                       this.Request.Cookies.AllKeys.Any(cookie => cookie == surveyTakenCookieName);
                 }
+
+                var captchaStrategies = ModuleSettings.GetCaptchaStrategies(this).ToArray();
+                this.UseCaptchaProtection = captchaStrategies.Contains(RadCaptcha.ProtectionStrategies.Captcha);
+                this.UseInvisibleTextBoxProtection = captchaStrategies.Contains(RadCaptcha.ProtectionStrategies.InvisibleTextBox);
+                this.UseMinimumTimeoutProtection = captchaStrategies.Contains(RadCaptcha.ProtectionStrategies.MinimumTimeout);
+                this.SurveyControl.DataBind();
             }
             catch (Exception exc)
             {

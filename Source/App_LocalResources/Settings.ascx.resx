@@ -210,4 +210,37 @@
   <data name="ThankYouFromEmailError.Text" xml:space="preserve">
     <value>&lt;em&gt;Thank You "From" Email&lt;/em&gt; is not a valid email address</value>
   </data>
+  <data name="MinimumTimeoutLength.Help" xml:space="preserve">
+    <value>The minimum number of seconds that must elapse before a survey entry will be accepted.</value>
+  </data>
+  <data name="MinimumTimeoutLength.Text" xml:space="preserve">
+    <value>Minimum Timeout</value>
+  </data>
+  <data name="MinimumTimeoutTextBox.Required" xml:space="preserve">
+    <value>&lt;em&gt;Minimum Timeout&lt;/em&gt; must be supplied when &lt;em&gt;Use Minimum Timeout Protection&lt;/em&gt; is checked</value>
+  </data>
+  <data name="seconds.Text" xml:space="preserve">
+    <value>seconds</value>
+  </data>
+  <data name="Survey SPAM Protection Settings.Text" xml:space="preserve">
+    <value>Survey SPAM Protection Settings</value>
+  </data>
+  <data name="UseCaptchaProtection.Help" xml:space="preserve">
+    <value>Require users to enter random, distorted letters before they can submit the survey, to prove that they are a human, and not a SPAM bot.</value>
+  </data>
+  <data name="UseCaptchaProtection.Text" xml:space="preserve">
+    <value>Use CAPTCHA Protection</value>
+  </data>
+  <data name="UseInvisibleTextBoxProtection.Help" xml:space="preserve">
+    <value>Include a hidden text field on the survey, and rejects any entry with the text field filled in, assuming that it comes from a SPAM bot rather than a human.</value>
+  </data>
+  <data name="UseInvisibleTextBoxProtection.Text" xml:space="preserve">
+    <value>Use Invisible Text Box Protection</value>
+  </data>
+  <data name="UseMinimumTimeoutProtection.Help" xml:space="preserve">
+    <value>Reject survey entries if they are too fast for a human to have entered the response.</value>
+  </data>
+  <data name="UseMinimumTimeoutProtection.Text" xml:space="preserve">
+    <value>Use Minimum Timeout Protection</value>
+  </data>
 </root>

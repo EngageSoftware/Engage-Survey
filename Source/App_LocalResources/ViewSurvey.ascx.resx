@@ -126,6 +126,12 @@
   <data name="BackButton.Text" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="CAPTCHA Error Message.Text" xml:space="preserve">
+    <value>Your entry did not match the code in the image; please try again</value>
+  </data>
+  <data name="CAPTCHA Label.Text" xml:space="preserve">
+    <value>Please type the code from the image</value>
+  </data>
   <data name="CheckBoxLimitExceeded.Format" xml:space="preserve">
     <value>You may only select up to {0} items(s)</value>
     <comment>{0} is limit</comment>
@@ -150,6 +156,18 @@
   </data>
   <data name="InvalidEmail.Text" xml:space="preserve">
     <value>Email Address should be in name@domain.com format.</value>
+  </data>
+  <data name="Invisible Text Box Error Message.Text" xml:space="preserve">
+    <value>A hidden field was filled out so this response was rejected to protect against SPAM.</value>
+  </data>
+  <data name="Invisible Text Box Label.Text" xml:space="preserve">
+    <value>Do not fill this textbox.</value>
+  </data>
+  <data name="Minimum Timeout Error Message.Text" xml:space="preserve">
+    <value>You submitted the survey too quickly so your response was rejected to protect against SPAM.</value>
+  </data>
+  <data name="New CAPTCHA.Text" xml:space="preserve">
+    <value>Generate a new image</value>
   </data>
   <data name="PostEndMessage.Format" xml:space="preserve">
     <value>&lt;div class="post-end-message em-user-message"&gt;&lt;div class="em-help"&gt;&lt;h4 class="SubHead em-message-title"&gt;This survey is no longer available&lt;/h4&gt;&lt;p class="Normal"&gt;{0}&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</value>

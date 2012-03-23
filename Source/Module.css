@@ -1,4 +1,4 @@
-.survey-title {
+﻿.survey-title {
   font-weight: bold;
   font-size: 18px;
 }
@@ -62,8 +62,7 @@ h3.section-title {
   color: #fff;
   font-weight: bold;
 }
-/*============ Engage Evaluation ============*/
-p.ee-note {
+/*============ Engage Evaluation ============*/p.ee-note {
   text-align: right;
   font-family: "Lucida Grande", Lucida Sans Unicode, Helvetica, Arial, Sans-Serif;
   font-style: italic;
@@ -415,8 +414,7 @@ li.ee-undo {
 #engage-evaluation fieldset.ee-optional legend {
   padding-left: 100px;
 }
-/*------ Survey Listing ------*/
-.survey-listing h3 {
+/*------ Survey Listing ------*/.survey-listing h3 {
   color: #000;
   font-size: 18px;
   margin-bottom: 0;
@@ -489,8 +487,7 @@ ul.sl-repeater li {
 ul.sl-repeater li.sl-alt-item {
   background: #fff;
 }
-/*================== Analyze ===============*/
-.sa-charts {
+/*================== Analyze ===============*/.sa-charts {
   clear: both;
 }
 .sa-charts .RadChart {
@@ -504,8 +501,7 @@ ul.sl-repeater li.sl-alt-item {
   overflow-x: hidden;
   overflow-y: auto;
 }
-/*============ Global Navigation ============*/
-ul.em-global-nav {
+/*============ Global Navigation ============*/ul.em-global-nav {
   clear: both;
   overflow: hidden;
   background: #fbf1ed;
@@ -545,8 +541,7 @@ ul.em-global-nav li.egn-manage {
 ul.em-global-nav li.egn-settings {
   background: url(images/em-settings-icn.gif) left no-repeat;
 }
-/*============ Global Navigation ============*/
-.em-success, .thankyou-wrap {
+/*============ Global Navigation ============*/.em-success, .thankyou-wrap {
   border: 2px #95c277 solid;
   background: #f5ffea;
   color: #020202;
@@ -558,8 +553,7 @@ ul.em-global-nav li.egn-settings {
 .em-success .Normal, .thankyou-wrap .Normal {
   color: #020202;
 }
-/*============ User Message ============*/
-.em-user-message {
+/*============ User Message ============*/.em-user-message {
   width: 600px;
   margin: 0 auto;
 }

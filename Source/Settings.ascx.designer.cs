@@ -22,15 +22,6 @@ namespace Engage.Dnn.Survey {
         protected global::System.Web.UI.WebControls.DropDownList ListingDisplayDropDownList;
         
         /// <summary>
-        /// ViewSurveyPlaceholder control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder ViewSurveyPlaceholder;
-        
-        /// <summary>
         /// SurveySettingSection control.
         /// </summary>
         /// <remarks>
@@ -67,6 +58,51 @@ namespace Engage.Dnn.Survey {
         protected global::System.Web.UI.WebControls.CheckBox ShowRequiredNotationCheckBox;
         
         /// <summary>
+        /// UseCaptchaProtectionCheckBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox UseCaptchaProtectionCheckBox;
+        
+        /// <summary>
+        /// UseInvisibleTextBoxProtectionCheckBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox UseInvisibleTextBoxProtectionCheckBox;
+        
+        /// <summary>
+        /// UseMinimumTimeoutProtectionCheckBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox UseMinimumTimeoutProtectionCheckBox;
+        
+        /// <summary>
+        /// MinimumTimeoutTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadNumericTextBox MinimumTimeoutTextBox;
+        
+        /// <summary>
+        /// MinimumTimeoutRequiredValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator MinimumTimeoutRequiredValidator;
+        
+        /// <summary>
         /// SendNotificationCheckBox control.
         /// </summary>
         /// <remarks>
@@ -85,6 +121,15 @@ namespace Engage.Dnn.Survey {
         protected global::System.Web.UI.WebControls.TextBox NotificationFromEmailTextBox;
         
         /// <summary>
+        /// NotificationFromEmailPatternValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator NotificationFromEmailPatternValidator;
+        
+        /// <summary>
         /// NotificationToEmailsTextBox control.
         /// </summary>
         /// <remarks>
@@ -92,6 +137,15 @@ namespace Engage.Dnn.Survey {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox NotificationToEmailsTextBox;
+        
+        /// <summary>
+        /// NotificationToEmailsPatternValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator NotificationToEmailsPatternValidator;
         
         /// <summary>
         /// SendThankYouCheckBox control.
@@ -110,24 +164,6 @@ namespace Engage.Dnn.Survey {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ThankYouFromEmailTextBox;
-        
-        /// <summary>
-        /// NotificationFromEmailPatternValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator NotificationFromEmailPatternValidator;
-        
-        /// <summary>
-        /// NotificationToEmailsPatternValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator NotificationToEmailsPatternValidator;
         
         /// <summary>
         /// ThankYouFromEmailPatternValidator control.

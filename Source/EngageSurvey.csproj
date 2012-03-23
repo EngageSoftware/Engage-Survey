@@ -327,7 +327,6 @@
     <Content Include="Sample.htm" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_GlobalResources\" />
     <Folder Include="Documentation\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

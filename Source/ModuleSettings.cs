@@ -11,7 +11,13 @@
 
 namespace Engage.Dnn.Survey
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Framework;
+
+    using Telerik.Web.UI;
 
     /// <summary>
     /// Contains the settings for the Survey module
@@ -67,5 +73,34 @@ namespace Engage.Dnn.Survey
         /// The email address from which to send thank you emails, by default
         /// </summary>
         public static readonly Setting<string> ThankYouFromEmailAddress = new Setting<string>("ThankYouFromEmailAddress", SettingScope.TabModule, null);
+
+        /// <summary>
+        /// The comma-delimited list of CAPTCHA strategies to employ
+        /// </summary>
+        public static readonly Setting<string> CaptchaStrategies = new Setting<string>("CaptchaStrategies", SettingScope.TabModule, RadCaptcha.ProtectionStrategies.InvisibleTextBox.ToString() + "," + RadCaptcha.ProtectionStrategies.MinimumTimeout.ToString());
+
+        /// <summary>
+        /// The minimum number of seconds form must be displayed before it is valid. If you're too fast, you must be a robot. Only used if <see cref="CaptchaStrategies"/> includes <see cref="RadCaptcha.ProtectionStrategies.MinimumTimeout"/>
+        /// </summary>
+        public static readonly Setting<int> CaptchaMinTimeout = new Setting<int>("CaptchaMinTimeout", SettingScope.TabModule, 3);
+
+        /// <summary>
+        /// Gets the CAPTCHA strategies.
+        /// </summary>
+        /// <param name="moduleControl">The module control.</param>
+        /// <returns>A sequence of <see cref="RadCaptcha.ProtectionStrategies"/></returns>
+        public static IEnumerable<RadCaptcha.ProtectionStrategies> GetCaptchaStrategies(IModuleControlBase moduleControl)
+        {
+            var commaDelimited = CaptchaStrategies.GetValueAsStringFor(moduleControl);
+            if (string.IsNullOrEmpty(commaDelimited))
+            {
+                return Enumerable.Empty<RadCaptcha.ProtectionStrategies>();
+            }
+            
+            var split = commaDelimited.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            return from value in split
+                   where Enum.IsDefined(typeof(RadCaptcha.ProtectionStrategies), value)
+                   select (RadCaptcha.ProtectionStrategies)Enum.Parse(typeof(RadCaptcha.ProtectionStrategies), value);
+        }
     }
 }

@@ -194,13 +194,18 @@ namespace Engage.Dnn.Survey
             foreach (var questionPair in questions)
             {
                 var question = questionPair.First;
-                var answers = questionPair.Second;
+                var answers = questionPair.Second.ToArray();
 
+                const int TitleHeight = 25;
+                const int AnswerHeight = 16;
+                const int HeaderFooterHeight = 70;
+                var linesOfTitleText = (int)Math.Ceiling(question.Text.Length / (double)35);
                 var chart = new RadChart
                     {
                         ChartTitle = { TextBlock = { Text = this.GetQuestionLabel(question.RelativeOrder, question.Text, false) } },
                         SeriesOrientation = ChartSeriesOrientation.Horizontal,
                         Skin = TelerikChartsSkin,
+                        Height = Unit.Pixel((linesOfTitleText * TitleHeight) + (AnswerHeight * answers.Length) + HeaderFooterHeight),
                         Legend = { Visible = false },
                         AutoTextWrap = true,
                         AutoLayout = true,
@@ -209,7 +214,7 @@ namespace Engage.Dnn.Survey
                             {
                                 XAxis = { Appearance = { TextAppearance = { Visible = false } } },
                                 YAxis = { AxisLabel = { TextBlock = { Text = this.Localize("Axis Label.Text") }, Visible = true } }
-                            }
+                            },
                     };
 
                 var chartSeries = new ChartSeries();
@@ -223,6 +228,13 @@ namespace Engage.Dnn.Survey
 
                 chart.Series.Add(chartSeries);
                 this.ChartsPanel.Controls.Add(chart);
+            }
+
+            var charts = this.ChartsPanel.Controls.OfType<RadChart>();
+            var maxHeight = charts.Select(c => (int)c.Height.Value).Max();
+            foreach (var chart in charts)
+            {
+                chart.Height = Unit.Pixel(maxHeight);
             }
         }
 

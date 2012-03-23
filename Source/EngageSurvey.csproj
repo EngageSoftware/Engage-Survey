@@ -127,7 +127,7 @@
       <DependentUpon>scripts.chirp.config</DependentUpon>
     </EmbeddedResource>
     <Content Include="References\AntiXSSLibrary.xml" />
-    <Content Include="ReleaseNotes_03.03.04.htm" />
+    <Content Include="ReleaseNotes_03.04.00.htm" />
     <Content Include="ReleaseNotes_03.03.03.htm" />
     <Content Include="ReleaseNotes_03.03.01.htm" />
     <Content Include="images\survey-icon32.png" />

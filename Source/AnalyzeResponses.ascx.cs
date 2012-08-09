@@ -231,6 +231,11 @@ namespace Engage.Dnn.Survey
             }
 
             var charts = this.ChartsPanel.Controls.OfType<RadChart>();
+            if (!charts.Any())
+            {
+                return;
+            }
+
             var maxHeight = charts.Select(c => (int)c.Height.Value).Max();
             foreach (var chart in charts)
             {

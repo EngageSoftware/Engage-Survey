@@ -318,7 +318,7 @@
                     maxlength = $this.attr('maxlength'),
                     minlength = $this.attr('minlength');
 
-                // if maxlength is not set (as on NotificationToEmails) then the browser default is returned 
+                // if maxlength is not set (as on NotificationToEmails) then the browser default is returned
                 // (http://herr-schuessler.de/blog/selecting-input-fields-with-maxlength-via-jquery/)
                 if (maxlength < 0 || maxlength > 500000) {
                     maxlength = '';
@@ -388,7 +388,7 @@
                     .insertAfter($this)
                     .slideDown(animationSpeed);
 
-                // don't set maxlength if it doesn't have one set 
+                // don't set maxlength if it doesn't have one set
                 // since setting it to an invalid/default value can cause the textbox to stop working...
                 if (maxlength !== '') {
                     $newElement.attr('maxlength', maxlength);

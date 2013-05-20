@@ -326,38 +326,44 @@ namespace Engage.Dnn.Survey
         /// </summary>
         private void SendThankYouNotification()
         {
-            string subject = Localization.GetString("ThankYou_Subject.Text", this.LocalResourceFile);
-            string body = Localization.GetString("ThankYou_Body.Text", this.LocalResourceFile);
-
-            if (subject.Length > 0 && body.Length > 0)
+            if (string.IsNullOrEmpty(this.UserInfo.Email))
             {
-                // Send Email
-                try
-                {
-                    string s = Mail.SendMail(
-                            this.SurveyControl.CurrentSurvey.ThankYouFromEmailAddress,
-                            this.UserInfo.Email,
-                            string.Empty,
-                            subject,
-                            body,
-                            string.Empty,
-                            "HTML",
-                            string.Empty,
-                            string.Empty,
-                            string.Empty,
-                            string.Empty);
+                return;
+            }
 
-                    if (s.Length > 0)
-                    {
-                        // write the exception to the log.
-                        Exceptions.LogException(new Exception(s));
-                    }
-                }
-                catch (Exception ex)
+            var subject = Localization.GetString("ThankYou_Subject.Text", this.LocalResourceFile);
+            var body = Localization.GetString("ThankYou_Body.Text", this.LocalResourceFile);
+
+            if (subject.Length <= 0 || body.Length <= 0)
+            {
+                return;
+            }
+
+            try
+            {
+                var s = Mail.SendMail(
+                    this.SurveyControl.CurrentSurvey.ThankYouFromEmailAddress,
+                    this.UserInfo.Email,
+                    string.Empty,
+                    subject,
+                    body,
+                    string.Empty,
+                    "HTML",
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty);
+
+                if (s.Length > 0)
                 {
-                    // do nothing. this should be a show stopper but needs to be logged.
-                    Exceptions.LogException(ex);
+                    // write the exception to the log.
+                    Exceptions.LogException(new Exception(s));
                 }
+            }
+            catch (Exception ex)
+            {
+                // do nothing. this should be a show stopper but needs to be logged.
+                Exceptions.LogException(ex);
             }
         }
 

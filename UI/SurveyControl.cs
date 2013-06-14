@@ -1,6 +1,6 @@
 // <copyright file="SurveyControl.cs" company="Engage Software">
 // Engage: Survey
-// Copyright (c) 2004-2010
+// Copyright (c) 2004-2013
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -100,15 +100,14 @@ namespace Engage.Survey.UI
         /// </summary>
         public event SaveEventHandler SurveyCompleted;
 
+        /// <summary>Gets or sets the validation group with which this <see cref="SurveyControl"/> should validate.</summary>
+        public string ValidationGroup { get; set; }
+
         /// <summary>
         /// Gets or sets the survey that is being rendered.
         /// </summary>
         /// <remarks>The <see cref="ISurvey.Save"/> method will be called when the Submit button is clicked.</remarks>
-        public ISurvey CurrentSurvey
-        {
-            get;
-            set;
-        }
+        public ISurvey CurrentSurvey { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is read only.
@@ -344,8 +343,7 @@ namespace Engage.Survey.UI
             {
                 // Need to make validator construction mechanism as we create new implementations! hk
                 // draw the survey
-                var validationGroup = string.Format(CultureInfo.InvariantCulture, "survey-{0}", this.CurrentSurvey.SurveyId);
-                this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider(validationGroup), this.Localizer);
+                this.CurrentSurvey.Render(ph, this.IsReadOnly, this.ShowRequiredNotation, new EngageValidationProvider(this.ValidationGroup), this.Localizer);
 
                 // no need to include the submit button in html
                 if (!this.IsReadOnly)
@@ -355,7 +353,7 @@ namespace Engage.Survey.UI
 
                 if (this.Validators != null)
                 {
-                    var validatorsContainer = new ValidatorsTemplateContainer(validationGroup);
+                    var validatorsContainer = new ValidatorsTemplateContainer(this.ValidationGroup);
                     this.Validators.InstantiateIn(validatorsContainer);
                     ph.Controls.Add(validatorsContainer);
                 }

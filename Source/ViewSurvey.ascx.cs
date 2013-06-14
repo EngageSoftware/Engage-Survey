@@ -172,6 +172,7 @@ namespace Engage.Dnn.Survey
                 if (this.ResponseHeaderId == null || !ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration))
                 {
                     this.SurveyControl.CurrentSurvey = new SurveyRepository().LoadSurvey(this.SurveyId.Value, this.ModuleId);
+                    this.SurveyControl.ValidationGroup = string.Format(CultureInfo.InvariantCulture, "survey-{0}", this.SurveyId.Value);
 
                     // Check to see if the user has taken the survey and hide it if true
                     if (!ModuleSettings.AllowMultpleEntries.GetValueAsBooleanFor(this).Value)
@@ -196,6 +197,8 @@ namespace Engage.Dnn.Survey
                 this.DeleteResponseButton.Click += this.DeleteResponseButton_Click;
                 this.DeleteResponseButton.Visible = this.IsEditable && displayingCompletedSurvey;
                 ClientAPI.AddButtonConfirm(this.DeleteResponseButton, this.Localize("ConfirmDelete.Text"));
+
+                this.Page.ClientScript.RegisterClientScriptResource(typeof(ViewSurvey), "Engage.Dnn.Survey.JavaScript.viewSurvey-all.js");
 
                 // allow module editors to edit survey
                 this.EditDefinitionButton.Click += this.EditDefinitionButton_Click;

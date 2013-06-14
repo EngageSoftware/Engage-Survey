@@ -196,6 +196,9 @@
   <data name="SubmitButton.Text" xml:space="preserve">
     <value>Submit</value>
   </data>
+  <data name="Submitting.Text" xml:space="preserve">
+    <value>Submitting…</value>
+  </data>
   <data name="SurveyCompleted_Body.Text" xml:space="preserve">
     <value>&lt;!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'&gt;
 &lt;html xmlns='http://www.w3.org/1999/xhtml'&gt;

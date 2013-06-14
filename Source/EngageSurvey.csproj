@@ -130,6 +130,7 @@
       <DependentUpon>scripts.chirp.config</DependentUpon>
     </EmbeddedResource>
     <None Include="JavaScript\viewSurvey.js" />
+    <Content Include="ReleaseNotes_03.04.03.htm" />
     <Content Include="module.chirp.css">
       <DependentUpon>module.chirp.less</DependentUpon>
     </Content>

@@ -130,7 +130,7 @@
       <DependentUpon>scripts.chirp.config</DependentUpon>
     </EmbeddedResource>
     <None Include="JavaScript\viewSurvey.js" />
-    <Content Include="ReleaseNotes_03.04.03.htm" />
+    <Content Include="ReleaseNotes_03.04.04.htm" />
     <Content Include="ReleaseNotes_03.04.02.htm" />
     <Content Include="References\AntiXSSLibrary.xml" />
     <Content Include="ReleaseNotes_03.04.01.htm" />

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project xmlns="http://nant.sf.net/release/0.90/nant.xsd" name="Engage Build Script" basedir="." default="package">
+<project xmlns="http://nant.sf.net/release/0.92/nant.xsd" name="Engage Build Script" basedir="." default="package">
   <property name="projectName" value="Survey"/>
   <property name="createTrialPackage" value="true"/>
   <property name="trialPackageLicenseName" value="Trial"/>
@@ -15,7 +15,7 @@
     <include name="Engage.Dnn.Framework_Source.zip"/>
   </patternset>
   <property name="projectDllName" value="Engage${projectName}.dll" />
-  <property name="solutionFile" value="Engage${projectName}2008.sln"/>
+  <property name="solutionFile" value="Engage${projectName}2010.sln"/>
   <property name="binDirectory" value="..\..\bin" overwrite="false"/> <!-- binDirectory is readonly if set from the command line (i.e. during Team Build CI) -->
   <property name="trialBinDirectory" value="${binDirectory}\..\trialBin"/>
   <property name="currentBinDirectory" value="${binDirectory}"/>
@@ -41,7 +41,6 @@
   <property name="referencesDirectory" value="References"/>
   <property name="packageDirectory" value="package"/>
   <property name="packageName" value="Resources.zip"/>
-  <property name="nant.settings.currentframework" value="net-3.5" />
 
   <target name="package" description="Creates packages for this module, one for each value in the licenses and versions properties">
 
@@ -102,7 +101,6 @@
         <arg value="/p:Platform=&quot;Any CPU&quot;" />
         <arg value="/p:OutputPath=&quot;${currentBinDirectory}&quot;" />
         <arg value="/m" /> <!-- multicore -->
-        <arg value="/noconsolelogger" />
       </exec>
     </if>
   </target>
@@ -127,20 +125,12 @@
         <include name="**/*.5.2.dnn"/>
       </fileset>
     </copy>
-    <copy todir="${packageDirectory}/temp/package/bin" flatten="true">
+        <copy-references todir="${packageDirectory}/temp/package/bin" solutionFile="${solutionFile}" flatten="true">
       <fileset>
         <patternset refid="projectAssemblies" unless="${buildTrial}"/>
         <patternset refid="trialProjectAssemblies" if="${buildTrial}"/>
-        <include name="${referencesDirectory}/**/*.dll"/>
-        <exclude name="${referencesDirectory}/DotNetNuke.dll"/>
-        <exclude name="${referencesDirectory}/DotNetNuke.WebUtility.dll"/>
-        <exclude name="${referencesDirectory}/Microsoft.ApplicationBlocks.Data.dll"/>
-        <exclude name="${referencesDirectory}/System.Web.Extensions.dll"/>
-        <exclude name="${referencesDirectory}/*.Design.dll"/>
-        <!--<exclude name="${referencesDirectory}/Telerik.Web.UI.dll"/>-->
       </fileset>
-    </copy>
-
+        </copy-references>
     <attrib readonly="false">
       <fileset basedir="${packageDirectory}/temp/package">
         <include name="**"/>
@@ -148,27 +138,39 @@
     </attrib>
 
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src"/>
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version"/>
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src" failonerror="false" />
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version" failonerror="false" />
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']" failonerror="false" />
       
       <foreach item="File" in="${packageDirectory}/temp/package/bin" property="assemblyFile">
         <call target="set-assemblyVersion"/>
-        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version"/>
+        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version" failonerror="false" />
       </foreach>
+
+      <if test="${file::exists(referencesDirectory + '/DotNetNuke.dll')}">
+        <property name="assemblyFile" value="${referencesDirectory}/DotNetNuke.dll" />
+        <call target="set-assemblyVersion" />
+        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/dependencies/dependency[@type='CoreVersion']" failonerror="false" />
+      </if>
     </if>
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.2.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src"/>
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version"/>
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src" failonerror="false" />
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version" failonerror="false" />
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']" failonerror="false" />
 
       <foreach item="File" in="${packageDirectory}/temp/package/bin" property="assemblyFile">
         <call target="set-assemblyVersion"/>
-        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version"/>
+        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version" failonerror="false" />
       </foreach>
+
+      <if test="${file::exists(referencesDirectory + '/DotNetNuke.dll')}">
+        <property name="assemblyFile" value="${referencesDirectory}/DotNetNuke.dll" />
+        <call target="set-assemblyVersion" />
+        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/dependencies/dependency[@type='CoreVersion']" failonerror="false" />
+      </if>
     </if>
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']" failonerror="false" />
     </if>
   </target>
   <target name="create-resources-zip" description="Creates the Resources.zip file for content (Install package) files">
@@ -189,7 +191,7 @@
       </fileset>
     </zip>
   </target>
-  <target name="create-packages" description="For the given license and type, creates packages for DNN 4 and DNN 5">
+    <target name="create-packages" description="For the given license and type, creates packages for all specified DNN versions">
     <property name="licenseFile" value="EULA-${packageLicense}"/>
     <call target="switch-license"/>
 
@@ -210,10 +212,10 @@
     </copy>
 
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${licenseFile}.htm" xpath="dotnetnuke/packages/package/license/@src"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${licenseFile}.htm" xpath="dotnetnuke/packages/package/license/@src" failonerror="false" />
     </if>
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.2.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${licenseFile}.htm" xpath="dotnetnuke/packages/package/license/@src"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${licenseFile}.htm" xpath="dotnetnuke/packages/package/license/@src" failonerror="false" />
     </if>
   </target>
   <target name="zip-package" description="Zips up the files in the temp/package directory, getting the correct manifest file and using the correct naming convention">
@@ -300,6 +302,65 @@
     <delete file="${packageDirectory}\${packageName}" failonerror="false"/>
     <delete dir="${packageDirectory}\temp" failonerror="false"/>
   </target>
+    <script language="C#">
+        <references>
+            <include name="System.dll" />
+            <include name="System.Core.dll" />
+            <include name="System.Xml.dll" />
+            <include name="System.Xml.Linq.dll" />
+        </references>
+        <imports>
+            <import namespace="System.Globalization" />
+            <import namespace="System.IO" />
+            <import namespace="System.Linq" />
+            <import namespace="System.Text.RegularExpressions" />
+            <import namespace="System.Xml.Linq" />
+            <import namespace="NAnt.Core" />
+            <import namespace="NAnt.Core.Attributes" />
+            <import namespace="NAnt.Core.Filters" />
+            <import namespace="NAnt.Core.Tasks" />
+            <import namespace="NAnt.Core.Types" />
+            <import namespace="NAnt.Core.Util" />
+        </imports>
+        <code>
+            <![CDATA[
+[TaskName("copy-references")]
+public class CopyReferencesTask : CopyTask 
+{
+    private static readonly Regex projectRegex = new Regex(@"Project\(.*""([^""]+\.csproj)""", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+    
+    [TaskAttribute("solutionFile", Required=true)]
+    public virtual FileInfo SolutionFile { get; set; }
+    
+    protected override void Initialize()
+    {
+        this.CopyFileSet = this.CopyFileSet ?? new FileSet();
+        base.Initialize();
+    }
+    
+    protected override void ExecuteTask() 
+    {
+        var solutionDirectory = Path.GetDirectoryName(this.SolutionFile.FullName);
+        var projects = from Match projectMatch in projectRegex.Matches(File.ReadAllText(this.SolutionFile.FullName))
+                       let projectName = projectMatch.Groups[1].Value
+                       select Path.GetFullPath(!Path.IsPathRooted(projectName) ? Path.Combine(solutionDirectory, projectName) : projectName);
+        var references = (from project in projects
+                          let projectDirectory = Path.GetDirectoryName(project)
+                          let projectDocument = XDocument.Load(project)
+                          let rootNamespace = projectDocument.Root.Name.Namespace
+                          from reference in projectDocument.Descendants(rootNamespace + "Reference")
+                          where !reference.Descendants(rootNamespace + "Private").Any(p => p.Value.Equals("False", StringComparison.OrdinalIgnoreCase))
+                          let hintPath = reference.Descendants(rootNamespace + "HintPath").SingleOrDefault()
+                          where hintPath != null
+                          select Path.Combine(projectDirectory, hintPath.Value)).Distinct();
+        this.CopyFileSet.Includes.AddRange(references.ToArray());
+        
+        base.ExecuteTask();
+    }
+}
+     ]]>
+        </code>
+    </script>
   <script language="C#" prefix="build-directory" >
     <references>
       <include name="System.dll" />
@@ -312,8 +373,8 @@
     <code>
       <![CDATA[
               [Function("is-greater-than")]
-              public static bool IsGreaterThan(string lhs, string rhs) {
-                  
+              public static bool IsGreaterThan(string lhs, string rhs) 
+              {
                   return new BuildDirectory(lhs) > new BuildDirectory(rhs);
               }
               
@@ -409,8 +470,8 @@
     <code>
       <![CDATA[
               [Function("version-info")]
-              public static string FormatVersionInfo(FileVersionInfo fileVersionInfo) {
-                  
+              public static string FormatVersionInfo(FileVersionInfo fileVersionInfo) 
+              {
                   return string.Format(CultureInfo.InvariantCulture, "{0:00}.{1:00}.{2:00}", fileVersionInfo.FileMajorPart, fileVersionInfo.FileMinorPart, fileVersionInfo.FileBuildPart);
               }
             ]]>
@@ -423,6 +484,9 @@
     <include name="**/*.resx" />
     <include name="**/*.html" />
     <include name="**/*.htm" />
+    <include name="**/*.cshtml" />
+    <include name="**/*.vbhtml" />
+    <include name="**/*.js" />
     <include name="**/*.css" />
     <include name="**/*.jpg" />
     <include name="**/*.gif" />
@@ -432,13 +496,14 @@
     <include name="**/*.xsd" />
     <exclude name="Licenses/EULA-*"/>
     <exclude name="ReleaseNotes_*.htm"/>
+    <exclude name="CustomDictionary.xml"/>
     <exclude name="??.??.??.txt" />
     <exclude name="_ReSharper.*/**"/>
     <exclude name="**/obj/**"/>
     <exclude name="${referencesDirectory}/**"/>
+    <exclude name="packages/**" />
   </patternset>
   <patternset id="source.fileset">
-    <include name="**/*.js"/>
     <include name="**/*.cs"/>
     <include name="**/*.vb"/>
     <include name="**/*.sln"/>
@@ -454,9 +519,11 @@
     <include name="**/*.txt"/>
     <include name="Licenses/EULA-*"/>
     <include name="ReleaseNotes_*.htm"/>
+    <include name="CustomDictionary.xml"/>
     <include name="??.??.??.txt" />
     <include name="MSBuild/*.dll"/>
     <include name="MSBuild/*.targets"/>
     <exclude name="**/obj/**"/>
+    <exclude name="Release.txt" />
   </patternset>
 </project>

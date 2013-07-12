@@ -210,6 +210,7 @@ namespace Engage.Dnn.Survey
                         AutoTextWrap = true,
                         AutoLayout = true,
                         HttpHandlerUrl = this.ResolveUrl("~/ChartImage.axd"),
+                        EnableHandlerDetection = false,
                         PlotArea =
                             {
                                 XAxis = { Appearance = { TextAppearance = { Visible = false } } },

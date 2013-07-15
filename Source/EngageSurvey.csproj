@@ -65,6 +65,7 @@
     </Reference>
     <Reference Include="BrandonHaynes.ModelAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke, Version=4.9.4.17, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -130,7 +131,8 @@
       <DependentUpon>scripts.chirp.config</DependentUpon>
     </EmbeddedResource>
     <None Include="JavaScript\viewSurvey.js" />
-    <Content Include="ReleaseNotes_03.04.04.htm" />
+    <Content Include="References\BrandonHaynes.ModelAdapter.dll" />
+    <Content Include="ReleaseNotes_03.04.03.htm" />
     <Content Include="ReleaseNotes_03.04.02.htm" />
     <Content Include="References\AntiXSSLibrary.xml" />
     <Content Include="ReleaseNotes_03.04.01.htm" />
@@ -330,7 +332,6 @@
     <Content Include="Licenses\EULA-Enterprise.htm" />
     <Content Include="Licenses\EULA-Professional.htm" />
     <Content Include="Licenses\EULA-Standard.htm" />
-    <Content Include="References\BrandonHaynes.ModelAdapter.dll" />
     <Content Include="ReleaseNotes_03.00.00.htm" />
     <Content Include="Sample.htm" />
   </ItemGroup>

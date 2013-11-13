@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" name="Engage: Survey" basedir="." default="package">
+  <target name="package">
+    <property name="package.directory" value="..\package"/>
+    <property name="package.name" value="Engage.Survey_Source.zip"/>
+
+    <call target="zip-resources"/>
+  </target>
+  <target name="zip-resources">
+    <mkdir dir="${package.directory}" unless="${directory::exists(package.directory)}"/>
+    <mkdir dir="${package.directory}/temp" unless="${directory::exists(package.directory + '/temp')}"/>
+    <copy todir="${package.directory}/temp" flatten="false">
+      <fileset>
+        <include name="**/*.ascx" />
+        <include name="**/*.aspx" />
+        <include name="**/*.asmx" />
+        <include name="**/*.resx" />
+        <include name="**/*.html" />
+        <include name="**/*.htm" />
+        <include name="**/*.css" />
+        <include name="**/*.jpg" />
+        <include name="**/*.gif" />
+        <include name="**/*.png" />
+        <include name="**/*.pdf" />
+        <include name="**/*.dtd" />
+        <include name="**/*.xsd" />
+        <include name="**/*.xml" />
+        <include name="**/*.js"/>
+        <include name="**/*.cs"/>
+        <include name="**/*.vb"/>
+        <include name="**/*.sln"/>
+        <include name="**/*.csproj"/>
+        <include name="**/*.vbproj"/>
+        <include name="**/*.build"/>
+        <include name="**/*.dnn"/>
+        <include name="**/*.docx"/>
+        <include name="**/*.wsdl"/>
+        <include name="**/*.map"/>
+        <include name="**/*.disco"/>
+        <include name="**/*.config"/>
+        <include name="**/*.lic"/>
+        <exclude name="obj/**"/>
+        <exclude name="_ReSharper.**"/>
+        <exclude name="SourceAnalysisViolations.xml"/>
+      </fileset>
+    </copy>
+    <zip zipfile="${package.directory}/${package.name}">
+      <fileset basedir="${package.directory}/temp">
+        <include name="**/*"/>
+      </fileset>
+    </zip>
+    <delete dir="${package.directory}/temp" failonerror="false"/>
+  </target>
+</project>

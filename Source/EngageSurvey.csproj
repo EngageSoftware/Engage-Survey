@@ -48,16 +48,6 @@
     <DocumentationFile>..\..\bin\EngageSurvey.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Trial|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\trialBin\</OutputPath>
-    <DefineConstants Condition=" '$(DefineConstants)'=='' ">TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <DefineConstants>TRACE;TRIAL</DefineConstants>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AntiXSSLibrary, Version=4.0.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -157,8 +147,6 @@
     <Content Include="Licenses\EULA-Enterprise.txt" />
     <Content Include="Licenses\EULA-Professional.txt" />
     <Content Include="Licenses\EULA-Standard.txt" />
-    <Content Include="Licenses\EULA-Trial.htm" />
-    <Content Include="Licenses\EULA-Trial.txt" />
     <Content Include="References\DotNetNuke.xml" />
     <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
     <Content Include="References\Framework\Engage.Events.dll" />

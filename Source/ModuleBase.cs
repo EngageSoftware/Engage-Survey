@@ -11,13 +11,6 @@
 
 namespace Engage.Dnn.Survey
 {
-#if TRIAL
-    using System;
-    using System.ComponentModel;
-    using System.Web.UI;
-    using Licensing;
-#endif
-
     /// <summary>
     /// The base class for all module controls in this module
     /// </summary>
@@ -73,20 +66,6 @@ namespace Engage.Dnn.Survey
         {
             return this.BuildLinkUrl(tabId, moduleId, controlKey.ToString(), queryStringParameters);
         }
-
-#if TRIAL
-        /// <summary>
-        /// Raises the <see cref="Control.Init"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="EventArgs"/> object that contains the event data.</param>
-        /// <exception cref="LicenseException">If this module's <see cref="LicenseProvider"/> cannot validate its license.</exception>
-        protected override void OnInit(EventArgs e)
-        {
-            this.LicenseProvider = new TrialLicenseProvider(FeatureController.ModuleLicenseKey);
-
-            base.OnInit(e);
-        }
-#endif
     }
 }
 

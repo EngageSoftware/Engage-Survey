@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{73E4178A-1A1C-47FC-AF7E-357241E7D1C6}"
 	ProjectSection(SolutionItems) = preProject
 		MSBuild\EcmaScript.NET.modified.dll = MSBuild\EcmaScript.NET.modified.dll
@@ -8,16 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{73E4
 		MSBuild\Yui.Compressor.targets = MSBuild\Yui.Compressor.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E47057EE-ACEB-4BC1-860F-0F6F0AD571E8}"
-	ProjectSection(SolutionItems) = preProject
-		EngageSurvey2008.sln = EngageSurvey2008.sln
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngageSurvey", "EngageSurvey.csproj", "{678A96B6-1980-4B66-BB4C-8821CBD6DA13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngageSurvey.Entities", "EngageSurvey.Entities\EngageSurvey.Entities.csproj", "{EA6F3122-F987-46F2-AFA1-3B35CD818161}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engage.Survey", "..\..\..\..\..\..\Code\Engage 3.0\Engage.Survey\Engage.Survey.csproj", "{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engage.Survey", "Engage.Survey\Engage.Survey.csproj", "{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

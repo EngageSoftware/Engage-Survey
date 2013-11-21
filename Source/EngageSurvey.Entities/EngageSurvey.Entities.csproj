@@ -132,12 +132,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\Code\Engage 3.0\Engage.Survey\Engage.Survey.csproj">
-      <Project>{71FD39B6-53AA-4A06-BDD7-2B90FFA94468}</Project>
-      <Name>Engage.Survey</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -153,6 +147,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engage.Survey\Engage.Survey.csproj">
+      <Project>{71fd39b6-53aa-4a06-bdd7-2b90ffa94468}</Project>
+      <Name>Engage.Survey</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -144,9 +144,7 @@
     <Content Include="ReleaseNotes_03.02.00.htm" />
     <Content Include="ReleaseNotes_03.01.01.htm" />
     <Content Include="images\validator-bg-right.gif" />
-    <Content Include="Licenses\EULA-Enterprise.txt" />
-    <Content Include="Licenses\EULA-Professional.txt" />
-    <Content Include="Licenses\EULA-Standard.txt" />
+    <Content Include="Licenses\EULA-Free.txt" />
     <Content Include="References\DotNetNuke.xml" />
     <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
     <Content Include="References\Framework\Engage.Events.dll" />
@@ -318,9 +316,7 @@
     <Content Include="images\short-answer-input.gif" />
     <Content Include="images\validator-bg-left.gif" />
     <Content Include="images\validator-bg.gif" />
-    <Content Include="Licenses\EULA-Enterprise.htm" />
-    <Content Include="Licenses\EULA-Professional.htm" />
-    <Content Include="Licenses\EULA-Standard.htm" />
+    <Content Include="Licenses\EULA-Free.htm" />
     <Content Include="ReleaseNotes_03.00.00.htm" />
     <Content Include="Sample.htm" />
   </ItemGroup>

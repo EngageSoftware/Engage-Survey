@@ -1,7 +1,7 @@
 Engage: Survey
 ===============
 
-Engage: Survey is survey and form building tool for the 
+Engage: Survey is a survey and form building tool for the 
 [DNN Platform](http://www.dnnsoftware.com/).
 
 Building & Packaging

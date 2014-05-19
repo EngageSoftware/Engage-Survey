@@ -332,6 +332,7 @@ public class CopyReferencesTask : CopyTask
     <exclude name="**/obj/**"/>
     <exclude name="${referencesDirectory}/**"/>
     <exclude name="packages/**" />
+    <exclude name="**/bin/**"/>
   </patternset>
   <patternset id="source.fileset">
     <include name="**/*.cs"/>
@@ -355,5 +356,6 @@ public class CopyReferencesTask : CopyTask
     <include name="MSBuild/*.targets"/>
     <exclude name="**/obj/**"/>
     <exclude name="Release.txt" />
+    <exclude name="**/bin/**"/>
   </patternset>
 </project>

@@ -139,6 +139,8 @@
     <Content Include="JavaScript\viewSurvey-all.js.bundle" />
     <None Include="JavaScript\viewSurvey.js" />
     <Content Include="References\BrandonHaynes.ModelAdapter.dll" />
+    <Content Include="References\Framework\Engage.Dnn.Framework.XML" />
+    <Content Include="References\Framework\Engage.Framework.XML" />
     <Content Include="ReleaseNotes_03.04.04.htm" />
     <Content Include="ReleaseNotes_03.04.02.htm" />
     <Content Include="References\AntiXSSLibrary.xml" />
@@ -162,7 +164,6 @@
     <Content Include="images\validator-bg-right.gif" />
     <Content Include="Licenses\EULA-Free.txt" />
     <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
-    <Content Include="References\Framework\Engage.Events.dll" />
     <Content Include="References\Framework\Engage.Framework.dll" />
     <Content Include="ReleaseNotes_03.01.00.htm" />
     <Content Include="EditSurvey.ascx" />

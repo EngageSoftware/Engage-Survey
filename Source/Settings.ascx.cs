@@ -1,6 +1,6 @@
 // <copyright file="Settings.ascx.cs" company="Engage Software">
 // Engage: Survey
-// Copyright (c) 2004-2013
+// Copyright (c) 2004-2014
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -192,7 +192,7 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Handles the <see cref="DropDownList.SelectedIndexChanged"/> event of the <see cref="ListingDisplayDropDownList"/> control.
+        /// Handles the <see cref="ListControl.SelectedIndexChanged"/> event of the <see cref="ListingDisplayDropDownList"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>

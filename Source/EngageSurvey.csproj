@@ -58,8 +58,14 @@
       <HintPath>References\BrandonHaynes.ModelAdapter.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke, Version=4.9.4.17, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=6.0.0.2985, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\DotNetNuke.Core.6.0.0\lib\DotNetNuke.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.Web, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\DotNetNuke.Web.6.0.0\lib\DotNetNuke.Web.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -73,6 +79,11 @@
     <Reference Include="Engage.Framework, Version=3.1.4.20311, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\Framework\Engage.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\DotNetNuke.Core.6.0.0\lib\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -101,28 +112,35 @@
     <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Telerik.Web.UI, Version=2009.3.1103.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+    <Reference Include="Telerik.Web.UI, Version=2011.1.519.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\DotNetNuke.Web.6.0.0\lib\Telerik.Web.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="AnalyzeResponses.ascx" />
-    <None Include="EngageSurvey.5.2.dnn">
+    <None Include="EngageSurvey.dnn">
       <SubType>Designer</SubType>
     </None>
     <None Include="JavaScript\Array.prototype.indexOf.js" />
-    <None Include="JavaScript\jquery-ui-1.8.14.js" />
     <None Include="JavaScript\jquery.validate-1.8.1.js" />
     <None Include="JavaScript\json2.js" />
     <EmbeddedResource Include="JavaScript\survey-all.js">
-      <DependentUpon>scripts.chirp.config</DependentUpon>
+      <DependentUpon>survey-all.js.bundle</DependentUpon>
     </EmbeddedResource>
+    <Content Include="JavaScript\survey-all.js.bundle">
+      <SubType>Designer</SubType>
+    </Content>
     <EmbeddedResource Include="JavaScript\viewSurvey-all.js">
-      <DependentUpon>scripts.chirp.config</DependentUpon>
+      <DependentUpon>viewSurvey-all.js.bundle</DependentUpon>
     </EmbeddedResource>
+    <Content Include="JavaScript\viewSurvey-all.js.bundle" />
     <None Include="JavaScript\viewSurvey.js" />
     <Content Include="References\BrandonHaynes.ModelAdapter.dll" />
+    <Content Include="References\Framework\Engage.Dnn.Framework.XML" />
+    <Content Include="References\Framework\Engage.Framework.XML" />
+    <Content Include="ReleaseNotes_03.05.00.htm" />
     <Content Include="ReleaseNotes_03.04.04.htm" />
     <Content Include="ReleaseNotes_03.04.02.htm" />
     <Content Include="References\AntiXSSLibrary.xml" />
@@ -145,15 +163,14 @@
     <Content Include="ReleaseNotes_03.01.01.htm" />
     <Content Include="images\validator-bg-right.gif" />
     <Content Include="Licenses\EULA-Free.txt" />
-    <Content Include="References\DotNetNuke.xml" />
     <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
-    <Content Include="References\Framework\Engage.Events.dll" />
     <Content Include="References\Framework\Engage.Framework.dll" />
     <Content Include="ReleaseNotes_03.01.00.htm" />
     <Content Include="EditSurvey.ascx" />
     <Content Include="MainContainer.ascx" />
     <Content Include="SurveyListing.ascx" />
     <Content Include="Settings.ascx" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientService.asmx.cs">
@@ -229,10 +246,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="EngageSurvey.5.dnn">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="JavaScript\scripts.chirp.config" />
+    <Content Include="packages.config" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="EngageSurvey.Build">
       <SubType>Designer</SubType>
@@ -258,7 +272,6 @@
     </Content>
     <Content Include="images\submit-btn.jpg" />
     <None Include="module.chirp.less" />
-    <Content Include="References\DotNetNuke.dll" />
     <Content Include="References\DotNetNuke.WebUtility.dll" />
     <Content Include="SurveyService.asmx" />
   </ItemGroup>
@@ -302,9 +315,6 @@
     <Content Include="Controls\GlobalNavigation.ascx" />
     <Content Include="images\collapse.gif" />
     <Content Include="images\expand.gif" />
-    <Content Include="References\Telerik.Web.Design.dll" />
-    <Content Include="References\Telerik.Web.UI.dll" />
-    <Content Include="References\Telerik.Web.UI.xml" />
     <Content Include="ReleaseNotes_03.00.02.htm" />
     <Content Include="ReleaseNotes_03.00.01.htm" />
     <Content Include="images\drag-icn.gif" />

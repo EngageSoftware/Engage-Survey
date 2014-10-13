@@ -11,7 +11,6 @@
   <!--The order of the <file> elements determines the order of the files in the bundle.-->
   <files>
     <file>/JavaScript/json2.js</file>
-    <file>/JavaScript/jquery-ui-1.8.14.js</file>
     <file>/JavaScript/Array.prototype.indexOf.js</file>
     <file>/JavaScript/jquery.validate-1.8.1.js</file>
     <file>/JavaScript/survey.js</file>

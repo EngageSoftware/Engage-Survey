@@ -16,6 +16,8 @@ namespace Engage.Dnn.Survey
     using System.Web.Script.Serialization;
     using System.Web.UI;
 
+    using DotNetNuke.Framework;
+
     using Engage.Survey.Entities;
 
     using Microsoft.Security.Application;
@@ -180,7 +182,7 @@ namespace Engage.Dnn.Survey
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void Page_Load(object sender, EventArgs e)
         {
-            this.AddJQueryReference();
+            jQuery.RequestUIRegistration();
             this.Page.ClientScript.RegisterClientScriptResource(typeof(EditSurvey), "Engage.Dnn.Survey.JavaScript.survey-all.js");
         }
     }

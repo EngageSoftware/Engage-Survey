@@ -165,6 +165,7 @@
     <Content Include="MainContainer.ascx" />
     <Content Include="SurveyListing.ascx" />
     <Content Include="Settings.ascx" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientService.asmx.cs">

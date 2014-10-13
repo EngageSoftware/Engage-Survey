@@ -278,7 +278,6 @@ public class CopyReferencesTask : CopyTask
     <include name="**/*.htm" />
     <include name="**/*.cshtml" />
     <include name="**/*.vbhtml" />
-    <include name="**/*.js" />
     <include name="**/*.css" />
     <include name="**/*.jpg" />
     <include name="**/*.gif" />
@@ -292,12 +291,15 @@ public class CopyReferencesTask : CopyTask
     <exclude name="??.??.??.txt" />
     <exclude name="_ReSharper.*/**"/>
     <exclude name="**/obj/**"/>
+    <exclude name="**/bin/*.xml"/>
+    <exclude name="**/*.GhostDoc.xml"/>
     <exclude name="${referencesDirectory}/**"/>
     <exclude name="packages/**" />
   </patternset>
   <patternset id="source.fileset">
     <include name="**/*.cs"/>
     <include name="**/*.vb"/>
+    <include name="**/*.js" />
     <include name="**/*.sln"/>
     <include name="**/*.csproj"/>
     <include name="**/*.vbproj"/>

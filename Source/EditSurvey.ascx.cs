@@ -1,6 +1,6 @@
 // <copyright file="EditSurvey.ascx.cs" company="Engage Software">
 // Engage: Survey
-// Copyright (c) 2004-2013
+// Copyright (c) 2004-2014
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -76,7 +76,7 @@ namespace Engage.Dnn.Survey
         /// Gets a value indicating whether to send thank you emails by default.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if thank you emails are sent by default; otherwise, <c>false</c>.
+        /// <c>true</c> if thank you emails are sent by default; otherwise, <c>false</c>.
         /// </value>
         protected bool DefaultSendThankYou
         {

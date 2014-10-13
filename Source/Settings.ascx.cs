@@ -192,7 +192,7 @@ namespace Engage.Dnn.Survey
         }
 
         /// <summary>
-        /// Handles the <see cref="DropDownList.SelectedIndexChanged"/> event of the <see cref="ListingDisplayDropDownList"/> control.
+        /// Handles the <see cref="ListControl.SelectedIndexChanged"/> event of the <see cref="ListingDisplayDropDownList"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>

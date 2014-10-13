@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project xmlns="http://nant.sf.net/release/0.92/nant.xsd" name="Engage Build Script" basedir="." default="package">
   <property name="projectName" value="Survey"/>
-  <property name="versions" value="5,5.2+"/>
   <property name="licenses" value="Free"/>
-  <property name="packageFileNameTemplate" value="${projectName}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
+  <property name="packageFileNameTemplate" value="${projectName}_${projectVersion}_${packageType}" dynamic="true"/>
   <property name="createSourcePackage" value="true"/>
   <property name="sourcePackageLicenseName" value="Free"/>
   <property name="combineSourceWithInstallPackage" value="false"/>
@@ -51,9 +50,7 @@
       <call target="create-packages"/>
 
       <if test="${combineSourceWithInstallPackage}">
-        <foreach item="String" in="${versions}" delim="," property="dnnVersion">
-          <call target="combine-source"/>
-        </foreach>
+        <call target="combine-source"/>
       </if>
     </if>
     
@@ -88,8 +85,6 @@
         <include name="ReadMe.txt" />
         <include name="**/*.SqlDataProvider"/>
         <include name="**/*.dnn"/>
-        <include name="**/*.5.dnn"/>
-        <include name="**/*.5.2.dnn"/>
       </fileset>
     </copy>
         <copy-references todir="${packageDirectory}/temp/package/bin" solutionFile="${solutionFile}" flatten="true">
@@ -103,40 +98,19 @@
       </fileset>
     </attrib>
 
-    <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src" failonerror="false" />
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version" failonerror="false" />
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']" failonerror="false" />
-      
-      <foreach item="File" in="${packageDirectory}/temp/package/bin" property="assemblyFile">
-        <call target="set-assemblyVersion"/>
-        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version" failonerror="false" />
-      </foreach>
+    <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src" failonerror="false" />
+    <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version" failonerror="false" />
+    <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']" failonerror="false" />
 
-      <if test="${file::exists(referencesDirectory + '/DotNetNuke.dll')}">
-        <property name="assemblyFile" value="${referencesDirectory}/DotNetNuke.dll" />
-        <call target="set-assemblyVersion" />
-        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/dependencies/dependency[@type='CoreVersion']" failonerror="false" />
-      </if>
-    </if>
-    <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.2.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src" failonerror="false" />
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version" failonerror="false" />
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']" failonerror="false" />
+    <foreach item="File" in="${packageDirectory}/temp/package/bin" property="assemblyFile">
+      <call target="set-assemblyVersion"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version" failonerror="false" />
+    </foreach>
 
-      <foreach item="File" in="${packageDirectory}/temp/package/bin" property="assemblyFile">
-        <call target="set-assemblyVersion"/>
-        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version" failonerror="false" />
-      </foreach>
-
-      <if test="${file::exists(referencesDirectory + '/DotNetNuke.dll')}">
-        <property name="assemblyFile" value="${referencesDirectory}/DotNetNuke.dll" />
-        <call target="set-assemblyVersion" />
-        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/dependencies/dependency[@type='CoreVersion']" failonerror="false" />
-      </if>
-    </if>
-    <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']" failonerror="false" />
+    <if test="${file::exists(referencesDirectory + '/DotNetNuke.dll')}">
+      <property name="assemblyFile" value="${referencesDirectory}/DotNetNuke.dll" />
+      <call target="set-assemblyVersion" />
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/dependencies/dependency[@type='CoreVersion']" failonerror="false" />
     </if>
   </target>
   <target name="create-resources-zip" description="Creates the Resources.zip file for content (Install package) files">
@@ -160,10 +134,7 @@
     <target name="create-packages" description="For the given license and type, creates packages for all specified DNN versions">
     <property name="licenseFile" value="EULA-${packageLicense}"/>
     <call target="switch-license"/>
-
-    <foreach item="String" in="${versions}" delim="," property="dnnVersion">
-      <call target="zip-package"/>
-    </foreach>
+    <call target="zip-package"/>
   </target>
   <target name="switch-license" description="Switches out the license file and updates the reference to it in the DNN 5 manifest file">
     <delete>
@@ -177,12 +148,7 @@
       </fileset>
     </copy>
 
-    <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${licenseFile}.htm" xpath="dotnetnuke/packages/package/license/@src" failonerror="false" />
-    </if>
-    <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.2.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.2.dnn" value="${licenseFile}.htm" xpath="dotnetnuke/packages/package/license/@src" failonerror="false" />
-    </if>
+    <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.dnn" value="${licenseFile}.htm" xpath="dotnetnuke/packages/package/license/@src" failonerror="false" />
   </target>
   <target name="zip-package" description="Zips up the files in the temp/package directory, getting the correct manifest file and using the correct naming convention">
     <property name="packageType" value="Install"/>
@@ -190,10 +156,6 @@
     <zip zipfile="${packageDirectory}/${packageFileNameTemplate}.zip">
       <fileset basedir="${packageDirectory}/temp/package">
         <include name="**/*"/>
-        <exclude name="**/*.4.dnn" if="${dnnVersion!='4'}"/>
-        <exclude name="**/*.5.dnn" if="${dnnVersion!='5'}"/>
-        <exclude name="**/*.5.2.dnn" if="${dnnVersion!='5.2+'}"/>
-        <exclude name="**/Telerik.Web.UI.dll" if="${dnnVersion=='5.2+'}"/>
       </fileset>
     </zip>
   </target>
@@ -216,7 +178,7 @@
     <property name="installPackageFileName" value="${packageFileNameTemplate}"/>
     <property name="packageType" value="Source"/>
     <property name="sourcePackageFileName" value="${packageFileNameTemplate}"/>
-    <zip zipfile="${packageDirectory}/${projectName}_${projectVersion}_DNN${dnnVersion}.zip">
+    <zip zipfile="${packageDirectory}/${projectName}_${projectVersion}.zip">
       <fileset basedir="${packageDirectory}">
         <include name="${installPackageFileName}.zip"/>
         <include name="${sourcePackageFileName}.zip"/>

@@ -120,7 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AnalyzeResponses.ascx" />
-    <None Include="EngageSurvey.5.2.dnn">
+    <None Include="EngageSurvey.dnn">
       <SubType>Designer</SubType>
     </None>
     <None Include="JavaScript\Array.prototype.indexOf.js" />
@@ -246,9 +246,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="EngageSurvey.5.dnn">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="packages.config" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="EngageSurvey.Build">

@@ -128,11 +128,15 @@
     <None Include="JavaScript\jquery.validate-1.8.1.js" />
     <None Include="JavaScript\json2.js" />
     <EmbeddedResource Include="JavaScript\survey-all.js">
-      <DependentUpon>scripts.chirp.config</DependentUpon>
+      <DependentUpon>survey-all.js.bundle</DependentUpon>
     </EmbeddedResource>
+    <Content Include="JavaScript\survey-all.js.bundle">
+      <SubType>Designer</SubType>
+    </Content>
     <EmbeddedResource Include="JavaScript\viewSurvey-all.js">
-      <DependentUpon>scripts.chirp.config</DependentUpon>
+      <DependentUpon>viewSurvey-all.js.bundle</DependentUpon>
     </EmbeddedResource>
+    <Content Include="JavaScript\viewSurvey-all.js.bundle" />
     <None Include="JavaScript\viewSurvey.js" />
     <Content Include="References\BrandonHaynes.ModelAdapter.dll" />
     <Content Include="ReleaseNotes_03.04.04.htm" />
@@ -244,7 +248,6 @@
     <None Include="EngageSurvey.5.dnn">
       <SubType>Designer</SubType>
     </None>
-    <None Include="JavaScript\scripts.chirp.config" />
     <Content Include="packages.config" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="EngageSurvey.Build">

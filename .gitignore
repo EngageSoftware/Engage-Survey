@@ -3,7 +3,11 @@ _ReSharper.*
 ~*
 *.bak
 *.orig
+*.user
+*.GhostDoc.xml
+*.suo
 
-Bin/
+[bB]in/
 *.ncrunchsolution
 package/
+packages/

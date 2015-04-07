@@ -36,7 +36,7 @@ h3.section-title {
   color: #b50015;
   padding-left: 5px;
 }
-.answer-horizontal, .answer-vertical, .answer-vertical span {
+.answer-horizontal, .answer-vertical, .answer-vertical > span {
   display: block;
 }
 .error-message {
@@ -62,7 +62,8 @@ h3.section-title {
   color: #fff;
   font-weight: bold;
 }
-/*============ Engage Evaluation ============*/p.ee-note {
+/*============ Engage Evaluation ============*/
+p.ee-note {
   text-align: right;
   font-family: "Lucida Grande", Lucida Sans Unicode, Helvetica, Arial, Sans-Serif;
   font-style: italic;

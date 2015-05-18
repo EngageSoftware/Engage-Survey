@@ -6,7 +6,7 @@ h3.section-title{font-size:14px;margin:0;font-weight:bold;color:#666}
 .question{display:block;font-weight:bold;padding:0 0 2px 0}
 .ee-required-label{font-size:26px;line-height:0;color:#b50015;padding-right:5px;font-family:Helvetica,Arial,Sans-Serif;font-weight:bold}
 .section-wrap span.question span.required{font-size:20px;line-height:0;color:#b50015;padding-left:5px}
-.answer-horizontal,.answer-vertical,.answer-vertical span{display:block}
+.answer-horizontal,.answer-vertical,.answer-vertical>span{display:block}
 .error-message{background:#b50015;padding:2px 4px;color:#fff!important;font-weight:bold}
 .error-text{color:#fff!important;font-weight:bold}
 .submit-button,.back-button,.delete-button,.edit-button{float:left;margin:20px 0 0 5px}

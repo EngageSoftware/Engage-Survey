@@ -135,6 +135,7 @@
     <Content Include="References\DotNetNuke.HttpModules.dll" />
     <Content Include="References\Framework\Engage.Dnn.Framework.XML" />
     <Content Include="References\Framework\Engage.Framework.XML" />
+    <Content Include="ReleaseNotes_03.06.00.htm" />
     <Content Include="ReleaseNotes_03.05.01.htm" />
     <Content Include="ReleaseNotes_03.05.00.htm" />
     <Content Include="ReleaseNotes_03.04.04.htm" />

@@ -1,7 +1,7 @@
 ﻿// <copyright file="AssemblyInfo.cs" company="Engage Software">
 // Engage: Survey
-// Copyright (c) 2004-2015
-// by Engage Software ( http://www.engagesoftware.com )
+// Copyright (c) 2004-2020
+// by Engage Software ( https://engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
 // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
@@ -21,7 +21,7 @@ using System.Web.UI;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Engage Software")]
 [assembly: AssemblyProduct("Engage.Dnn.Survey")]
-[assembly: AssemblyCopyright("Engage Software Copyright © 2015")]
+[assembly: AssemblyCopyright("Engage Software Copyright © 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -39,8 +39,8 @@ using System.Web.UI;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("3.5.1.*")]
-[assembly: AssemblyFileVersion("3.5.1.0")]
+[assembly: AssemblyVersion("3.6.0.*")]
+[assembly: AssemblyFileVersion("3.6.0.0")]
 
 [assembly: WebResource("Engage.Dnn.Survey.JavaScript.survey-all.js", "text/javascript")]
 [assembly: WebResource("Engage.Dnn.Survey.JavaScript.viewSurvey-all.js", "text/javascript")]

@@ -59,9 +59,8 @@
       <HintPath>References\BrandonHaynes.ModelAdapter.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke, Version=6.0.0.2985, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\DotNetNuke.Core.6.0.0\lib\DotNetNuke.dll</HintPath>
+    <Reference Include="DotNetNuke, Version=7.0.0.1589, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetNuke.Core.7.0.0\lib\DotNetNuke.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.HttpModules, Version=6.2.1.11, Culture=neutral, processorArchitecture=MSIL">
@@ -69,9 +68,8 @@
       <HintPath>References\DotNetNuke.HttpModules.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Web, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\DotNetNuke.Web.6.0.0\lib\DotNetNuke.Web.dll</HintPath>
+    <Reference Include="DotNetNuke.Web, Version=7.0.0.1589, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetNuke.Web.7.0.0\lib\DotNetNuke.Web.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -87,8 +85,7 @@
       <HintPath>References\Framework\Engage.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\DotNetNuke.Core.6.0.0\lib\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <HintPath>packages\DotNetNuke.Core.7.0.0\lib\Microsoft.ApplicationBlocks.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -110,9 +107,8 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Telerik.Web.UI, Version=2011.1.519.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\DotNetNuke.Web.6.0.0\lib\Telerik.Web.UI.dll</HintPath>
+    <Reference Include="Telerik.Web.UI, Version=2012.3.1016.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetNuke.Web.7.0.0\lib\Telerik.Web.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

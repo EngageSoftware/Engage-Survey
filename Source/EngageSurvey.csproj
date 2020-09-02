@@ -64,6 +64,11 @@
       <HintPath>packages\DotNetNuke.Core.6.0.0\lib\DotNetNuke.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DotNetNuke.HttpModules, Version=6.2.1.11, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\DotNetNuke.HttpModules.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DotNetNuke.Web, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\DotNetNuke.Web.6.0.0\lib\DotNetNuke.Web.dll</HintPath>
@@ -131,6 +136,7 @@
     <Content Include="JavaScript\viewSurvey-all.js.bundle" />
     <None Include="JavaScript\viewSurvey.js" />
     <Content Include="References\BrandonHaynes.ModelAdapter.dll" />
+    <Content Include="References\DotNetNuke.HttpModules.dll" />
     <Content Include="References\Framework\Engage.Dnn.Framework.XML" />
     <Content Include="References\Framework\Engage.Framework.XML" />
     <Content Include="ReleaseNotes_03.05.01.htm" />
